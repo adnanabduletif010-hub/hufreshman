@@ -709,6 +709,56 @@ class AppRepository(private val context: Context) {
         }
     }
 
+    suspend fun fetchMemberRegistrationsFromFirestore(): Result<List<MemberRegistration>> = withContext(Dispatchers.IO) {
+        return@withContext try {
+            val snapshot = com.google.android.gms.tasks.Tasks.await(
+                firestore.collection("member_registrations").get()
+            )
+            val list = mutableListOf<MemberRegistration>()
+            for (doc in snapshot.documents) {
+                try {
+                    val id = doc.getString("id") ?: doc.id
+                    val fullName = doc.getString("fullName") ?: ""
+                    val universityName = doc.getString("universityName") ?: ""
+                    val academicYear = doc.getString("academicYear") ?: ""
+                    val phoneNumber = doc.getString("phoneNumber") ?: doc.id
+                    val password = doc.getString("password") ?: ""
+                    val paymentMethod = doc.getString("paymentMethod") ?: ""
+                    val transactionId = doc.getString("transactionId") ?: ""
+                    val date = doc.getString("date") ?: ""
+                    val isApproved = doc.getBoolean("isApproved") ?: false
+                    val rejectionReason = doc.getString("rejectionReason")
+                    if (fullName.isNotBlank() || transactionId.isNotBlank() || phoneNumber.isNotBlank()) {
+                        list.add(
+                            MemberRegistration(
+                                id = id,
+                                fullName = fullName,
+                                universityName = universityName,
+                                academicYear = academicYear,
+                                phoneNumber = phoneNumber,
+                                password = password,
+                                paymentMethod = paymentMethod,
+                                transactionId = transactionId,
+                                date = date,
+                                isApproved = isApproved,
+                                rejectionReason = rejectionReason
+                            )
+                        )
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            if (list.isNotEmpty()) {
+                prefs.edit().putString("member_registrations", gson.toJson(list)).apply()
+            }
+            Result.success(list)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.failure(e)
+        }
+    }
+
     companion object {
         val ADMIN_PHONE_NUMBERS = listOf("0953522315", "0955903175")
     }

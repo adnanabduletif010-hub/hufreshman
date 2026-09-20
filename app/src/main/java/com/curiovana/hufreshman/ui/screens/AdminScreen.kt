@@ -1,4 +1,4 @@
-﻿package com.curiovana.hufreshman.ui.screens
+package com.curiovana.hufreshman.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing
@@ -149,7 +149,10 @@ fun AdminScreen(viewModel: MainViewModel) {
         }
     } else {
         // Authenticated Admin Dashboard
+        val context = LocalContext.current
         val registrations by viewModel.memberRegistrations.collectAsState()
+        val isSyncing by viewModel.isSyncing.collectAsState()
+        val syncStatusMessage by viewModel.syncStatusMessage.collectAsState()
         val pendingRegistrations = registrations.filter { !it.isApproved }
         var selectedAdminTab by remember { mutableIntStateOf(0) }
         var universityToEdit by remember { mutableStateOf<com.curiovana.hufreshman.data.UniversityGuide?>(null) }
@@ -209,13 +212,32 @@ fun AdminScreen(viewModel: MainViewModel) {
                             }
                         }
 
-                        TextButton(
-                            onClick = { viewModel.setAdminStatus(false) },
-                            colors = ButtonDefaults.textButtonColors(contentColor = Color.White)
-                        ) {
-                            Icon(Icons.Default.Lock, contentDescription = null, modifier = Modifier.size(14.dp))
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text("Lock", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            TextButton(
+                                onClick = {
+                                    viewModel.refreshAdminRegistrations { _, msg ->
+                                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                                    }
+                                },
+                                colors = ButtonDefaults.textButtonColors(contentColor = Color.White)
+                            ) {
+                                if (isSyncing) {
+                                    CircularProgressIndicator(modifier = Modifier.size(14.dp), color = Color.White, strokeWidth = 2.dp)
+                                } else {
+                                    Icon(Icons.Default.Refresh, contentDescription = "Sync", modifier = Modifier.size(15.dp))
+                                }
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text(if (isSyncing) "Syncing" else "Refresh", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                            }
+
+                            TextButton(
+                                onClick = { viewModel.setAdminStatus(false) },
+                                colors = ButtonDefaults.textButtonColors(contentColor = Color.White)
+                            ) {
+                                Icon(Icons.Default.Lock, contentDescription = null, modifier = Modifier.size(14.dp))
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text("Lock", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                            }
                         }
                     }
 
@@ -230,6 +252,26 @@ fun AdminScreen(viewModel: MainViewModel) {
                         StatCard(modifier = Modifier.weight(1f), title = "Members", value = "${registrations.filter { it.isApproved }.size}")
                         StatCard(modifier = Modifier.weight(1f), title = "Questions", value = "${allQuestions.size}")
                         StatCard(modifier = Modifier.weight(1f), title = "Reports", value = "${reports.size}", highlight = reports.isNotEmpty())
+                    }
+                }
+            }
+
+            // Cloud Firestore warning banner if configuration or API needs activation
+            if (syncStatusMessage != null) {
+                Card(
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFFFFECEE)),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, RoseRed.copy(alpha = 0.5f)),
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
+                ) {
+                    Row(modifier = Modifier.padding(12.dp), verticalAlignment = Alignment.Top) {
+                        Icon(Icons.Default.Warning, contentDescription = null, tint = RoseRed, modifier = Modifier.size(20.dp).padding(top = 1.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text("Cloud Sync Action Required", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = RoseRed)
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(syncStatusMessage!!, fontSize = 11.sp, color = Slate900, lineHeight = 15.sp)
+                        }
                     }
                 }
             }
@@ -261,6 +303,12 @@ fun AdminScreen(viewModel: MainViewModel) {
             when (selectedAdminTab) {
                 0 -> MemberApprovalsTab(
                     registrations = registrations,
+                    isSyncing = isSyncing,
+                    onRefresh = {
+                        viewModel.refreshAdminRegistrations { _, msg ->
+                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                        }
+                    },
                     onApprove = { viewModel.approveMemberRegistration(it) },
                     onReject = { id, reason -> viewModel.rejectMemberRegistration(id, reason) }
                 )
@@ -1005,6 +1053,8 @@ fun ManageUniversitiesTab(
 @Composable
 fun MemberApprovalsTab(
     registrations: List<MemberRegistration>,
+    isSyncing: Boolean = false,
+    onRefresh: () -> Unit = {},
     onApprove: (String) -> Unit,
     onReject: (String, String) -> Unit
 ) {
@@ -1042,17 +1092,33 @@ fun MemberApprovalsTab(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column {
+            Column(modifier = Modifier.weight(1f)) {
                 Text("Member Transaction Approvals", fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
                 Text("Verify Telebirr / CBE / E-Birr transactions", fontSize = 11.sp, color = Slate700)
             }
-            if (pending.isNotEmpty()) {
-                Box(
-                    modifier = Modifier
-                        .background(AmberWarning, RoundedCornerShape(10.dp))
-                        .padding(horizontal = 8.dp, vertical = 4.dp)
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                FilledTonalButton(
+                    onClick = onRefresh,
+                    shape = RoundedCornerShape(10.dp),
+                    contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp)
                 ) {
-                    Text("${pending.size} Pending", color = Color.White, fontWeight = FontWeight.ExtraBold, fontSize = 11.sp)
+                    if (isSyncing) {
+                        CircularProgressIndicator(modifier = Modifier.size(14.dp), strokeWidth = 2.dp)
+                    } else {
+                        Icon(Icons.Default.Refresh, contentDescription = "Refresh", modifier = Modifier.size(14.dp))
+                    }
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(if (isSyncing) "Syncing..." else "Refresh", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                }
+
+                if (pending.isNotEmpty()) {
+                    Box(
+                        modifier = Modifier
+                            .background(AmberWarning, RoundedCornerShape(10.dp))
+                            .padding(horizontal = 8.dp, vertical = 6.dp)
+                    ) {
+                        Text("${pending.size} Pending", color = Color.White, fontWeight = FontWeight.ExtraBold, fontSize = 11.sp)
+                    }
                 }
             }
         }

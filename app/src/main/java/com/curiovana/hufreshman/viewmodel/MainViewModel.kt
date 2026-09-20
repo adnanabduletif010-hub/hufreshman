@@ -41,6 +41,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _memberRegistrations = MutableStateFlow<List<MemberRegistration>>(emptyList())
     val memberRegistrations: StateFlow<List<MemberRegistration>> = _memberRegistrations.asStateFlow()
 
+    val isSyncing = MutableStateFlow(false)
+    val syncStatusMessage = MutableStateFlow<String?>(null)
+
     private val _reports = MutableStateFlow<List<ReportItem>>(emptyList())
     val reports: StateFlow<List<ReportItem>> = _reports.asStateFlow()
 
@@ -278,6 +281,31 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
             _userProfile.value = repository.getUserProfile()
             _memberRegistrations.value = repository.loadMemberRegistrations()
+        }
+    }
+
+    fun refreshAdminRegistrations(onResult: (Boolean, String) -> Unit = { _, _ -> }) {
+        viewModelScope.launch {
+            isSyncing.value = true
+            val result = repository.fetchMemberRegistrationsFromFirestore()
+            isSyncing.value = false
+            result.onSuccess { list ->
+                _memberRegistrations.value = list
+                val msg = "Synced ${list.size} registrations from Cloud Firestore"
+                syncStatusMessage.value = null
+                onResult(true, msg)
+            }.onFailure { err ->
+                val errorMsg = when {
+                    err.message?.contains("SERVICE_DISABLED", ignoreCase = true) == true ||
+                    err.message?.contains("has not been used", ignoreCase = true) == true ->
+                        "Cloud Firestore is not enabled in Firebase Console for hu-freshman1. Please create the database in Firebase Console."
+                    err.message?.contains("PERMISSION_DENIED", ignoreCase = true) == true ->
+                        "Firebase Permission Denied. Please set Firestore Rules to allow read, write in Firebase Console."
+                    else -> "Cloud Sync error: ${err.localizedMessage ?: "Unknown error"}"
+                }
+                syncStatusMessage.value = errorMsg
+                onResult(false, errorMsg)
+            }
         }
     }
 
