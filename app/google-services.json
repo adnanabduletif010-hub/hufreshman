@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "532155569445",
+    "project_id": "hu-freshman1",
+    "storage_bucket": "hu-freshman1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:532155569445:android:609cf3ba4f166a303536cc",
+        "android_client_info": {
+          "package_name": "com.curiovana.hufreshman"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwHSjR3cbT-YsoizDfThjZawLCU0sfZY8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ann-001",
+    "title": "Freshman First Semester Mid-Exam Schedule Released (2026 Academic Year)",
+    "university": "All Universities (MoSHE / MoE)",
+    "category": "Academic",
+    "date": "2026-08-25",
+    "pinned": true,
+    "content": "The Ministry of Education in coordination with all public universities has published the harmonized freshman first semester mid-examination timetable. Natural and Social science streams commence exams across Haramaya, AAU, Jimma, Hawassa, and ASTU simultaneously.",
+    "author": "Academic Commission"
+  },
+  {
+    "id": "ann-002",
+    "title": "Haramaya University: Digital Library & Past Exam Repository Orientation",
+    "university": "Haramaya University",
+    "category": "Campus Life",
+    "date": "2026-08-24",
+    "pinned": true,
+    "content": "Freshman students are invited to the Main Campus Afran Kallo Hall for a briefing on accessing zero-rated e-learning modules, digital reference collections, and previous semester question archives.",
+    "author": "HU Registrar"
+  },
+  {
+    "id": "ann-003",
+    "title": "AAU Sidist Kilo: Remedial & Tutorial Sessions for Physics & Calculus",
+    "university": "Addis Ababa University",
+    "category": "Tutorial",
+    "date": "2026-08-22",
+    "pinned": false,
+    "content": "Free peer-assisted tutorial workshops for General Physics (Phys 1011) and Applied Mathematics are hosted every Saturday morning at Block 54 lecture theaters.",
+    "author": "AAU Freshman Dean"
+  },
+  {
+    "id": "ann-004",
+    "title": "Jimma University: Dormitory Clearance & Cafeteria Biometric Card Distribution",
+    "university": "Jimma University",
+    "category": "Services",
+    "date": "2026-08-20",
+    "pinned": false,
+    "content": "All freshman students who have completed dormitory registration can collect their smart dining meal cards at the Student Service Center, Main Campus.",
+    "author": "Student Affairs Directorate"
+  }
+]
