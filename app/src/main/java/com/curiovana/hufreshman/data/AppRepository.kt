@@ -1230,17 +1230,26 @@ class AppRepository(private val context: Context) {
 
     fun loginUser(phone: String, secretOrKey: String = ""): LoginResult {
         val trimmedPhone = phone.trim()
-        val cleanInput = trimmedPhone.replace(Regex("[^0-9]"), "")
+        val normalizedPhone = EthiopianPhoneUtils.formatInput(trimmedPhone)
+        val cleanInput = normalizedPhone.ifBlank { trimmedPhone.replace(Regex("[^0-9]"), "") }
 
-        if (trimmedPhone.isBlank()) {
+        if (trimmedPhone.isBlank() || cleanInput.isBlank()) {
             return LoginResult.Error("Please enter your phone number.")
         }
         if (secretOrKey.isBlank()) {
             return LoginResult.Error("Please enter your account password.")
         }
 
+        // Validate Ethiopian phone number (must start with 09 or 07, exactly 10 digits)
+        if (!isAdminPhoneNumber(trimmedPhone) && !isAdminPhoneNumber(normalizedPhone)) {
+            val phoneError = EthiopianPhoneUtils.getValidationError(normalizedPhone)
+            if (phoneError != null) {
+                return LoginResult.Error(phoneError)
+            }
+        }
+
         // Check if admin phone number
-        if (isAdminPhoneNumber(trimmedPhone)) {
+        if (isAdminPhoneNumber(trimmedPhone) || isAdminPhoneNumber(normalizedPhone)) {
             // Fetch passcode from Firebase Firestore; fallback to local SharedPrefs
             var adminPasscode = prefs.getString("admin_passcode", "202642434342") ?: "202642434342"
             try {

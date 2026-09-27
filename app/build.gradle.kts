@@ -34,7 +34,7 @@ android {
         create("release") {
             val storeProp = localProperties.getProperty("RELEASE_STORE_FILE")
             val keystoreFile = when {
-                storeProp != null && rootProject.fil e(storeProp.replace("../", "")).exists() ->
+                storeProp != null && rootProject.file(storeProp.replace("../", "")).exists() ->
                     rootProject.file(storeProp.replace("../", ""))
                 file("release.keystore").exists() -> file("release.keystore")
                 rootProject.file("app/release.keystore").exists() -> rootProject.file("app/release.keystore")

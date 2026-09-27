@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.curiovana.hufreshman.data.CloudinaryUploader
+import com.curiovana.hufreshman.data.EthiopianPhoneUtils
 import com.curiovana.hufreshman.data.LoginResult
 import com.curiovana.hufreshman.data.UserProfile
 import com.curiovana.hufreshman.ui.theme.*
@@ -59,7 +60,7 @@ fun AuthScreen(
     var mode by remember { mutableStateOf(AuthMode.LOGIN) }
 
     // Login state
-    var loginPhone by remember { mutableStateOf("") }
+    var loginPhone by remember { mutableStateOf("0") }
     var loginPassword by remember { mutableStateOf("") }
     var loginPasswordVisible by remember { mutableStateOf(false) }
     var loginError by remember { mutableStateOf("") }
@@ -70,7 +71,7 @@ fun AuthScreen(
     var regName by remember { mutableStateOf("") }
     var regUniversity by remember { mutableStateOf("Haramaya University") }
     var regAcademicYear by remember { mutableStateOf("2026/2027 Freshman") }
-    var regPhone by remember { mutableStateOf("") }
+    var regPhone by remember { mutableStateOf("0") }
     var regPassword by remember { mutableStateOf("") }
     var regConfirmPassword by remember { mutableStateOf("") }
     var regPasswordVisible by remember { mutableStateOf(false) }
@@ -339,11 +340,14 @@ fun AuthScreen(
                             OutlinedTextField(
                                 value = loginPhone,
                                 onValueChange = {
-                                    loginPhone = it
+                                    loginPhone = EthiopianPhoneUtils.formatInput(it)
                                     loginError = ""
                                 },
                                 label = { Text("Phone Number") },
                                 placeholder = { Text("09... or 07...") },
+                                supportingText = {
+                                    Text("Ethiopian format: starts with 09 or 07 (10 digits)", fontSize = 11.sp, color = Slate700)
+                                },
                                 leadingIcon = {
                                     Icon(Icons.Default.Phone, contentDescription = null, tint = RoyalBlue)
                                 },
@@ -394,8 +398,9 @@ fun AuthScreen(
 
                             Button(
                                 onClick = {
-                                    if (loginPhone.isBlank()) {
-                                        loginError = "Please enter your phone number."
+                                    val phoneError = EthiopianPhoneUtils.getValidationError(loginPhone)
+                                    if (phoneError != null && !viewModel.isAdminPhoneNumber(loginPhone)) {
+                                        loginError = phoneError
                                         return@Button
                                     }
                                     if (loginPassword.isBlank()) {
@@ -611,9 +616,15 @@ fun AuthScreen(
 
                                 OutlinedTextField(
                                     value = regPhone,
-                                    onValueChange = { regPhone = it; regError = "" },
+                                    onValueChange = {
+                                        regPhone = EthiopianPhoneUtils.formatInput(it)
+                                        regError = ""
+                                    },
                                     label = { Text("Phone Number *") },
                                     placeholder = { Text("09... or 07...") },
+                                    supportingText = {
+                                        Text("Ethiopian format: starts with 09 or 07 (10 digits)", fontSize = 11.sp, color = Slate700)
+                                    },
                                     leadingIcon = { Icon(Icons.Default.Phone, contentDescription = null, tint = RoyalBlue) },
                                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                                     shape = RoundedCornerShape(14.dp),
@@ -677,8 +688,10 @@ fun AuthScreen(
 
                                 Button(
                                     onClick = {
+                                        val regPhoneError = EthiopianPhoneUtils.getValidationError(regPhone)
                                         when {
-                                            regName.isBlank() || regPhone.isBlank() -> regError = "Please enter your name and phone number."
+                                            regName.isBlank() -> regError = "Please enter your full name."
+                                            regPhoneError != null -> regError = regPhoneError
                                             regPassword.length < 6 -> regError = "Password must be at least 6 characters."
                                             regPassword != regConfirmPassword -> regError = "Passwords do not match."
                                             else -> {

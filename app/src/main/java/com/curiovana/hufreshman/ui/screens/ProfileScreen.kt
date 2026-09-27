@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.curiovana.hufreshman.data.EthiopianPhoneUtils
 import com.curiovana.hufreshman.data.ExamPracticeMode
 import com.curiovana.hufreshman.ui.theme.*
 import com.curiovana.hufreshman.viewmodel.MainViewModel
@@ -454,7 +455,11 @@ fun ProfileScreen(
         var tempName by remember { mutableStateOf(userProfile.name) }
         var tempUniv by remember { mutableStateOf(userProfile.university) }
         var tempStream by remember { mutableStateOf(userProfile.stream) }
-        var tempPhone by remember { mutableStateOf(userProfile.phoneNumber) }
+        var tempPhone by remember {
+            mutableStateOf(
+                if (userProfile.phoneNumber.isNotBlank()) EthiopianPhoneUtils.formatInput(userProfile.phoneNumber) else "0"
+            )
+        }
 
         AlertDialog(
             onDismissRequest = { showEditProfileDialog = false },
@@ -467,8 +472,12 @@ fun ProfileScreen(
                     OutlinedTextField(value = tempUniv, onValueChange = { tempUniv = it }, label = { Text("University") }, modifier = Modifier.fillMaxWidth())
                     OutlinedTextField(
                         value = tempPhone,
-                        onValueChange = { tempPhone = it },
+                        onValueChange = { tempPhone = EthiopianPhoneUtils.formatInput(it) },
                         label = { Text("Phone Number") },
+                        placeholder = { Text("09... or 07...") },
+                        supportingText = {
+                            Text("Ethiopian format: starts with 09 or 07 (10 digits)", fontSize = 11.sp, color = Slate700)
+                        },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -568,7 +577,11 @@ fun MemberRegistrationDialog(
     var name by remember { mutableStateOf(currentProfile.name) }
     var university by remember { mutableStateOf(currentProfile.university) }
     var academicYear by remember { mutableStateOf(currentProfile.academicYear) }
-    var phoneNumber by remember { mutableStateOf(currentProfile.phoneNumber) }
+    var phoneNumber by remember {
+        mutableStateOf(
+            if (currentProfile.phoneNumber.isNotBlank()) EthiopianPhoneUtils.formatInput(currentProfile.phoneNumber) else "0"
+        )
+    }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
@@ -688,11 +701,20 @@ fun MemberRegistrationDialog(
                             modifier = Modifier.fillMaxWidth(), singleLine = true
                         )
                         OutlinedTextField(
-                            value = phoneNumber, onValueChange = { phoneNumber = it; errorMessage = "" },
-                            label = { Text("Phone Number *") }, placeholder = { Text("09... or 07...") },
+                            value = phoneNumber,
+                            onValueChange = {
+                                phoneNumber = EthiopianPhoneUtils.formatInput(it)
+                                errorMessage = ""
+                            },
+                            label = { Text("Phone Number *") },
+                            placeholder = { Text("09... or 07...") },
+                            supportingText = {
+                                Text("Ethiopian format: starts with 09 or 07 (10 digits)", fontSize = 11.sp, color = Slate700)
+                            },
                             leadingIcon = { Icon(Icons.Default.Phone, contentDescription = null, tint = RoyalBlue) },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                            modifier = Modifier.fillMaxWidth(), singleLine = true,
+                            modifier = Modifier.fillMaxWidth(),
+                            singleLine = true,
                             isError = errorMessage.isNotBlank() && phoneNumber.isBlank()
                         )
                         OutlinedTextField(
@@ -732,8 +754,10 @@ fun MemberRegistrationDialog(
 
                     Button(
                         onClick = {
+                            val phoneErr = EthiopianPhoneUtils.getValidationError(phoneNumber)
                             when {
-                                name.isBlank() || phoneNumber.isBlank() -> errorMessage = "Please enter your name and phone number."
+                                name.isBlank() -> errorMessage = "Please enter your name."
+                                phoneErr != null -> errorMessage = phoneErr
                                 password.length < 6 -> errorMessage = "Password must be at least 6 characters."
                                 password != confirmPassword -> errorMessage = "Passwords do not match."
                                 else -> { errorMessage = ""; step = 2 }

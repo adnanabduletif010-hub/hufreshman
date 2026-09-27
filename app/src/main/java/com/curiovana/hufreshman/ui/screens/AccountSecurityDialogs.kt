@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.curiovana.hufreshman.data.EthiopianPhoneUtils
 import com.curiovana.hufreshman.ui.theme.*
 
 @Composable
@@ -42,7 +43,7 @@ fun LoginDialog(
     onNavigateToRegister: () -> Unit
 ) {
     val context = LocalContext.current
-    var phone by remember { mutableStateOf("") }
+    var phone by remember { mutableStateOf("0") }
     var secretOrKey by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
@@ -183,11 +184,14 @@ fun LoginDialog(
                         OutlinedTextField(
                             value = phone,
                             onValueChange = {
-                                phone = it
+                                phone = EthiopianPhoneUtils.formatInput(it)
                                 errorMessage = ""
                             },
                             label = { Text("Phone Number") },
                             placeholder = { Text("09... or 07...") },
+                            supportingText = {
+                                Text("Ethiopian format: starts with 09 or 07 (10 digits)", fontSize = 11.sp, color = Slate700)
+                            },
                             leadingIcon = {
                                 Icon(Icons.Default.Phone, contentDescription = null, tint = RoyalBlue)
                             },
@@ -279,10 +283,11 @@ fun LoginDialog(
 
                         Button(
                             onClick = {
-                                if (phone.isBlank()) {
-                                    errorMessage = "Please enter your phone number."
+                                val phoneError = EthiopianPhoneUtils.getValidationError(phone)
+                                if (phoneError != null && !isAdminPhone) {
+                                    errorMessage = phoneError
                                 } else if (secretOrKey.isBlank()) {
-                                    errorMessage = "Please enter your password."
+                                    errorMessage = if (isAdminPhone) "Please enter your administrator passcode." else "Please enter your password."
                                 } else {
                                     when (val result = onLoginSubmit(phone, secretOrKey)) {
                                         is com.curiovana.hufreshman.data.LoginResult.Success -> {
