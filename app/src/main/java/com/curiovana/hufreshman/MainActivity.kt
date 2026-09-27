@@ -370,6 +370,9 @@ class MainActivity : ComponentActivity() {
                                 onNavigateToLogin = {
                                     showRegistrationDialog = false
                                     showLoginDialog = true
+                                },
+                                onCheckPhoneRegistered = { phone ->
+                                    viewModel.isPhoneAlreadyRegistered(phone)
                                 }
                             )
                         }

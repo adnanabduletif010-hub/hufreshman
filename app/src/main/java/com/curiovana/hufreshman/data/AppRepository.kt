@@ -1166,6 +1166,58 @@ class AppRepository(private val context: Context) {
         }
     }
 
+    suspend fun isPhoneAlreadyRegistered(phone: String): Boolean = withContext(Dispatchers.IO) {
+        val normalizedPhone = EthiopianPhoneUtils.formatInput(phone)
+        val clean = normalizedPhone.ifBlank { phone.replace(Regex("[^0-9]"), "") }
+        if (clean.isBlank()) return@withContext false
+
+        // 1. Check local registrations cache
+        val localList = loadMemberRegistrations()
+        val localMatch = localList.any { reg ->
+            val regClean = cleanPhone(reg.phoneNumber)
+            regClean == clean || (regClean.length >= 9 && clean.length >= 9 && regClean.takeLast(9) == clean.takeLast(9))
+        }
+        if (localMatch) return@withContext true
+
+        // 2. Check local user profile
+        val currentProfilePhone = cleanPhone(getUserProfile().phoneNumber)
+        if (currentProfilePhone.isNotBlank() && (currentProfilePhone == clean || (currentProfilePhone.length >= 9 && clean.length >= 9 && currentProfilePhone.takeLast(9) == clean.takeLast(9)))) {
+            if (getUserProfile().hasSubmittedRegistration) return@withContext true
+        }
+
+        // 3. Check Firestore document existence
+        return@withContext try {
+            // Direct document check with clean/normalized phone
+            val doc1 = com.google.android.gms.tasks.Tasks.await(
+                firestore.collection("member_registrations").document(clean).get()
+            )
+            if (doc1 != null && doc1.exists()) return@withContext true
+
+            // 9-digit variant check (e.g. without leading 0)
+            if (clean.startsWith("0")) {
+                val shortClean = clean.substring(1)
+                val doc2 = com.google.android.gms.tasks.Tasks.await(
+                    firestore.collection("member_registrations").document(shortClean).get()
+                )
+                if (doc2 != null && doc2.exists()) return@withContext true
+            }
+
+            // Query by phoneNumber field
+            val querySnapshot = com.google.android.gms.tasks.Tasks.await(
+                firestore.collection("member_registrations")
+                    .whereEqualTo("phoneNumber", normalizedPhone)
+                    .limit(1)
+                    .get()
+            )
+            if (querySnapshot != null && !querySnapshot.isEmpty) return@withContext true
+
+            false
+        } catch (e: Exception) {
+            android.util.Log.w("AppRepository", "Error checking phone registration: ${e.localizedMessage}")
+            false
+        }
+    }
+
     suspend fun fetchMemberRegistrationsFromFirestore(): Result<List<MemberRegistration>> = withContext(Dispatchers.IO) {
         return@withContext try {
             val snapshot = com.google.android.gms.tasks.Tasks.await(

@@ -38,6 +38,7 @@ import com.curiovana.hufreshman.data.EthiopianPhoneUtils
 import com.curiovana.hufreshman.data.ExamPracticeMode
 import com.curiovana.hufreshman.ui.theme.*
 import com.curiovana.hufreshman.viewmodel.MainViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun ProfileScreen(
@@ -405,6 +406,9 @@ fun ProfileScreen(
             onNavigateToLogin = {
                 showRegistrationDialog = false
                 showLoginDialog = true
+            },
+            onCheckPhoneRegistered = { phone ->
+                viewModel.isPhoneAlreadyRegistered(phone)
             }
         )
     }
@@ -571,8 +575,11 @@ fun MemberRegistrationDialog(
     currentProfile: com.curiovana.hufreshman.data.UserProfile,
     onDismiss: () -> Unit,
     onSubmit: (name: String, university: String, academicYear: String, phone: String, password: String, paymentMethod: String, transactionId: String, screenshotUrl: String) -> Unit,
-    onNavigateToLogin: (() -> Unit)? = null
+    onNavigateToLogin: (() -> Unit)? = null,
+    onCheckPhoneRegistered: (suspend (String) -> Boolean)? = null
 ) {
+    val regScope = rememberCoroutineScope()
+    var isCheckingPhone by remember { mutableStateOf(false) }
     var step by remember { mutableIntStateOf(1) }
     var name by remember { mutableStateOf(currentProfile.name) }
     var university by remember { mutableStateOf(currentProfile.university) }
@@ -760,16 +767,48 @@ fun MemberRegistrationDialog(
                                 phoneErr != null -> errorMessage = phoneErr
                                 password.length < 6 -> errorMessage = "Password must be at least 6 characters."
                                 password != confirmPassword -> errorMessage = "Passwords do not match."
-                                else -> { errorMessage = ""; step = 2 }
+                                else -> {
+                                    errorMessage = ""
+                                    if (onCheckPhoneRegistered != null) {
+                                        isCheckingPhone = true
+                                        regScope.launch {
+                                            try {
+                                                val alreadyRegistered = onCheckPhoneRegistered(phoneNumber)
+                                                isCheckingPhone = false
+                                                if (alreadyRegistered) {
+                                                    errorMessage = "This phone number ($phoneNumber) is already registered. Please log in instead."
+                                                } else {
+                                                    step = 2
+                                                }
+                                            } catch (e: Exception) {
+                                                isCheckingPhone = false
+                                                step = 2
+                                            }
+                                        }
+                                    } else {
+                                        step = 2
+                                    }
+                                }
                             }
                         },
                         colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue),
                         shape = RoundedCornerShape(12.dp),
+                        enabled = !isCheckingPhone,
                         modifier = Modifier.fillMaxWidth().height(50.dp)
                     ) {
-                        Text("Next", fontWeight = FontWeight.Bold, fontSize = 15.sp)
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Icon(Icons.Default.ArrowForward, contentDescription = null)
+                        if (isCheckingPhone) {
+                            CircularProgressIndicator(
+                                color = Color.White,
+                                modifier = Modifier.size(20.dp),
+                                strokeWidth = 2.dp
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Verifying phone number...", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                        } else {
+                            Text("Next", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Icon(Icons.Default.ArrowForward, contentDescription = null)
+                        }
                     }
                 }
 

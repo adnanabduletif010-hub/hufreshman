@@ -334,6 +334,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun isAdminPhoneNumber(phone: String): Boolean = repository.isAdminPhoneNumber(phone)
 
+    suspend fun isPhoneAlreadyRegistered(phone: String): Boolean = repository.isPhoneAlreadyRegistered(phone)
+
     fun login(phone: String, secretOrKey: String = ""): LoginResult {
         val result = repository.loginUser(phone, secretOrKey)
         if (result is LoginResult.Success) {

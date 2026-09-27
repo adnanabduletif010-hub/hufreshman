@@ -78,6 +78,7 @@ fun AuthScreen(
     var regSelectedPaymentMethod by remember { mutableStateOf("Telebirr") }
     var regTransactionId by remember { mutableStateOf("") }
     var regError by remember { mutableStateOf("") }
+    var regCheckingPhone by remember { mutableStateOf(false) }
     // Screenshot upload state
     var regScreenshotUri by remember { mutableStateOf<Uri?>(null) }
     var regScreenshotUrl by remember { mutableStateOf("") }
@@ -696,18 +697,43 @@ fun AuthScreen(
                                             regPassword != regConfirmPassword -> regError = "Passwords do not match."
                                             else -> {
                                                 regError = ""
-                                                regStep = 2
+                                                regCheckingPhone = true
+                                                scope.launch {
+                                                    try {
+                                                        val alreadyRegistered = viewModel.isPhoneAlreadyRegistered(regPhone)
+                                                        regCheckingPhone = false
+                                                        if (alreadyRegistered) {
+                                                            regError = "This phone number ($regPhone) is already registered. Please log in instead."
+                                                        } else {
+                                                            regStep = 2
+                                                        }
+                                                    } catch (e: Exception) {
+                                                        regCheckingPhone = false
+                                                        regStep = 2
+                                                    }
+                                                }
                                             }
                                         }
                                     },
                                     colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue),
                                     shape = RoundedCornerShape(14.dp),
                                     elevation = ButtonDefaults.buttonElevation(defaultElevation = 3.dp),
+                                    enabled = !regCheckingPhone,
                                     modifier = Modifier.fillMaxWidth().height(50.dp)
                                 ) {
-                                    Text("Next Step", fontWeight = FontWeight.Bold, fontSize = 15.sp)
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = null, modifier = Modifier.size(18.dp))
+                                    if (regCheckingPhone) {
+                                        CircularProgressIndicator(
+                                            color = Color.White,
+                                            modifier = Modifier.size(20.dp),
+                                            strokeWidth = 2.dp
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Text("Verifying phone number...", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                                    } else {
+                                        Text("Next Step", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = null, modifier = Modifier.size(18.dp))
+                                    }
                                 }
                             } else {
                                 // ─── STEP 2: Send Screenshot ───
