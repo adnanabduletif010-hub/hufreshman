@@ -39,7 +39,7 @@ import com.curiovana.hufreshman.ui.theme.Slate900
 import kotlinx.coroutines.launch
 
 /**
- * Modern rectangular upload dropzone for payment receipt screenshots.
+ * Modern rectangular upload dropzone for verification screenshots.
  * Supports Android Photo Picker with automatic fallback to standard file/gallery picker.
  */
 @Composable
