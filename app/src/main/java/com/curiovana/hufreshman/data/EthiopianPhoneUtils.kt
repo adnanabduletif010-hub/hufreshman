@@ -67,10 +67,10 @@ object EthiopianPhoneUtils {
             return "Only Ethiopian phone numbers starting with 09 (Ethio Telecom) or 07 (Safaricom) are supported."
         }
         if (normalized.length < 10) {
-            return "Phone number must be 10 digits (currently ${normalized.length}/10)."
+            return "Please enter your complete phone number."
         }
         if (normalized.length > 10) {
-            return "Phone number cannot exceed 10 digits."
+            return "Please enter a valid phone number."
         }
         return null
     }

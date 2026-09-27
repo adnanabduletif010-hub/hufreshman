@@ -624,7 +624,7 @@ fun AuthScreen(
                                     label = { Text("Phone Number *") },
                                     placeholder = { Text("09... or 07...") },
                                     supportingText = {
-                                        Text("Ethiopian format: starts with 09 or 07 (10 digits)", fontSize = 11.sp, color = Slate700)
+                                        Text("Ethiopian format: starts with 09 or 07", fontSize = 11.sp, color = Slate700)
                                     },
                                     leadingIcon = { Icon(Icons.Default.Phone, contentDescription = null, tint = RoyalBlue) },
                                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),

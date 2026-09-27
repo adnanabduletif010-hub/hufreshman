@@ -252,7 +252,7 @@ fun LoginDialog(
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
-                                text = "Register →",
+                                text = "Create →",
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = RoyalBlue,
