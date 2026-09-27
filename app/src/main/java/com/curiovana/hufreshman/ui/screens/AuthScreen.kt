@@ -738,13 +738,13 @@ fun AuthScreen(
                             } else {
                                 // ─── STEP 2: Send Screenshot ───
                                 Text(
-                                    text = "Please complete your membership payment, then send your screenshot below for verification.",
+                                    text = "እባክዎ የአባልነት ክፍያዎን ከፈጸሙ በኋላ፣ የተላከበትን ስክሪንሾት ከታች ይላኩ።",
                                     fontSize = 12.sp,
                                     color = Slate700,
                                     lineHeight = 17.sp
                                 )
 
-                                // Payment info card
+                                // Account info card
                                 Card(
                                     shape = RoundedCornerShape(18.dp),
                                     colors = CardDefaults.cardColors(containerColor = Color(0xFFF0F7FF)),
@@ -801,7 +801,7 @@ fun AuthScreen(
 
                                 // ─── Screenshot Upload Section (Rectangular Zone) ───
                                 Text(
-                                    text = "Send your screenshot below:",
+                                    text = "የተላከበትን ስክሪንሾት ከታች ያስገቡ (Send Screenshot):",
                                     fontSize = 13.sp,
                                     fontWeight = FontWeight.SemiBold,
                                     color = Slate900

@@ -157,7 +157,7 @@ fun WaitingApprovalScreen(
                 InfoRow(label = "University", value = userProfile.university)
                 InfoRow(label = "Academic Year", value = userProfile.academicYear)
                 InfoRow(label = "Phone Number", value = userProfile.phoneNumber.ifBlank { "Not provided" })
-                InfoRow(label = "Payment Method", value = userProfile.paymentMethod.ifBlank { "Telebirr" })
+                InfoRow(label = "የተላከበት መንገድ (Channel)", value = userProfile.paymentMethod.ifBlank { "Telebirr" })
 
                 Spacer(modifier = Modifier.height(6.dp))
 
@@ -247,7 +247,7 @@ fun WaitingApprovalScreen(
                     Icon(Icons.Default.HourglassTop, contentDescription = null, tint = AmberWarning, modifier = Modifier.size(15.dp).padding(top = 1.dp))
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
-                        text = "Your payment is under review.",
+                        text = "ማረጋገጫው በግምገማ ላይ ነው (Under Review).",
                         fontSize = 12.sp, lineHeight = 17.sp, color = Slate800, fontWeight = FontWeight.SemiBold
                     )
                 }

@@ -819,7 +819,7 @@ fun MemberRegistrationDialog(
                         verticalArrangement = Arrangement.spacedBy(14.dp)
                     ) {
                         Text(
-                            "To verify membership, please provide a transaction reference from any official account below. This reference is for membership enrollment verification.",
+                            "እባክዎ የአባልነት ክፍያዎን ከፈጸሙ በኋላ፣ የተላከበትን ስክሪንሾት ከታች ይላኩ።",
                             fontSize = 12.sp, color = Slate700, lineHeight = 17.sp
                         )
 
@@ -865,7 +865,7 @@ fun MemberRegistrationDialog(
                             }
                         }
 
-                        Text("Which channel did you pay with?", fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
+                        Text("የተጠቀሙበት መንገድ (የላኩበት):", fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             paymentMethods.forEach { method ->
                                 FilterChip(
@@ -882,7 +882,7 @@ fun MemberRegistrationDialog(
 
                         // ─── Screenshot Upload Dropzone ───
                         Text(
-                            text = "Send your screenshot below:",
+                            text = "የተላከበትን ስክሪንሾት ከታች ያስገቡ (Send Screenshot):",
                             fontSize = 13.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = Slate900

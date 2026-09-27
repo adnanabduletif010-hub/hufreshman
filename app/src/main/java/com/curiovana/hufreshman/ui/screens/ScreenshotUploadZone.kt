@@ -151,7 +151,7 @@ fun ScreenshotUploadZone(
                 val imageModel = screenshotUri ?: screenshotUrl
                 AsyncImage(
                     model = imageModel,
-                    contentDescription = "Uploaded payment screenshot",
+                    contentDescription = "Uploaded screenshot",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
@@ -245,14 +245,14 @@ fun ScreenshotUploadZone(
                     }
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
-                        text = "Upload Payment Screenshot",
+                        text = "የተላከበትን ስክሪንሾት ይጫኑ (Upload Screenshot)",
                         fontWeight = FontWeight.Bold,
                         fontSize = 14.5.sp,
                         color = Slate900
                     )
                     Spacer(modifier = Modifier.height(3.dp))
                     Text(
-                        text = "Tap to choose image from your phone",
+                        text = "ስክሪንሾቱን ከስልክዎ ለመምረጥ እዚህ ይጫኑ",
                         fontSize = 11.5.sp,
                         color = Slate700
                     )

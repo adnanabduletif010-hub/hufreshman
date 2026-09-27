@@ -1,4 +1,4 @@
-﻿package com.curiovana.hufreshman.ui.screens
+package com.curiovana.hufreshman.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing
@@ -554,7 +554,7 @@ fun UserCard(reg: MemberRegistration, context: Context) {
                     Text(reg.phoneNumber, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
                 }
                 Column(modifier = Modifier.weight(1f)) {
-                    Text("Payment", fontSize = 10.sp, color = Slate700)
+                    Text("Channel", fontSize = 10.sp, color = Slate700)
                     Text(reg.paymentMethod.ifBlank { "—" }, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = RoyalBlue)
                 }
             }
@@ -1229,7 +1229,7 @@ fun MemberApprovalsTab(
                             // Screenshot viewer
                             if (reg.screenshotUrl.isNotEmpty()) {
                                 Text(
-                                    "Payment Screenshot:",
+                                    "Screenshot:",
                                     fontSize = 11.sp,
                                     fontWeight = FontWeight.SemiBold,
                                     color = Slate700
@@ -1247,7 +1247,7 @@ fun MemberApprovalsTab(
                                 ) {
                                     AsyncImage(
                                         model = reg.screenshotUrl,
-                                        contentDescription = "Payment screenshot",
+                                        contentDescription = "Screenshot",
                                         contentScale = ContentScale.FillWidth,
                                         modifier = Modifier.fillMaxWidth()
                                     )
