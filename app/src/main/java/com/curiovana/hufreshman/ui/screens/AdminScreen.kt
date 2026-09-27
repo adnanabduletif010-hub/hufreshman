@@ -1,4 +1,4 @@
-package com.curiovana.hufreshman.ui.screens
+﻿package com.curiovana.hufreshman.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing
@@ -13,6 +13,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -38,6 +39,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -153,6 +155,7 @@ fun AdminScreen(viewModel: MainViewModel) {
         val registrations by viewModel.memberRegistrations.collectAsState()
         val isSyncing by viewModel.isSyncing.collectAsState()
         val syncStatusMessage by viewModel.syncStatusMessage.collectAsState()
+        val sourcedQuestions by viewModel.sourcedQuestions.collectAsState()
         val pendingRegistrations = registrations.filter { !it.isApproved }
         var selectedAdminTab by remember { mutableIntStateOf(0) }
         var universityToEdit by remember { mutableStateOf<com.curiovana.hufreshman.data.UniversityGuide?>(null) }
@@ -162,7 +165,9 @@ fun AdminScreen(viewModel: MainViewModel) {
             "Add Question",
             "Edit Universities",
             "Post Notice",
-            "Reports (${reports.size})"
+            "Reports (${reports.size})",
+            "HWU & Other Unis",
+            "Settings"
         )
 
         Column(
@@ -320,6 +325,8 @@ fun AdminScreen(viewModel: MainViewModel) {
                 )
                 4 -> CreateOfficialPostTab(viewModel = viewModel)
                 5 -> ReportsTab(reports = reports, onResolve = { viewModel.resolveReport(it) })
+                6 -> SourcedQBankTab(sourcedQuestions = sourcedQuestions)
+                7 -> AdminSettingsTab(viewModel = viewModel)
             }
         }
 
@@ -1062,7 +1069,7 @@ fun MemberApprovalsTab(
     var selectedFilter by remember { mutableStateOf("Pending") }
     var searchQuery by remember { mutableStateOf("") }
     var rejectingReg by remember { mutableStateOf<MemberRegistration?>(null) }
-    var rejectReason by remember { mutableStateOf("Transaction number could not be found on official bank/Telebirr statement.") }
+    var rejectReason by remember { mutableStateOf("Screenshot / confirmation could not be verified.") }
 
     val pending = registrations.filter { !it.isApproved && it.rejectionReason == null }
     val approved = registrations.filter { it.isApproved }
@@ -1093,8 +1100,8 @@ fun MemberApprovalsTab(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text("Member Transaction Approvals", fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
-                Text("Verify Telebirr / CBE / E-Birr transactions", fontSize = 11.sp, color = Slate700)
+                Text("Member Verification Approvals", fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
+                Text("Verify member screenshots & verification details", fontSize = 11.sp, color = Slate700)
             }
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 FilledTonalButton(
@@ -1145,7 +1152,7 @@ fun MemberApprovalsTab(
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { searchQuery = it },
-            placeholder = { Text("Search by name, phone, or txn ID...") },
+            placeholder = { Text("Search by name, phone, or screenshot...") },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = RoyalBlue) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
@@ -1158,7 +1165,7 @@ fun MemberApprovalsTab(
                     Icon(Icons.Default.DoneAll, contentDescription = null, tint = EmeraldGreen, modifier = Modifier.size(48.dp))
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        if (selectedFilter == "Pending") "No pending transactions!" else "No registrations found",
+                        if (selectedFilter == "Pending") "No pending approvals!" else "No registrations found",
                         fontWeight = FontWeight.Bold, fontSize = 14.sp
                     )
                     Text("All student registrations have been reviewed.", fontSize = 12.sp, color = Slate700)
@@ -1219,33 +1226,67 @@ fun MemberApprovalsTab(
 
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            Surface(
-                                shape = RoundedCornerShape(8.dp),
-                                color = Color(0xFFF1F5F9),
-                                border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFCBD5E1)),
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Row(
+                            // Screenshot viewer
+                            if (reg.screenshotUrl.isNotEmpty()) {
+                                Text(
+                                    "Payment Screenshot:",
+                                    fontSize = 11.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = Slate700
+                                )
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Card(
+                                    shape = RoundedCornerShape(10.dp),
+                                    elevation = CardDefaults.cardElevation(2.dp),
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(horizontal = 10.dp, vertical = 6.dp),
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically
+                                        .clickable {
+                                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(reg.screenshotUrl))
+                                            context.startActivity(intent)
+                                        }
                                 ) {
-                                    Column {
-                                        Text("Transaction ID:", fontSize = 10.sp, color = Slate700)
-                                        Text(reg.transactionId, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace, fontSize = 13.sp, color = RoyalBlueDark)
-                                    }
-                                    IconButton(
-                                        onClick = {
-                                            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                                            val clip = ClipData.newPlainText("Transaction ID", reg.transactionId)
-                                            clipboard.setPrimaryClip(clip)
-                                            Toast.makeText(context, "Copied Txn ID!", Toast.LENGTH_SHORT).show()
-                                        },
-                                        modifier = Modifier.size(28.dp)
+                                    AsyncImage(
+                                        model = reg.screenshotUrl,
+                                        contentDescription = "Payment screenshot",
+                                        contentScale = ContentScale.FillWidth,
+                                        modifier = Modifier.fillMaxWidth()
+                                    )
+                                }
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(
+                                    "Tap image to open full size",
+                                    fontSize = 10.sp,
+                                    color = RoyalBlue
+                                )
+                            } else if (reg.transactionId.isNotBlank()) {
+                                Surface(
+                                    shape = RoundedCornerShape(8.dp),
+                                    color = Color(0xFFF1F5F9),
+                                    border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFCBD5E1)),
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(horizontal = 10.dp, vertical = 6.dp),
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically
                                     ) {
-                                        Icon(Icons.Default.ContentCopy, contentDescription = "Copy", tint = Slate700, modifier = Modifier.size(15.dp))
+                                        Column {
+                                            Text("Screenshot / Reference:", fontSize = 10.sp, color = Slate700)
+                                            Text(reg.transactionId, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace, fontSize = 13.sp, color = RoyalBlueDark)
+                                        }
+                                        IconButton(
+                                            onClick = {
+                                                val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                                                val clip = ClipData.newPlainText("Screenshot Reference", reg.transactionId)
+                                                clipboard.setPrimaryClip(clip)
+                                                Toast.makeText(context, "Copied Reference!", Toast.LENGTH_SHORT).show()
+                                            },
+                                            modifier = Modifier.size(28.dp)
+                                        ) {
+                                            Icon(Icons.Default.ContentCopy, contentDescription = "Copy", tint = Slate700, modifier = Modifier.size(15.dp))
+                                        }
                                     }
                                 }
                             }
@@ -1323,5 +1364,329 @@ fun MemberApprovalsTab(
                 TextButton(onClick = { rejectingReg = null }) { Text("Cancel") }
             }
         )
+    }
+}
+
+// ── Admin Settings Tab ──────────────────────────────────────────────────────
+
+@Composable
+fun AdminSettingsTab(viewModel: MainViewModel) {
+    val context = LocalContext.current
+    var newPasscode by remember { mutableStateOf("") }
+    var confirmPasscode by remember { mutableStateOf("") }
+    var isUpdating by remember { mutableStateOf(false) }
+    var resultMessage by remember { mutableStateOf<Pair<Boolean, String>?>(null) }
+    var passcodeVisible by remember { mutableStateOf(false) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        Text("Admin Settings", fontWeight = FontWeight.ExtraBold, fontSize = 20.sp)
+
+        Card(
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Box(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .background(RoyalBlue.copy(alpha = 0.12f), RoundedCornerShape(10.dp)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(Icons.Default.VpnKey, contentDescription = null, tint = RoyalBlue, modifier = Modifier.size(22.dp))
+                    }
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Column {
+                        Text("Admin Passcode", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                        Text(
+                            "Stored securely in Firebase. Synced across all admin devices.",
+                            fontSize = 11.sp, color = Slate700, lineHeight = 15.sp
+                        )
+                    }
+                }
+
+                HorizontalDivider(color = Slate700.copy(alpha = 0.1f))
+
+                Surface(
+                    shape = RoundedCornerShape(10.dp),
+                    color = RoyalBlue.copy(alpha = 0.06f),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Row(modifier = Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Default.Info, contentDescription = null, tint = RoyalBlue, modifier = Modifier.size(16.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "The passcode is fetched from Firebase on each login. Changing it here updates all devices instantly.",
+                            fontSize = 11.sp, color = Slate800, lineHeight = 15.sp
+                        )
+                    }
+                }
+
+                androidx.compose.material3.OutlinedTextField(
+                    value = newPasscode,
+                    onValueChange = { newPasscode = it; resultMessage = null },
+                    label = { Text("New Passcode") },
+                    placeholder = { Text("Enter new passcode") },
+                    leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null, tint = RoyalBlue) },
+                    visualTransformation = if (passcodeVisible) androidx.compose.ui.text.input.VisualTransformation.None else androidx.compose.ui.text.input.PasswordVisualTransformation(),
+                    trailingIcon = {
+                        IconButton(onClick = { passcodeVisible = !passcodeVisible }) {
+                            Icon(
+                                if (passcodeVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                                contentDescription = null
+                            )
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+
+                androidx.compose.material3.OutlinedTextField(
+                    value = confirmPasscode,
+                    onValueChange = { confirmPasscode = it; resultMessage = null },
+                    label = { Text("Confirm Passcode") },
+                    placeholder = { Text("Re-enter passcode") },
+                    leadingIcon = { Icon(Icons.Default.LockOpen, contentDescription = null, tint = RoyalBlue) },
+                    visualTransformation = if (passcodeVisible) androidx.compose.ui.text.input.VisualTransformation.None else androidx.compose.ui.text.input.PasswordVisualTransformation(),
+                    isError = confirmPasscode.isNotBlank() && confirmPasscode != newPasscode,
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+
+                resultMessage?.let { (success, msg) ->
+                    Surface(
+                        color = if (success) EmeraldGreen.copy(alpha = 0.1f) else RoseRed.copy(alpha = 0.1f),
+                        shape = RoundedCornerShape(8.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Row(modifier = Modifier.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                if (success) Icons.Default.CheckCircle else Icons.Default.Error,
+                                contentDescription = null,
+                                tint = if (success) EmeraldGreen else RoseRed,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(msg, fontSize = 12.sp, color = if (success) EmeraldGreen else RoseRed, fontWeight = FontWeight.Medium)
+                        }
+                    }
+                }
+
+                Button(
+                    onClick = {
+                        when {
+                            newPasscode.length < 6 -> {
+                                resultMessage = false to "Passcode must be at least 6 characters."
+                            }
+                            newPasscode != confirmPasscode -> {
+                                resultMessage = false to "Passcodes do not match."
+                            }
+                            else -> {
+                                isUpdating = true
+                                viewModel.updateAdminPasscode(newPasscode) { success, msg ->
+                                    isUpdating = false
+                                    resultMessage = success to msg
+                                    if (success) {
+                                        newPasscode = ""
+                                        confirmPasscode = ""
+                                        Toast.makeText(context, "Passcode updated in Firebase!", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    enabled = !isUpdating,
+                    colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue),
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.fillMaxWidth().height(48.dp)
+                ) {
+                    if (isUpdating) {
+                        CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Color.White, strokeWidth = 2.dp)
+                        Spacer(modifier = Modifier.width(8.dp))
+                    } else {
+                        Icon(Icons.Default.Save, contentDescription = null)
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
+                    Text(if (isUpdating) "Updating..." else "Update Passcode in Firebase", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                }
+            }
+        }
+    }
+}
+
+// ── Source Q-Bank Tab (Admin Only) ──────────────────────────────────────────
+// Shows questions sourced from non-Haramaya universities, grouped by institution.
+// These questions are COMPLETELY HIDDEN from regular students.
+
+@Composable
+fun SourcedQBankTab(sourcedQuestions: Map<String, List<com.curiovana.hufreshman.data.ExamQuestion>>) {
+    val expandedUniversity = remember { mutableStateOf<String?>(null) }
+    val expandedQuestion = remember { mutableStateOf<String?>(null) }
+
+    val universityColors = mapOf(
+        "Hawassa University" to Color(0xFF0077B6),
+        "Addis Ababa University" to Color(0xFFD62828),
+        "Jimma University" to Color(0xFF6A0572),
+        "Arba Minch University" to Color(0xFF1B4332),
+        "Bahir Dar University" to Color(0xFFE85D04),
+        "ASTU" to Color(0xFF003049),
+        "AASTU" to Color(0xFF780000)
+    )
+
+    if (sourcedQuestions.isEmpty()) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Icon(Icons.Default.School, contentDescription = null, modifier = Modifier.size(56.dp), tint = Slate700)
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("No sourced questions found.", fontWeight = FontWeight.Bold, color = Slate700)
+                Text("Questions from other universities will appear here.", fontSize = 12.sp, color = Slate700, textAlign = TextAlign.Center)
+            }
+        }
+        return
+    }
+
+    LazyColumn(
+        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(vertical = 16.dp)
+    ) {
+        item {
+            Card(
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFFFFF3CD)),
+                border = androidx.compose.foundation.BorderStroke(1.dp, AmberWarning.copy(alpha = 0.5f)),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Row(modifier = Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Default.AdminPanelSettings, contentDescription = null, tint = AmberWarning, modifier = Modifier.size(28.dp))
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Column {
+                        Text("Admin-Only HWU & Sourced Question Bank", fontWeight = FontWeight.ExtraBold, fontSize = 14.sp, color = Color(0xFF856404))
+                        Text(
+                            "Hawassa University (HWU) & other non-HU questions — 100% separated and invisible to regular students",
+                            fontSize = 11.sp, color = Color(0xFF856404)
+                        )
+                    }
+                }
+            }
+        }
+
+        sourcedQuestions.entries.sortedByDescending { it.value.size }.forEach { (uniName, questions) ->
+            val uniColor = universityColors[uniName] ?: RoyalBlue
+            val isExpanded = expandedUniversity.value == uniName
+
+            item(key = uniName) {
+                Card(
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
+                    modifier = Modifier.fillMaxWidth().clickable {
+                        expandedUniversity.value = if (isExpanded) null else uniName
+                        expandedQuestion.value = null
+                    }
+                ) {
+                    Column {
+                        Row(
+                            modifier = Modifier.fillMaxWidth().background(uniColor.copy(alpha = 0.08f)).padding(16.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Box(
+                                modifier = Modifier.size(44.dp).background(uniColor, RoundedCornerShape(12.dp)),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(uniName.take(3).uppercase(), color = Color.White, fontWeight = FontWeight.ExtraBold, fontSize = 12.sp)
+                            }
+                            Spacer(modifier = Modifier.width(12.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(uniName, fontWeight = FontWeight.Bold, fontSize = 15.sp, color = MaterialTheme.colorScheme.onSurface)
+                                val courses = questions.map { it.course }.distinct()
+                                Text("${questions.size} questions • ${courses.size} course${if (courses.size > 1) "s" else ""}", fontSize = 11.sp, color = Slate700)
+                                Text(courses.joinToString(", "), fontSize = 10.sp, color = Slate700, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                            }
+                            Icon(if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore, contentDescription = null, tint = uniColor)
+                        }
+
+                        if (isExpanded) {
+                            HorizontalDivider(color = uniColor.copy(alpha = 0.2f))
+                            questions.forEachIndexed { idx, q ->
+                                val isQExpanded = expandedQuestion.value == q.id
+                                Column(
+                                    modifier = Modifier.fillMaxWidth()
+                                        .clickable { expandedQuestion.value = if (isQExpanded) null else q.id }
+                                        .padding(horizontal = 16.dp, vertical = 10.dp)
+                                ) {
+                                    Row(verticalAlignment = Alignment.Top) {
+                                        Box(
+                                            modifier = Modifier.size(24.dp).background(uniColor.copy(alpha = 0.12f), CircleShape),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Text("${idx + 1}", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = uniColor)
+                                        }
+                                        Spacer(modifier = Modifier.width(10.dp))
+                                        Column(modifier = Modifier.weight(1f)) {
+                                            Row {
+                                                val isMid = q.category.contains("Mid", ignoreCase = true)
+                                                Box(
+                                                    modifier = Modifier.background(
+                                                        if (isMid) EmeraldGreen.copy(alpha = 0.12f) else RoyalBlue.copy(alpha = 0.12f),
+                                                        RoundedCornerShape(4.dp)
+                                                    ).padding(horizontal = 5.dp, vertical = 2.dp)
+                                                ) {
+                                                    Text(if (isMid) "Mid" else "Final", fontSize = 9.sp, fontWeight = FontWeight.Bold, color = if (isMid) EmeraldGreen else RoyalBlue)
+                                                }
+                                                Spacer(modifier = Modifier.width(4.dp))
+                                                Text(q.year, fontSize = 9.sp, color = Slate700)
+                                                Spacer(modifier = Modifier.width(4.dp))
+                                                Text(q.course, fontSize = 9.sp, color = Slate700, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f))
+                                            }
+                                            Spacer(modifier = Modifier.height(4.dp))
+                                            Text(
+                                                q.question, fontSize = 12.sp, fontWeight = FontWeight.Medium,
+                                                color = MaterialTheme.colorScheme.onSurface,
+                                                maxLines = if (isQExpanded) Int.MAX_VALUE else 2,
+                                                overflow = if (isQExpanded) TextOverflow.Visible else TextOverflow.Ellipsis
+                                            )
+                                            if (isQExpanded) {
+                                                Spacer(modifier = Modifier.height(8.dp))
+                                                q.options.forEachIndexed { optIdx, opt ->
+                                                    Row(modifier = Modifier.padding(vertical = 2.dp), verticalAlignment = Alignment.Top) {
+                                                        val isCorrect = optIdx == q.answer
+                                                        Box(
+                                                            modifier = Modifier.size(18.dp).background(
+                                                                if (isCorrect) EmeraldGreen else MaterialTheme.colorScheme.surfaceVariant, CircleShape
+                                                            ),
+                                                            contentAlignment = Alignment.Center
+                                                        ) {
+                                                            Text(('A' + optIdx).toString(), fontSize = 8.sp, fontWeight = FontWeight.Bold, color = if (isCorrect) Color.White else Slate700)
+                                                        }
+                                                        Spacer(modifier = Modifier.width(6.dp))
+                                                        Text(opt, fontSize = 11.sp, color = if (isCorrect) EmeraldGreen else MaterialTheme.colorScheme.onSurface, fontWeight = if (isCorrect) FontWeight.Bold else FontWeight.Normal)
+                                                    }
+                                                }
+                                                Spacer(modifier = Modifier.height(6.dp))
+                                                Surface(shape = RoundedCornerShape(8.dp), color = EmeraldGreen.copy(alpha = 0.07f), modifier = Modifier.fillMaxWidth()) {
+                                                    Text("💡 ${q.explanation}", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.padding(10.dp), lineHeight = 15.sp)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                if (idx < questions.lastIndex) {
+                                    HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

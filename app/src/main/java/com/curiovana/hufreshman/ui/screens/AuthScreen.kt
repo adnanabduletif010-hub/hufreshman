@@ -3,15 +3,17 @@ package com.curiovana.hufreshman.ui.screens
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -26,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -34,11 +37,13 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.curiovana.hufreshman.data.AppRepository
+import coil.compose.AsyncImage
+import com.curiovana.hufreshman.data.CloudinaryUploader
 import com.curiovana.hufreshman.data.LoginResult
 import com.curiovana.hufreshman.data.UserProfile
 import com.curiovana.hufreshman.ui.theme.*
 import com.curiovana.hufreshman.viewmodel.MainViewModel
+import kotlinx.coroutines.launch
 
 enum class AuthMode {
     LOGIN,
@@ -47,7 +52,7 @@ enum class AuthMode {
 
 @Composable
 fun AuthScreen(
-    userProfile: UserProfile,
+    userProfile:   UserProfile,
     viewModel: MainViewModel
 ) {
     val context = LocalContext.current
@@ -60,6 +65,7 @@ fun AuthScreen(
     var loginError by remember { mutableStateOf("") }
 
     // Register state
+    val scope = rememberCoroutineScope()
     var regStep by remember { mutableIntStateOf(1) }
     var regName by remember { mutableStateOf("") }
     var regUniversity by remember { mutableStateOf("Haramaya University") }
@@ -71,12 +77,11 @@ fun AuthScreen(
     var regSelectedPaymentMethod by remember { mutableStateOf("Telebirr") }
     var regTransactionId by remember { mutableStateOf("") }
     var regError by remember { mutableStateOf("") }
+    // Screenshot upload state
+    var regScreenshotUri by remember { mutableStateOf<Uri?>(null) }
+    var regScreenshotUrl by remember { mutableStateOf("") }
+    var regUploading by remember { mutableStateOf(false) }
 
-    val cleanPhone = loginPhone.replace(Regex("[^0-9]"), "")
-    val isAdminPhone = AppRepository.ADMIN_PHONE_NUMBERS.any { adminNum ->
-        val cleanAdmin = adminNum.replace(Regex("[^0-9]"), "")
-        cleanPhone == cleanAdmin || (cleanPhone.length >= 9 && cleanPhone.endsWith(cleanAdmin.takeLast(9)))
-    }
 
     Box(
         modifier = Modifier
@@ -94,69 +99,92 @@ fun AuthScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .imePadding()
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 20.dp, vertical = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(10.dp))
 
-            // App Brand Header
+            // App Brand Header — beautiful gradient card
             Box(
                 modifier = Modifier
-                    .size(68.dp)
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(26.dp))
                     .background(
-                        Brush.linearGradient(listOf(RoyalBlue, RoyalBlueDark)),
-                        shape = RoundedCornerShape(18.dp)
-                    ),
+                        Brush.linearGradient(listOf(Color(0xFF003EC4), RoyalBlue, ElectricIndigo))
+                    )
+                    .border(1.dp, Color.White.copy(alpha = 0.2f), RoundedCornerShape(26.dp))
+                    .padding(vertical = 26.dp, horizontal = 22.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    Icons.Default.School,
-                    contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier.size(38.dp)
-                )
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Box(
+                        modifier = Modifier
+                            .size(66.dp)
+                            .background(
+                                Color.White.copy(alpha = 0.18f),
+                                shape = RoundedCornerShape(20.dp)
+                            )
+                            .border(1.dp, Color.White.copy(alpha = 0.35f), RoundedCornerShape(20.dp)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            Icons.Default.School,
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier.size(38.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(
+                        text = "HU Freshman",
+                        fontWeight = FontWeight.Black,
+                        fontSize = 26.sp,
+                        letterSpacing = (-0.5).sp,
+                        color = Color.White
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "Ethiopian University Exam & Academic Hub",
+                        fontSize = 12.sp,
+                        color = Color.White.copy(alpha = 0.85f),
+                        fontWeight = FontWeight.Medium,
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Text(
-                text = "HU Freshman",
-                fontWeight = FontWeight.Black,
-                fontSize = 24.sp,
-                color = Slate900
-            )
-
-            Text(
-                text = "Ethiopian University Exam & Academic Hub",
-                fontSize = 12.sp,
-                color = Slate700,
-                fontWeight = FontWeight.Medium
-            )
 
             Spacer(modifier = Modifier.height(14.dp))
 
             // Access Gate Notice Banner
             Surface(
-                shape = RoundedCornerShape(12.dp),
-                color = AmberWarning.copy(alpha = 0.12f),
-                border = androidx.compose.foundation.BorderStroke(1.dp, AmberWarning.copy(alpha = 0.35f)),
+                shape = RoundedCornerShape(16.dp),
+                color = Color(0xFFFFFBEB),
+                border = androidx.compose.foundation.BorderStroke(1.dp, AmberWarning.copy(alpha = 0.3f)),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Row(
-                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        Icons.Default.Lock,
-                        contentDescription = null,
-                        tint = AmberWarning,
-                        modifier = Modifier.size(18.dp)
-                    )
-                    Spacer(modifier = Modifier.width(10.dp))
+                    Box(
+                        modifier = Modifier
+                            .size(30.dp)
+                            .background(AmberWarning.copy(alpha = 0.15f), RoundedCornerShape(8.dp)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            Icons.Default.Lock,
+                            contentDescription = null,
+                            tint = AmberWarning,
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(12.dp))
                     Text(
                         text = "Member access is required. Please log in or register to use the app.",
-                        fontSize = 11.sp,
+                        fontSize = 11.5.sp,
                         lineHeight = 15.sp,
                         color = Slate800,
                         fontWeight = FontWeight.Medium
@@ -166,11 +194,12 @@ fun AuthScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Mode Selector (Log In / Create Account)
+            // Mode Selector (Log In / Create Account) — sleek segmented pill
             Surface(
-                shape = RoundedCornerShape(14.dp),
-                color = Slate700.copy(alpha = 0.08f),
-                modifier = Modifier.fillMaxWidth().height(46.dp)
+                shape = RoundedCornerShape(50),
+                color = Color(0xFFF1F5F9),
+                border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFE2E8F0)),
+                modifier = Modifier.fillMaxWidth().height(48.dp)
             ) {
                 Row(
                     modifier = Modifier.fillMaxSize().padding(4.dp),
@@ -181,8 +210,11 @@ fun AuthScreen(
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxHeight()
-                            .clip(RoundedCornerShape(10.dp))
-                            .background(if (mode == AuthMode.LOGIN) RoyalBlue else Color.Transparent)
+                            .clip(RoundedCornerShape(50))
+                            .background(
+                                if (mode == AuthMode.LOGIN) Brush.linearGradient(listOf(RoyalBlue, ElectricIndigo))
+                                else Brush.linearGradient(listOf(Color.Transparent, Color.Transparent))
+                            )
                             .clickable {
                                 mode = AuthMode.LOGIN
                                 loginError = ""
@@ -202,8 +234,11 @@ fun AuthScreen(
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxHeight()
-                            .clip(RoundedCornerShape(10.dp))
-                            .background(if (mode == AuthMode.REGISTER) RoyalBlue else Color.Transparent)
+                            .clip(RoundedCornerShape(50))
+                            .background(
+                                if (mode == AuthMode.REGISTER) Brush.linearGradient(listOf(RoyalBlue, ElectricIndigo))
+                                else Brush.linearGradient(listOf(Color.Transparent, Color.Transparent))
+                            )
                             .clickable {
                                 mode = AuthMode.REGISTER
                                 regError = ""
@@ -233,54 +268,71 @@ fun AuthScreen(
                     // ══ LOG IN FORM ══
                     // ═════════════════════════════════════════
                     Card(
-                        shape = RoundedCornerShape(18.dp),
+                        shape = RoundedCornerShape(24.dp),
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFE2E8F0)),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Column(
-                            modifier = Modifier.padding(20.dp),
-                            verticalArrangement = Arrangement.spacedBy(14.dp)
+                            modifier = Modifier.padding(22.dp),
+                            verticalArrangement = Arrangement.spacedBy(15.dp)
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(
-                                    if (isAdminPhone) Icons.Default.AdminPanelSettings else Icons.Default.Login,
-                                    contentDescription = null,
-                                    tint = RoyalBlue,
-                                    modifier = Modifier.size(22.dp)
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(
-                                    text = if (isAdminPhone) "Admin Login" else "Welcome Back",
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 16.sp,
-                                    color = Slate900
-                                )
+                                Box(
+                                    modifier = Modifier
+                                        .size(38.dp)
+                                        .background(RoyalBlue.copy(alpha = 0.1f), RoundedCornerShape(10.dp)),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(
+                                        Icons.Default.Login,
+                                        contentDescription = null,
+                                        tint = RoyalBlue,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                }
+                                Spacer(modifier = Modifier.width(12.dp))
+                                Column {
+                                    Text(
+                                        text = "Welcome Back",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 17.sp,
+                                        color = Slate900
+                                    )
+                                    Text(
+                                        text = "Sign in to access your student hub",
+                                        fontSize = 12.sp,
+                                        color = Slate700
+                                    )
+                                }
                             }
-
-                            Text(
-                                text = if (isAdminPhone) {
-                                    "Administrator phone recognized. Enter your administrator passcode:"
-                                } else {
-                                    "Enter your registered phone number and password to log in:"
-                                },
-                                fontSize = 12.sp,
-                                color = Slate700
-                            )
 
                             if (loginError.isNotBlank()) {
                                 Surface(
-                                    color = RoseRed.copy(alpha = 0.1f),
-                                    shape = RoundedCornerShape(8.dp),
+                                    color = RoseRed.copy(alpha = 0.08f),
+                                    shape = RoundedCornerShape(12.dp),
+                                    border = androidx.compose.foundation.BorderStroke(1.dp, RoseRed.copy(alpha = 0.25f)),
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
-                                    Text(
-                                        text = loginError,
-                                        color = RoseRed,
-                                        fontSize = 12.sp,
-                                        fontWeight = FontWeight.Medium,
-                                        modifier = Modifier.padding(10.dp)
-                                    )
+                                    Row(
+                                        modifier = Modifier.padding(12.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Icon(
+                                            Icons.Default.ErrorOutline,
+                                            contentDescription = null,
+                                            tint = RoseRed,
+                                            modifier = Modifier.size(18.dp)
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Text(
+                                            text = loginError,
+                                            color = RoseRed,
+                                            fontSize = 12.5.sp,
+                                            fontWeight = FontWeight.Medium
+                                        )
+                                    }
                                 }
                             }
 
@@ -296,53 +348,49 @@ fun AuthScreen(
                                     Icon(Icons.Default.Phone, contentDescription = null, tint = RoyalBlue)
                                 },
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                                shape = RoundedCornerShape(14.dp),
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    focusedContainerColor = Color(0xFFF8FAFC),
+                                    unfocusedContainerColor = Color(0xFFF8FAFC),
+                                    focusedBorderColor = RoyalBlue,
+                                    unfocusedBorderColor = Color(0xFFCBD5E1)
+                                ),
                                 modifier = Modifier.fillMaxWidth(),
                                 singleLine = true
                             )
 
-                            if (isAdminPhone) {
-                                OutlinedTextField(
-                                    value = loginPassword,
-                                    onValueChange = {
-                                        loginPassword = it
-                                        loginError = ""
-                                    },
-                                    label = { Text("Admin Passcode") },
-                                    placeholder = { Text("Enter passcode") },
-                                    leadingIcon = {
-                                        Icon(Icons.Default.VpnKey, contentDescription = null, tint = RoyalBlue)
-                                    },
-                                    visualTransformation = PasswordVisualTransformation(),
-                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
-                                    modifier = Modifier.fillMaxWidth(),
-                                    singleLine = true
-                                )
-                            } else {
-                                OutlinedTextField(
-                                    value = loginPassword,
-                                    onValueChange = {
-                                        loginPassword = it
-                                        loginError = ""
-                                    },
-                                    label = { Text("Password") },
-                                    placeholder = { Text("Your account password") },
-                                    leadingIcon = {
-                                        Icon(Icons.Default.Lock, contentDescription = null, tint = RoyalBlue)
-                                    },
-                                    visualTransformation = if (loginPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                                    trailingIcon = {
-                                        IconButton(onClick = { loginPasswordVisible = !loginPasswordVisible }) {
-                                            Icon(
-                                                if (loginPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                                                contentDescription = null
-                                            )
-                                        }
-                                    },
-                                    modifier = Modifier.fillMaxWidth(),
-                                    singleLine = true
-                                )
-                            }
+                            OutlinedTextField(
+                                value = loginPassword,
+                                onValueChange = {
+                                    loginPassword = it
+                                    loginError = ""
+                                },
+                                label = { Text("Password") },
+                                placeholder = { Text("Your account password") },
+                                leadingIcon = {
+                                    Icon(Icons.Default.Lock, contentDescription = null, tint = RoyalBlue)
+                                },
+                                visualTransformation = if (loginPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                                trailingIcon = {
+                                    IconButton(onClick = { loginPasswordVisible = !loginPasswordVisible }) {
+                                        Icon(
+                                            if (loginPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                                            contentDescription = null,
+                                            tint = Slate700
+                                        )
+                                    }
+                                },
+                                shape = RoundedCornerShape(14.dp),
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    focusedContainerColor = Color(0xFFF8FAFC),
+                                    unfocusedContainerColor = Color(0xFFF8FAFC),
+                                    focusedBorderColor = RoyalBlue,
+                                    unfocusedBorderColor = Color(0xFFCBD5E1)
+                                ),
+                                modifier = Modifier.fillMaxWidth(),
+                                singleLine = true
+                            )
 
                             Button(
                                 onClick = {
@@ -370,14 +418,15 @@ fun AuthScreen(
                                     }
                                 },
                                 colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue),
-                                shape = RoundedCornerShape(12.dp),
+                                shape = RoundedCornerShape(14.dp),
+                                elevation = ButtonDefaults.buttonElevation(defaultElevation = 3.dp),
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(48.dp)
+                                    .height(50.dp)
                             ) {
-                                Icon(Icons.Default.Login, contentDescription = null)
+                                Icon(Icons.Default.Login, contentDescription = null, modifier = Modifier.size(18.dp))
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Text("Log In", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                                Text("Log In", fontWeight = FontWeight.Bold, fontSize = 15.sp)
                             }
 
                             HorizontalDivider(color = Slate700.copy(alpha = 0.12f))
@@ -387,11 +436,11 @@ fun AuthScreen(
                                 horizontalArrangement = Arrangement.Center,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("Don't have an account?", fontSize = 12.sp, color = Slate700)
-                                Spacer(modifier = Modifier.width(4.dp))
+                                Text("Don't have an account?", fontSize = 12.5.sp, color = Slate700)
+                                Spacer(modifier = Modifier.width(5.dp))
                                 Text(
-                                    text = "Register Now →",
-                                    fontSize = 12.sp,
+                                    text = "Create Account →",
+                                    fontSize = 12.5.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = RoyalBlue,
                                     modifier = Modifier.clickable {
@@ -407,14 +456,15 @@ fun AuthScreen(
                     // ══ REGISTRATION WIZARD (2 STEPS) ══
                     // ═════════════════════════════════════════
                     Card(
-                        shape = RoundedCornerShape(18.dp),
+                        shape = RoundedCornerShape(24.dp),
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFE2E8F0)),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Column(
-                            modifier = Modifier.padding(20.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                            modifier = Modifier.padding(22.dp),
+                            verticalArrangement = Arrangement.spacedBy(14.dp)
                         ) {
                             // Step progress
                             Row(
@@ -424,22 +474,38 @@ fun AuthScreen(
                             ) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     if (regStep == 2) {
-                                        IconButton(onClick = { regStep = 1; regError = "" }) {
-                                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = RoyalBlue)
+                                        IconButton(
+                                            onClick = { regStep = 1; regError = "" },
+                                            modifier = Modifier.size(32.dp)
+                                        ) {
+                                            Icon(
+                                                Icons.AutoMirrored.Filled.ArrowBack,
+                                                contentDescription = "Back",
+                                                tint = RoyalBlue
+                                            )
                                         }
+                                        Spacer(modifier = Modifier.width(6.dp))
                                     }
                                     Text(
                                         text = if (regStep == 1) "Create Account" else "Membership Verification",
                                         fontWeight = FontWeight.Bold,
-                                        fontSize = 16.sp
+                                        fontSize = 17.sp,
+                                        color = Slate900
                                     )
                                 }
-                                Text(
-                                    text = if (regStep == 1) "Step 1 of 2" else "Step 2 of 2",
-                                    fontSize = 11.sp,
-                                    fontWeight = FontWeight.SemiBold,
-                                    color = RoyalBlue
-                                )
+                                Box(
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(50))
+                                        .background(RoyalBlue.copy(alpha = 0.1f))
+                                        .padding(horizontal = 10.dp, vertical = 4.dp)
+                                ) {
+                                    Text(
+                                        text = if (regStep == 1) "Step 1 of 2" else "Step 2 of 2",
+                                        fontSize = 11.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = RoyalBlue
+                                    )
+                                }
                             }
 
                             // Step Progress Bar
@@ -466,17 +532,29 @@ fun AuthScreen(
 
                             if (regError.isNotBlank()) {
                                 Surface(
-                                    color = RoseRed.copy(alpha = 0.1f),
-                                    shape = RoundedCornerShape(8.dp),
+                                    color = RoseRed.copy(alpha = 0.08f),
+                                    shape = RoundedCornerShape(12.dp),
+                                    border = androidx.compose.foundation.BorderStroke(1.dp, RoseRed.copy(alpha = 0.25f)),
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
-                                    Text(
-                                        text = regError,
-                                        color = RoseRed,
-                                        fontSize = 12.sp,
-                                        fontWeight = FontWeight.Medium,
-                                        modifier = Modifier.padding(10.dp)
-                                    )
+                                    Row(
+                                        modifier = Modifier.padding(12.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Icon(
+                                            Icons.Default.ErrorOutline,
+                                            contentDescription = null,
+                                            tint = RoseRed,
+                                            modifier = Modifier.size(18.dp)
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Text(
+                                            text = regError,
+                                            color = RoseRed,
+                                            fontSize = 12.5.sp,
+                                            fontWeight = FontWeight.Medium
+                                        )
+                                    }
                                 }
                             }
 
@@ -488,6 +566,13 @@ fun AuthScreen(
                                     label = { Text("Full Name *") },
                                     placeholder = { Text("e.g. Dawit Kebede") },
                                     leadingIcon = { Icon(Icons.Default.Person, contentDescription = null, tint = RoyalBlue) },
+                                    shape = RoundedCornerShape(14.dp),
+                                    colors = OutlinedTextFieldDefaults.colors(
+                                        focusedContainerColor = Color(0xFFF8FAFC),
+                                        unfocusedContainerColor = Color(0xFFF8FAFC),
+                                        focusedBorderColor = RoyalBlue,
+                                        unfocusedBorderColor = Color(0xFFCBD5E1)
+                                    ),
                                     modifier = Modifier.fillMaxWidth(),
                                     singleLine = true
                                 )
@@ -497,6 +582,13 @@ fun AuthScreen(
                                     onValueChange = { regUniversity = it },
                                     label = { Text("University Name") },
                                     leadingIcon = { Icon(Icons.Default.School, contentDescription = null, tint = RoyalBlue) },
+                                    shape = RoundedCornerShape(14.dp),
+                                    colors = OutlinedTextFieldDefaults.colors(
+                                        focusedContainerColor = Color(0xFFF8FAFC),
+                                        unfocusedContainerColor = Color(0xFFF8FAFC),
+                                        focusedBorderColor = RoyalBlue,
+                                        unfocusedBorderColor = Color(0xFFCBD5E1)
+                                    ),
                                     modifier = Modifier.fillMaxWidth(),
                                     singleLine = true
                                 )
@@ -506,6 +598,13 @@ fun AuthScreen(
                                     onValueChange = { regAcademicYear = it },
                                     label = { Text("Academic Year") },
                                     leadingIcon = { Icon(Icons.Default.CalendarMonth, contentDescription = null, tint = RoyalBlue) },
+                                    shape = RoundedCornerShape(14.dp),
+                                    colors = OutlinedTextFieldDefaults.colors(
+                                        focusedContainerColor = Color(0xFFF8FAFC),
+                                        unfocusedContainerColor = Color(0xFFF8FAFC),
+                                        focusedBorderColor = RoyalBlue,
+                                        unfocusedBorderColor = Color(0xFFCBD5E1)
+                                    ),
                                     modifier = Modifier.fillMaxWidth(),
                                     singleLine = true
                                 )
@@ -517,6 +616,13 @@ fun AuthScreen(
                                     placeholder = { Text("09... or 07...") },
                                     leadingIcon = { Icon(Icons.Default.Phone, contentDescription = null, tint = RoyalBlue) },
                                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                                    shape = RoundedCornerShape(14.dp),
+                                    colors = OutlinedTextFieldDefaults.colors(
+                                        focusedContainerColor = Color(0xFFF8FAFC),
+                                        unfocusedContainerColor = Color(0xFFF8FAFC),
+                                        focusedBorderColor = RoyalBlue,
+                                        unfocusedBorderColor = Color(0xFFCBD5E1)
+                                    ),
                                     modifier = Modifier.fillMaxWidth(),
                                     singleLine = true
                                 )
@@ -533,10 +639,18 @@ fun AuthScreen(
                                         IconButton(onClick = { regPasswordVisible = !regPasswordVisible }) {
                                             Icon(
                                                 if (regPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                                                contentDescription = null
+                                                contentDescription = null,
+                                                tint = Slate700
                                             )
                                         }
                                     },
+                                    shape = RoundedCornerShape(14.dp),
+                                    colors = OutlinedTextFieldDefaults.colors(
+                                        focusedContainerColor = Color(0xFFF8FAFC),
+                                        unfocusedContainerColor = Color(0xFFF8FAFC),
+                                        focusedBorderColor = RoyalBlue,
+                                        unfocusedBorderColor = Color(0xFFCBD5E1)
+                                    ),
                                     modifier = Modifier.fillMaxWidth(),
                                     singleLine = true
                                 )
@@ -549,6 +663,13 @@ fun AuthScreen(
                                     leadingIcon = { Icon(Icons.Default.LockOpen, contentDescription = null, tint = RoyalBlue) },
                                     visualTransformation = if (regPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                                    shape = RoundedCornerShape(14.dp),
+                                    colors = OutlinedTextFieldDefaults.colors(
+                                        focusedContainerColor = Color(0xFFF8FAFC),
+                                        unfocusedContainerColor = Color(0xFFF8FAFC),
+                                        focusedBorderColor = RoyalBlue,
+                                        unfocusedBorderColor = Color(0xFFCBD5E1)
+                                    ),
                                     modifier = Modifier.fillMaxWidth(),
                                     singleLine = true,
                                     isError = regConfirmPassword.isNotBlank() && regConfirmPassword != regPassword
@@ -567,159 +688,173 @@ fun AuthScreen(
                                         }
                                     },
                                     colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue),
-                                    shape = RoundedCornerShape(12.dp),
-                                    modifier = Modifier.fillMaxWidth().height(48.dp)
+                                    shape = RoundedCornerShape(14.dp),
+                                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 3.dp),
+                                    modifier = Modifier.fillMaxWidth().height(50.dp)
                                 ) {
-                                    Text("Next", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                                    Text("Next Step", fontWeight = FontWeight.Bold, fontSize = 15.sp)
                                     Spacer(modifier = Modifier.width(8.dp))
-                                    Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = null)
+                                    Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = null, modifier = Modifier.size(18.dp))
                                 }
                             } else {
-                                // ─── STEP 2: Membership Verification ───
+                                // ─── STEP 2: Send Screenshot ───
                                 Text(
-                                    text = "To verify membership, please provide a transaction reference from any official account below. This reference is for membership enrollment verification.",
+                                    text = "Please complete your membership payment, then send your screenshot below for verification.",
                                     fontSize = 12.sp,
                                     color = Slate700,
                                     lineHeight = 17.sp
                                 )
 
+                                // Payment info card
                                 Card(
-                                    shape = RoundedCornerShape(14.dp),
-                                    colors = CardDefaults.cardColors(containerColor = Color(0xFFEFF6FF)),
+                                    shape = RoundedCornerShape(18.dp),
+                                    colors = CardDefaults.cardColors(containerColor = Color(0xFFF0F7FF)),
+                                    border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFBFDBFE)),
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
                                     Column(
-                                        modifier = Modifier.padding(12.dp),
+                                        modifier = Modifier.padding(14.dp),
                                         verticalArrangement = Arrangement.spacedBy(10.dp)
                                     ) {
-                                        // Telebirr
                                         Row(verticalAlignment = Alignment.CenterVertically) {
                                             Box(
-                                                modifier = Modifier.size(36.dp).background(Color(0xFF0073E6), RoundedCornerShape(8.dp)),
+                                                modifier = Modifier.size(38.dp).background(Color(0xFF0073E6), RoundedCornerShape(10.dp)),
                                                 contentAlignment = Alignment.Center
                                             ) {
-                                                Text("T", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.ExtraBold)
+                                                Text("T", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.ExtraBold)
                                             }
                                             Spacer(modifier = Modifier.width(10.dp))
                                             Column {
-                                                Text("Telebirr: 0955903175", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Slate900)
-                                                Text("Adnan", fontSize = 11.sp, color = Slate700)
+                                                Text("Telebirr: 0955903175", fontWeight = FontWeight.Bold, fontSize = 13.5.sp, color = Slate900)
+                                                Text("Adnan", fontSize = 11.5.sp, color = Slate700)
                                             }
                                         }
                                         HorizontalDivider(color = Color(0xFFDBEAFE))
-                                        // CBE Bank
                                         Row(verticalAlignment = Alignment.CenterVertically) {
                                             Box(
-                                                modifier = Modifier.size(36.dp).background(Color(0xFF800020), RoundedCornerShape(8.dp)),
+                                                modifier = Modifier.size(38.dp).background(Color(0xFF800020), RoundedCornerShape(10.dp)),
                                                 contentAlignment = Alignment.Center
                                             ) {
-                                                Text("C", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.ExtraBold)
+                                                Text("C", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.ExtraBold)
                                             }
                                             Spacer(modifier = Modifier.width(10.dp))
                                             Column {
-                                                Text("CBE Bank: 1000650901731", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Slate900)
-                                                Text("Adnan", fontSize = 11.sp, color = Slate700)
+                                                Text("CBE Bank: 1000650901731", fontWeight = FontWeight.Bold, fontSize = 13.5.sp, color = Slate900)
+                                                Text("Adnan", fontSize = 11.5.sp, color = Slate700)
                                             }
                                         }
                                         HorizontalDivider(color = Color(0xFFDBEAFE))
-                                        // E-Birr
                                         Row(verticalAlignment = Alignment.CenterVertically) {
                                             Box(
-                                                modifier = Modifier.size(36.dp).background(Color(0xFFFF6600), RoundedCornerShape(8.dp)),
+                                                modifier = Modifier.size(38.dp).background(Color(0xFFFF6600), RoundedCornerShape(10.dp)),
                                                 contentAlignment = Alignment.Center
                                             ) {
-                                                Text("E", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.ExtraBold)
+                                                Text("E", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.ExtraBold)
                                             }
                                             Spacer(modifier = Modifier.width(10.dp))
                                             Column {
-                                                Text("E-Birr: 0955903175", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Slate900)
-                                                Text("Adnan", fontSize = 11.sp, color = Slate700)
+                                                Text("E-Birr: 0955903175", fontWeight = FontWeight.Bold, fontSize = 13.5.sp, color = Slate900)
+                                                Text("Adnan", fontSize = 11.5.sp, color = Slate700)
                                             }
                                         }
                                     }
                                 }
 
-                                Text("Membership fee channel:", fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                // ─── Screenshot Upload Section (Rectangular Zone) ───
+                                Text(
+                                    text = "Send your screenshot below:",
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = Slate900
+                                )
+
+                                ScreenshotUploadZone(
+                                    screenshotUri = regScreenshotUri,
+                                    screenshotUrl = regScreenshotUrl,
+                                    isUploading = regUploading,
+                                    phoneNumber = regPhone,
+                                    onUploadStarted = {
+                                        regUploading = true
+                                        regError = ""
+                                    },
+                                    onUploadSuccess = { url, uri ->
+                                        regScreenshotUrl = url
+                                        regScreenshotUri = uri
+                                        regUploading = false
+                                        Toast.makeText(context, "Screenshot uploaded successfully!", Toast.LENGTH_SHORT).show()
+                                    },
+                                    onUploadError = { err ->
+                                        regUploading = false
+                                        regError = err
+                                    }
+                                )
+
+                                // Support row
+                                Surface(
+                                    shape = RoundedCornerShape(12.dp),
+                                    color = Color(0xFFF1F5F9),
+                                    modifier = Modifier.fillMaxWidth()
                                 ) {
-                                    listOf("Telebirr", "CBE Bank", "E-Birr").forEach { method ->
-                                        FilterChip(
-                                            selected = regSelectedPaymentMethod == method,
-                                            onClick = { regSelectedPaymentMethod = method },
-                                            label = { Text(method, fontSize = 11.sp) },
-                                            colors = FilterChipDefaults.filterChipColors(
-                                                selectedContainerColor = RoyalBlue,
-                                                selectedLabelColor = Color.White
-                                            )
+                                    Row(
+                                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 9.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text("Need help? ", fontSize = 11.5.sp, color = Slate700)
+                                        Text(
+                                            "Telegram @HUfreshman1",
+                                            fontSize = 11.5.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            color = RoyalBlue,
+                                            modifier = Modifier.clickable {
+                                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/HUfreshman1"))
+                                                context.startActivity(intent)
+                                            }
+                                        )
+                                        Text("  •  ", fontSize = 11.5.sp, color = Slate700)
+                                        Text(
+                                            "0955903175",
+                                            fontSize = 11.5.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            color = RoyalBlue,
+                                            modifier = Modifier.clickable {
+                                                val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:0955903175"))
+                                                context.startActivity(intent)
+                                            }
                                         )
                                     }
                                 }
 
-                                OutlinedTextField(
-                                    value = regTransactionId,
-                                    onValueChange = { regTransactionId = it; regError = "" },
-                                    label = { Text("Transaction / Reference ID *") },
-                                    placeholder = { Text("e.g. FT240825ABCD or TXN123456") },
-                                    leadingIcon = { Icon(Icons.Default.Receipt, contentDescription = null, tint = EmeraldGreen) },
-                                    modifier = Modifier.fillMaxWidth(),
-                                    singleLine = true
-                                )
-
-                                // Support Help Row
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Text("Need help? ", fontSize = 11.sp, color = Slate700)
-                                    Text(
-                                        "Telegram @HUfreshman1",
-                                        fontSize = 11.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = RoyalBlue,
-                                        modifier = Modifier.clickable {
-                                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/HUfreshman1"))
-                                            context.startActivity(intent)
-                                        }
-                                    )
-                                    Text("  •  ", fontSize = 11.sp, color = Slate700)
-                                    Text(
-                                        "0955903175",
-                                        fontSize = 11.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = RoyalBlue,
-                                        modifier = Modifier.clickable {
-                                            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:0955903175"))
-                                            context.startActivity(intent)
-                                        }
-                                    )
-                                }
-
                                 Button(
                                     onClick = {
-                                        if (regTransactionId.isBlank()) {
-                                            regError = "Please enter the Transaction / Reference ID from your membership fee receipt."
-                                        } else {
-                                            viewModel.registerMember(
-                                                regName,
-                                                regUniversity,
-                                                regAcademicYear,
-                                                regPhone,
-                                                regPassword,
-                                                regSelectedPaymentMethod,
-                                                regTransactionId
-                                            )
-                                            Toast.makeText(context, "Registration submitted for verification!", Toast.LENGTH_LONG).show()
+                                        when {
+                                            regUploading -> regError = "Please wait for the screenshot to finish uploading."
+                                            regScreenshotUrl.isEmpty() -> regError = "Please choose and upload your screenshot first."
+                                            else -> {
+                                                viewModel.registerMember(
+                                                    regName,
+                                                    regUniversity,
+                                                    regAcademicYear,
+                                                    regPhone,
+                                                    regPassword,
+                                                    regSelectedPaymentMethod,
+                                                    regTransactionId,
+                                                    regScreenshotUrl
+                                                )
+                                                Toast.makeText(context, "Registration submitted for verification!", Toast.LENGTH_LONG).show()
+                                            }
                                         }
                                     },
-                                    colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreen),
-                                    shape = RoundedCornerShape(12.dp),
-                                    modifier = Modifier.fillMaxWidth().height(48.dp)
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = if (regScreenshotUrl.isNotEmpty()) EmeraldGreen else RoyalBlue
+                                    ),
+                                    shape = RoundedCornerShape(14.dp),
+                                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 3.dp),
+                                    modifier = Modifier.fillMaxWidth().height(50.dp),
+                                    enabled = !regUploading
                                 ) {
-                                    Icon(Icons.Default.CheckCircle, contentDescription = null)
+                                    Icon(Icons.Default.CheckCircle, contentDescription = null, modifier = Modifier.size(18.dp))
                                     Spacer(modifier = Modifier.width(8.dp))
-                                    Text("Submit Registration", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                                    Text("Create Account", fontWeight = FontWeight.Bold, fontSize = 15.sp)
                                 }
                             }
 
@@ -730,11 +865,11 @@ fun AuthScreen(
                                 horizontalArrangement = Arrangement.Center,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("Already have an account?", fontSize = 12.sp, color = Slate700)
-                                Spacer(modifier = Modifier.width(4.dp))
+                                Text("Already have an account?", fontSize = 12.5.sp, color = Slate700)
+                                Spacer(modifier = Modifier.width(5.dp))
                                 Text(
                                     text = "Log In →",
-                                    fontSize = 12.sp,
+                                    fontSize = 12.5.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = RoyalBlue,
                                     modifier = Modifier.clickable {

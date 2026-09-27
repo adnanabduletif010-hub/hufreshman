@@ -2,6 +2,7 @@ package com.curiovana.hufreshman
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.curiovana.hufreshman.ui.screens.*
 import com.curiovana.hufreshman.ui.theme.HuFreshmanTheme
+import com.curiovana.hufreshman.ui.theme.rememberScreenDimensions
 import com.curiovana.hufreshman.ui.theme.RoyalBlue
 import com.curiovana.hufreshman.ui.theme.RoyalBlueDark
 import com.curiovana.hufreshman.ui.theme.EmeraldGreen
@@ -34,6 +36,7 @@ import com.curiovana.hufreshman.viewmodel.MainViewModel
 enum class NavigationTab(val title: String, val iconSelected: androidx.compose.ui.graphics.vector.ImageVector, val iconUnselected: androidx.compose.ui.graphics.vector.ImageVector) {
     EXAMS("Exams", Icons.Filled.School, Icons.Outlined.School),
     UNIVERSITIES("Universities", Icons.Filled.AccountBalance, Icons.Outlined.AccountBalance),
+    SHORT_NOTES("Short Notes", Icons.Filled.AutoStories, Icons.Outlined.AutoStories),
     COMMUNITY("Community", Icons.Filled.Forum, Icons.Outlined.Forum),
     ADMIN("Admin", Icons.Filled.AdminPanelSettings, Icons.Outlined.AdminPanelSettings),
     PROFILE("Profile", Icons.Filled.Person, Icons.Outlined.Person)
@@ -47,15 +50,45 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            HuFreshmanTheme {
+            HuFreshmanTheme(darkTheme = false, dynamicColor = false) {
+                val screenDimensions = rememberScreenDimensions()
                 val isLoading by viewModel.isLoading.collectAsState()
                 val userProfile by viewModel.userProfile.collectAsState()
+                val allQuestions by viewModel.allQuestions.collectAsState()
                 var currentTab by remember { mutableStateOf(NavigationTab.EXAMS) }
-                var showRegistrationPrompt by remember { mutableStateOf(false) }
-                var showLoginPrompt by remember { mutableStateOf(false) }
+                val tabHistory = remember { mutableStateListOf(NavigationTab.EXAMS) }
+
+                val navigateToTab: (NavigationTab) -> Unit = { tab ->
+                    if (currentTab != tab) {
+                        tabHistory.remove(tab)
+                        tabHistory.add(tab)
+                        currentTab = tab
+                    }
+                }
+
+                // Phone back arrow navigation: Return to previous tab or to Exams (Home) instead of exiting the app
+                BackHandler(enabled = currentTab != NavigationTab.EXAMS || tabHistory.size > 1) {
+                    if (tabHistory.size > 1) {
+                        tabHistory.removeAt(tabHistory.lastIndex)
+                        currentTab = tabHistory.lastOrNull() ?: NavigationTab.EXAMS
+                    } else {
+                        currentTab = NavigationTab.EXAMS
+                    }
+                }
+
+                // Auth dialog state — shown as overlays, not full-screen gate
+                var showLoginDialog by remember { mutableStateOf(false) }
+                var showRegistrationDialog by remember { mutableStateOf(false) }
 
                 val isWaitingApproval = !userProfile.isAdmin && userProfile.hasSubmittedRegistration && !userProfile.isApproved
-                val isUnregistered = !userProfile.isAdmin && !userProfile.isApproved && !userProfile.hasSubmittedRegistration
+                val isLoggedIn = !userProfile.isGuest
+
+                // Callback used by any screen that needs login
+                val requestLogin: () -> Unit = {
+                    if (userProfile.isGuest) {
+                        showLoginDialog = true
+                    }
+                }
 
                 Scaffold(
                     topBar = {
@@ -69,7 +102,7 @@ class MainActivity : ComponentActivity() {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Box(
                                         modifier = Modifier
-                                            .size(36.dp)
+                                            .size(if (screenDimensions.isCompactWidth) 30.dp else 36.dp)
                                             .background(Color.White, RoundedCornerShape(10.dp)),
                                         contentAlignment = Alignment.Center
                                     ) {
@@ -77,93 +110,71 @@ class MainActivity : ComponentActivity() {
                                             Icons.Default.School,
                                             contentDescription = null,
                                             tint = RoyalBlue,
-                                            modifier = Modifier.size(22.dp)
+                                            modifier = Modifier.size(if (screenDimensions.isCompactWidth) 18.dp else 22.dp)
                                         )
                                     }
 
-                                    Spacer(modifier = Modifier.width(10.dp))
+                                    Spacer(modifier = Modifier.width(if (screenDimensions.isCompactWidth) 6.dp else 10.dp))
 
                                     Column {
                                         Row(verticalAlignment = Alignment.CenterVertically) {
                                             Text(
                                                 text = "HU Freshman",
                                                 fontWeight = FontWeight.Black,
-                                                fontSize = 18.sp,
+                                                fontSize = if (screenDimensions.isCompactWidth) 15.sp else 18.sp,
                                                 color = Color.White
                                             )
-                                            if (userProfile.isAdmin) {
-                                                Spacer(modifier = Modifier.width(6.dp))
-                                                Box(
-                                                    modifier = Modifier
-                                                        .background(Color.White.copy(alpha = 0.25f), RoundedCornerShape(6.dp))
-                                                        .padding(horizontal = 6.dp, vertical = 2.dp)
-                                                ) {
-                                                    Text(
-                                                        text = "ADMIN",
-                                                        fontSize = 9.sp,
-                                                        fontWeight = FontWeight.Bold,
-                                                        color = Color.White
+                                            Spacer(modifier = Modifier.width(5.dp))
+                                            Box(
+                                                modifier = Modifier
+                                                    .background(
+                                                        when {
+                                                            userProfile.isAdmin -> Color.White.copy(alpha = 0.25f)
+                                                            userProfile.isApproved -> EmeraldGreen
+                                                            isWaitingApproval -> AmberWarning
+                                                            userProfile.isGuest -> Color.White.copy(alpha = 0.20f)
+                                                            else -> Color.White.copy(alpha = 0.25f)
+                                                        },
+                                                        RoundedCornerShape(6.dp)
                                                     )
-                                                }
-                                            } else if (userProfile.isApproved) {
-                                                Spacer(modifier = Modifier.width(6.dp))
-                                                Box(
-                                                    modifier = Modifier
-                                                        .background(EmeraldGreen, RoundedCornerShape(6.dp))
-                                                        .padding(horizontal = 6.dp, vertical = 2.dp)
-                                                ) {
-                                                    Text(
-                                                        text = "MEMBER",
-                                                        fontSize = 9.sp,
-                                                        fontWeight = FontWeight.Bold,
-                                                        color = Color.White
+                                                    .then(
+                                                        if (isWaitingApproval) Modifier.clip(RoundedCornerShape(6.dp)).clickable { viewModel.refreshUserProfile() }
+                                                        else Modifier
                                                     )
-                                                }
-                                            } else if (isWaitingApproval) {
-                                                Spacer(modifier = Modifier.width(6.dp))
-                                                Box(
-                                                    modifier = Modifier
-                                                        .clip(RoundedCornerShape(6.dp))
-                                                        .background(AmberWarning)
-                                                        .clickable { viewModel.refreshUserProfile() }
-                                                        .padding(horizontal = 6.dp, vertical = 2.dp)
-                                                ) {
-                                                    Text(
-                                                        text = "⏳ PENDING",
-                                                        fontSize = 9.sp,
-                                                        fontWeight = FontWeight.Bold,
-                                                        color = Color.White
-                                                    )
-                                                }
-                                            } else {
-                                                Spacer(modifier = Modifier.width(6.dp))
-                                                Box(
-                                                    modifier = Modifier
-                                                        .clip(RoundedCornerShape(6.dp))
-                                                        .background(Color.White.copy(alpha = 0.25f))
-                                                        .padding(horizontal = 6.dp, vertical = 2.dp)
-                                                ) {
-                                                    Text(
-                                                        text = "LOGIN REQUIRED",
-                                                        fontSize = 9.sp,
-                                                        fontWeight = FontWeight.Bold,
-                                                        color = Color.White
-                                                    )
-                                                }
+                                                    .padding(horizontal = 5.dp, vertical = 2.dp)
+                                            ) {
+                                                Text(
+                                                    text = when {
+                                                        userProfile.isAdmin -> "ADMIN"
+                                                        userProfile.isApproved -> "MEMBER"
+                                                        isWaitingApproval -> "⏳ PENDING"
+                                                        userProfile.isGuest -> "GUEST"
+                                                        else -> "LOGIN"
+                                                    },
+                                                    fontSize = if (screenDimensions.isCompactWidth) 8.sp else 9.sp,
+                                                    fontWeight = FontWeight.Bold,
+                                                    color = Color.White
+                                                )
                                             }
                                         }
                                         Text(
-                                            text = if (isWaitingApproval) "Verification In Progress" else if (isUnregistered) "Authentication Required" else "Ethiopian University Exam Hub",
-                                            fontSize = 10.sp,
+                                            text = when {
+                                                isWaitingApproval -> "Verification In Progress"
+                                                userProfile.isGuest -> "Ethiopian University Exam Hub"
+                                                else -> "Ethiopian University Exam Hub"
+                                            },
+                                            fontSize = if (screenDimensions.isCompactWidth) 9.sp else 10.sp,
                                             color = Color.White.copy(alpha = 0.85f),
-                                            fontWeight = FontWeight.Medium
+                                            fontWeight = FontWeight.Medium,
+                                            maxLines = 1,
+                                            overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
                                         )
                                     }
                                 }
                             },
                             actions = {
-                                if (!isWaitingApproval && !isUnregistered) {
-                                    IconButton(onClick = { currentTab = NavigationTab.PROFILE }) {
+                                if (isLoggedIn && !isWaitingApproval) {
+                                    IconButton(onClick = { navigateToTab(NavigationTab.PROFILE) }) {
                                         Box(
                                             modifier = Modifier
                                                 .size(32.dp)
@@ -182,40 +193,71 @@ class MainActivity : ComponentActivity() {
                                     IconButton(onClick = { viewModel.refreshUserProfile() }) {
                                         Icon(Icons.Default.Refresh, contentDescription = "Refresh Status", tint = Color.White)
                                     }
+                                } else {
+                                    // Guest — show login button in top bar
+                                    TextButton(onClick = { showLoginDialog = true }) {
+                                        Text("Login", color = Color.White, fontWeight = FontWeight.Bold)
+                                    }
                                 }
                             }
                         )
                     },
                     bottomBar = {
-                        // Until user registers and gets approved (or admin), bottom navigation is completely hidden
-                        if (!isWaitingApproval && !isUnregistered) {
+                        // Show bottom nav always (guest users can browse)
+                        if (!isWaitingApproval) {
                             NavigationBar(
                                 containerColor = MaterialTheme.colorScheme.surface,
                                 tonalElevation = 8.dp
                             ) {
-                                val tabs = if (userProfile.isAdmin) {
-                                    listOf(NavigationTab.EXAMS, NavigationTab.UNIVERSITIES, NavigationTab.COMMUNITY, NavigationTab.ADMIN, NavigationTab.PROFILE)
-                                } else {
-                                    listOf(NavigationTab.EXAMS, NavigationTab.UNIVERSITIES, NavigationTab.COMMUNITY, NavigationTab.PROFILE)
+                                val tabs = when {
+                                    userProfile.isAdmin -> listOf(
+                                        NavigationTab.EXAMS, NavigationTab.UNIVERSITIES,
+                                        NavigationTab.SHORT_NOTES, NavigationTab.COMMUNITY,
+                                        NavigationTab.ADMIN, NavigationTab.PROFILE
+                                    )
+                                    isLoggedIn -> listOf(
+                                        NavigationTab.EXAMS, NavigationTab.UNIVERSITIES,
+                                        NavigationTab.SHORT_NOTES, NavigationTab.COMMUNITY,
+                                        NavigationTab.PROFILE
+                                    )
+                                    else -> listOf(
+                                        // Guests see all except Admin & Profile
+                                        NavigationTab.EXAMS, NavigationTab.UNIVERSITIES,
+                                        NavigationTab.SHORT_NOTES, NavigationTab.COMMUNITY
+                                    )
                                 }
 
                                 tabs.forEach { tab ->
                                     val selected = currentTab == tab
+                                    val labelText = if (screenDimensions.isCompactWidth) {
+                                        when (tab) {
+                                            NavigationTab.UNIVERSITIES -> "Unis"
+                                            NavigationTab.SHORT_NOTES -> "Notes"
+                                            NavigationTab.COMMUNITY -> "Forum"
+                                            else -> tab.title
+                                        }
+                                    } else {
+                                        tab.title
+                                    }
+
                                     NavigationBarItem(
                                         selected = selected,
-                                        onClick = { currentTab = tab },
+                                        onClick = { navigateToTab(tab) },
+                                        alwaysShowLabel = !screenDimensions.isCompactWidth || tabs.size <= 4,
                                         icon = {
                                             Icon(
                                                 if (selected) tab.iconSelected else tab.iconUnselected,
                                                 contentDescription = tab.title,
-                                                modifier = Modifier.size(22.dp)
+                                                modifier = Modifier.size(if (screenDimensions.isCompactWidth) 20.dp else 22.dp)
                                             )
                                         },
                                         label = {
                                             Text(
-                                                text = tab.title,
-                                                fontSize = 11.sp,
-                                                fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
+                                                text = labelText,
+                                                fontSize = if (screenDimensions.isCompactWidth) 9.5.sp else 11.sp,
+                                                fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
+                                                maxLines = 1,
+                                                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
                                             )
                                         },
                                         colors = NavigationBarItemDefaults.colors(
@@ -235,6 +277,13 @@ class MainActivity : ComponentActivity() {
                             .fillMaxSize()
                             .padding(innerPadding)
                     ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .widthIn(max = 1100.dp)
+                                .align(Alignment.TopCenter)
+                        ) {
+
                         if (isLoading) {
                             Box(
                                 modifier = Modifier.fillMaxSize(),
@@ -243,8 +292,9 @@ class MainActivity : ComponentActivity() {
                                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                     CircularProgressIndicator(color = RoyalBlue)
                                     Spacer(modifier = Modifier.height(14.dp))
+                                    val loadingCount = if (allQuestions.isNotEmpty()) "${java.text.NumberFormat.getIntegerInstance().format(allQuestions.size)}+" else "2,000+"
                                     Text(
-                                        text = "Loading 1,958+ Past Exams & Guides...",
+                                        text = "Loading $loadingCount Past Exams & Guides...",
                                         fontWeight = FontWeight.SemiBold,
                                         fontSize = 14.sp
                                     )
@@ -256,63 +306,86 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                         } else if (isWaitingApproval) {
-                            // User cant see anything until admin approves, just waiting screen
                             WaitingApprovalScreen(
                                 userProfile = userProfile,
                                 viewModel = viewModel,
                                 onEditRegistration = {
-                                    showRegistrationPrompt = true
+                                    showRegistrationDialog = true
                                 }
                             )
-                        } else if (isUnregistered) {
-                            // Mandatory Login / Registration Gate - users cannot access the app without logging in/registering
-                            AuthScreen(
-                                userProfile = userProfile,
-                                viewModel = viewModel
-                            )
                         } else {
+                            // Main content — guests can see Exams list, Universities list, Notes, Community posts
                             Crossfade(targetState = currentTab, label = "TabCrossfade") { tab ->
                                 when (tab) {
                                     NavigationTab.EXAMS -> ExamBoardScreen(
                                         viewModel = viewModel,
-                                        onNavigateToAdmin = { currentTab = NavigationTab.ADMIN }
+                                        onNavigateToAdmin = { navigateToTab(NavigationTab.ADMIN) },
+                                        // Guest gate: block when clicking an exam year
+                                        onYearSelectedGate = {
+                                            if (userProfile.isGuest) {
+                                                showLoginDialog = true
+                                                false // blocked
+                                            } else true // allowed
+                                        }
                                     )
-                                    NavigationTab.UNIVERSITIES -> UniversitiesScreen(viewModel = viewModel)
-                                    NavigationTab.COMMUNITY -> CommunityScreen(viewModel = viewModel)
+                                    NavigationTab.UNIVERSITIES -> UniversitiesScreen(
+                                        viewModel = viewModel,
+                                        // Guest gate: block when clicking into a university detail
+                                        onUniversitySelectedGate = {
+                                            if (userProfile.isGuest) {
+                                                showLoginDialog = true
+                                                false
+                                            } else true
+                                        }
+                                    )
+                                    NavigationTab.SHORT_NOTES -> ShortNotesScreen(viewModel = viewModel)
+                                    NavigationTab.COMMUNITY -> CommunityScreen(
+                                        viewModel = viewModel,
+                                        // Guest gate: block posting
+                                        onPostGate = {
+                                            if (userProfile.isGuest) {
+                                                showLoginDialog = true
+                                                false
+                                            } else true
+                                        }
+                                    )
                                     NavigationTab.ADMIN -> AdminScreen(viewModel = viewModel)
                                     NavigationTab.PROFILE -> ProfileScreen(
                                         viewModel = viewModel,
-                                        onNavigateToAdmin = { currentTab = NavigationTab.ADMIN }
+                                        onNavigateToAdmin = { navigateToTab(NavigationTab.ADMIN) }
                                     )
                                 }
                             }
                         }
 
-                        // Mandatory/First-Launch Member Registration Gate
-                        if (showRegistrationPrompt && !userProfile.isApproved && !userProfile.isAdmin) {
+                        // Registration dialog
+                        if (showRegistrationDialog && !userProfile.isApproved && !userProfile.isAdmin) {
                             MemberRegistrationDialog(
                                 currentProfile = userProfile,
-                                onDismiss = { showRegistrationPrompt = false },
-                                onSubmit = { name, univ, year, phone, password, paymentMethod, txnId ->
-                                    viewModel.registerMember(name, univ, year, phone, password, paymentMethod, txnId)
-                                    showRegistrationPrompt = false
+                                onDismiss = { showRegistrationDialog = false },
+                                onSubmit = { name, univ, year, phone, password, paymentMethod, txnId, screenshotUrl ->
+                                    viewModel.registerMember(name, univ, year, phone, password, paymentMethod, txnId, screenshotUrl)
+                                    showRegistrationDialog = false
                                 },
                                 onNavigateToLogin = {
-                                    showRegistrationPrompt = false
-                                    showLoginPrompt = true
+                                    showRegistrationDialog = false
+                                    showLoginDialog = true
                                 }
                             )
                         }
 
-                        if (showLoginPrompt && !userProfile.isApproved && !userProfile.isAdmin) {
+                        // Login dialog (shown when guest tries a restricted action)
+                        if (showLoginDialog && userProfile.isGuest) {
                             LoginDialog(
-                                onDismiss = { showLoginPrompt = false },
+                                onDismiss = { showLoginDialog = false },
                                 onLoginSubmit = { phone, secretOrKey ->
-                                    viewModel.login(phone, secretOrKey)
+                                    val result = viewModel.login(phone, secretOrKey)
+                                    showLoginDialog = false
+                                    result
                                 },
                                 onNavigateToRegister = {
-                                    showLoginPrompt = false
-                                    showRegistrationPrompt = true
+                                    showLoginDialog = false
+                                    showRegistrationDialog = true
                                 }
                             )
                         }
@@ -321,4 +394,5 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
 }

@@ -2,6 +2,7 @@ package com.curiovana.hufreshman.data
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.SetOptions
@@ -84,6 +85,11 @@ class AppRepository(private val context: Context) {
             e.printStackTrace()
         }
 
+        // 3. Ensure Economics past questions exist
+        if (questions.none { it.course.contains("Economics", ignoreCase = true) }) {
+            questions.addAll(getEconomicsQuestions())
+        }
+
         cachedQuestions = questions
         questions
     }
@@ -139,6 +145,8 @@ class AppRepository(private val context: Context) {
             }
         }
 
+        val originalUniv = obj.get("originalUniversity")?.asString
+
         return ExamQuestion(
             id = id,
             examId = obj.get("examId")?.asString ?: fallbackExamId,
@@ -149,7 +157,183 @@ class AppRepository(private val context: Context) {
             question = qText,
             options = if (optionsList.isNotEmpty()) optionsList else listOf("Option A", "Option B", "Option C", "Option D"),
             answer = answerIdx.coerceIn(0, (optionsList.size - 1).coerceAtLeast(0)),
-            explanation = explanation
+            explanation = explanation,
+            originalUniversity = originalUniv
+        )
+    }
+
+    private fun getEconomicsQuestions(): List<ExamQuestion> {
+        return listOf(
+            ExamQuestion(
+                id = "econ-aau-2024-mid-01",
+                examId = "econ_2024_mid",
+                course = "Introduction to Economics",
+                university = "Addis Ababa University",
+                year = "2024 Exam",
+                category = "Mid Exam",
+                question = "Which of the following best defines opportunity cost in economics?",
+                options = listOf(
+                    "The monetary price paid for a good or service",
+                    "The value of the next best alternative forgone when a choice is made",
+                    "The total cost of all production factors combined",
+                    "The sunken expenditure that cannot be recovered"
+                ),
+                answer = 1,
+                explanation = "Opportunity cost is fundamentally defined as the value of the next best alternative sacrificed or forgone when making an economic decision under scarcity."
+            ),
+            ExamQuestion(
+                id = "econ-aau-2024-mid-02",
+                examId = "econ_2024_mid",
+                course = "Introduction to Economics",
+                university = "Addis Ababa University",
+                year = "2024 Exam",
+                category = "Mid Exam",
+                question = "According to the Law of Demand, when the price of a normal good increases, ceteris paribus:",
+                options = listOf(
+                    "Quantity demanded decreases",
+                    "Demand curve shifts outward to the right",
+                    "Quantity supplied decreases",
+                    "Quantity demanded increases"
+                ),
+                answer = 0,
+                explanation = "The Law of Demand states that there is an inverse relationship between the price of a good and its quantity demanded, holding all other determinants constant (ceteris paribus)."
+            ),
+            ExamQuestion(
+                id = "econ-hu-2024-mid-03",
+                examId = "econ_2024_mid",
+                course = "Introduction to Economics",
+                university = "Haramaya University",
+                year = "2024 Exam",
+                category = "Mid Exam",
+                question = "If two goods X and Y have a negative Cross-Price Elasticity of Demand (E_xy < 0), they are:",
+                options = listOf(
+                    "Substitute goods",
+                    "Complementary goods",
+                    "Inferior goods",
+                    "Giffen goods"
+                ),
+                answer = 1,
+                explanation = "A negative cross-price elasticity indicates that as the price of good Y rises, the quantity demanded of good X falls, meaning the two goods are consumed together as complements (e.g. coffee and sugar)."
+            ),
+            ExamQuestion(
+                id = "econ-ju-2023-mid-01",
+                examId = "econ_2023_mid",
+                course = "Introduction to Economics",
+                university = "Jimma University",
+                year = "2023 Exam",
+                category = "Mid Exam",
+                question = "The Production Possibility Frontier (PPF) is typically bowed outward (concave to the origin) due to:",
+                options = listOf(
+                    "Decreasing opportunity costs",
+                    "Constant returns to scale",
+                    "The law of increasing opportunity costs",
+                    "Technological stagnation"
+                ),
+                answer = 2,
+                explanation = "The PPF is bowed outward because resources are not perfectly adaptable to all types of production. Moving resources from one industry to another incurs increasing opportunity costs."
+            ),
+            ExamQuestion(
+                id = "econ-bdu-2023-mid-02",
+                examId = "econ_2023_mid",
+                course = "Introduction to Economics",
+                university = "Bahir Dar University",
+                year = "2023 Exam",
+                category = "Mid Exam",
+                question = "When demand is price elastic (|Ed| > 1), a decrease in the price of the good will cause total revenue to:",
+                options = listOf(
+                    "Increase",
+                    "Decrease",
+                    "Remain unchanged",
+                    "Drop to zero"
+                ),
+                answer = 0,
+                explanation = "When demand is price elastic, the percentage increase in quantity demanded is greater than the percentage decrease in price, leading to an overall increase in total revenue (P × Q)."
+            ),
+            ExamQuestion(
+                id = "econ-hu-2022-mid-01",
+                examId = "econ_2022_mid",
+                course = "Introduction to Economics",
+                university = "Haramaya University",
+                year = "2022 Exam",
+                category = "Mid Exam",
+                question = "In the short run, when the Marginal Product (MP) of labor is greater than the Average Product (AP):",
+                options = listOf(
+                    "Average Product must be increasing",
+                    "Average Product must be decreasing",
+                    "Total Product is at its maximum",
+                    "Marginal Cost is at its maximum"
+                ),
+                answer = 0,
+                explanation = "Whenever the marginal value is greater than the average value (MP > AP), it pulls the average value upward, causing Average Product to rise."
+            ),
+            ExamQuestion(
+                id = "econ-aau-2024-final-01",
+                examId = "econ_2024_final",
+                course = "Introduction to Economics",
+                university = "Addis Ababa University",
+                year = "2024 Exam",
+                category = "Final Exam",
+                question = "In a perfectly competitive market in long-run equilibrium, a firm produces where:",
+                options = listOf(
+                    "Price = Marginal Cost = Average Total Cost",
+                    "Price > Marginal Cost",
+                    "Marginal Revenue > Price",
+                    "Economic profits are permanently positive"
+                ),
+                answer = 0,
+                explanation = "In long-run competitive equilibrium, free entry and exit drive economic profits to zero where P = MR = MC = minimum ATC."
+            ),
+            ExamQuestion(
+                id = "econ-hu-2024-final-02",
+                examId = "econ_2024_final",
+                course = "Introduction to Economics",
+                university = "Haramaya University",
+                year = "2024 Exam",
+                category = "Final Exam",
+                question = "Gross Domestic Product (GDP) measured using the expenditure approach is calculated as:",
+                options = listOf(
+                    "GDP = Wages + Rent + Interest + Profits",
+                    "GDP = C + I + G + (X - M)",
+                    "GDP = C + S + T",
+                    "GDP = National Income + Depreciation"
+                ),
+                answer = 1,
+                explanation = "The expenditure approach calculates GDP as the sum of Consumption (C), Gross Investment (I), Government Purchases (G), and Net Exports (X - M)."
+            ),
+            ExamQuestion(
+                id = "econ-ju-2023-final-01",
+                examId = "econ_2023_final",
+                course = "Introduction to Economics",
+                university = "Jimma University",
+                year = "2023 Exam",
+                category = "Final Exam",
+                question = "Inflation resulting from an increase in aggregate demand beyond full-employment output is known as:",
+                options = listOf(
+                    "Cost-push inflation",
+                    "Demand-pull inflation",
+                    "Structural inflation",
+                    "Hyperinflation"
+                ),
+                answer = 1,
+                explanation = "Demand-pull inflation occurs when aggregate demand for goods and services outpaces aggregate supply, often described as 'too much money chasing too few goods'."
+            ),
+            ExamQuestion(
+                id = "econ-bdu-2022-final-01",
+                examId = "econ_2022_final",
+                course = "Introduction to Economics",
+                university = "Bahir Dar University",
+                year = "2022 Exam",
+                category = "Final Exam",
+                question = "Which of the following is a primary monetary policy tool used by central banks (such as the National Bank of Ethiopia) to control inflation?",
+                options = listOf(
+                    "Increasing government capital expenditure",
+                    "Raising reserve requirements or policy interest rates",
+                    "Lowering personal income tax rates",
+                    "Imposing price ceilings on consumer staples"
+                ),
+                answer = 1,
+                explanation = "Central banks use monetary policy tools like open market operations, reserve requirements, and policy interest rates to regulate money supply and tame inflationary pressure."
+            )
         )
     }
 
@@ -246,68 +430,262 @@ class AppRepository(private val context: Context) {
         true
     }
 
-    suspend fun loadCommunityPosts(): List<CommunityPost> = withContext(Dispatchers.IO) {
-        if (cachedPosts.isNotEmpty()) return@withContext cachedPosts
+    fun getCachedCommunityPosts(): List<CommunityPost> {
+        val likedSet = getLikedPostIds()
+        return cachedPosts.map { it.copy(isLiked = likedSet.contains(it.id)) }
+    }
 
-        val posts = mutableListOf<CommunityPost>()
-        val savedPostsJson = prefs.getString("community_posts", null)
-        if (!savedPostsJson.isNullOrEmpty()) {
-            val type = object : TypeToken<MutableList<CommunityPost>>() {}.type
-            posts.addAll(gson.fromJson(savedPostsJson, type))
-        } else {
-            // Default authentic posts
-            posts.addAll(
-                listOf(
-                    CommunityPost(
-                        id = "post_hu_1",
-                        author = "HU Freshman Academic Board",
-                        role = "HU Admin",
-                        date = "Today • Official Notice",
-                        content = "Welcome to Haramaya University freshman class of 2026/2027! The digital question bank has been updated with past midterm & final exams for Applied Math I, General Physics, and Logic.",
-                        tag = "Academic",
-                        likes = 48,
-                        comments = listOf(
-                            Comment("c1", "Dawit K.", "Thank you HU Admin! The step-by-step calculus solutions are really helpful.", "1 hr ago"),
-                            Comment("c2", "Selamawit T.", "Where can we find the general physics formulas sheet?", "30 mins ago")
-                        )
-                    ),
-                    CommunityPost(
-                        id = "post_hu_2",
-                        author = "Kidus Yohannes (HU Engineering)",
-                        role = "Student",
-                        date = "Yesterday",
-                        content = "Tips for First Semester: Don't fall behind on Critical Thinking arguments and Fallacies. Make sure you practice at least 5 past papers per subject before the mid exams!",
-                        tag = "Tips",
-                        likes = 32,
-                        comments = listOf(
-                            Comment("c3", "Abebe B.", "Totally agree, informal fallacies tripped a lot of seniors up last year.", "5 hrs ago")
-                        )
-                    ),
-                    CommunityPost(
-                        id = "post_hu_3",
-                        author = "Campus Life Directorate",
-                        role = "HU Admin",
-                        date = "2 days ago",
-                        content = "Afran Kallo Main Library digital terminals are now operational 24/7 for exam revision. Fast Wi-Fi and power outlets available at Block B.",
-                        tag = "Campus Life",
-                        likes = 25
-                    )
-                )
-            )
-            savePostsToPrefs(posts)
+    suspend fun loadCommunityPosts(forceRefresh: Boolean = false): List<CommunityPost> = withContext(Dispatchers.IO) {
+        val likedSet = getLikedPostIds()
+
+        // 1. If in-memory cache is present and not force-refreshing, return immediately (0 network calls)
+        if (cachedPosts.isNotEmpty() && !forceRefresh) {
+            return@withContext getCachedCommunityPosts()
         }
 
-        val likedSet = getLikedPostIds()
-        val mappedPosts = posts.map { it.copy(isLiked = likedSet.contains(it.id)) }
-        cachedPosts = mappedPosts.toMutableList()
-        cachedPosts
+        // 2. Read local phone storage (SharedPreferences)
+        val savedPostsJson = prefs.getString("community_posts", null)
+        val localPosts = mutableListOf<CommunityPost>()
+        if (!savedPostsJson.isNullOrEmpty()) {
+            try {
+                val type = object : TypeToken<MutableList<CommunityPost>>() {}.type
+                val parsed: List<CommunityPost> = gson.fromJson(savedPostsJson, type) ?: emptyList()
+                localPosts.addAll(parsed)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        // 3. If we have local posts stored on the phone and not force-refreshing, use local phone storage!
+        // This directly fulfills: "once it loads it must stay on local phone that always read from firebase it eats spark plan"
+        if (localPosts.isNotEmpty() && !forceRefresh) {
+            val mapped = localPosts.map { it.copy(isLiked = likedSet.contains(it.id)) }
+            cachedPosts = mapped.toMutableList()
+            return@withContext getCachedCommunityPosts()
+        }
+
+        // 4. Either local storage is empty (first install) OR user explicitly requested refresh:
+        // Check daily read quota first — silently fall back to cache when quota is exhausted.
+        if (!canReadFromFirebase()) {
+            // Quota used up for today — serve whatever we have without hitting Firebase
+            if (localPosts.isNotEmpty()) {
+                cachedPosts = localPosts.map { it.copy(isLiked = likedSet.contains(it.id)) }.toMutableList()
+            }
+            return@withContext getCachedCommunityPosts()
+        }
+
+        // Count this as a Firebase read
+        incrementFirebaseReadCount()
+
+        // Query Firebase Firestore
+        try {
+            val snapshot = com.google.android.gms.tasks.Tasks.await(
+                firestore.collection("community_posts").get(),
+                10,
+                java.util.concurrent.TimeUnit.SECONDS
+            )
+
+            val remotePosts = mutableListOf<CommunityPost>()
+            for (doc in snapshot.documents) {
+                try {
+                    val id = doc.getString("id") ?: doc.id
+                    val author = doc.getString("author") ?: "HU Freshman"
+                    val role = doc.getString("role") ?: "Student"
+                    val date = doc.getString("date") ?: "Recently"
+                    val content = doc.getString("content") ?: ""
+                    val tag = doc.getString("tag") ?: "Academic"
+                    val imageUrl = doc.getString("imageUrl")
+                    val videoUrl = doc.getString("videoUrl") ?: doc.getString("youtubeUrl")
+                    val youtubeUrl = doc.getString("youtubeUrl") ?: videoUrl
+                    val likes = (doc.getLong("likes") ?: 0L).toInt()
+
+                    val commentsList = mutableListOf<Comment>()
+                    val rawComments = doc.get("comments") as? List<Map<String, Any>>
+                    rawComments?.forEach { cMap ->
+                        commentsList.add(
+                            Comment(
+                                id = cMap["id"] as? String ?: java.util.UUID.randomUUID().toString(),
+                                author = cMap["author"] as? String ?: "Student",
+                                content = cMap["content"] as? String ?: "",
+                                date = cMap["date"] as? String ?: "Recently"
+                            )
+                        )
+                    }
+
+                    if (content.isNotBlank()) {
+                        remotePosts.add(
+                            CommunityPost(
+                                id = id,
+                                author = author,
+                                role = role,
+                                date = date,
+                                content = content,
+                                tag = tag,
+                                imageUrl = imageUrl,
+                                videoUrl = videoUrl,
+                                youtubeUrl = youtubeUrl,
+                                likes = likes,
+                                isLiked = likedSet.contains(id),
+                                comments = commentsList
+                            )
+                        )
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+
+            if (remotePosts.isNotEmpty()) {
+                cachedPosts = remotePosts.toMutableList()
+                savePostsToPrefs(cachedPosts)
+                return@withContext getCachedCommunityPosts()
+            } else if (localPosts.isEmpty()) {
+                // If Firestore is completely empty and phone has no posts, seed authentic initial posts to Firestore
+                val initialPosts = getInitialCommunityPosts()
+                cachedPosts = initialPosts.map { it.copy(isLiked = likedSet.contains(it.id)) }.toMutableList()
+                savePostsToPrefs(cachedPosts)
+                initialPosts.forEach { post ->
+                    try {
+                        savePostToFirestore(post)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+                return@withContext getCachedCommunityPosts()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        // If network failed but local posts exist, stay on local phone
+        if (localPosts.isNotEmpty()) {
+            cachedPosts = localPosts.map { it.copy(isLiked = likedSet.contains(it.id)) }.toMutableList()
+            return@withContext getCachedCommunityPosts()
+        }
+
+        // Fallback default
+        val fallback = getInitialCommunityPosts()
+        cachedPosts = fallback.map { it.copy(isLiked = likedSet.contains(it.id)) }.toMutableList()
+        savePostsToPrefs(cachedPosts)
+        getCachedCommunityPosts()
+    }
+
+    private fun getInitialCommunityPosts(): List<CommunityPost> {
+        return listOf(
+            CommunityPost(
+                id = "post_hu_1",
+                author = "HU Freshman",
+                role = "HU Freshman",
+                date = "Official Notice",
+                content = "Welcome to Haramaya University freshman class of 2026/2027! The digital question bank has been updated with past midterm & final exams for Applied Math I, General Physics, and Logic.",
+                tag = "Academic",
+                likes = 48,
+                comments = listOf(
+                    Comment("c1", "Dawit K.", "Thank you HU Freshman! The step-by-step calculus solutions are really helpful.", "1 hr ago"),
+                    Comment("c2", "Selamawit T.", "Where can we find the general physics formulas sheet?", "30 mins ago")
+                )
+            ),
+            CommunityPost(
+                id = "post_hu_2",
+                author = "Kidus Yohannes (HU Engineering)",
+                role = "Student",
+                date = "Yesterday",
+                content = "Tips for First Semester: Don't fall behind on Critical Thinking arguments and Fallacies. Make sure you practice at least 5 past papers per subject before the mid exams!",
+                tag = "Tips",
+                likes = 32,
+                comments = listOf(
+                    Comment("c3", "Abebe B.", "Totally agree, informal fallacies tripped a lot of seniors up last year.", "5 hrs ago")
+                )
+            ),
+            CommunityPost(
+                id = "post_hu_3",
+                author = "HU Freshman",
+                role = "HU Freshman",
+                date = "2 days ago",
+                content = "Afran Kallo Main Library digital terminals are now operational 24/7 for exam revision. Fast Wi-Fi and power outlets available at Block B.",
+                tag = "Campus Life",
+                likes = 25
+            )
+        )
+    }
+
+    private fun savePostToFirestore(post: CommunityPost) {
+        val postMap = hashMapOf(
+            "id" to post.id,
+            "author" to post.author,
+            "role" to post.role,
+            "date" to post.date,
+            "content" to post.content,
+            "tag" to post.tag,
+            "likes" to post.likes.toLong(),
+            "comments" to post.comments.map { c ->
+                mapOf(
+                    "id" to c.id,
+                    "author" to c.author,
+                    "content" to c.content,
+                    "date" to c.date
+                )
+            },
+            "timestamp" to System.currentTimeMillis()
+        )
+        if (!post.imageUrl.isNullOrBlank()) {
+            postMap["imageUrl"] = post.imageUrl
+        }
+        if (!post.videoUrl.isNullOrBlank()) {
+            postMap["videoUrl"] = post.videoUrl
+        }
+        if (!post.youtubeUrl.isNullOrBlank()) {
+            postMap["youtubeUrl"] = post.youtubeUrl
+        }
+        firestore.collection("community_posts").document(post.id).set(postMap, SetOptions.merge())
     }
 
     private fun savePostsToPrefs(posts: List<CommunityPost>) {
         prefs.edit().putString("community_posts", gson.toJson(posts)).apply()
     }
 
-    suspend fun addPost(content: String, tag: String, author: String, role: String): CommunityPost = withContext(Dispatchers.IO) {
+    // ── Daily Quota Helpers ──────────────────────────────────────────────────
+    // All quota tracking is local (SharedPreferences) — zero extra Firebase reads.
+
+    private fun todayKey(): String {
+        val cal = java.util.Calendar.getInstance()
+        return "${cal.get(java.util.Calendar.YEAR)}_${cal.get(java.util.Calendar.DAY_OF_YEAR)}"
+    }
+
+    /** Returns true if a regular user is still allowed to post (max 2/day). */
+    fun canUserPost(): Boolean {
+        val key = "user_post_count_${todayKey()}"
+        return prefs.getInt(key, 0) < 2
+    }
+
+    /** Increments the user's daily post counter. Call after a successful post. */
+    fun incrementUserPostCount() {
+        val key = "user_post_count_${todayKey()}"
+        prefs.edit().putInt(key, prefs.getInt(key, 0) + 1).apply()
+    }
+
+    /** Returns true if the community feed can be freshly fetched from Firebase (max 10/day). */
+    fun canReadFromFirebase(): Boolean {
+        val key = "community_read_count_${todayKey()}"
+        return prefs.getInt(key, 0) < 10
+    }
+
+    /** Increments the daily Firebase read counter. Call just before each actual network fetch. */
+    fun incrementFirebaseReadCount() {
+        val key = "community_read_count_${todayKey()}"
+        prefs.edit().putInt(key, prefs.getInt(key, 0) + 1).apply()
+    }
+    // ────────────────────────────────────────────────────────────────────────
+
+
+    suspend fun addPost(
+        content: String,
+        tag: String,
+        author: String,
+        role: String,
+        imageUrl: String? = null,
+        videoUrl: String? = null
+    ): CommunityPost = withContext(Dispatchers.IO) {
         val newPost = CommunityPost(
             id = "post_" + System.currentTimeMillis(),
             author = author,
@@ -315,23 +693,64 @@ class AppRepository(private val context: Context) {
             date = "Just now",
             content = content,
             tag = tag,
+            imageUrl = imageUrl?.takeIf { it.isNotBlank() },
+            videoUrl = videoUrl?.takeIf { it.isNotBlank() },
+            youtubeUrl = videoUrl?.takeIf { it.isNotBlank() },
             likes = 0,
             isLiked = false,
             comments = emptyList()
         )
+        // 1. Instant local update
         cachedPosts.add(0, newPost)
         savePostsToPrefs(cachedPosts)
+
+        // 2. Targeted Firestore write (1 write, 0 reads to protect Spark quota)
+        try {
+            savePostToFirestore(newPost)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
         newPost
     }
 
-    suspend fun updatePost(postId: String, newContent: String, newTag: String): CommunityPost? = withContext(Dispatchers.IO) {
+    suspend fun updatePost(
+        postId: String,
+        newContent: String,
+        newTag: String,
+        newImageUrl: String? = null,
+        newVideoUrl: String? = null
+    ): CommunityPost? = withContext(Dispatchers.IO) {
         val index = cachedPosts.indexOfFirst { it.id == postId }
         if (index == -1) return@withContext null
 
         val current = cachedPosts[index]
-        val updated = current.copy(content = newContent, tag = newTag)
+        val updated = current.copy(
+            content = newContent,
+            tag = newTag,
+            imageUrl = newImageUrl?.takeIf { it.isNotBlank() },
+            videoUrl = newVideoUrl?.takeIf { it.isNotBlank() },
+            youtubeUrl = newVideoUrl?.takeIf { it.isNotBlank() }
+        )
         cachedPosts[index] = updated
         savePostsToPrefs(cachedPosts)
+
+        // Targeted Firestore update (1 write, 0 reads)
+        try {
+            val updateMap = mutableMapOf<String, Any>(
+                "content" to newContent,
+                "tag" to newTag
+            )
+            if (!newImageUrl.isNullOrBlank()) updateMap["imageUrl"] = newImageUrl
+            if (!newVideoUrl.isNullOrBlank()) {
+                updateMap["videoUrl"] = newVideoUrl
+                updateMap["youtubeUrl"] = newVideoUrl
+            }
+            firestore.collection("community_posts").document(postId).update(updateMap)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
         updated
     }
 
@@ -340,6 +759,14 @@ class AppRepository(private val context: Context) {
         if (removed) {
             savePostsToPrefs(cachedPosts)
         }
+
+        // Targeted Firestore delete (1 write, 0 reads)
+        try {
+            firestore.collection("community_posts").document(postId).delete()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
         removed
     }
 
@@ -358,6 +785,14 @@ class AppRepository(private val context: Context) {
         prefs.edit().putStringSet("liked_posts", likedSet).apply()
 
         savePostsToPrefs(cachedPosts)
+
+        // Targeted Firestore update (1 write, 0 reads)
+        try {
+            firestore.collection("community_posts").document(postId).update("likes", newLikes.toLong())
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
         updated
     }
 
@@ -365,16 +800,32 @@ class AppRepository(private val context: Context) {
         val index = cachedPosts.indexOfFirst { it.id == postId }
         if (index == -1) return@withContext null
 
-        val current = cachedPosts[index]
         val newComment = Comment(
             id = "c_" + System.currentTimeMillis(),
             author = author,
             content = commentText,
             date = "Just now"
         )
+        val current = cachedPosts[index]
         val updated = current.copy(comments = current.comments + newComment)
         cachedPosts[index] = updated
         savePostsToPrefs(cachedPosts)
+
+        // Targeted Firestore update (1 write, 0 reads)
+        try {
+            val commentMap = mapOf(
+                "id" to newComment.id,
+                "author" to newComment.author,
+                "content" to newComment.content,
+                "date" to newComment.date
+            )
+            firestore.collection("community_posts").document(postId).update(
+                "comments", FieldValue.arrayUnion(commentMap)
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
         updated
     }
 
@@ -404,12 +855,15 @@ class AppRepository(private val context: Context) {
     // User Profile
     fun getUserProfile(): UserProfile {
         val isApproved = prefs.getBoolean("user_is_approved", false)
+        val savedPhone = prefs.getString("user_phone", "") ?: ""
+        // A user is a guest if they have never logged in (no phone stored)
+        val isGuest = savedPhone.isBlank()
         return UserProfile(
             name = prefs.getString("user_name", "HU Freshman Student") ?: "HU Freshman Student",
             university = prefs.getString("user_university", "Haramaya University") ?: "Haramaya University",
             stream = prefs.getString("user_stream", "Natural Science") ?: "Natural Science",
             academicYear = prefs.getString("user_academic_year", "2026/2027 Academic Year") ?: "2026/2027 Academic Year",
-            phoneNumber = prefs.getString("user_phone", "") ?: "",
+            phoneNumber = savedPhone,
             password = prefs.getString("user_password", "") ?: "",
             isAdmin = prefs.getBoolean("user_is_admin", false),
             hasSubmittedRegistration = prefs.getBoolean("user_has_submitted_registration", false),
@@ -418,9 +872,11 @@ class AppRepository(private val context: Context) {
             transactionId = prefs.getString("user_transaction_id", "") ?: "",
             paymentMethod = prefs.getString("user_payment_method", "") ?: "",
             registrationDate = prefs.getString("user_registration_date", "") ?: "",
-            rejectionReason = prefs.getString("user_rejection_reason", null)
+            rejectionReason = prefs.getString("user_rejection_reason", null),
+            isGuest = isGuest
         )
     }
+
 
     fun saveUserProfile(profile: UserProfile) {
         prefs.edit()
@@ -484,6 +940,7 @@ class AppRepository(private val context: Context) {
                 "password" to reg.password,
                 "paymentMethod" to reg.paymentMethod,
                 "transactionId" to reg.transactionId,
+                "screenshotUrl" to reg.screenshotUrl,
                 "date" to reg.date,
                 "isApproved" to false,
                 "rejectionReason" to null,
@@ -784,8 +1241,22 @@ class AppRepository(private val context: Context) {
 
         // Check if admin phone number
         if (isAdminPhoneNumber(trimmedPhone)) {
-            val adminPasscode = prefs.getString("admin_passcode", "2026") ?: "2026"
-            if (secretOrKey.trim() != adminPasscode && secretOrKey.trim() != "2026") {
+            // Fetch passcode from Firebase Firestore; fallback to local SharedPrefs
+            var adminPasscode = prefs.getString("admin_passcode", "202642434342") ?: "202642434342"
+            try {
+                val configDoc = com.google.android.gms.tasks.Tasks.await(
+                    firestore.collection("app_config").document("admin").get()
+                )
+                val firebasePasscode = configDoc?.getString("passcode")
+                if (!firebasePasscode.isNullOrBlank()) {
+                    adminPasscode = firebasePasscode
+                    // Cache locally for offline use
+                    prefs.edit().putString("admin_passcode", adminPasscode).apply()
+                }
+            } catch (_: Exception) {
+                // Firestore unavailable; use cached/default passcode
+            }
+            if (secretOrKey.trim() != adminPasscode) {
                 return LoginResult.Error("Invalid administrator passcode. Access denied.")
             }
 
@@ -795,25 +1266,65 @@ class AppRepository(private val context: Context) {
                 .putBoolean("user_is_registered_member", true)
                 .putString("user_name", "HU Administrator")
                 .putString("user_university", "Haramaya University")
-                .putString("user_stream", "Faculty Administration")
-                .putString("user_academic_year", "Official Admin")
+                .putString("user_stream", "")
+                .putString("user_academic_year", "2026/2027 Academic Year")
                 .putString("user_phone", trimmedPhone)
                 .putString("user_password", secretOrKey.trim())
-                .putString("user_transaction_id", "OFFICIAL_ADMIN")
-                .putString("user_payment_method", "Official Admin")
-                .putString("user_registration_date", "Official")
+                .putString("user_transaction_id", "")
+                .putString("user_payment_method", "")
+                .putString("user_registration_date", "")
                 .putString("user_rejection_reason", null)
                 .putBoolean("user_is_admin", true)
                 .apply()
             return LoginResult.Success(isAdmin = true)
         }
 
-        // Regular student login
-        val list = loadMemberRegistrations()
-        val match = list.firstOrNull {
+        // --- Firebase Firestore cross-device login ---
+        // Try to find the user in Firestore using their phone number as document ID
+        val docId = cleanInput.ifBlank { return LoginResult.Error("Invalid phone number.") }
+        var firestoreMatch: MemberRegistration? = null
+        try {
+            val doc = com.google.android.gms.tasks.Tasks.await(
+                firestore.collection("member_registrations").document(docId).get()
+            )
+            if (doc != null && doc.exists()) {
+                val fullName = doc.getString("fullName") ?: ""
+                val universityName = doc.getString("universityName") ?: ""
+                val academicYear = doc.getString("academicYear") ?: ""
+                val phoneNumber = doc.getString("phoneNumber") ?: trimmedPhone
+                val password = doc.getString("password") ?: ""
+                val paymentMethod = doc.getString("paymentMethod") ?: ""
+                val transactionId = doc.getString("transactionId") ?: ""
+                val date = doc.getString("date") ?: ""
+                val isApproved = doc.getBoolean("isApproved") ?: false
+                val rejectionReason = doc.getString("rejectionReason")
+                firestoreMatch = MemberRegistration(
+                    id = doc.getString("id") ?: doc.id,
+                    fullName = fullName,
+                    universityName = universityName,
+                    academicYear = academicYear,
+                    phoneNumber = phoneNumber,
+                    password = password,
+                    paymentMethod = paymentMethod,
+                    transactionId = transactionId,
+                    date = date,
+                    isApproved = isApproved,
+                    rejectionReason = rejectionReason
+                )
+            }
+        } catch (e: Exception) {
+            // No internet – fall through to local cache
+            android.util.Log.w("AppRepository", "Firestore login fetch failed, using local cache: ${e.localizedMessage}")
+        }
+
+        // Also check local cache as fallback
+        val localList = loadMemberRegistrations()
+        val localMatch = localList.firstOrNull {
             val pClean = it.phoneNumber.replace(Regex("[^0-9]"), "")
             cleanInput.isNotBlank() && pClean.isNotBlank() && (pClean == cleanInput || pClean.endsWith(cleanInput) || cleanInput.endsWith(pClean))
         }
+
+        val match = firestoreMatch ?: localMatch
 
         if (match != null) {
             // Strict password check
@@ -836,6 +1347,15 @@ class AppRepository(private val context: Context) {
                 .putString("user_rejection_reason", match.rejectionReason)
                 .putBoolean("user_is_admin", false)
                 .apply()
+
+            // Cache the registration locally for offline use
+            val updatedList = localList.toMutableList()
+            val existingIdx = updatedList.indexOfFirst {
+                it.phoneNumber.replace(Regex("[^0-9]"), "") == cleanInput
+            }
+            if (existingIdx >= 0) updatedList[existingIdx] = match else updatedList.add(0, match)
+            prefs.edit().putString("member_registrations", com.google.gson.Gson().toJson(updatedList)).apply()
+
             return LoginResult.Success(isAdmin = false)
         }
 
@@ -912,4 +1432,21 @@ class AppRepository(private val context: Context) {
             .putInt("stat_total_correct", curCorrect + totalCorrect)
             .apply()
     }
+
+    suspend fun updateAdminPasscodeInFirebase(newPasscode: String): Boolean =
+        withContext(Dispatchers.IO) {
+            try {
+                val data = mapOf("passcode" to newPasscode)
+                com.google.android.gms.tasks.Tasks.await(
+                    firestore.collection("app_config").document("admin")
+                        .set(data, SetOptions.merge())
+                )
+                // Cache locally
+                prefs.edit().putString("admin_passcode", newPasscode).apply()
+                true
+            } catch (e: Exception) {
+                e.printStackTrace()
+                false
+            }
+        }
 }

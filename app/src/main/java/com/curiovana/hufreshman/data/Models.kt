@@ -10,7 +10,8 @@ data class ExamQuestion(
     val question: String,
     val options: List<String>,
     val answer: Int,
-    val explanation: String = "Detailed university solution provided."
+    val explanation: String = "Detailed university solution provided.",
+    val originalUniversity: String? = null
 )
 
 data class UniversityDetails(
@@ -62,6 +63,8 @@ data class CommunityPost(
     val date: String,
     val content: String,
     val tag: String = "Academic",
+    val imageUrl: String? = null,
+    val videoUrl: String? = null,
     val youtubeUrl: String? = null,
     val likes: Int = 0,
     val isLiked: Boolean = false,
@@ -82,7 +85,9 @@ data class UserProfile(
     val transactionId: String = "",
     val paymentMethod: String = "",
     val registrationDate: String = "",
-    val rejectionReason: String? = null
+    val rejectionReason: String? = null,
+    // isGuest = true means the user is browsing without logging in
+    val isGuest: Boolean = true
 )
 
 data class MemberRegistration(
@@ -94,6 +99,7 @@ data class MemberRegistration(
     val password: String = "",
     val paymentMethod: String = "",
     val transactionId: String = "",
+    val screenshotUrl: String = "",
     val date: String = "",
     val isApproved: Boolean = false,
     val rejectionReason: String? = null

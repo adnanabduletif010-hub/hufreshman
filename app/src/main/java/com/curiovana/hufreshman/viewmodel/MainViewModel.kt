@@ -59,7 +59,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val userAnswers = mutableStateMapOf<String, Int>()
     val showExplanation = mutableStateMapOf<String, Boolean>()
 
-    val timerSecondsLeft = MutableStateFlow(1800)
+    val timerSecondsLeft = MutableStateFlow(0)
+    val totalExamSeconds = MutableStateFlow(0)
+    val timeSpentSeconds = MutableStateFlow(0)
     val isTimerRunning = MutableStateFlow(false)
     val examSubmitted = MutableStateFlow(false)
     val examScore = MutableStateFlow<Pair<Int, Int>?>(null)
@@ -136,7 +138,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             id = "c8",
             name = "Emerging Technologies",
             shortName = "Emerging Tech",
-            description = "AI, Cloud, IoT & Blockchain Fundamentals",
+            description = "Coming in the Second Semester",
             colorHex = 0xFF6366F1,
             imageUrl = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=80"
         ),
@@ -144,7 +146,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             id = "c9",
             name = "Moral and Civics Education",
             shortName = "Civics & Ethics",
-            description = "Ethics, Constitution & Social Morality",
+            description = "Coming in the Second Semester",
             colorHex = 0xFFE11D48,
             imageUrl = "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&auto=format&fit=crop&q=80"
         ),
@@ -152,13 +154,22 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             id = "c10",
             name = "General Law",
             shortName = "General Law",
-            description = "Legal concepts, jurisprudence & constitutional law",
+            description = "Coming in the Second Semester",
             colorHex = 0xFF475569,
             imageUrl = "https://images.unsplash.com/photo-1505664194779-8beaceb93744?w=800&auto=format&fit=crop&q=80"
+        ),
+        SubjectCategory(
+            id = "c11",
+            name = "Introduction to Economics",
+            shortName = "Economics",
+            description = "Microeconomics, Macroeconomics & Ethiopian Economy",
+            colorHex = 0xFF16A34A,
+            imageUrl = "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&auto=format&fit=crop&q=80"
         )
     )
 
     // Available years for the selected subject and exam type
+    // Only includes genuine Haramaya University questions (originalUniversity == null)
     val availableExamYears: StateFlow<List<String>> = combine(
         _allQuestions,
         activeSubject,
@@ -168,6 +179,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             emptyList()
         } else {
             val matching = all.filter { q ->
+                q.originalUniversity == null &&           // hide sourced questions from students
                 q.course.contains(sub.name, ignoreCase = true) &&
                 q.category.contains(type, ignoreCase = true)
             }.map { it.year }.distinct()
@@ -176,7 +188,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    // Filtered questions flow based on drill-down and search
+    // Filtered questions flow based on drill-down and search.
+    // Questions with originalUniversity set are ADMIN-ONLY — completely hidden from students.
     val filteredQuestions: StateFlow<List<ExamQuestion>> = combine(
         _allQuestions,
         combine(activeSubject, activeExamType, activeYear) { sub, type, yr -> Triple(sub, type, yr) },
@@ -184,6 +197,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         searchQuery
     ) { all, (sub, examType, year), univ, query ->
         all.filter { q ->
+            val isStudentVisible = q.originalUniversity == null  // hide sourced questions
             val matchSub = sub == null || q.course.contains(sub.name, ignoreCase = true)
             val matchType = examType == null || q.category.contains(examType, ignoreCase = true)
             val matchYear = year == null || q.year.contains(year, ignoreCase = true)
@@ -192,9 +206,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     q.question.contains(query, ignoreCase = true) ||
                     q.course.contains(query, ignoreCase = true) ||
                     q.university.contains(query, ignoreCase = true)
-            matchSub && matchType && matchYear && matchUniv && matchQuery
+            isStudentVisible && matchSub && matchType && matchYear && matchUniv && matchQuery
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    // Admin-only: questions sourced from other universities, grouped by originalUniversity
+    val sourcedQuestions: StateFlow<Map<String, List<ExamQuestion>>> = _allQuestions.map { all ->
+        all.filter { it.originalUniversity != null }
+            .groupBy { it.originalUniversity!! }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyMap())
 
     fun selectSubject(subject: SubjectCategory) {
         activeSubject.value = subject
@@ -236,7 +256,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         phoneNumber: String,
         password: String,
         paymentMethod: String,
-        transactionId: String
+        transactionId: String,
+        screenshotUrl: String = ""
     ) {
         viewModelScope.launch {
             val reg = MemberRegistration(
@@ -247,6 +268,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 password = password,
                 paymentMethod = paymentMethod,
                 transactionId = transactionId,
+                screenshotUrl = screenshotUrl,
                 date = "Sep 19, 2026",
                 isApproved = false
             )
@@ -256,6 +278,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             observeCurrentUserApproval(phoneNumber)
         }
     }
+
 
     fun approveMemberRegistration(regId: String) {
         viewModelScope.launch {
@@ -410,9 +433,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _bookmarks.value = repository.getBookmarks()
     }
 
-    fun startTimedExam(durationSeconds: Int = 1800) {
+    fun startTimedExam(durationSeconds: Int) {
         practiceMode.value = ExamPracticeMode.TIMED
+        totalExamSeconds.value = durationSeconds
         timerSecondsLeft.value = durationSeconds
+        timeSpentSeconds.value = 0
         isTimerRunning.value = true
         examSubmitted.value = false
         examScore.value = null
@@ -424,17 +449,22 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             while (timerSecondsLeft.value > 0 && isTimerRunning.value) {
                 delay(1000)
                 timerSecondsLeft.value -= 1
+                timeSpentSeconds.value = totalExamSeconds.value - timerSecondsLeft.value
             }
-            if (timerSecondsLeft.value <= 0) {
+            if (timerSecondsLeft.value <= 0 && isTimerRunning.value) {
                 submitExam()
             }
         }
     }
 
     fun submitExam() {
+        // Hold/stop timer immediately upon submission
         timerJob?.cancel()
         isTimerRunning.value = false
         examSubmitted.value = true
+        timeSpentSeconds.value = if (totalExamSeconds.value > 0) {
+            totalExamSeconds.value - timerSecondsLeft.value
+        } else 0
 
         val currentList = filteredQuestions.value
         var correct = 0
@@ -442,6 +472,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             if (userAnswers[q.id] == q.answer) {
                 correct++
             }
+            // Auto-reveal explanations so the student can review their results and solutions
+            showExplanation[q.id] = true
         }
         val score = Pair(correct, currentList.size)
         examScore.value = score
@@ -455,15 +487,36 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         isTimerRunning.value = false
         examSubmitted.value = false
         examScore.value = null
+        timerSecondsLeft.value = 0
+        totalExamSeconds.value = 0
+        timeSpentSeconds.value = 0
         userAnswers.clear()
         showExplanation.clear()
         practiceMode.value = ExamPracticeMode.PRACTICE
     }
 
+    private val _isCommunitySyncing = MutableStateFlow(false)
+    val isCommunitySyncing: StateFlow<Boolean> = _isCommunitySyncing.asStateFlow()
+
+    fun refreshCommunityPosts(onResult: ((Boolean, String) -> Unit)? = null) {
+        viewModelScope.launch {
+            _isCommunitySyncing.value = true
+            try {
+                val updated = repository.loadCommunityPosts(forceRefresh = true)
+                _communityPosts.value = updated
+                onResult?.invoke(true, "Synced ${updated.size} posts from database")
+            } catch (e: Exception) {
+                onResult?.invoke(false, "Sync failed: ${e.localizedMessage ?: "Network error"}")
+            } finally {
+                _isCommunitySyncing.value = false
+            }
+        }
+    }
+
     fun toggleLike(postId: String) {
         viewModelScope.launch {
             repository.toggleLike(postId)
-            _communityPosts.value = repository.loadCommunityPosts()
+            _communityPosts.value = repository.getCachedCommunityPosts()
         }
     }
 
@@ -472,32 +525,60 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             val author = _userProfile.value.name
             repository.addComment(postId, commentText, author)
-            _communityPosts.value = repository.loadCommunityPosts()
+            _communityPosts.value = repository.getCachedCommunityPosts()
         }
     }
 
-    fun createPost(content: String, tag: String) {
+    fun createPost(
+        content: String,
+        tag: String,
+        imageUrl: String? = null,
+        videoUrl: String? = null,
+        author: String = "HU Freshman"
+    ) {
         if (content.isBlank()) return
+        val isAdmin = _userProfile.value.isAdmin
+
+        // Silent quota check for regular users — admin always bypasses
+        if (!isAdmin && !repository.canUserPost()) {
+            return  // silently do nothing — user hit the 2/day limit
+        }
+
         viewModelScope.launch {
-            val author = _userProfile.value.name
-            val role = if (_userProfile.value.isAdmin) "HU Admin" else "Student"
-            repository.addPost(content, tag, author, role)
-            _communityPosts.value = repository.loadCommunityPosts()
+            val postAuthor = if (isAdmin) "HU Freshman" else if (author.isNotBlank()) author else "Student"
+            val role = if (isAdmin) "HU Freshman" else "Student"
+            repository.addPost(
+                content = content,
+                tag = tag,
+                author = postAuthor,
+                role = role,
+                imageUrl = if (isAdmin) imageUrl else null,  // regular users: no image/video
+                videoUrl = if (isAdmin) videoUrl else null
+            )
+            // Only increment the daily counter for non-admin users
+            if (!isAdmin) repository.incrementUserPostCount()
+            _communityPosts.value = repository.getCachedCommunityPosts()
         }
     }
 
-    fun editPost(postId: String, newContent: String, newTag: String) {
+    fun editPost(
+        postId: String,
+        newContent: String,
+        newTag: String,
+        newImageUrl: String? = null,
+        newVideoUrl: String? = null
+    ) {
         if (newContent.isBlank()) return
         viewModelScope.launch {
-            repository.updatePost(postId, newContent, newTag)
-            _communityPosts.value = repository.loadCommunityPosts()
+            repository.updatePost(postId, newContent, newTag, newImageUrl, newVideoUrl)
+            _communityPosts.value = repository.getCachedCommunityPosts()
         }
     }
 
     fun deletePost(postId: String) {
         viewModelScope.launch {
             repository.deletePost(postId)
-            _communityPosts.value = repository.loadCommunityPosts()
+            _communityPosts.value = repository.getCachedCommunityPosts()
         }
     }
 
@@ -570,6 +651,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             _universities.value = repository.loadUniversities()
             if (selectedUniversityForDetail.value?.id == updated.id) {
                 selectedUniversityForDetail.value = updated
+            }
+        }
+    }
+
+    fun updateAdminPasscode(newPasscode: String, onResult: (Boolean, String) -> Unit) {
+        viewModelScope.launch {
+            val success = repository.updateAdminPasscodeInFirebase(newPasscode)
+            if (success) {
+                onResult(true, "Passcode updated successfully in Firebase.")
+            } else {
+                onResult(false, "Failed to update passcode. Check your connection.")
             }
         }
     }

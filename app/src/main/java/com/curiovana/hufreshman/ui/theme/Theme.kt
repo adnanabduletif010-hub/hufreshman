@@ -1,4 +1,4 @@
-﻿package com.curiovana.hufreshman.ui.theme
+package com.curiovana.hufreshman.ui.theme
 
 import android.app.Activity
 import android.os.Build
@@ -41,20 +41,12 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun HuFreshmanTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    darkTheme: Boolean = false,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
+    // Keep app visuals consistent across light & dark/night mode as requested
+    val colorScheme = LightColorScheme
 
     MaterialTheme(
         colorScheme = colorScheme,
@@ -62,3 +54,39 @@ fun HuFreshmanTheme(
         content = content
     )
 }
+
+// ------------------------------------------------------------
+// Screen Size & Adaptive Layout Helpers
+// ------------------------------------------------------------
+enum class WindowWidthSizeClass {
+    COMPACT,   // < 360dp (Small / Narrow phones)
+    MEDIUM,    // 360dp - 599dp (Standard to Large phones)
+    EXPANDED   // >= 600dp (Foldables unfolded, Tablets, Landscape)
+}
+
+data class ScreenDimensions(
+    val widthDp: Int,
+    val heightDp: Int,
+    val widthClass: WindowWidthSizeClass,
+    val isCompactWidth: Boolean,
+    val isLandscape: Boolean
+)
+
+@Composable
+fun rememberScreenDimensions(): ScreenDimensions {
+    val config = androidx.compose.ui.platform.LocalConfiguration.current
+    val width = config.screenWidthDp
+    val height = config.screenHeightDp
+    val widthClass = when {
+        width < 360 -> WindowWidthSizeClass.COMPACT
+        width < 600 -> WindowWidthSizeClass.MEDIUM
+        else -> WindowWidthSizeClass.EXPANDED
+    }
+    return ScreenDimensions(
+        widthDp = width,
+        heightDp = height,
+        widthClass = widthClass,
+        isCompactWidth = width < 360,
+        isLandscape = width > height
+    )
+}

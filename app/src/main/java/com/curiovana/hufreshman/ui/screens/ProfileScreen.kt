@@ -33,6 +33,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.curiovana.hufreshman.data.ExamPracticeMode
 import com.curiovana.hufreshman.ui.theme.*
 import com.curiovana.hufreshman.viewmodel.MainViewModel
@@ -116,14 +117,14 @@ fun ProfileScreen(
                                 }
                             }
                             if (userProfile.isAdmin) {
+                                // Admin gets a subtle shield icon instead of text badge
                                 Spacer(modifier = Modifier.width(4.dp))
-                                Box(
-                                    modifier = Modifier
-                                        .background(RoyalBlue, RoundedCornerShape(4.dp))
-                                        .padding(horizontal = 6.dp, vertical = 2.dp)
-                                ) {
-                                    Text("Admin", color = Color.White, fontSize = 9.sp, fontWeight = FontWeight.Bold)
-                                }
+                                Icon(
+                                    Icons.Default.Shield,
+                                    contentDescription = null,
+                                    tint = RoyalBlue,
+                                    modifier = Modifier.size(14.dp)
+                                )
                             }
                         }
                         Text(
@@ -132,11 +133,25 @@ fun ProfileScreen(
                             fontWeight = FontWeight.Medium,
                             color = RoyalBlue
                         )
-                        Text(
-                            text = "${userProfile.stream} • ${userProfile.academicYear}",
-                            fontSize = 11.sp,
-                            color = Slate700
-                        )
+                        val displayStream = userProfile.stream.trim()
+                        val displayYear = if (userProfile.academicYear.contains("admin", ignoreCase = true) || userProfile.academicYear.isBlank()) {
+                            "2026/2027 Academic Year"
+                        } else {
+                            userProfile.academicYear
+                        }
+                        if (displayStream.isNotBlank()) {
+                            Text(
+                                text = "$displayStream • $displayYear",
+                                fontSize = 11.sp,
+                                color = Slate700
+                            )
+                        } else {
+                            Text(
+                                text = displayYear,
+                                fontSize = 11.sp,
+                                color = Slate700
+                            )
+                        }
                         if (userProfile.phoneNumber.isNotBlank()) {
                             Text(
                                 text = "📱 ${userProfile.phoneNumber}",
@@ -148,117 +163,6 @@ fun ProfileScreen(
 
                     IconButton(onClick = { showEditProfileDialog = true }) {
                         Icon(Icons.Default.Edit, contentDescription = "Edit Profile", tint = Slate700)
-                    }
-                }
-            }
-        }
-
-        // HU Freshman Membership Banner / Card
-        if (userProfile.isRegisteredMember) {
-            Card(
-                shape = RoundedCornerShape(18.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFF0FDF4)),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .border(1.5.dp, EmeraldGreen, RoundedCornerShape(18.dp))
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Default.Verified, contentDescription = null, tint = EmeraldGreen, modifier = Modifier.size(24.dp))
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "Official HU Freshman Member",
-                            fontWeight = FontWeight.ExtraBold,
-                            fontSize = 15.sp,
-                            color = EmeraldGreen
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(6.dp))
-                    Text(
-                        text = "Your membership registration has been confirmed. Full academic database, past exam solutions & freshman tutorials unlocked.",
-                        fontSize = 12.sp,
-                        lineHeight = 17.sp,
-                        color = Slate800
-                    )
-                    if (userProfile.transactionId.isNotBlank()) {
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Row(
-                            modifier = Modifier
-                                .background(Color.White, RoundedCornerShape(8.dp))
-                                .border(1.dp, EmeraldGreen.copy(alpha = 0.3f), RoundedCornerShape(8.dp))
-                                .padding(horizontal = 10.dp, vertical = 6.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "Transaction ID: ${userProfile.transactionId}",
-                                fontSize = 11.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Slate900
-                            )
-                            Spacer(modifier = Modifier.width(6.dp))
-                            Text(
-                                text = "(${userProfile.paymentMethod.ifBlank { "Telebirr" }})",
-                                fontSize = 11.sp,
-                                color = Slate700
-                            )
-                        }
-                    }
-                }
-            }
-        } else {
-            Card(
-                shape = RoundedCornerShape(18.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFEFF6FF)),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .border(1.5.dp, RoyalBlue, RoundedCornerShape(18.dp))
-            ) {
-                Column(modifier = Modifier.padding(18.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Box(
-                            modifier = Modifier
-                                .size(32.dp)
-                                .background(RoyalBlue, CircleShape),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(Icons.Default.Stars, contentDescription = null, tint = Color.White, modifier = Modifier.size(18.dp))
-                        }
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Column {
-                            Text(
-                                text = "Join HU Freshman Membership",
-                                fontWeight = FontWeight.ExtraBold,
-                                fontSize = 15.sp,
-                                color = RoyalBlue
-                            )
-                            Text(
-                                text = "Telebirr, CBE & E-Birr Registration",
-                                fontSize = 11.sp,
-                                color = Slate700
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Text(
-                        text = "Register as an official freshman member to support repository updates and gain full access to verified answers, tutorials, and community privileges.",
-                        fontSize = 12.sp,
-                        lineHeight = 17.sp,
-                        color = Slate800
-                    )
-
-                    Spacer(modifier = Modifier.height(14.dp))
-
-                    Button(
-                        onClick = { showRegistrationDialog = true },
-                        colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue),
-                        shape = RoundedCornerShape(10.dp),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Icon(Icons.Default.AppRegistration, contentDescription = null, modifier = Modifier.size(18.dp))
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text("Register & Enter Transaction ID", fontWeight = FontWeight.Bold, fontSize = 13.sp)
                     }
                 }
             }
@@ -488,13 +392,13 @@ fun ProfileScreen(
         }
     }
 
-    // Member Registration Dialog (Telebirr, CBE, E-Birr with Transaction ID)
+    // Member Registration Dialog (Telebirr, CBE, E-Birr with Screenshot)
     if (showRegistrationDialog) {
         MemberRegistrationDialog(
             currentProfile = userProfile,
             onDismiss = { showRegistrationDialog = false },
-            onSubmit = { name, univ, year, phone, password, paymentMethod, txnId ->
-                viewModel.registerMember(name, univ, year, phone, password, paymentMethod, txnId)
+            onSubmit = { name, univ, year, phone, password, paymentMethod, txnId, screenshotUrl ->
+                viewModel.registerMember(name, univ, year, phone, password, paymentMethod, txnId, screenshotUrl)
                 showRegistrationDialog = false
             },
             onNavigateToLogin = {
@@ -554,6 +458,8 @@ fun ProfileScreen(
 
         AlertDialog(
             onDismissRequest = { showEditProfileDialog = false },
+            properties = DialogProperties(decorFitsSystemWindows = false),
+            modifier = Modifier.imePadding(),
             title = { Text("Edit Student Profile", fontWeight = FontWeight.Bold) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -655,7 +561,7 @@ fun ProfileScreen(
 fun MemberRegistrationDialog(
     currentProfile: com.curiovana.hufreshman.data.UserProfile,
     onDismiss: () -> Unit,
-    onSubmit: (name: String, university: String, academicYear: String, phone: String, password: String, paymentMethod: String, transactionId: String) -> Unit,
+    onSubmit: (name: String, university: String, academicYear: String, phone: String, password: String, paymentMethod: String, transactionId: String, screenshotUrl: String) -> Unit,
     onNavigateToLogin: (() -> Unit)? = null
 ) {
     var step by remember { mutableIntStateOf(1) }
@@ -668,17 +574,24 @@ fun MemberRegistrationDialog(
     var passwordVisible by remember { mutableStateOf(false) }
     var selectedPaymentMethod by remember { mutableStateOf("Telebirr") }
     var transactionId by remember { mutableStateOf("") }
+    var screenshotUri by remember { mutableStateOf<Uri?>(null) }
+    var screenshotUrl by remember { mutableStateOf("") }
+    var isUploading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
 
     val paymentMethods = listOf("Telebirr", "CBE Bank", "E-Birr")
 
-    Dialog(onDismissRequest = onDismiss) {
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)
+    ) {
         Surface(
             shape = RoundedCornerShape(20.dp),
             color = MaterialTheme.colorScheme.surface,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(0.95f)
                 .fillMaxHeight(0.92f)
+                .imePadding()
         ) {
             Column(
                 modifier = Modifier
@@ -904,18 +817,32 @@ fun MemberRegistrationDialog(
                             }
                         }
 
-                        OutlinedTextField(
-                            value = transactionId, onValueChange = { transactionId = it; errorMessage = "" },
-                            label = { Text("Transaction / Reference ID *") },
-                            placeholder = { Text("e.g. FT240825ABCD or TXN123456") },
-                            leadingIcon = { Icon(Icons.Default.Receipt, contentDescription = null, tint = EmeraldGreen) },
-                            modifier = Modifier.fillMaxWidth(), singleLine = true,
-                            isError = errorMessage.isNotBlank() && transactionId.isBlank()
+                        // ─── Screenshot Upload Dropzone ───
+                        Text(
+                            text = "Send your screenshot below:",
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = Slate900
                         )
 
-                        Text(
-                            "Copy the transaction ID from your SMS confirmation and paste it above.",
-                            fontSize = 11.sp, lineHeight = 16.sp, color = Slate700
+                        ScreenshotUploadZone(
+                            screenshotUri = screenshotUri,
+                            screenshotUrl = screenshotUrl,
+                            isUploading = isUploading,
+                            phoneNumber = phoneNumber,
+                            onUploadStarted = {
+                                isUploading = true
+                                errorMessage = ""
+                            },
+                            onUploadSuccess = { url, uri ->
+                                screenshotUrl = url
+                                screenshotUri = uri
+                                isUploading = false
+                            },
+                            onUploadError = { err ->
+                                isUploading = false
+                                errorMessage = err
+                            }
                         )
 
                         // Help / Contact note
@@ -959,16 +886,20 @@ fun MemberRegistrationDialog(
 
                     Button(
                         onClick = {
-                            if (transactionId.isBlank()) errorMessage = "Please enter the Transaction / Reference ID from your membership fee receipt."
-                            else onSubmit(name, university, academicYear, phoneNumber, password, selectedPaymentMethod, transactionId)
+                            when {
+                                isUploading -> errorMessage = "Please wait for the screenshot to finish uploading."
+                                screenshotUrl.isBlank() -> errorMessage = "Please choose and upload your screenshot first."
+                                else -> onSubmit(name, university, academicYear, phoneNumber, password, selectedPaymentMethod, transactionId, screenshotUrl)
+                            }
                         },
                         colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreen),
                         shape = RoundedCornerShape(12.dp),
-                        modifier = Modifier.fillMaxWidth().height(50.dp)
+                        modifier = Modifier.fillMaxWidth().height(50.dp),
+                        enabled = !isUploading
                     ) {
                         Icon(Icons.Default.CheckCircle, contentDescription = null)
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Submit Registration", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                        Text("Create Account", fontWeight = FontWeight.Bold, fontSize = 15.sp)
                     }
                 }
             }

@@ -1,7 +1,8 @@
-﻿package com.curiovana.hufreshman.ui.screens
+package com.curiovana.hufreshman.ui.screens
 
 import android.content.Intent
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -36,7 +37,11 @@ import com.curiovana.hufreshman.ui.theme.*
 import com.curiovana.hufreshman.viewmodel.MainViewModel
 
 @Composable
-fun UniversitiesScreen(viewModel: MainViewModel) {
+fun UniversitiesScreen(
+    viewModel: MainViewModel,
+    // Returns true if action is allowed, false if blocked (e.g. guest user)
+    onUniversitySelectedGate: () -> Boolean = { true }
+) {
     val universities by viewModel.universities.collectAsState()
     val userProfile by viewModel.userProfile.collectAsState()
     var searchQuery by remember { mutableStateOf("") }
@@ -51,6 +56,10 @@ fun UniversitiesScreen(viewModel: MainViewModel) {
             (it.amharicName?.contains(searchQuery, ignoreCase = true) == true) ||
             it.location.contains(searchQuery, ignoreCase = true)
         }
+    }
+
+    BackHandler(enabled = searchQuery.isNotBlank()) {
+        searchQuery = ""
     }
 
     Column(
@@ -125,7 +134,11 @@ fun UniversitiesScreen(viewModel: MainViewModel) {
                     university = univ,
                     isFlagship = univ.id == "univ_hu",
                     isAdmin = userProfile.isAdmin,
-                    onClick = { selectedUniversity = univ },
+                    onClick = {
+                        if (onUniversitySelectedGate()) {
+                            selectedUniversity = univ
+                        }
+                    },
                     onEdit = { editingUniversity = univ }
                 )
             }

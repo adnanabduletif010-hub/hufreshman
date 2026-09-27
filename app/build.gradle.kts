@@ -1,7 +1,17 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     id("com.google.gms.google-services")
+}
+
+val localProperties = Properties().apply {
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        FileInputStream(localPropertiesFile).use { load(it) }
+    }
 }
 
 android {
@@ -14,17 +24,41 @@ android {
         applicationId = "com.curiovana.hufreshman"
         minSdk = 24
         targetSdk = 37
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 9
+        versionName = "2.9"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            val storeProp = localProperties.getProperty("RELEASE_STORE_FILE")
+            val keystoreFile = when {
+                storeProp != null && rootProject.fil e(storeProp.replace("../", "")).exists() ->
+                    rootProject.file(storeProp.replace("../", ""))
+                file("release.keystore").exists() -> file("release.keystore")
+                rootProject.file("app/release.keystore").exists() -> rootProject.file("app/release.keystore")
+                else -> file("release.keystore")
+            }
+            storeFile = keystoreFile
+            storePassword = localProperties.getProperty("RELEASE_STORE_PASSWORD") ?: "42434342"
+            keyAlias = localProperties.getProperty("RELEASE_KEY_ALIAS") ?: "key0"
+            keyPassword = localProperties.getProperty("RELEASE_KEY_PASSWORD") ?: "42434342"
+            enableV1Signing = true
+            enableV2Signing = true
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig = signingConfigs.getByName("release")
             optimization {
                 enable = false
             }
+        }
+        debug {
+            // Use release signing key so debug builds match Play Store closed-test signatures
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {

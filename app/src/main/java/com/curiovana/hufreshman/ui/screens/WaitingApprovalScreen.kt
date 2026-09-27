@@ -163,7 +163,7 @@ fun WaitingApprovalScreen(
 
                 // Transaction Number with Copy
                 Text(
-                    text = "Transaction Number:",
+                    text = "Screenshot / Reference Number:",
                     fontSize = 12.sp,
                     color = Slate700,
                     fontWeight = FontWeight.Medium
