@@ -435,8 +435,15 @@ class AppRepository(private val context: Context) {
         return cachedPosts.map { it.copy(isLiked = likedSet.contains(it.id)) }
     }
 
+    private fun isDemoPost(id: String): Boolean {
+        return id.startsWith("post_hu_") || id == "post_hu_1" || id == "post_hu_2" || id == "post_hu_3"
+    }
+
     suspend fun loadCommunityPosts(forceRefresh: Boolean = false): List<CommunityPost> = withContext(Dispatchers.IO) {
         val likedSet = getLikedPostIds()
+
+        // Purge any legacy demo posts from in-memory cache
+        cachedPosts.removeAll { isDemoPost(it.id) }
 
         // 1. If in-memory cache is present and not force-refreshing, return immediately (0 network calls)
         if (cachedPosts.isNotEmpty() && !forceRefresh) {
@@ -450,13 +457,17 @@ class AppRepository(private val context: Context) {
             try {
                 val type = object : TypeToken<MutableList<CommunityPost>>() {}.type
                 val parsed: List<CommunityPost> = gson.fromJson(savedPostsJson, type) ?: emptyList()
-                localPosts.addAll(parsed)
+                val realPosts = parsed.filterNot { isDemoPost(it.id) }
+                if (realPosts.size != parsed.size) {
+                    savePostsToPrefs(realPosts)
+                }
+                localPosts.addAll(realPosts)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
 
-        // 3. If we have local posts stored on the phone and not force-refreshing, use local phone storage!
+        // 3. If we have real local posts stored on the phone and not force-refreshing, use local phone storage!
         // This directly fulfills: "once it loads it must stay on local phone that always read from firebase it eats spark plan"
         if (localPosts.isNotEmpty() && !forceRefresh) {
             val mapped = localPosts.map { it.copy(isLiked = likedSet.contains(it.id)) }
@@ -464,10 +475,10 @@ class AppRepository(private val context: Context) {
             return@withContext getCachedCommunityPosts()
         }
 
-        // 4. Either local storage is empty (first install) OR user explicitly requested refresh:
+        // 4. Either local storage has no real posts OR user explicitly requested refresh:
         // Check daily read quota first — silently fall back to cache when quota is exhausted.
         if (!canReadFromFirebase()) {
-            // Quota used up for today — serve whatever we have without hitting Firebase
+            // Quota used up for today — serve whatever real posts we have without hitting Firebase
             if (localPosts.isNotEmpty()) {
                 cachedPosts = localPosts.map { it.copy(isLiked = likedSet.contains(it.id)) }.toMutableList()
             }
@@ -477,7 +488,7 @@ class AppRepository(private val context: Context) {
         // Count this as a Firebase read
         incrementFirebaseReadCount()
 
-        // Query Firebase Firestore
+        // Query Firebase Firestore — exact content from database
         try {
             val snapshot = com.google.android.gms.tasks.Tasks.await(
                 firestore.collection("community_posts").get(),
@@ -489,6 +500,16 @@ class AppRepository(private val context: Context) {
             for (doc in snapshot.documents) {
                 try {
                     val id = doc.getString("id") ?: doc.id
+                    // If an old demo post was ever seeded into Firestore, delete it from Firestore and do not show it
+                    if (isDemoPost(id) || isDemoPost(doc.id)) {
+                        try {
+                            firestore.collection("community_posts").document(doc.id).delete()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                        continue
+                    }
+
                     val author = doc.getString("author") ?: "HU Freshman"
                     val role = doc.getString("role") ?: "Student"
                     val date = doc.getString("date") ?: "Recently"
@@ -498,6 +519,7 @@ class AppRepository(private val context: Context) {
                     val videoUrl = doc.getString("videoUrl") ?: doc.getString("youtubeUrl")
                     val youtubeUrl = doc.getString("youtubeUrl") ?: videoUrl
                     val likes = (doc.getLong("likes") ?: 0L).toInt()
+                    val timestamp = doc.getLong("timestamp") ?: id.removePrefix("post_").toLongOrNull() ?: 0L
 
                     val commentsList = mutableListOf<Comment>()
                     val rawComments = doc.get("comments") as? List<Map<String, Any>>
@@ -526,7 +548,8 @@ class AppRepository(private val context: Context) {
                                 youtubeUrl = youtubeUrl,
                                 likes = likes,
                                 isLiked = likedSet.contains(id),
-                                comments = commentsList
+                                comments = commentsList,
+                                timestamp = timestamp
                             )
                         )
                     }
@@ -535,78 +558,23 @@ class AppRepository(private val context: Context) {
                 }
             }
 
-            if (remotePosts.isNotEmpty()) {
-                cachedPosts = remotePosts.toMutableList()
-                savePostsToPrefs(cachedPosts)
-                return@withContext getCachedCommunityPosts()
-            } else if (localPosts.isEmpty()) {
-                // If Firestore is completely empty and phone has no posts, seed authentic initial posts to Firestore
-                val initialPosts = getInitialCommunityPosts()
-                cachedPosts = initialPosts.map { it.copy(isLiked = likedSet.contains(it.id)) }.toMutableList()
-                savePostsToPrefs(cachedPosts)
-                initialPosts.forEach { post ->
-                    try {
-                        savePostToFirestore(post)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-                return@withContext getCachedCommunityPosts()
-            }
+            // Exactly what is in database (mirrors database)
+            cachedPosts = remotePosts.toMutableList()
+            savePostsToPrefs(cachedPosts)
+            return@withContext getCachedCommunityPosts()
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
-        // If network failed but local posts exist, stay on local phone
+        // If network failed but real local posts exist, stay on local phone
         if (localPosts.isNotEmpty()) {
             cachedPosts = localPosts.map { it.copy(isLiked = likedSet.contains(it.id)) }.toMutableList()
             return@withContext getCachedCommunityPosts()
         }
 
-        // Fallback default
-        val fallback = getInitialCommunityPosts()
-        cachedPosts = fallback.map { it.copy(isLiked = likedSet.contains(it.id)) }.toMutableList()
-        savePostsToPrefs(cachedPosts)
+        // No real posts available in database or local
+        cachedPosts = mutableListOf()
         getCachedCommunityPosts()
-    }
-
-    private fun getInitialCommunityPosts(): List<CommunityPost> {
-        return listOf(
-            CommunityPost(
-                id = "post_hu_1",
-                author = "HU Freshman",
-                role = "HU Freshman",
-                date = "Official Notice",
-                content = "Welcome to Haramaya University freshman class of 2026/2027! The digital question bank has been updated with past midterm & final exams for Applied Math I, General Physics, and Logic.",
-                tag = "Academic",
-                likes = 48,
-                comments = listOf(
-                    Comment("c1", "Dawit K.", "Thank you HU Freshman! The step-by-step calculus solutions are really helpful.", "1 hr ago"),
-                    Comment("c2", "Selamawit T.", "Where can we find the general physics formulas sheet?", "30 mins ago")
-                )
-            ),
-            CommunityPost(
-                id = "post_hu_2",
-                author = "Kidus Yohannes (HU Engineering)",
-                role = "Student",
-                date = "Yesterday",
-                content = "Tips for First Semester: Don't fall behind on Critical Thinking arguments and Fallacies. Make sure you practice at least 5 past papers per subject before the mid exams!",
-                tag = "Tips",
-                likes = 32,
-                comments = listOf(
-                    Comment("c3", "Abebe B.", "Totally agree, informal fallacies tripped a lot of seniors up last year.", "5 hrs ago")
-                )
-            ),
-            CommunityPost(
-                id = "post_hu_3",
-                author = "HU Freshman",
-                role = "HU Freshman",
-                date = "2 days ago",
-                content = "Afran Kallo Main Library digital terminals are now operational 24/7 for exam revision. Fast Wi-Fi and power outlets available at Block B.",
-                tag = "Campus Life",
-                likes = 25
-            )
-        )
     }
 
     private fun savePostToFirestore(post: CommunityPost) {
@@ -686,8 +654,9 @@ class AppRepository(private val context: Context) {
         imageUrl: String? = null,
         videoUrl: String? = null
     ): CommunityPost = withContext(Dispatchers.IO) {
+        val now = System.currentTimeMillis()
         val newPost = CommunityPost(
-            id = "post_" + System.currentTimeMillis(),
+            id = "post_$now",
             author = author,
             role = role,
             date = "Just now",
@@ -698,7 +667,8 @@ class AppRepository(private val context: Context) {
             youtubeUrl = videoUrl?.takeIf { it.isNotBlank() },
             likes = 0,
             isLiked = false,
-            comments = emptyList()
+            comments = emptyList(),
+            timestamp = now
         )
         // 1. Instant local update
         cachedPosts.add(0, newPost)
@@ -859,7 +829,9 @@ class AppRepository(private val context: Context) {
         // A user is a guest if they have never logged in (no phone stored)
         val isGuest = savedPhone.isBlank()
         return UserProfile(
-            name = prefs.getString("user_name", "HU Freshman Student") ?: "HU Freshman Student",
+            name = prefs.getString("user_name", "")?.takeIf {
+                it.isNotBlank() && !it.contains("HU Freshman", ignoreCase = true)
+            } ?: "",
             university = prefs.getString("user_university", "Haramaya University") ?: "Haramaya University",
             stream = prefs.getString("user_stream", "Natural Science") ?: "Natural Science",
             academicYear = prefs.getString("user_academic_year", "2026/2027 Academic Year") ?: "2026/2027 Academic Year",
@@ -912,9 +884,10 @@ class AppRepository(private val context: Context) {
         } else {
             list.add(0, reg)
         }
+        val hasSubmittedPayment = reg.screenshotUrl.isNotBlank() || reg.paymentMethod.isNotBlank()
         prefs.edit()
             .putString("member_registrations", gson.toJson(list))
-            .putBoolean("user_has_submitted_registration", true)
+            .putBoolean("user_has_submitted_registration", hasSubmittedPayment)
             .putBoolean("user_is_approved", false)
             .putBoolean("user_is_registered_member", false)
             .putString("user_transaction_id", reg.transactionId)
@@ -955,6 +928,51 @@ class AppRepository(private val context: Context) {
                 .addOnFailureListener { e ->
                     android.util.Log.e("AppRepository", "Failed to sync registration to Firestore", e)
                 }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    fun updatePaymentVerification(paymentMethod: String, screenshotUrl: String) {
+        val currentPhone = prefs.getString("user_phone", "") ?: ""
+        val list = loadMemberRegistrations().toMutableList()
+        val index = list.indexOfFirst { it.phoneNumber == currentPhone }
+        if (index >= 0) {
+            val updated = list[index].copy(
+                paymentMethod = paymentMethod,
+                screenshotUrl = screenshotUrl,
+                isApproved = false,
+                rejectionReason = null
+            )
+            list[index] = updated
+            prefs.edit().putString("member_registrations", gson.toJson(list)).apply()
+        }
+        prefs.edit()
+            .putString("user_payment_method", paymentMethod)
+            .putBoolean("user_has_submitted_registration", true)
+            .apply()
+
+        // Sync to Cloud Firestore
+        try {
+            val docId = cleanPhone(currentPhone)
+            if (docId.isNotBlank()) {
+                val updates = hashMapOf<String, Any?>(
+                    "paymentMethod" to paymentMethod,
+                    "screenshotUrl" to screenshotUrl,
+                    "isApproved" to false,
+                    "rejectionReason" to null,
+                    "paymentSubmittedAt" to System.currentTimeMillis()
+                )
+                firestore.collection("member_registrations")
+                    .document(docId)
+                    .set(updates, SetOptions.merge())
+                    .addOnSuccessListener {
+                        android.util.Log.d("AppRepository", "Payment verification updated in Firestore for doc: $docId")
+                    }
+                    .addOnFailureListener { e ->
+                        android.util.Log.e("AppRepository", "Failed to update payment verification in Firestore", e)
+                    }
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -1066,6 +1084,7 @@ class AppRepository(private val context: Context) {
                                 val password = doc.getString("password") ?: ""
                                 val paymentMethod = doc.getString("paymentMethod") ?: ""
                                 val transactionId = doc.getString("transactionId") ?: ""
+                                val screenshotUrl = doc.getString("screenshotUrl") ?: ""
                                 val date = doc.getString("date") ?: ""
                                 val isApproved = doc.getBoolean("isApproved") ?: false
                                 val rejectionReason = doc.getString("rejectionReason")
@@ -1080,6 +1099,7 @@ class AppRepository(private val context: Context) {
                                             password = password,
                                             paymentMethod = paymentMethod,
                                             transactionId = transactionId,
+                                            screenshotUrl = screenshotUrl,
                                             date = date,
                                             isApproved = isApproved,
                                             rejectionReason = rejectionReason
@@ -1234,6 +1254,7 @@ class AppRepository(private val context: Context) {
                     val password = doc.getString("password") ?: ""
                     val paymentMethod = doc.getString("paymentMethod") ?: ""
                     val transactionId = doc.getString("transactionId") ?: ""
+                    val screenshotUrl = doc.getString("screenshotUrl") ?: ""
                     val date = doc.getString("date") ?: ""
                     val isApproved = doc.getBoolean("isApproved") ?: false
                     val rejectionReason = doc.getString("rejectionReason")
@@ -1248,6 +1269,7 @@ class AppRepository(private val context: Context) {
                                 password = password,
                                 paymentMethod = paymentMethod,
                                 transactionId = transactionId,
+                                screenshotUrl = screenshotUrl,
                                 date = date,
                                 isApproved = isApproved,
                                 rejectionReason = rejectionReason
@@ -1356,6 +1378,7 @@ class AppRepository(private val context: Context) {
                 val password = doc.getString("password") ?: ""
                 val paymentMethod = doc.getString("paymentMethod") ?: ""
                 val transactionId = doc.getString("transactionId") ?: ""
+                val screenshotUrl = doc.getString("screenshotUrl") ?: ""
                 val date = doc.getString("date") ?: ""
                 val isApproved = doc.getBoolean("isApproved") ?: false
                 val rejectionReason = doc.getString("rejectionReason")
@@ -1368,6 +1391,7 @@ class AppRepository(private val context: Context) {
                     password = password,
                     paymentMethod = paymentMethod,
                     transactionId = transactionId,
+                    screenshotUrl = screenshotUrl,
                     date = date,
                     isApproved = isApproved,
                     rejectionReason = rejectionReason
@@ -1429,7 +1453,7 @@ class AppRepository(private val context: Context) {
             .putBoolean("user_is_approved", false)
             .putBoolean("user_is_registered_member", false)
             .putBoolean("user_is_admin", false)
-            .putString("user_name", "HU Freshman Student")
+            .putString("user_name", "")
             .putString("user_transaction_id", "")
             .putString("user_phone", "")
             .putString("user_password", "")

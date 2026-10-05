@@ -49,6 +49,8 @@ import android.widget.Toast
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
 import com.curiovana.hufreshman.data.MemberRegistration
 import com.curiovana.hufreshman.data.UniversityGuide
@@ -625,7 +627,7 @@ fun CreateOfficialPostTab(viewModel: MainViewModel) {
     var selectedTag by remember { mutableStateOf("Official") }
     var showSuccess by remember { mutableStateOf(false) }
 
-    val tags = listOf("Official", "Academic", "Campus Life", "Exams")
+    val tags = listOf("Official", "Academic", "Ask Anyone", "Campus Life", "Exams")
 
     Column(
         modifier = Modifier
@@ -1050,6 +1052,75 @@ fun ManageUniversitiesTab(
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+// ── Reusable Screenshot Preview Dialog ─────────────────────────────────────────
+
+@Composable
+fun ScreenshotPreviewDialog(
+    url: String,
+    onDismiss: () -> Unit
+) {
+    val context = LocalContext.current
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black.copy(alpha = 0.94f))
+                .clickable { onDismiss() },
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    FilledTonalButton(
+                        onClick = {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                            context.startActivity(intent)
+                        },
+                        colors = ButtonDefaults.filledTonalButtonColors(containerColor = Color.White.copy(alpha = 0.2f))
+                    ) {
+                        Text("Open in Browser ↗", color = Color.White, fontSize = 12.sp)
+                    }
+                    IconButton(
+                        onClick = onDismiss,
+                        modifier = Modifier.background(Color.White.copy(alpha = 0.2f), CircleShape)
+                    ) {
+                        Icon(Icons.Default.Close, contentDescription = "Close", tint = Color.White)
+                    }
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    AsyncImage(
+                        model = url,
+                        contentDescription = "Full Screenshot Preview",
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(RoundedCornerShape(8.dp))
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("Tap background or ✕ to close", color = Color.White.copy(alpha = 0.7f), fontSize = 11.sp)
             }
         }
     }

@@ -30,7 +30,7 @@ object CloudinaryUploader {
             try {
                 val timestamp = (System.currentTimeMillis() / 1000).toString()
                 val safePhone = phoneNumber.replace("+", "").replace(" ", "").replace("-", "").ifBlank { "guest" }
-                val publicId = "$FOLDER/${safePhone}_$timestamp"
+                val publicId = "${safePhone}_$timestamp"
 
                 // Generate signature: sha1("folder=F&public_id=PID&timestamp=TS<API_SECRET>")
                 val signatureString = "folder=$FOLDER&public_id=$publicId&timestamp=$timestamp$API_SECRET"

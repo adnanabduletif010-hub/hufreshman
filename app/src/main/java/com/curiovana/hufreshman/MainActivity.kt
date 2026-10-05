@@ -79,6 +79,7 @@ class MainActivity : ComponentActivity() {
                 // Auth dialog state — shown as overlays, not full-screen gate
                 var showLoginDialog by remember { mutableStateOf(false) }
                 var showRegistrationDialog by remember { mutableStateOf(false) }
+                var showPaymentDialog by remember { mutableStateOf(false) }
 
                 val isWaitingApproval = !userProfile.isAdmin && userProfile.hasSubmittedRegistration && !userProfile.isApproved
                 val isLoggedIn = !userProfile.isGuest
@@ -203,12 +204,11 @@ class MainActivity : ComponentActivity() {
                         )
                     },
                     bottomBar = {
-                        // Show bottom nav always (guest users can browse)
-                        if (!isWaitingApproval) {
-                            NavigationBar(
-                                containerColor = MaterialTheme.colorScheme.surface,
-                                tonalElevation = 8.dp
-                            ) {
+                        // Show bottom nav always (guests and registered members can browse)
+                        NavigationBar(
+                            containerColor = MaterialTheme.colorScheme.surface,
+                            tonalElevation = 8.dp
+                        ) {
                                 val tabs = when {
                                     userProfile.isAdmin -> listOf(
                                         NavigationTab.EXAMS, NavigationTab.UNIVERSITIES,
@@ -268,7 +268,6 @@ class MainActivity : ComponentActivity() {
                                     )
                                 }
                             }
-                        }
                     },
                     modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->
@@ -305,48 +304,77 @@ class MainActivity : ComponentActivity() {
                                     )
                                 }
                             }
-                        } else if (isWaitingApproval) {
-                            WaitingApprovalScreen(
-                                userProfile = userProfile,
-                                viewModel = viewModel,
-                                onEditRegistration = {
-                                    showRegistrationDialog = true
-                                }
-                            )
                         } else {
-                            // Main content — guests can see Exams list, Universities list, Notes, Community posts
+                            // Main content — users can browse Exams list, Universities list, Notes, Community posts
                             Crossfade(targetState = currentTab, label = "TabCrossfade") { tab ->
                                 when (tab) {
                                     NavigationTab.EXAMS -> ExamBoardScreen(
                                         viewModel = viewModel,
                                         onNavigateToAdmin = { navigateToTab(NavigationTab.ADMIN) },
-                                        // Guest gate: block when clicking an exam year
+                                        // Gated when clicking an exam year
                                         onYearSelectedGate = {
-                                            if (userProfile.isGuest) {
-                                                showLoginDialog = true
-                                                false // blocked
-                                            } else true // allowed
+                                            when {
+                                                userProfile.isGuest -> {
+                                                    showLoginDialog = true
+                                                    false
+                                                }
+                                                !userProfile.isApproved && !userProfile.isAdmin -> {
+                                                    showPaymentDialog = true
+                                                    false
+                                                }
+                                                else -> true
+                                            }
                                         }
                                     )
                                     NavigationTab.UNIVERSITIES -> UniversitiesScreen(
                                         viewModel = viewModel,
-                                        // Guest gate: block when clicking into a university detail
+                                        // Gated when clicking into university detail
                                         onUniversitySelectedGate = {
-                                            if (userProfile.isGuest) {
-                                                showLoginDialog = true
-                                                false
-                                            } else true
+                                            when {
+                                                userProfile.isGuest -> {
+                                                    showLoginDialog = true
+                                                    false
+                                                }
+                                                !userProfile.isApproved && !userProfile.isAdmin -> {
+                                                    showPaymentDialog = true
+                                                    false
+                                                }
+                                                else -> true
+                                            }
                                         }
                                     )
-                                    NavigationTab.SHORT_NOTES -> ShortNotesScreen(viewModel = viewModel)
+                                    NavigationTab.SHORT_NOTES -> ShortNotesScreen(
+                                        viewModel = viewModel,
+                                        // Gated when clicking into short notes content
+                                        onContentGate = {
+                                            when {
+                                                userProfile.isGuest -> {
+                                                    showLoginDialog = true
+                                                    false
+                                                }
+                                                !userProfile.isApproved && !userProfile.isAdmin -> {
+                                                    showPaymentDialog = true
+                                                    false
+                                                }
+                                                else -> true
+                                            }
+                                        }
+                                    )
                                     NavigationTab.COMMUNITY -> CommunityScreen(
                                         viewModel = viewModel,
-                                        // Guest gate: block posting
+                                        // Gated when creating a post
                                         onPostGate = {
-                                            if (userProfile.isGuest) {
-                                                showLoginDialog = true
-                                                false
-                                            } else true
+                                            when {
+                                                userProfile.isGuest -> {
+                                                    showLoginDialog = true
+                                                    false
+                                                }
+                                                !userProfile.isApproved && !userProfile.isAdmin -> {
+                                                    showPaymentDialog = true
+                                                    false
+                                                }
+                                                else -> true
+                                            }
                                         }
                                     )
                                     NavigationTab.ADMIN -> AdminScreen(viewModel = viewModel)
@@ -373,6 +401,18 @@ class MainActivity : ComponentActivity() {
                                 },
                                 onCheckPhoneRegistered = { phone ->
                                     viewModel.isPhoneAlreadyRegistered(phone)
+                                }
+                            )
+                        }
+
+                        // Payment Verification Dialog (shown when unapproved user clicks premium content)
+                        if (showPaymentDialog && !userProfile.isApproved && !userProfile.isGuest && !userProfile.isAdmin) {
+                            PaymentVerificationDialog(
+                                phoneNumber = userProfile.phoneNumber,
+                                onDismiss = { showPaymentDialog = false },
+                                onPaymentSubmitted = { method, url ->
+                                    viewModel.submitPaymentVerification(method, url)
+                                    showPaymentDialog = false
                                 }
                             )
                         }

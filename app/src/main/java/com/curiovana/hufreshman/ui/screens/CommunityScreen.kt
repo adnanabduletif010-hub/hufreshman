@@ -62,7 +62,7 @@ fun CommunityScreen(
     var postToEdit by remember { mutableStateOf<CommunityPost?>(null) }
     var postToDelete by remember { mutableStateOf<CommunityPost?>(null) }
 
-    val tags = listOf("All", "Academic", "Tips", "Campus Life", "Exams", "Official")
+    val tags = listOf("All", "Academic", "Ask Anyone", "Tips", "Campus Life", "Exams", "Official")
 
     val filteredPosts = remember(posts, selectedTag) {
         if (selectedTag == "All") posts
@@ -231,6 +231,7 @@ fun CommunityScreen(
                         CommunityPostCard(
                             post = post,
                             isAdmin = userProfile.isAdmin,
+                            isAuthor = userProfile.name.isNotBlank() && userProfile.name.equals(post.author, ignoreCase = true),
                             onToggleLike = { viewModel.toggleLike(post.id) },
                             onAddComment = { commentText -> viewModel.addComment(post.id, commentText) },
                             onEditClick = { postToEdit = post },
@@ -261,8 +262,11 @@ fun CommunityScreen(
         )
     }
 
-    // Edit Post Dialog for Admin
-    if (postToEdit != null && userProfile.isAdmin) {
+    // Edit Post Dialog for Admin or Post Author
+    val isCurrentUserAuthorOfEdit = postToEdit != null &&
+        userProfile.name.isNotBlank() &&
+        userProfile.name.equals(postToEdit!!.author, ignoreCase = true)
+    if (postToEdit != null && (userProfile.isAdmin || isCurrentUserAuthorOfEdit)) {
         EditPostDialog(
             post = postToEdit!!,
             onDismiss = { postToEdit = null },
@@ -307,10 +311,49 @@ fun CommunityScreen(
     }
 }
 
+fun formatPostRelativeTime(post: CommunityPost): String {
+    val postTime = if (post.timestamp > 0L) {
+        post.timestamp
+    } else {
+        post.id.removePrefix("post_").toLongOrNull() ?: 0L
+    }
+
+    if (postTime <= 0L) {
+        return post.date.ifBlank { "Recently" }
+    }
+
+    val now = System.currentTimeMillis()
+    val diff = now - postTime
+    if (diff < 0L) return "Just now"
+
+    val seconds = diff / 1000
+    val minutes = seconds / 60
+    val hours = minutes / 60
+    val days = hours / 24
+    val weeks = days / 7
+    val months = days / 30
+
+    return when {
+        seconds < 60 -> "Just now"
+        minutes < 60 -> "${minutes}m ago"
+        hours == 1L -> "1 hour ago"
+        hours < 24 -> "${hours} hours ago"
+        days == 1L -> "Yesterday"
+        days < 7 -> "${days} days ago"
+        weeks < 4 -> "${weeks}w ago"
+        months < 12 -> "${months}mo ago"
+        else -> {
+            val sdf = java.text.SimpleDateFormat("MMM d, yyyy", java.util.Locale.getDefault())
+            sdf.format(java.util.Date(postTime))
+        }
+    }
+}
+
 @Composable
 fun CommunityPostCard(
     post: CommunityPost,
     isAdmin: Boolean = false,
+    isAuthor: Boolean = false,
     onToggleLike: () -> Unit,
     onAddComment: (String) -> Unit,
     onEditClick: (() -> Unit)? = null,
@@ -404,13 +447,13 @@ fun CommunityPostCard(
                         }
                     }
                     Text(
-                        text = "${post.date} • ${post.tag}",
+                        text = "${formatPostRelativeTime(post)} • ${post.tag}",
                         fontSize = 11.sp,
                         color = Slate700
                     )
                 }
 
-                if (isAdmin) {
+                if (isAdmin || isAuthor) {
                     var showMenu by remember { mutableStateOf(false) }
                     Box {
                         IconButton(onClick = { showMenu = true }) {
@@ -540,20 +583,6 @@ fun CommunityPostCard(
             }
 
             Spacer(modifier = Modifier.height(12.dp))
-
-            // Tag chip
-            Box(
-                modifier = Modifier
-                    .background(
-                        if (isOfficial) RoyalBlue.copy(alpha = 0.12f) else Slate700.copy(alpha = 0.08f),
-                        RoundedCornerShape(6.dp)
-                    )
-                    .padding(horizontal = 8.dp, vertical = 3.dp)
-            ) {
-                Text(post.tag, fontSize = 10.sp, color = if (isOfficial) RoyalBlue else Slate700, fontWeight = FontWeight.Bold)
-            }
-
-            Spacer(modifier = Modifier.height(10.dp))
 
             // Actions row
             HorizontalDivider(color = Color(0xFFF1F5F9))
@@ -753,9 +782,9 @@ fun CreatePostDialog(
     var videoUrlText by remember { mutableStateOf("") }
     val author = if (isAdmin) "HU Freshman" else userName.ifBlank { "Student" }
     val tags = if (isAdmin) {
-        listOf("Official", "Academic", "Tips", "Campus Life", "Exams")
+        listOf("Official", "Academic", "Ask Anyone", "Tips", "Campus Life", "Exams")
     } else {
-        listOf("Academic", "Tips", "Campus Life", "Exams")
+        listOf("Academic", "Ask Anyone", "Tips", "Campus Life", "Exams")
     }
     val scrollState = rememberScrollState()
 
@@ -1167,7 +1196,7 @@ fun EditPostDialog(
     var selectedTag by remember { mutableStateOf(post.tag) }
     var imageUrlText by remember { mutableStateOf(post.imageUrl ?: "") }
     var videoUrlText by remember { mutableStateOf(post.videoUrl ?: "") }
-    val tags = listOf("Official", "Academic", "Tips", "Campus Life", "Exams")
+    val tags = listOf("Official", "Academic", "Ask Anyone", "Tips", "Campus Life", "Exams")
     val scrollState = rememberScrollState()
 
     Dialog(
@@ -1238,7 +1267,7 @@ fun EditPostDialog(
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
-                                text = "Posted: ${post.date}",
+                                text = "Posted: ${formatPostRelativeTime(post)}",
                                 fontSize = 11.5.sp,
                                 color = Slate700
                             )

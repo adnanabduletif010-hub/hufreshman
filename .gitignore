@@ -11,5 +11,6 @@ app/build
 .cxx
 local.properties
 *.apk
+*.aab
 node_modules
 .firebase

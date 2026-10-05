@@ -265,7 +265,7 @@ fun UniversitiesScreen(
                             if (!d.cafeFood.isNullOrBlank() || !d.outsideFood.isNullOrBlank()) {
                                 val foodInfo = buildString {
                                     if (!d.cafeFood.isNullOrBlank()) append("🍽️ Student Cafe:\n${d.cafeFood}\n\n")
-                                    if (!d.outsideFood.isNullOrBlank()) append("☕ Outside Food & Prices:\n${d.outsideFood}")
+                                    if (!d.outsideFood.isNullOrBlank()) append("☕ Outside Food & Cafeterias:\n${d.outsideFood}")
                                 }
                                 GuideSectionCard(
                                     icon = Icons.Default.Restaurant,
@@ -637,7 +637,7 @@ fun EditUniversityDialog(
                     OutlinedTextField(value = transport, onValueChange = { transport = it }, label = { Text("Location & Transport Instructions") }, modifier = Modifier.fillMaxWidth(), minLines = 2)
                     OutlinedTextField(value = weather, onValueChange = { weather = it }, label = { Text("Campus Weather & Climate") }, modifier = Modifier.fillMaxWidth())
                     OutlinedTextField(value = cafeFood, onValueChange = { cafeFood = it }, label = { Text("Student Cafe Meals") }, modifier = Modifier.fillMaxWidth(), minLines = 2)
-                    OutlinedTextField(value = outsideFood, onValueChange = { outsideFood = it }, label = { Text("Outside Food & Cafeteria Prices") }, modifier = Modifier.fillMaxWidth(), minLines = 2)
+                    OutlinedTextField(value = outsideFood, onValueChange = { outsideFood = it }, label = { Text("Outside Food & Cafeterias") }, modifier = Modifier.fillMaxWidth(), minLines = 2)
                     OutlinedTextField(value = dorms, onValueChange = { dorms = it }, label = { Text("Dormitories & Lockers") }, modifier = Modifier.fillMaxWidth())
                     OutlinedTextField(value = utilities, onValueChange = { utilities = it }, label = { Text("Utilities (Water, Power, Wi-Fi)") }, modifier = Modifier.fillMaxWidth())
                     OutlinedTextField(value = safetyAdvice, onValueChange = { safetyAdvice = it }, label = { Text("Safety & Freshmen Advice") }, modifier = Modifier.fillMaxWidth(), minLines = 2)

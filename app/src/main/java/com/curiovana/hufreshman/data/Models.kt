@@ -68,11 +68,12 @@ data class CommunityPost(
     val youtubeUrl: String? = null,
     val likes: Int = 0,
     val isLiked: Boolean = false,
-    val comments: List<Comment> = emptyList()
+    val comments: List<Comment> = emptyList(),
+    val timestamp: Long = 0L
 )
 
 data class UserProfile(
-    val name: String = "HU Freshman",
+    val name: String = "",
     val university: String = "Haramaya University",
     val stream: String = "Natural Science",
     val academicYear: String = "2026/2027 Academic Year",

@@ -24,8 +24,8 @@ android {
         applicationId = "com.curiovana.hufreshman"
         minSdk = 24
         targetSdk = 37
-        versionCode = 9
-        versionName = "2.9"
+        versionCode = 12
+        versionName = "3.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -52,9 +52,12 @@ android {
     buildTypes {
         release {
             signingConfig = signingConfigs.getByName("release")
-            optimization {
-                enable = false
-            }
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
         debug {
             // Use release signing key so debug builds match Play Store closed-test signatures

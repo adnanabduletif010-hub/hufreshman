@@ -45,7 +45,10 @@ import com.curiovana.hufreshman.viewmodel.MainViewModel
 
 
 @Composable
-fun ShortNotesScreen(viewModel: MainViewModel) {
+fun ShortNotesScreen(
+    viewModel: MainViewModel,
+    onContentGate: () -> Boolean = { true }
+) {
     var selectedSubject by remember { mutableStateOf<SubjectCategory?>(null) }
     var selectedUnit by remember { mutableStateOf<String?>(null) }
     var searchQuery by remember { mutableStateOf("") }
@@ -70,7 +73,7 @@ fun ShortNotesScreen(viewModel: MainViewModel) {
                     note.subject.contains(searchQuery, ignoreCase = true) ||
                     note.unit.contains(searchQuery, ignoreCase = true)
                 }
-                NotesListView(notes = searchResults)
+                NotesListView(notes = searchResults, onNoteClickGate = onContentGate)
             }
 
             // Level 0: Subject Grid with authentic images (identical to ExamBoardScreen structure)
@@ -79,8 +82,10 @@ fun ShortNotesScreen(viewModel: MainViewModel) {
                     subjects = viewModel.subjectCategories,
                     allNotes = sampleNotes,
                     onSelectSubject = { subject ->
-                        selectedSubject = subject
-                        selectedUnit = null
+                        if (onContentGate()) {
+                            selectedSubject = subject
+                            selectedUnit = null
+                        }
                     }
                 )
             }
@@ -91,7 +96,8 @@ fun ShortNotesScreen(viewModel: MainViewModel) {
                     subject = selectedSubject!!,
                     selectedUnit = selectedUnit,
                     onSelectUnit = { selectedUnit = it },
-                    allNotes = sampleNotes
+                    allNotes = sampleNotes,
+                    onNoteClickGate = onContentGate
                 )
             }
         }
@@ -294,7 +300,8 @@ fun SubjectNotesDetailView(
     subject: SubjectCategory,
     selectedUnit: String?,
     onSelectUnit: (String?) -> Unit,
-    allNotes: List<ShortNote>
+    allNotes: List<ShortNote>,
+    onNoteClickGate: () -> Boolean = { true }
 ) {
     val subjectAllNotes = remember(allNotes, subject.id, subject.name, subject.shortName) {
         allNotes.filter { note ->
@@ -416,7 +423,7 @@ fun SubjectNotesDetailView(
         Spacer(modifier = Modifier.height(6.dp))
 
         // Notes List
-        NotesListView(notes = subjectNotes)
+        NotesListView(notes = subjectNotes, onNoteClickGate = onNoteClickGate)
     }
 }
 
@@ -424,7 +431,10 @@ fun SubjectNotesDetailView(
 // List of Note Cards
 // ------------------------------------------------------------
 @Composable
-fun NotesListView(notes: List<ShortNote>) {
+fun NotesListView(
+    notes: List<ShortNote>,
+    onNoteClickGate: () -> Boolean = { true }
+) {
     if (notes.isEmpty()) {
         Box(
             modifier = Modifier
@@ -460,7 +470,7 @@ fun NotesListView(notes: List<ShortNote>) {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(notes, key = { it.id }) { note ->
-                NoteCard(note = note)
+                NoteCard(note = note, onNoteClickGate = onNoteClickGate)
             }
             item { Spacer(modifier = Modifier.height(28.dp)) }
         }
@@ -471,7 +481,10 @@ fun NotesListView(notes: List<ShortNote>) {
 // Individual Clean Note Card
 // ------------------------------------------------------------
 @Composable
-fun NoteCard(note: ShortNote) {
+fun NoteCard(
+    note: ShortNote,
+    onNoteClickGate: () -> Boolean = { true }
+) {
     var expanded by remember { mutableStateOf(false) }
     var showReaderDialog by remember { mutableStateOf(false) }
     val accentColor = Color(note.colorHex)
@@ -541,7 +554,7 @@ fun NoteCard(note: ShortNote) {
 
                 // Expand indicator button
                 IconButton(
-                    onClick = { expanded = !expanded },
+                    onClick = { if (expanded || onNoteClickGate()) expanded = !expanded },
                     modifier = Modifier.size(30.dp)
                 ) {
                     Icon(
@@ -560,7 +573,7 @@ fun NoteCard(note: ShortNote) {
                 fontWeight = FontWeight.ExtraBold,
                 fontSize = 15.sp,
                 color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.clickable { expanded = !expanded }
+                modifier = Modifier.clickable { if (expanded || onNoteClickGate()) expanded = !expanded }
             )
 
             // Content preview or full text
@@ -590,7 +603,7 @@ fun NoteCard(note: ShortNote) {
                     Spacer(modifier = Modifier.width(4.dp))
 
                     TextButton(
-                        onClick = { showReaderDialog = true },
+                        onClick = { if (onNoteClickGate()) showReaderDialog = true },
                         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp)
                     ) {
                         Icon(Icons.AutoMirrored.Filled.MenuBook, contentDescription = null, modifier = Modifier.size(16.dp), tint = accentColor)
@@ -614,14 +627,14 @@ fun NoteCard(note: ShortNote) {
                     lineHeight = 17.sp,
                     maxLines = 2,
                     color = Slate700,
-                    modifier = Modifier.clickable { expanded = true }
+                    modifier = Modifier.clickable { if (onNoteClickGate()) expanded = true }
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Row(
                     modifier = Modifier
                         .clip(RoundedCornerShape(8.dp))
                         .background(accentColor.copy(alpha = 0.08f))
-                        .clickable { expanded = true }
+                        .clickable { if (onNoteClickGate()) expanded = true }
                         .padding(horizontal = 10.dp, vertical = 4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {

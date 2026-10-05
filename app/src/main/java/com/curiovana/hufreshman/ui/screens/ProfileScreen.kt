@@ -26,7 +26,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -56,6 +59,7 @@ fun ProfileScreen(
     var showLogoutDialog by remember { mutableStateOf(false) }
     var showDeleteAccountDialog by remember { mutableStateOf(false) }
     var showPrivacyDialog by remember { mutableStateOf(false) }
+    var showPaymentDialog by remember { mutableStateOf(false) }
 
     val bookmarkedQuestions = remember(bookmarks, allQuestions) {
         allQuestions.filter { bookmarks.contains(it.id) }
@@ -81,6 +85,14 @@ fun ProfileScreen(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    val displayName = if (userProfile.name.isNotBlank() && !userProfile.name.contains("HU Freshman", ignoreCase = true)) {
+                        userProfile.name
+                    } else if (userProfile.isGuest) {
+                        "Guest Student"
+                    } else {
+                        "Student"
+                    }
+
                     Box(
                         modifier = Modifier
                             .size(62.dp)
@@ -91,7 +103,7 @@ fun ProfileScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = userProfile.name.firstOrNull()?.toString() ?: "H",
+                            text = displayName.firstOrNull()?.toString()?.uppercase() ?: "S",
                             color = Color.White,
                             fontWeight = FontWeight.ExtraBold,
                             fontSize = 24.sp
@@ -103,7 +115,7 @@ fun ProfileScreen(
                     Column(modifier = Modifier.weight(1f)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                text = userProfile.name,
+                                text = displayName,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 17.sp,
                                 color = MaterialTheme.colorScheme.onSurface
@@ -290,7 +302,28 @@ fun ProfileScreen(
                     modifier = Modifier.clickable { showPrivacyDialog = true }
                 )
 
-                if (userProfile.hasSubmittedRegistration || userProfile.isAdmin || userProfile.isApproved) {
+                if (!userProfile.isApproved && !userProfile.isGuest && !userProfile.isAdmin) {
+                    HorizontalDivider(modifier = Modifier.padding(horizontal = 8.dp))
+
+                    ListItem(
+                        headlineContent = { Text("Complete Membership Payment", fontWeight = FontWeight.SemiBold, color = RoyalBlue) },
+                        supportingContent = { Text("Upload payment screenshot to unlock all exams and notes", fontSize = 12.sp) },
+                        leadingContent = {
+                            Box(
+                                modifier = Modifier
+                                    .size(36.dp)
+                                    .background(AmberWarning.copy(alpha = 0.15f), RoundedCornerShape(8.dp)),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(Icons.Default.Payment, contentDescription = null, tint = AmberWarning)
+                            }
+                        },
+                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
+                        modifier = Modifier.clickable { showPaymentDialog = true }
+                    )
+                }
+
+                if (userProfile.hasSubmittedRegistration || userProfile.isAdmin || userProfile.isApproved || !userProfile.isGuest) {
                     HorizontalDivider(modifier = Modifier.padding(horizontal = 8.dp))
 
                     ListItem(
@@ -413,6 +446,18 @@ fun ProfileScreen(
         )
     }
 
+    // Payment Verification Dialog
+    if (showPaymentDialog) {
+        PaymentVerificationDialog(
+            phoneNumber = userProfile.phoneNumber,
+            onDismiss = { showPaymentDialog = false },
+            onPaymentSubmitted = { method, url ->
+                viewModel.submitPaymentVerification(method, url)
+                showPaymentDialog = false
+            }
+        )
+    }
+
     // Login Dialog
     if (showLoginDialog) {
         LoginDialog(
@@ -456,7 +501,11 @@ fun ProfileScreen(
 
     // Edit Profile Dialog
     if (showEditProfileDialog) {
-        var tempName by remember { mutableStateOf(userProfile.name) }
+        var tempName by remember {
+            mutableStateOf(
+                if (userProfile.name.contains("HU Freshman", ignoreCase = true) || userProfile.isGuest) "" else userProfile.name
+            )
+        }
         var tempUniv by remember { mutableStateOf(userProfile.university) }
         var tempStream by remember { mutableStateOf(userProfile.stream) }
         var tempPhone by remember {
@@ -472,7 +521,15 @@ fun ProfileScreen(
             title = { Text("Edit Student Profile", fontWeight = FontWeight.Bold) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    OutlinedTextField(value = tempName, onValueChange = { tempName = it }, label = { Text("Student Name") }, modifier = Modifier.fillMaxWidth())
+                    OutlinedTextField(
+                        value = tempName,
+                        onValueChange = { tempName = it },
+                        label = { Text("Student Name") },
+                        placeholder = { Text("e.g. Dawit Kebede", fontStyle = FontStyle.Italic, color = Color(0xFF94A3B8)) },
+                        supportingText = { Text("e.g., Dawit Kebede (First & Father's Name)", fontSize = 11.sp, color = Slate700) },
+                        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words, imeAction = ImeAction.Next),
+                        modifier = Modifier.fillMaxWidth()
+                    )
                     OutlinedTextField(value = tempUniv, onValueChange = { tempUniv = it }, label = { Text("University") }, modifier = Modifier.fillMaxWidth())
                     OutlinedTextField(
                         value = tempPhone,
@@ -580,8 +637,11 @@ fun MemberRegistrationDialog(
 ) {
     val regScope = rememberCoroutineScope()
     var isCheckingPhone by remember { mutableStateOf(false) }
-    var step by remember { mutableIntStateOf(1) }
-    var name by remember { mutableStateOf(currentProfile.name) }
+    var name by remember {
+        mutableStateOf(
+            if (currentProfile.name.contains("HU Freshman", ignoreCase = true) || currentProfile.isGuest) "" else currentProfile.name
+        )
+    }
     var university by remember { mutableStateOf(currentProfile.university) }
     var academicYear by remember { mutableStateOf(currentProfile.academicYear) }
     var phoneNumber by remember {
@@ -592,14 +652,7 @@ fun MemberRegistrationDialog(
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
-    var selectedPaymentMethod by remember { mutableStateOf("Telebirr") }
-    var transactionId by remember { mutableStateOf("") }
-    var screenshotUri by remember { mutableStateOf<Uri?>(null) }
-    var screenshotUrl by remember { mutableStateOf("") }
-    var isUploading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
-
-    val paymentMethods = listOf("Telebirr", "CBE Bank", "E-Birr")
 
     Dialog(
         onDismissRequest = onDismiss,
@@ -625,16 +678,10 @@ fun MemberRegistrationDialog(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        if (step == 2) {
-                            IconButton(onClick = { step = 1; errorMessage = "" }) {
-                                Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = RoyalBlue)
-                            }
-                        } else {
-                            Icon(Icons.Default.AppRegistration, contentDescription = null, tint = RoyalBlue, modifier = Modifier.size(24.dp))
-                            Spacer(modifier = Modifier.width(8.dp))
-                        }
+                        Icon(Icons.Default.AppRegistration, contentDescription = null, tint = RoyalBlue, modifier = Modifier.size(24.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = if (step == 1) "Create Account" else "Membership Verification",
+                            text = "Create Account",
                             fontWeight = FontWeight.Bold, fontSize = 17.sp
                         )
                     }
@@ -642,25 +689,9 @@ fun MemberRegistrationDialog(
                         Icon(Icons.Default.Close, contentDescription = "Close")
                     }
                 }
+                Spacer(modifier = Modifier.height(10.dp))
 
-                // Step progress bar
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Box(modifier = Modifier.weight(1f).height(4.dp).background(RoyalBlue, RoundedCornerShape(2.dp)))
-                    Box(modifier = Modifier.weight(1f).height(4.dp).background(
-                        if (step == 2) RoyalBlue else Slate700.copy(alpha = 0.18f), RoundedCornerShape(2.dp)
-                    ))
-                }
-                Text(
-                    text = if (step == 1) "Step 1 of 2 — Your Information" else "Step 2 of 2 — Membership Verification",
-                    fontSize = 11.sp, color = Slate700, modifier = Modifier.padding(bottom = 8.dp)
-                )
-
-                // ══ STEP 1: Account Info ══
-                if (step == 1) {
+                // ══ Account Info Form ══
                     // Already have an account? Log In  (shown at very top of step 1)
                     if (onNavigateToLogin != null) {
                         Surface(
@@ -690,21 +721,45 @@ fun MemberRegistrationDialog(
                     ) {
                         OutlinedTextField(
                             value = name, onValueChange = { name = it; errorMessage = "" },
-                            label = { Text("Full Name *") }, placeholder = { Text("e.g. Dawit Kebede") },
+                            label = { Text("Full Name *") },
+                            placeholder = { Text("e.g. Dawit Kebede", fontStyle = FontStyle.Italic, color = Color(0xFF94A3B8)) },
+                            supportingText = {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                ) {
+                                    Text(
+                                        text = "Example:",
+                                        fontSize = 11.sp,
+                                        fontWeight = FontWeight.SemiBold,
+                                        color = RoyalBlue
+                                    )
+                                    Text(
+                                        text = "Dawit Kebede (First & Father's Name)",
+                                        fontSize = 11.sp,
+                                        color = Slate700
+                                    )
+                                }
+                            },
                             leadingIcon = { Icon(Icons.Default.Person, contentDescription = null, tint = RoyalBlue) },
+                            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words, imeAction = ImeAction.Next),
                             modifier = Modifier.fillMaxWidth(), singleLine = true,
                             isError = errorMessage.isNotBlank() && name.isBlank()
                         )
                         OutlinedTextField(
                             value = university, onValueChange = { university = it },
-                            label = { Text("University Name") }, placeholder = { Text("e.g. Haramaya University") },
+                            label = { Text("University Name") },
+                            placeholder = { Text("e.g. Haramaya University", fontStyle = FontStyle.Italic, color = Color(0xFF94A3B8)) },
                             leadingIcon = { Icon(Icons.Default.School, contentDescription = null, tint = RoyalBlue) },
+                            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words, imeAction = ImeAction.Next),
                             modifier = Modifier.fillMaxWidth(), singleLine = true
                         )
                         OutlinedTextField(
                             value = academicYear, onValueChange = { academicYear = it },
-                            label = { Text("Academic Year") }, placeholder = { Text("e.g. 2026/2027 Freshman") },
+                            label = { Text("Academic Year") },
+                            placeholder = { Text("e.g. 2026/2027 Freshman", fontStyle = FontStyle.Italic, color = Color(0xFF94A3B8)) },
                             leadingIcon = { Icon(Icons.Default.CalendarMonth, contentDescription = null, tint = RoyalBlue) },
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                             modifier = Modifier.fillMaxWidth(), singleLine = true
                         )
                         OutlinedTextField(
@@ -778,15 +833,15 @@ fun MemberRegistrationDialog(
                                                 if (alreadyRegistered) {
                                                     errorMessage = "This phone number ($phoneNumber) is already registered. Please log in instead."
                                                 } else {
-                                                    step = 2
+                                                    onSubmit(name, university, academicYear, phoneNumber, password, "", "", "")
                                                 }
                                             } catch (e: Exception) {
                                                 isCheckingPhone = false
-                                                step = 2
+                                                onSubmit(name, university, academicYear, phoneNumber, password, "", "", "")
                                             }
                                         }
                                     } else {
-                                        step = 2
+                                        onSubmit(name, university, academicYear, phoneNumber, password, "", "", "")
                                     }
                                 }
                             }
@@ -803,167 +858,235 @@ fun MemberRegistrationDialog(
                                 strokeWidth = 2.dp
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("Verifying phone number...", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                            Text("Creating account...", fontWeight = FontWeight.Bold, fontSize = 14.sp)
                         } else {
-                            Text("Next", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                            Icon(Icons.Default.CheckCircle, contentDescription = null, modifier = Modifier.size(18.dp))
                             Spacer(modifier = Modifier.width(8.dp))
-                            Icon(Icons.Default.ArrowForward, contentDescription = null)
+                            Text("Create Account", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+// ─────────────────────────────────────────────────────────
+// Payment Verification Dialog — shown when a logged-in but
+// unapproved user tries to access premium content
+// ─────────────────────────────────────────────────────────
+@Composable
+fun PaymentVerificationDialog(
+    phoneNumber: String,
+    onDismiss: () -> Unit,
+    onPaymentSubmitted: (paymentMethod: String, screenshotUrl: String) -> Unit
+) {
+    val context = LocalContext.current
+    var selectedPaymentMethod by remember { mutableStateOf("Telebirr") }
+    var screenshotUri by remember { mutableStateOf<Uri?>(null) }
+    var screenshotUrl by remember { mutableStateOf("") }
+    var isUploading by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
+
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)
+    ) {
+        Surface(
+            shape = RoundedCornerShape(24.dp),
+            color = MaterialTheme.colorScheme.surface,
+            modifier = Modifier
+                .fillMaxWidth(0.95f)
+                .wrapContentHeight()
+                .imePadding()
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(22.dp)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                // Header
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(
+                            modifier = Modifier
+                                .size(40.dp)
+                                .background(
+                                    androidx.compose.ui.graphics.Brush.linearGradient(
+                                        listOf(Color(0xFFFFD700), Color(0xFFFFA500))
+                                    ),
+                                    RoundedCornerShape(12.dp)
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(Icons.Default.Star, contentDescription = null, tint = Color.White, modifier = Modifier.size(22.dp))
+                        }
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Column {
+                            Text("Unlock Full Access", fontWeight = FontWeight.Bold, fontSize = 17.sp, color = Slate900)
+                            Text("One-time membership payment", fontSize = 11.sp, color = Slate700)
+                        }
+                    }
+                    IconButton(onClick = onDismiss) {
+                        Icon(Icons.Default.Close, contentDescription = "Close", tint = Slate700)
+                    }
+                }
+
+                // Info text
+                Surface(
+                    shape = RoundedCornerShape(14.dp),
+                    color = Color(0xFFFFFBEB),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, AmberWarning.copy(alpha = 0.3f)),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Row(
+                        modifier = Modifier.padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(Icons.Default.Lock, contentDescription = null, tint = AmberWarning, modifier = Modifier.size(18.dp))
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = "የአባልነት ክፍያዎን ከፈጸሙ በኋላ የተላከበትን ስክሪንሾት ከታች ይላኩ፤ አድሚኑ እንዳረጋገጠ ሙሉ አገልግሎቱ ይከፈታል።",
+                            fontSize = 11.5.sp,
+                            lineHeight = 16.sp,
+                            color = Slate800
+                        )
+                    }
+                }
+
+                // Payment accounts card
+                Card(
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFFEFF6FF)),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFBFDBFE)),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        Text("የክፍያ አማራጮች", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Slate900)
+                        HorizontalDivider(color = Color(0xFFDBEAFE))
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(
+                                modifier = Modifier.size(38.dp).background(Color(0xFF0073E6), RoundedCornerShape(10.dp)),
+                                contentAlignment = Alignment.Center
+                            ) { Text("T", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.ExtraBold) }
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Column {
+                                Text("Telebirr: 0955903175", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Slate900)
+                                Text("Account Name: Adnan", fontSize = 11.sp, color = Slate700)
+                            }
+                        }
+                        HorizontalDivider(color = Color(0xFFDBEAFE))
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(
+                                modifier = Modifier.size(38.dp).background(Color(0xFF800020), RoundedCornerShape(10.dp)),
+                                contentAlignment = Alignment.Center
+                            ) { Text("C", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.ExtraBold) }
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Column {
+                                Text("CBE Bank: 1000650901731", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Slate900)
+                                Text("Account Name: Adnan", fontSize = 11.sp, color = Slate700)
+                            }
+                        }
+                        HorizontalDivider(color = Color(0xFFDBEAFE))
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(
+                                modifier = Modifier.size(38.dp).background(Color(0xFFFF6600), RoundedCornerShape(10.dp)),
+                                contentAlignment = Alignment.Center
+                            ) { Text("E", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.ExtraBold) }
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Column {
+                                Text("E-Birr: 0955903175", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Slate900)
+                                Text("Account Name: Adnan", fontSize = 11.sp, color = Slate700)
+                            }
                         }
                     }
                 }
 
-                // ══ STEP 2: Membership Verification ══
-                if (step == 2) {
-                    Column(
-                        modifier = Modifier.weight(1f).verticalScroll(rememberScrollState()),
-                        verticalArrangement = Arrangement.spacedBy(14.dp)
-                    ) {
-                        Text(
-                            "እባክዎ የአባልነት ክፍያዎን ከፈጸሙ በኋላ፣ የተላከበትን ስክሪንሾት ከታች ይላኩ።",
-                            fontSize = 12.sp, color = Slate700, lineHeight = 17.sp
-                        )
+                // Screenshot upload
+                Text(
+                    text = "የተላከበትን ስክሪንሾት ከታች ያስገቡ (Send Screenshot):",
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Slate900
+                )
 
-                        // Bank accounts card
-                        Card(
-                            shape = RoundedCornerShape(14.dp),
-                            colors = CardDefaults.cardColors(containerColor = Color(0xFFEFF6FF)),
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Box(modifier = Modifier.size(40.dp).background(Color(0xFF0073E6), RoundedCornerShape(10.dp)), contentAlignment = Alignment.Center) {
-                                        Text("T", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.ExtraBold)
-                                    }
-                                    Spacer(modifier = Modifier.width(12.dp))
-                                    Column {
-                                        Text("Telebirr: 0955903175", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Slate900)
-                                        Text("Account Name: Adnan", fontSize = 11.sp, color = Slate700)
-                                    }
-                                }
-                                HorizontalDivider(color = Color(0xFFDBEAFE))
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Box(modifier = Modifier.size(40.dp).background(Color(0xFF800020), RoundedCornerShape(10.dp)), contentAlignment = Alignment.Center) {
-                                        Text("C", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.ExtraBold)
-                                    }
-                                    Spacer(modifier = Modifier.width(12.dp))
-                                    Column {
-                                        Text("CBE Bank: 1000650901731", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Slate900)
-                                        Text("Account Name: Adnan", fontSize = 11.sp, color = Slate700)
-                                    }
-                                }
-                                HorizontalDivider(color = Color(0xFFDBEAFE))
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Box(modifier = Modifier.size(40.dp).background(Color(0xFFFF6600), RoundedCornerShape(10.dp)), contentAlignment = Alignment.Center) {
-                                        Text("E", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.ExtraBold)
-                                    }
-                                    Spacer(modifier = Modifier.width(12.dp))
-                                    Column {
-                                        Text("E-Birr: 0955903175", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Slate900)
-                                        Text("Account Name: Adnan", fontSize = 11.sp, color = Slate700)
-                                    }
-                                }
-                            }
-                        }
-
-                        Text("የተጠቀሙበት መንገድ (የላኩበት):", fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
-                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            paymentMethods.forEach { method ->
-                                FilterChip(
-                                    selected = selectedPaymentMethod == method,
-                                    onClick = { selectedPaymentMethod = method },
-                                    label = { Text(method, fontSize = 12.sp) },
-                                    colors = FilterChipDefaults.filterChipColors(
-                                        selectedContainerColor = RoyalBlue,
-                                        selectedLabelColor = Color.White
-                                    )
-                                )
-                            }
-                        }
-
-                        // ─── Screenshot Upload Dropzone ───
-                        Text(
-                            text = "የተላከበትን ስክሪንሾት ከታች ያስገቡ (Send Screenshot):",
-                            fontSize = 13.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = Slate900
-                        )
-
-                        ScreenshotUploadZone(
-                            screenshotUri = screenshotUri,
-                            screenshotUrl = screenshotUrl,
-                            isUploading = isUploading,
-                            phoneNumber = phoneNumber,
-                            onUploadStarted = {
-                                isUploading = true
-                                errorMessage = ""
-                            },
-                            onUploadSuccess = { url, uri ->
-                                screenshotUrl = url
-                                screenshotUri = uri
-                                isUploading = false
-                            },
-                            onUploadError = { err ->
-                                isUploading = false
-                                errorMessage = err
-                            }
-                        )
-
-                        // Help / Contact note
-                        val regContext = LocalContext.current
-                        Row(
-                            modifier = Modifier.fillMaxWidth().padding(top = 2.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text("Help: ", fontSize = 11.sp, color = Slate700)
-                            Text(
-                                "Telegram @HUfreshman1",
-                                fontSize = 11.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = RoyalBlue,
-                                modifier = Modifier.clickable {
-                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/HUfreshman1"))
-                                    regContext.startActivity(intent)
-                                }
-                            )
-                            Text("  •  ", fontSize = 11.sp, color = Slate700)
-                            Text(
-                                "0955903175",
-                                fontSize = 11.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = RoyalBlue,
-                                modifier = Modifier.clickable {
-                                    val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:0955903175"))
-                                    regContext.startActivity(intent)
-                                }
-                            )
-                        }
-
-                        if (errorMessage.isNotBlank()) {
-                            Surface(color = RoseRed.copy(alpha = 0.08f), shape = RoundedCornerShape(8.dp), modifier = Modifier.fillMaxWidth()) {
-                                Text(errorMessage, color = RoseRed, fontSize = 12.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(10.dp))
-                            }
-                        }
+                ScreenshotUploadZone(
+                    screenshotUri = screenshotUri,
+                    screenshotUrl = screenshotUrl,
+                    isUploading = isUploading,
+                    phoneNumber = phoneNumber,
+                    onUploadStarted = {
+                        isUploading = true
+                        errorMessage = ""
+                    },
+                    onUploadSuccess = { url, uri ->
+                        screenshotUrl = url
+                        screenshotUri = uri
+                        isUploading = false
+                    },
+                    onUploadError = { err ->
+                        isUploading = false
+                        errorMessage = err
                     }
+                )
 
-                    Spacer(modifier = Modifier.height(10.dp))
+                // Help row
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("Need help? ", fontSize = 11.sp, color = Slate700)
+                    Text(
+                        "@HUfreshman1",
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = RoyalBlue,
+                        modifier = Modifier.clickable {
+                            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/HUfreshman1")))
+                        }
+                    )
+                    Text("  •  ", fontSize = 11.sp, color = Slate700)
+                    Text(
+                        "0955903175",
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = RoyalBlue,
+                        modifier = Modifier.clickable {
+                            context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:0955903175")))
+                        }
+                    )
+                }
 
-                    Button(
-                        onClick = {
-                            when {
-                                isUploading -> errorMessage = "Please wait for the screenshot to finish uploading."
-                                screenshotUrl.isBlank() -> errorMessage = "Please choose and upload your screenshot first."
-                                else -> onSubmit(name, university, academicYear, phoneNumber, password, selectedPaymentMethod, transactionId, screenshotUrl)
-                            }
-                        },
-                        colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreen),
-                        shape = RoundedCornerShape(12.dp),
-                        modifier = Modifier.fillMaxWidth().height(50.dp),
-                        enabled = !isUploading
-                    ) {
-                        Icon(Icons.Default.CheckCircle, contentDescription = null)
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text("Create Account", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                if (errorMessage.isNotBlank()) {
+                    Surface(color = RoseRed.copy(alpha = 0.08f), shape = RoundedCornerShape(10.dp), modifier = Modifier.fillMaxWidth()) {
+                        Text(errorMessage, color = RoseRed, fontSize = 12.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(12.dp))
                     }
+                }
+
+                // Submit button
+                Button(
+                    onClick = {
+                        when {
+                            isUploading -> errorMessage = "Please wait for the screenshot to finish uploading."
+                            screenshotUrl.isBlank() -> errorMessage = "Please upload your payment screenshot first."
+                            else -> onPaymentSubmitted(selectedPaymentMethod, screenshotUrl)
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (screenshotUrl.isNotEmpty()) EmeraldGreen else RoyalBlue
+                    ),
+                    shape = RoundedCornerShape(14.dp),
+                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 3.dp),
+                    modifier = Modifier.fillMaxWidth().height(50.dp),
+                    enabled = !isUploading
+                ) {
+                    Icon(Icons.Default.CheckCircle, contentDescription = null, modifier = Modifier.size(18.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Submit Payment", fontWeight = FontWeight.Bold, fontSize = 15.sp)
                 }
             }
         }

@@ -279,6 +279,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun submitPaymentVerification(paymentMethod: String, screenshotUrl: String) {
+        viewModelScope.launch {
+            repository.updatePaymentVerification(paymentMethod, screenshotUrl)
+            _userProfile.value = repository.getUserProfile()
+            _memberRegistrations.value = repository.loadMemberRegistrations()
+            val phone = _userProfile.value.phoneNumber
+            if (phone.isNotBlank()) {
+                observeCurrentUserApproval(phone)
+            }
+        }
+    }
 
     fun approveMemberRegistration(regId: String) {
         viewModelScope.launch {

@@ -30,7 +30,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -67,7 +70,6 @@ fun AuthScreen(
 
     // Register state
     val scope = rememberCoroutineScope()
-    var regStep by remember { mutableIntStateOf(1) }
     var regName by remember { mutableStateOf("") }
     var regUniversity by remember { mutableStateOf("Haramaya University") }
     var regAcademicYear by remember { mutableStateOf("2026/2027 Freshman") }
@@ -75,14 +77,8 @@ fun AuthScreen(
     var regPassword by remember { mutableStateOf("") }
     var regConfirmPassword by remember { mutableStateOf("") }
     var regPasswordVisible by remember { mutableStateOf(false) }
-    var regSelectedPaymentMethod by remember { mutableStateOf("Telebirr") }
-    var regTransactionId by remember { mutableStateOf("") }
     var regError by remember { mutableStateOf("") }
     var regCheckingPhone by remember { mutableStateOf(false) }
-    // Screenshot upload state
-    var regScreenshotUri by remember { mutableStateOf<Uri?>(null) }
-    var regScreenshotUrl by remember { mutableStateOf("") }
-    var regUploading by remember { mutableStateOf(false) }
 
 
     Box(
@@ -451,7 +447,6 @@ fun AuthScreen(
                                     color = RoyalBlue,
                                     modifier = Modifier.clickable {
                                         mode = AuthMode.REGISTER
-                                        regStep = 1
                                     }
                                 )
                             }
@@ -459,7 +454,7 @@ fun AuthScreen(
                     }
                 } else {
                     // ═════════════════════════════════════════
-                    // ══ REGISTRATION WIZARD (2 STEPS) ══
+                    // ══ REGISTRATION FORM ══
                     // ═════════════════════════════════════════
                     Card(
                         shape = RoundedCornerShape(24.dp),
@@ -472,67 +467,16 @@ fun AuthScreen(
                             modifier = Modifier.padding(22.dp),
                             verticalArrangement = Arrangement.spacedBy(14.dp)
                         ) {
-                            // Step progress
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    if (regStep == 2) {
-                                        IconButton(
-                                            onClick = { regStep = 1; regError = "" },
-                                            modifier = Modifier.size(32.dp)
-                                        ) {
-                                            Icon(
-                                                Icons.AutoMirrored.Filled.ArrowBack,
-                                                contentDescription = "Back",
-                                                tint = RoyalBlue
-                                            )
-                                        }
-                                        Spacer(modifier = Modifier.width(6.dp))
-                                    }
-                                    Text(
-                                        text = if (regStep == 1) "Create Account" else "Membership Verification",
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 17.sp,
-                                        color = Slate900
-                                    )
-                                }
-                                Box(
-                                    modifier = Modifier
-                                        .clip(RoundedCornerShape(50))
-                                        .background(RoyalBlue.copy(alpha = 0.1f))
-                                        .padding(horizontal = 10.dp, vertical = 4.dp)
-                                ) {
-                                    Text(
-                                        text = if (regStep == 1) "Step 1 of 2" else "Step 2 of 2",
-                                        fontSize = 11.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = RoyalBlue
-                                    )
-                                }
-                            }
-
-                            // Step Progress Bar
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(6.dp)
-                            ) {
-                                Box(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .height(4.dp)
-                                        .background(RoyalBlue, RoundedCornerShape(2.dp))
-                                )
-                                Box(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .height(4.dp)
-                                        .background(
-                                            if (regStep == 2) RoyalBlue else Slate700.copy(alpha = 0.18f),
-                                            RoundedCornerShape(2.dp)
-                                        )
+                                Text(
+                                    text = "Create Account",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 17.sp,
+                                    color = Slate900
                                 )
                             }
 
@@ -564,20 +508,42 @@ fun AuthScreen(
                                 }
                             }
 
-                            if (regStep == 1) {
-                                // ─── STEP 1: Personal Info ───
                                 OutlinedTextField(
                                     value = regName,
                                     onValueChange = { regName = it; regError = "" },
                                     label = { Text("Full Name *") },
-                                    placeholder = { Text("e.g. Dawit Kebede") },
+                                    placeholder = { Text("e.g. Dawit Kebede", fontStyle = FontStyle.Italic, color = Color(0xFF94A3B8)) },
+                                    supportingText = {
+                                        Row(
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                        ) {
+                                            Text(
+                                                text = "Example:",
+                                                fontSize = 11.sp,
+                                                fontWeight = FontWeight.SemiBold,
+                                                color = RoyalBlue
+                                            )
+                                            Text(
+                                                text = "Dawit Kebede (First & Father's Name)",
+                                                fontSize = 11.sp,
+                                                color = Slate700
+                                            )
+                                        }
+                                    },
                                     leadingIcon = { Icon(Icons.Default.Person, contentDescription = null, tint = RoyalBlue) },
+                                    keyboardOptions = KeyboardOptions(
+                                        capitalization = KeyboardCapitalization.Words,
+                                        imeAction = ImeAction.Next
+                                    ),
                                     shape = RoundedCornerShape(14.dp),
                                     colors = OutlinedTextFieldDefaults.colors(
                                         focusedContainerColor = Color(0xFFF8FAFC),
                                         unfocusedContainerColor = Color(0xFFF8FAFC),
                                         focusedBorderColor = RoyalBlue,
-                                        unfocusedBorderColor = Color(0xFFCBD5E1)
+                                        unfocusedBorderColor = Color(0xFFCBD5E1),
+                                        focusedPlaceholderColor = Color(0xFF94A3B8),
+                                        unfocusedPlaceholderColor = Color(0xFF94A3B8)
                                     ),
                                     modifier = Modifier.fillMaxWidth(),
                                     singleLine = true
@@ -587,13 +553,20 @@ fun AuthScreen(
                                     value = regUniversity,
                                     onValueChange = { regUniversity = it },
                                     label = { Text("University Name") },
+                                    placeholder = { Text("e.g. Haramaya University", fontStyle = FontStyle.Italic, color = Color(0xFF94A3B8)) },
                                     leadingIcon = { Icon(Icons.Default.School, contentDescription = null, tint = RoyalBlue) },
+                                    keyboardOptions = KeyboardOptions(
+                                        capitalization = KeyboardCapitalization.Words,
+                                        imeAction = ImeAction.Next
+                                    ),
                                     shape = RoundedCornerShape(14.dp),
                                     colors = OutlinedTextFieldDefaults.colors(
                                         focusedContainerColor = Color(0xFFF8FAFC),
                                         unfocusedContainerColor = Color(0xFFF8FAFC),
                                         focusedBorderColor = RoyalBlue,
-                                        unfocusedBorderColor = Color(0xFFCBD5E1)
+                                        unfocusedBorderColor = Color(0xFFCBD5E1),
+                                        focusedPlaceholderColor = Color(0xFF94A3B8),
+                                        unfocusedPlaceholderColor = Color(0xFF94A3B8)
                                     ),
                                     modifier = Modifier.fillMaxWidth(),
                                     singleLine = true
@@ -603,13 +576,17 @@ fun AuthScreen(
                                     value = regAcademicYear,
                                     onValueChange = { regAcademicYear = it },
                                     label = { Text("Academic Year") },
+                                    placeholder = { Text("e.g. 2026/2027 Freshman", fontStyle = FontStyle.Italic, color = Color(0xFF94A3B8)) },
                                     leadingIcon = { Icon(Icons.Default.CalendarMonth, contentDescription = null, tint = RoyalBlue) },
+                                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                                     shape = RoundedCornerShape(14.dp),
                                     colors = OutlinedTextFieldDefaults.colors(
                                         focusedContainerColor = Color(0xFFF8FAFC),
                                         unfocusedContainerColor = Color(0xFFF8FAFC),
                                         focusedBorderColor = RoyalBlue,
-                                        unfocusedBorderColor = Color(0xFFCBD5E1)
+                                        unfocusedBorderColor = Color(0xFFCBD5E1),
+                                        focusedPlaceholderColor = Color(0xFF94A3B8),
+                                        unfocusedPlaceholderColor = Color(0xFF94A3B8)
                                     ),
                                     modifier = Modifier.fillMaxWidth(),
                                     singleLine = true
@@ -705,11 +682,29 @@ fun AuthScreen(
                                                         if (alreadyRegistered) {
                                                             regError = "This phone number ($regPhone) is already registered. Please log in instead."
                                                         } else {
-                                                            regStep = 2
+                                                            viewModel.registerMember(
+                                                                regName,
+                                                                regUniversity,
+                                                                regAcademicYear,
+                                                                regPhone,
+                                                                regPassword,
+                                                                "",
+                                                                "",
+                                                                ""
+                                                            )
                                                         }
                                                     } catch (e: Exception) {
                                                         regCheckingPhone = false
-                                                        regStep = 2
+                                                        viewModel.registerMember(
+                                                            regName,
+                                                            regUniversity,
+                                                            regAcademicYear,
+                                                            regPhone,
+                                                            regPassword,
+                                                            "",
+                                                            "",
+                                                            ""
+                                                        )
                                                     }
                                                 }
                                             }
@@ -728,174 +723,13 @@ fun AuthScreen(
                                             strokeWidth = 2.dp
                                         )
                                         Spacer(modifier = Modifier.width(8.dp))
-                                        Text("Verifying phone number...", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                                        Text("Creating account...", fontWeight = FontWeight.Bold, fontSize = 14.sp)
                                     } else {
-                                        Text("Next Step", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                                        Icon(Icons.Default.CheckCircle, contentDescription = null, modifier = Modifier.size(18.dp))
                                         Spacer(modifier = Modifier.width(8.dp))
-                                        Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = null, modifier = Modifier.size(18.dp))
+                                        Text("Create Account", fontWeight = FontWeight.Bold, fontSize = 15.sp)
                                     }
                                 }
-                            } else {
-                                // ─── STEP 2: Send Screenshot ───
-                                Text(
-                                    text = "እባክዎ የአባልነት ክፍያዎን ከፈጸሙ በኋላ፣ የተላከበትን ስክሪንሾት ከታች ይላኩ።",
-                                    fontSize = 12.sp,
-                                    color = Slate700,
-                                    lineHeight = 17.sp
-                                )
-
-                                // Account info card
-                                Card(
-                                    shape = RoundedCornerShape(18.dp),
-                                    colors = CardDefaults.cardColors(containerColor = Color(0xFFF0F7FF)),
-                                    border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFBFDBFE)),
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    Column(
-                                        modifier = Modifier.padding(14.dp),
-                                        verticalArrangement = Arrangement.spacedBy(10.dp)
-                                    ) {
-                                        Row(verticalAlignment = Alignment.CenterVertically) {
-                                            Box(
-                                                modifier = Modifier.size(38.dp).background(Color(0xFF0073E6), RoundedCornerShape(10.dp)),
-                                                contentAlignment = Alignment.Center
-                                            ) {
-                                                Text("T", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.ExtraBold)
-                                            }
-                                            Spacer(modifier = Modifier.width(10.dp))
-                                            Column {
-                                                Text("Telebirr: 0955903175", fontWeight = FontWeight.Bold, fontSize = 13.5.sp, color = Slate900)
-                                                Text("Adnan", fontSize = 11.5.sp, color = Slate700)
-                                            }
-                                        }
-                                        HorizontalDivider(color = Color(0xFFDBEAFE))
-                                        Row(verticalAlignment = Alignment.CenterVertically) {
-                                            Box(
-                                                modifier = Modifier.size(38.dp).background(Color(0xFF800020), RoundedCornerShape(10.dp)),
-                                                contentAlignment = Alignment.Center
-                                            ) {
-                                                Text("C", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.ExtraBold)
-                                            }
-                                            Spacer(modifier = Modifier.width(10.dp))
-                                            Column {
-                                                Text("CBE Bank: 1000650901731", fontWeight = FontWeight.Bold, fontSize = 13.5.sp, color = Slate900)
-                                                Text("Adnan", fontSize = 11.5.sp, color = Slate700)
-                                            }
-                                        }
-                                        HorizontalDivider(color = Color(0xFFDBEAFE))
-                                        Row(verticalAlignment = Alignment.CenterVertically) {
-                                            Box(
-                                                modifier = Modifier.size(38.dp).background(Color(0xFFFF6600), RoundedCornerShape(10.dp)),
-                                                contentAlignment = Alignment.Center
-                                            ) {
-                                                Text("E", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.ExtraBold)
-                                            }
-                                            Spacer(modifier = Modifier.width(10.dp))
-                                            Column {
-                                                Text("E-Birr: 0955903175", fontWeight = FontWeight.Bold, fontSize = 13.5.sp, color = Slate900)
-                                                Text("Adnan", fontSize = 11.5.sp, color = Slate700)
-                                            }
-                                        }
-                                    }
-                                }
-
-                                // ─── Screenshot Upload Section (Rectangular Zone) ───
-                                Text(
-                                    text = "የተላከበትን ስክሪንሾት ከታች ያስገቡ (Send Screenshot):",
-                                    fontSize = 13.sp,
-                                    fontWeight = FontWeight.SemiBold,
-                                    color = Slate900
-                                )
-
-                                ScreenshotUploadZone(
-                                    screenshotUri = regScreenshotUri,
-                                    screenshotUrl = regScreenshotUrl,
-                                    isUploading = regUploading,
-                                    phoneNumber = regPhone,
-                                    onUploadStarted = {
-                                        regUploading = true
-                                        regError = ""
-                                    },
-                                    onUploadSuccess = { url, uri ->
-                                        regScreenshotUrl = url
-                                        regScreenshotUri = uri
-                                        regUploading = false
-                                        Toast.makeText(context, "Screenshot uploaded successfully!", Toast.LENGTH_SHORT).show()
-                                    },
-                                    onUploadError = { err ->
-                                        regUploading = false
-                                        regError = err
-                                    }
-                                )
-
-                                // Support row
-                                Surface(
-                                    shape = RoundedCornerShape(12.dp),
-                                    color = Color(0xFFF1F5F9),
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    Row(
-                                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 9.dp),
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Text("Need help? ", fontSize = 11.5.sp, color = Slate700)
-                                        Text(
-                                            "Telegram @HUfreshman1",
-                                            fontSize = 11.5.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            color = RoyalBlue,
-                                            modifier = Modifier.clickable {
-                                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/HUfreshman1"))
-                                                context.startActivity(intent)
-                                            }
-                                        )
-                                        Text("  •  ", fontSize = 11.5.sp, color = Slate700)
-                                        Text(
-                                            "0955903175",
-                                            fontSize = 11.5.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            color = RoyalBlue,
-                                            modifier = Modifier.clickable {
-                                                val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:0955903175"))
-                                                context.startActivity(intent)
-                                            }
-                                        )
-                                    }
-                                }
-
-                                Button(
-                                    onClick = {
-                                        when {
-                                            regUploading -> regError = "Please wait for the screenshot to finish uploading."
-                                            regScreenshotUrl.isEmpty() -> regError = "Please choose and upload your screenshot first."
-                                            else -> {
-                                                viewModel.registerMember(
-                                                    regName,
-                                                    regUniversity,
-                                                    regAcademicYear,
-                                                    regPhone,
-                                                    regPassword,
-                                                    regSelectedPaymentMethod,
-                                                    regTransactionId,
-                                                    regScreenshotUrl
-                                                )
-                                                Toast.makeText(context, "Registration submitted for verification!", Toast.LENGTH_LONG).show()
-                                            }
-                                        }
-                                    },
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = if (regScreenshotUrl.isNotEmpty()) EmeraldGreen else RoyalBlue
-                                    ),
-                                    shape = RoundedCornerShape(14.dp),
-                                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 3.dp),
-                                    modifier = Modifier.fillMaxWidth().height(50.dp),
-                                    enabled = !regUploading
-                                ) {
-                                    Icon(Icons.Default.CheckCircle, contentDescription = null, modifier = Modifier.size(18.dp))
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    Text("Create Account", fontWeight = FontWeight.Bold, fontSize = 15.sp)
-                                }
-                            }
 
                             HorizontalDivider(color = Slate700.copy(alpha = 0.12f))
 
