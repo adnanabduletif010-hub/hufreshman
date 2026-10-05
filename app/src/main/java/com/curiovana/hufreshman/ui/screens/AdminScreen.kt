@@ -626,6 +626,8 @@ fun CreateOfficialPostTab(viewModel: MainViewModel) {
     var content by remember { mutableStateOf("") }
     var selectedTag by remember { mutableStateOf("Official") }
     var showSuccess by remember { mutableStateOf(false) }
+    var imageUrl by remember { mutableStateOf("") }
+    var videoUrl by remember { mutableStateOf("") }
 
     val tags = listOf("Official", "Academic", "Ask Anyone", "Campus Life", "Exams")
 
@@ -687,12 +689,38 @@ fun CreateOfficialPostTab(viewModel: MainViewModel) {
             label = { Text("Official Notice Content *") },
             placeholder = { Text("Write the campus announcement or official notice here...") },
             modifier = Modifier.fillMaxWidth(),
-            minLines = 5,
+            minLines = 4,
             shape = RoundedCornerShape(14.dp)
         )
 
+        // ── Media Attachments Section ──
+        Text(
+            text = "ATTACH IMAGE (CLOUDINARY)",
+            fontSize = 11.sp,
+            fontWeight = FontWeight.Bold,
+            color = RoyalBlue,
+            letterSpacing = 0.5.sp
+        )
+
+        PostImageUploadZone(
+            imageUrl = imageUrl,
+            onImageUrlChange = { imageUrl = it },
+            uploaderTag = "admin_official_post"
+        )
+
+        OutlinedTextField(
+            value = videoUrl,
+            onValueChange = { videoUrl = it },
+            label = { Text("Video / YouTube Link (Optional)", fontSize = 12.sp) },
+            placeholder = { Text("https://youtube.com/watch?v=... or .mp4 link", fontSize = 11.sp) },
+            leadingIcon = { Icon(Icons.Default.VideoLibrary, contentDescription = null, tint = RoyalBlue, modifier = Modifier.size(18.dp)) },
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true,
+            shape = RoundedCornerShape(12.dp)
+        )
+
         // Preview card
-        if (content.isNotBlank()) {
+        if (content.isNotBlank() || imageUrl.isNotBlank()) {
             Text("Preview:", fontWeight = FontWeight.Bold, fontSize = 12.sp, color = Slate700)
             Surface(
                 shape = RoundedCornerShape(12.dp),
@@ -713,7 +741,38 @@ fun CreateOfficialPostTab(viewModel: MainViewModel) {
                         Text("📢 OFFICIAL CAMPUS NOTICE", color = Color.White, fontWeight = FontWeight.ExtraBold, fontSize = 9.sp)
                     }
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(content, fontSize = 13.sp, color = Slate900, lineHeight = 19.sp)
+                    if (content.isNotBlank()) {
+                        Text(content, fontSize = 13.sp, color = Slate900, lineHeight = 19.sp)
+                    }
+                    if (imageUrl.isNotBlank()) {
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(160.dp)
+                                .clip(RoundedCornerShape(10.dp))
+                        ) {
+                            AsyncImage(
+                                model = imageUrl,
+                                contentDescription = "Preview",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
+                    }
+                    if (videoUrl.isNotBlank()) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Surface(color = Color(0xFF0F172A), shape = RoundedCornerShape(8.dp)) {
+                            Row(
+                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(Icons.Default.PlayCircle, contentDescription = null, tint = Color.White, modifier = Modifier.size(16.dp))
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text("Video Attached: $videoUrl", color = Color.White, fontSize = 11.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                            }
+                        }
+                    }
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(selectedTag, fontSize = 10.sp, color = RoyalBlue, fontWeight = FontWeight.Bold)
                 }
@@ -722,13 +781,21 @@ fun CreateOfficialPostTab(viewModel: MainViewModel) {
 
         Button(
             onClick = {
-                if (content.isNotBlank()) {
-                    viewModel.createPost(content, selectedTag)
+                if (content.isNotBlank() || imageUrl.isNotBlank()) {
+                    viewModel.createPost(
+                        content = content.ifBlank { "Attached Notice Image" },
+                        tag = selectedTag,
+                        imageUrl = imageUrl.takeIf { it.isNotBlank() },
+                        videoUrl = videoUrl.takeIf { it.isNotBlank() },
+                        author = "HU Freshman"
+                    )
+                    imageUrl = ""
+                    videoUrl = ""
                     content = ""
                     showSuccess = true
                 }
             },
-            enabled = content.isNotBlank(),
+            enabled = content.isNotBlank() || imageUrl.isNotBlank(),
             colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue),
             shape = RoundedCornerShape(14.dp),
             modifier = Modifier

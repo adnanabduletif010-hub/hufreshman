@@ -37,6 +37,7 @@ enum class NavigationTab(val title: String, val iconSelected: androidx.compose.u
     EXAMS("Exams", Icons.Filled.School, Icons.Outlined.School),
     UNIVERSITIES("Universities", Icons.Filled.AccountBalance, Icons.Outlined.AccountBalance),
     SHORT_NOTES("Short Notes", Icons.Filled.AutoStories, Icons.Outlined.AutoStories),
+    MY_PLAN("My Plan", Icons.Filled.TipsAndUpdates, Icons.Outlined.TipsAndUpdates),
     COMMUNITY("Community", Icons.Filled.Forum, Icons.Outlined.Forum),
     ADMIN("Admin", Icons.Filled.AdminPanelSettings, Icons.Outlined.AdminPanelSettings),
     PROFILE("Profile", Icons.Filled.Person, Icons.Outlined.Person)
@@ -212,18 +213,18 @@ class MainActivity : ComponentActivity() {
                                 val tabs = when {
                                     userProfile.isAdmin -> listOf(
                                         NavigationTab.EXAMS, NavigationTab.UNIVERSITIES,
-                                        NavigationTab.SHORT_NOTES, NavigationTab.COMMUNITY,
+                                        NavigationTab.SHORT_NOTES, NavigationTab.MY_PLAN, NavigationTab.COMMUNITY,
                                         NavigationTab.ADMIN, NavigationTab.PROFILE
                                     )
                                     isLoggedIn -> listOf(
                                         NavigationTab.EXAMS, NavigationTab.UNIVERSITIES,
-                                        NavigationTab.SHORT_NOTES, NavigationTab.COMMUNITY,
+                                        NavigationTab.SHORT_NOTES, NavigationTab.MY_PLAN, NavigationTab.COMMUNITY,
                                         NavigationTab.PROFILE
                                     )
                                     else -> listOf(
                                         // Guests see all except Admin & Profile
                                         NavigationTab.EXAMS, NavigationTab.UNIVERSITIES,
-                                        NavigationTab.SHORT_NOTES, NavigationTab.COMMUNITY
+                                        NavigationTab.SHORT_NOTES, NavigationTab.MY_PLAN, NavigationTab.COMMUNITY
                                     )
                                 }
 
@@ -233,6 +234,7 @@ class MainActivity : ComponentActivity() {
                                         when (tab) {
                                             NavigationTab.UNIVERSITIES -> "Unis"
                                             NavigationTab.SHORT_NOTES -> "Notes"
+                                            NavigationTab.MY_PLAN -> "Plan"
                                             NavigationTab.COMMUNITY -> "Forum"
                                             else -> tab.title
                                         }
@@ -359,6 +361,9 @@ class MainActivity : ComponentActivity() {
                                                 else -> true
                                             }
                                         }
+                                    )
+                                    NavigationTab.MY_PLAN -> MyPlanScreen(
+                                        viewModel = viewModel
                                     )
                                     NavigationTab.COMMUNITY -> CommunityScreen(
                                         viewModel = viewModel,

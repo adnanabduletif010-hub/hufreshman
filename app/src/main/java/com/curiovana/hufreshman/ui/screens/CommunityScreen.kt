@@ -65,8 +65,14 @@ fun CommunityScreen(
     val tags = listOf("All", "Academic", "Ask Anyone", "Tips", "Campus Life", "Exams", "Official")
 
     val filteredPosts = remember(posts, selectedTag) {
-        if (selectedTag == "All") posts
+        val list = if (selectedTag == "All") posts
         else posts.filter { it.tag.equals(selectedTag, ignoreCase = true) }
+        list.sortedWith(
+            compareByDescending { post ->
+                if (post.timestamp > 0L) post.timestamp
+                else post.id.removePrefix("post_").toLongOrNull() ?: 0L
+            }
+        )
     }
 
     BackHandler(enabled = selectedTag != "All") {
@@ -1020,60 +1026,11 @@ fun CreatePostDialog(
                                     )
                                 }
 
-                                OutlinedTextField(
-                                    value = imageUrlText,
-                                    onValueChange = { imageUrlText = it },
-                                    label = { Text("Image URL", fontSize = 12.sp) },
-                                    placeholder = { Text("https://example.com/banner.jpg", fontSize = 12.sp) },
-                                    leadingIcon = {
-                                        Icon(
-                                            Icons.Default.Image,
-                                            contentDescription = null,
-                                            tint = RoyalBlue,
-                                            modifier = Modifier.size(18.dp)
-                                        )
-                                    },
-                                    modifier = Modifier.fillMaxWidth(),
-                                    singleLine = true,
-                                    shape = RoundedCornerShape(12.dp),
-                                    colors = OutlinedTextFieldDefaults.colors(
-                                        focusedContainerColor = Color.White,
-                                        unfocusedContainerColor = Color.White,
-                                        focusedBorderColor = RoyalBlue,
-                                        unfocusedBorderColor = Color(0xFFCBD5E1)
-                                    )
+                                PostImageUploadZone(
+                                    imageUrl = imageUrlText,
+                                    onImageUrlChange = { imageUrlText = it },
+                                    uploaderTag = "admin_post"
                                 )
-
-                                if (imageUrlText.isNotBlank()) {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(150.dp)
-                                            .clip(RoundedCornerShape(12.dp))
-                                            .border(1.dp, RoyalBlue.copy(alpha = 0.3f), RoundedCornerShape(12.dp))
-                                    ) {
-                                        AsyncImage(
-                                            model = imageUrlText.trim(),
-                                            contentDescription = "Image preview",
-                                            contentScale = ContentScale.Crop,
-                                            modifier = Modifier.fillMaxSize()
-                                        )
-                                        Box(
-                                            modifier = Modifier
-                                                .align(Alignment.BottomStart)
-                                                .padding(8.dp)
-                                                .background(Color.Black.copy(alpha = 0.65f), RoundedCornerShape(6.dp))
-                                                .padding(horizontal = 8.dp, vertical = 3.dp)
-                                        ) {
-                                            Text(
-                                                text = "Preview",
-                                                color = Color.White,
-                                                fontSize = 10.sp,
-                                                fontWeight = FontWeight.Bold
-                                            )
-                                        }
-                                    }
-                                }
 
                                 OutlinedTextField(
                                     value = videoUrlText,
@@ -1405,56 +1362,12 @@ fun EditPostDialog(
                                 )
                             }
 
-                            // Image URL
-                            OutlinedTextField(
-                                value = imageUrlText,
-                                onValueChange = { imageUrlText = it },
-                                label = { Text("Image URL", fontSize = 12.sp) },
-                                placeholder = { Text("https://example.com/image.jpg", fontSize = 12.sp) },
-                                leadingIcon = {
-                                    Icon(Icons.Default.Image, contentDescription = null, tint = RoyalBlue, modifier = Modifier.size(18.dp))
-                                },
-                                modifier = Modifier.fillMaxWidth(),
-                                singleLine = true,
-                                shape = RoundedCornerShape(12.dp),
-                                colors = OutlinedTextFieldDefaults.colors(
-                                    focusedContainerColor = Color.White,
-                                    unfocusedContainerColor = Color.White,
-                                    focusedBorderColor = RoyalBlue,
-                                    unfocusedBorderColor = Color(0xFFCBD5E1)
-                                )
+                            // Image Upload & URL
+                            PostImageUploadZone(
+                                imageUrl = imageUrlText,
+                                onImageUrlChange = { imageUrlText = it },
+                                uploaderTag = "admin_post_edit"
                             )
-
-                            if (imageUrlText.isNotBlank()) {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(150.dp)
-                                        .clip(RoundedCornerShape(12.dp))
-                                        .border(1.dp, RoyalBlue.copy(alpha = 0.3f), RoundedCornerShape(12.dp))
-                                ) {
-                                    AsyncImage(
-                                        model = imageUrlText.trim(),
-                                        contentDescription = "Image preview",
-                                        contentScale = ContentScale.Crop,
-                                        modifier = Modifier.fillMaxSize()
-                                    )
-                                    Box(
-                                        modifier = Modifier
-                                            .align(Alignment.BottomStart)
-                                            .padding(8.dp)
-                                            .background(Color.Black.copy(alpha = 0.65f), RoundedCornerShape(6.dp))
-                                            .padding(horizontal = 8.dp, vertical = 3.dp)
-                                    ) {
-                                        Text(
-                                            text = "Preview",
-                                            color = Color.White,
-                                            fontSize = 10.sp,
-                                            fontWeight = FontWeight.Bold
-                                        )
-                                    }
-                                }
-                            }
 
                             // Video URL
                             OutlinedTextField(

@@ -430,9 +430,18 @@ class AppRepository(private val context: Context) {
         true
     }
 
+    private fun sortPostsDescending(posts: List<CommunityPost>): List<CommunityPost> {
+        return posts.sortedWith(
+            compareByDescending<CommunityPost> { post ->
+                if (post.timestamp > 0L) post.timestamp
+                else post.id.removePrefix("post_").toLongOrNull() ?: 0L
+            }
+        )
+    }
+
     fun getCachedCommunityPosts(): List<CommunityPost> {
         val likedSet = getLikedPostIds()
-        return cachedPosts.map { it.copy(isLiked = likedSet.contains(it.id)) }
+        return sortPostsDescending(cachedPosts).map { it.copy(isLiked = likedSet.contains(it.id)) }
     }
 
     private fun isDemoPost(id: String): Boolean {
@@ -558,8 +567,8 @@ class AppRepository(private val context: Context) {
                 }
             }
 
-            // Exactly what is in database (mirrors database)
-            cachedPosts = remotePosts.toMutableList()
+            // Exactly what is in database (mirrors database, sorted with newest at top)
+            cachedPosts = sortPostsDescending(remotePosts).toMutableList()
             savePostsToPrefs(cachedPosts)
             return@withContext getCachedCommunityPosts()
         } catch (e: Exception) {

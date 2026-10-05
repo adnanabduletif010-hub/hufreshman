@@ -88,8 +88,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         ),
         SubjectCategory(
             id = "c2",
-            name = "Applied Mathematics I",
-            shortName = "Applied Math I",
+            name = "Mathematics",
+            shortName = "Mathematics",
             description = "Limits, Differential & Integral Calculus",
             colorHex = 0xFF4F46E5,
             imageUrl = "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&auto=format&fit=crop&q=80"

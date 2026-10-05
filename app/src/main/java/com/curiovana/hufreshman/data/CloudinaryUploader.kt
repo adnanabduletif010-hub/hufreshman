@@ -25,7 +25,12 @@ object CloudinaryUploader {
      * Compresses the image before upload to avoid out-of-memory errors and ensure quick uploads.
      * Returns the secure URL on success, or null on failure.
      */
-    suspend fun uploadImage(context: Context, imageUri: Uri, phoneNumber: String): String? =
+    suspend fun uploadImage(
+        context: Context,
+        imageUri: Uri,
+        phoneNumber: String,
+        folder: String = FOLDER
+    ): String? =
         withContext(Dispatchers.IO) {
             try {
                 val timestamp = (System.currentTimeMillis() / 1000).toString()
@@ -33,7 +38,7 @@ object CloudinaryUploader {
                 val publicId = "${safePhone}_$timestamp"
 
                 // Generate signature: sha1("folder=F&public_id=PID&timestamp=TS<API_SECRET>")
-                val signatureString = "folder=$FOLDER&public_id=$publicId&timestamp=$timestamp$API_SECRET"
+                val signatureString = "folder=$folder&public_id=$publicId&timestamp=$timestamp$API_SECRET"
                 val signature = sha1(signatureString)
 
                 // Read and compress image bytes
@@ -59,7 +64,7 @@ object CloudinaryUploader {
                     addField("api_key", API_KEY)
                     addField("timestamp", timestamp)
                     addField("signature", signature)
-                    addField("folder", FOLDER)
+                    addField("folder", folder)
                     addField("public_id", publicId)
 
                     // File field

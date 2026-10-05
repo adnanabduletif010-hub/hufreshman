@@ -348,12 +348,12 @@ This unit synthesizes periodic vibratory motion (Simple Harmonic Motion), mechan
     ),
 
     // =========================================================================
-    // 2. APPLIED MATHEMATICS I (c2, Units 1 - 7)
+    // 2. MATHEMATICS (c2, Units 1 - 7)
     // =========================================================================
     ShortNote(
         id = "math-u1",
         subjectId = "c2",
-        subject = "Applied Mathematics I",
+        subject = "Mathematics",
         unit = "Unit 1",
         title = "Vectors & Analytic Geometry of Space (Lines, Planes, Surfaces)",
         summary = """
@@ -407,7 +407,7 @@ This unit extends two-dimensional calculus to three-dimensional Euclidean space 
     ShortNote(
         id = "math-u2",
         subjectId = "c2",
-        subject = "Applied Mathematics I",
+        subject = "Mathematics",
         unit = "Unit 2",
         title = "Limits, Continuity & Foundational Theorems",
         summary = """
@@ -462,7 +462,7 @@ Limits form the foundational basis of differential and integral calculus, formal
     ShortNote(
         id = "math-u3",
         subjectId = "c2",
-        subject = "Applied Mathematics I",
+        subject = "Mathematics",
         unit = "Unit 3",
         title = "Derivatives, Applications & Optimization",
         summary = """
@@ -516,7 +516,7 @@ The derivative measures the instantaneous rate of change of a function and repre
     ShortNote(
         id = "math-u4",
         subjectId = "c2",
-        subject = "Applied Mathematics I",
+        subject = "Mathematics",
         unit = "Unit 4",
         title = "Integration Techniques (Substitution, Parts, Partial Fractions)",
         summary = """
@@ -577,7 +577,7 @@ Integration is the reverse process of differentiation and the mechanism for comp
     ShortNote(
         id = "math-u5",
         subjectId = "c2",
-        subject = "Applied Mathematics I",
+        subject = "Mathematics",
         unit = "Unit 5",
         title = "Applications of Integrals (Areas, Volumes & Arc Length)",
         summary = """
@@ -634,7 +634,7 @@ Definite integrals sum infinitesimal slices to compute geometric and physical qu
     ShortNote(
         id = "math-u6",
         subjectId = "c2",
-        subject = "Applied Mathematics I",
+        subject = "Mathematics",
         unit = "Unit 6",
         title = "Multivariable Calculus, Partial Derivatives & Double Integrals",
         summary = """
@@ -687,7 +687,7 @@ Multivariable calculus extends single-variable concepts to functions of several 
     ShortNote(
         id = "math-u7",
         subjectId = "c2",
-        subject = "Applied Mathematics I",
+        subject = "Mathematics",
         unit = "Unit 7",
         title = "Infinite Sequences, Series Convergence Tests & Power / Taylor Series",
         summary = """

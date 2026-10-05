@@ -88,7 +88,7 @@
     "id": "math-astu-2024-mid-01",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "What is the limit of (sin(3x) / x) as x approaches 0?",
     "options": [
       "0",
@@ -105,7 +105,7 @@
     "id": "math-aau-2023-final-01",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "If f(x) = x³ - 3x² + 2, what are the critical numbers of f(x)?",
     "options": [
       "x = 0 and x = 2",
@@ -122,7 +122,7 @@
     "id": "math-aastu-2022-mid-01",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "What is the derivative of f(x) = ln(x² + 1) with respect to x?",
     "options": [
       "1 / (x² + 1)",
@@ -139,7 +139,7 @@
     "id": "math-ju-2022-final-01",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "If matrix A = [[2, 1], [4, 3]], what is the determinant det(A)?",
     "options": [
       "2",
@@ -156,7 +156,7 @@
     "id": "math-hawassa-2021-final-01",
     "university": "Haramaya University",
     "year": "2021 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Which of the following vectors is orthogonal (perpendicular) to vector u = (2, 3)?",
     "options": [
       "(3, 2)",
@@ -1841,7 +1841,7 @@
     "id": "hu-2021-math-06",
     "university": "Haramaya University",
     "year": "2021 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Find the inverse of the following statement, \"If Chala finishes his work, he will go to the football game.\"",
     "options": [
       "Abebe finishes his work, and he does not go to the football game.",
@@ -1857,7 +1857,7 @@
     "id": "hu-2021-math-07",
     "university": "Haramaya University",
     "year": "2021 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "The cube roots of the complex number z = -8i is",
     "options": [
       "-2i, √3 + i & -√3 + i",
@@ -1873,7 +1873,7 @@
     "id": "hu-2021-math-08",
     "university": "Haramaya University",
     "year": "2021 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "If (fog)(x) = 4x² + 4x + 9 and g(x) = 2x + 3, then f(x) is equal to:",
     "options": [
       "3x² - x + 2",
@@ -1889,7 +1889,7 @@
     "id": "hu-2021-math-09",
     "university": "Haramaya University",
     "year": "2021 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Let f(x) = ax³ - x² - 5x + b, where a and b are constants. When f(x) is divided by x + 2 the remainder is 40 and when f(x) is divided by x - 2 the remainder is 36, then find the values of a and b respectively.",
     "options": [
       "3 & 43",
@@ -1905,7 +1905,7 @@
     "id": "hu-2021-math-10",
     "university": "Haramaya University",
     "year": "2021 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "The equation of the line that pass through (2, -3) and perpendicular to 3x + 4y = 6 is",
     "options": [
       "3x + 4y = -17",
@@ -2245,7 +2245,7 @@
     "id": "hu-2022-math1011-tf-01",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "True or False: The range and codomain of any onto function are equal.",
     "options": [
       "True",
@@ -2259,7 +2259,7 @@
     "id": "hu-2022-math1011-tf-02",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "True or False: Any two distinct vertical lines in a plane are parallel to each other.",
     "options": [
       "True",
@@ -2273,7 +2273,7 @@
     "id": "hu-2022-math1011-tf-03",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "True or False: For a and b two nonzero real numbers, the equation of the line that passes through the points (a, 0) and (0, b) can be expressed as x/a + y/b = 1.",
     "options": [
       "True",
@@ -2287,7 +2287,7 @@
     "id": "hu-2022-math1011-tf-04",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "True or False: Every rational function has a vertical asymptote.",
     "options": [
       "True",
@@ -2301,7 +2301,7 @@
     "id": "hu-2022-math1011-tf-05",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "True or False: Every polynomial function is rational function.",
     "options": [
       "True",
@@ -2315,7 +2315,7 @@
     "id": "hu-2022-math1011-tf-06",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "True or False: The domain of f(x) = coth x is the set of all real numbers.",
     "options": [
       "True",
@@ -2329,7 +2329,7 @@
     "id": "hu-2022-math1011-tf-07",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "True or False: If the distance between the center of a circle and a line l equals to its radius, then the line must be a secant line to the circle.",
     "options": [
       "True",
@@ -2343,7 +2343,7 @@
     "id": "hu-2022-math1011-mc-01",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Which one of the following equations can represent a circle?",
     "options": [
       "x² + y² - 2x + 4 = 0",
@@ -2359,7 +2359,7 @@
     "id": "hu-2022-math1011-mc-02",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Which one of the following is true about the cosine function f(x) = cos x?",
     "options": [
       "Its range is [-1, 1]",
@@ -2375,7 +2375,7 @@
     "id": "hu-2022-math1011-mc-03",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "What is the distance from the point (0, 0) to the line l: y + x - 1 = 0?",
     "options": [
       "√2 / 2",
@@ -2391,7 +2391,7 @@
     "id": "hu-2022-math1011-mc-04",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Which one of the following is not true about the function f(x) = aˣ, a > 0, a ≠ 1?",
     "options": [
       "The x-intercept of the graph of f(x) is (1, 0).",
@@ -2407,7 +2407,7 @@
     "id": "hu-2022-math1011-mc-05",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "What is f(x) if (fog)(x) = 4x² + 4x + 9 and g(x) = 2x + 3?",
     "options": [
       "x² - 3x + 3",
@@ -2423,7 +2423,7 @@
     "id": "hu-2022-math1011-mc-06",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "The equation of the line that is perpendicular to 3x + 4y = 6 and that passes through the point (2, -3) is",
     "options": [
       "4x + 3y = -17",
@@ -2439,7 +2439,7 @@
     "id": "hu-2022-math1011-mc-07",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "One of the following is not true about the complex number z = 1 + √3 i",
     "options": [
       "Arg(z) = π/3",
@@ -2455,7 +2455,7 @@
     "id": "hu-2022-math1011-mc-08",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Which of the following is not true about the function f(x) = 1 + log₃(x - 2)?",
     "options": [
       "The domain is (2, ∞).",
@@ -2471,7 +2471,7 @@
     "id": "hu-2022-math1011-mc-09",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Which one of the following is true about the function p(x) = 6x⁵ - 2x⁴ + 4x - 8?",
     "options": [
       "p(x) have at most 5 turning points.",
@@ -2487,7 +2487,7 @@
     "id": "hu-2022-math1011-mc-10",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Let C be a circle with radius 5 and centered at (1, -2). Which one of the following is true about the point P(3, 2)?",
     "options": [
       "The point P is inside the circle C.",
@@ -2503,7 +2503,7 @@
     "id": "hu-2022-math1011-sa-01",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Find the value of 3 cosh(ln 3).",
     "options": [
       "3",
@@ -2519,7 +2519,7 @@
     "id": "hu-2022-math1011-sa-02a",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Let f(x) = x² + 1 and g(x) = √x. Find the domain of (gof)(x).",
     "options": [
       "[0, ∞)",
@@ -2535,7 +2535,7 @@
     "id": "hu-2022-math1011-sa-02b",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Let f(x) = x² + 1 and g(x) = √x. Find the value of (fog)(0).",
     "options": [
       "0",
@@ -2551,7 +2551,7 @@
     "id": "hu-2022-math1011-sa-03",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Find the polynomial function p(x) whose zeros are 3, -2, and -1 with multiplicity 1, 3, and 4 respectively such that p(0) = 48.",
     "options": [
       "-2(x - 3)(x + 2)³(x + 1)⁴",
@@ -2567,7 +2567,7 @@
     "id": "hu-2022-math1011-sa-04",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Find the inverse of the function f(x) = eˣ⁺¹.",
     "options": [
       "ln(x - 1)",
@@ -2583,7 +2583,7 @@
     "id": "hu-2022-math1011-sa-05",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "If f(x) = -2 cos(3x), then find the period and frequency of f(x).",
     "options": [
       "Period = 2π/3, Frequency = 3/(2π)",
@@ -2599,7 +2599,7 @@
     "id": "hu-2022-math1011-sa-06",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "If f(x) = 4x + 1 and g(x) = 3x + k, then find the value of k for which (fog)(x) = (gof)(x).",
     "options": [
       "2/3",
@@ -2615,7 +2615,7 @@
     "id": "hu-2022-math1011-sa-07",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Given a complex number z = -4 - 4√3 i, find the principal argument and polar form of z.",
     "options": [
       "Arg(z) = -2π/3, Polar = 8(cos(-2π/3) + i sin(-2π/3))",
@@ -2631,7 +2631,7 @@
     "id": "hu-2022-math1011-wo-01",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Find the equation of the circle that passes through the point (2, 5) and is tangent to the line y = 3x - 2 at the point (1, 1).",
     "options": [
       "(x + 49/2)² + (y - 19/2)² = 1445/2",
@@ -2647,7 +2647,7 @@
     "id": "hu-2022-math1011-wo-02",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Given the rational function f(x) = 2x² / (x² - 1). Find the domain, intercepts, and asymptotes of f(x).",
     "options": [
       "Domain: ℝ \\ {-1, 1}, Intercept: (0,0), V.A: x = ±1, H.A: y = 2",
@@ -2663,7 +2663,7 @@
     "id": "hu-2022-math1011-wo-03",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Suppose that 1 - i is a root of the polynomial function f(x) = x³ - 3x² + ax + b, where a, b ∈ ℝ. Find the remaining two roots of f(x) and the values of a and b.",
     "options": [
       "Roots: 1 + i, 1; Values: a = 4, b = -2",
@@ -9682,7 +9682,7 @@
     "id": "math-hu-2023-mid-tf-01",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "True or False: If the truth value of (~p ⇔ ~q) ⇒ (p ∨ ~r) is false, then (q ⇒ r) is true.",
     "options": [
       "True",
@@ -9696,7 +9696,7 @@
     "id": "math-hu-2023-mid-tf-02",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "True or False: There exists a finite set with exactly 24 subsets.",
     "options": [
       "True",
@@ -9710,7 +9710,7 @@
     "id": "math-hu-2023-mid-tf-03",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "True or False: For any real numbers a, b, and c, if a > b, then ac > bc.",
     "options": [
       "True",
@@ -9724,7 +9724,7 @@
     "id": "math-hu-2023-mid-tf-04",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "True or False: Every non-empty subset of the set of natural numbers has a smallest element.",
     "options": [
       "True",
@@ -9738,7 +9738,7 @@
     "id": "math-hu-2023-mid-tf-05",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "True or False: An argument is valid if and only if it is impossible for the conclusion to be false while all premises are true.",
     "options": [
       "True",
@@ -9752,7 +9752,7 @@
     "id": "math-hu-2023-mid-tf-06",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "True or False: The product of any two irrational numbers is always rational.",
     "options": [
       "True",
@@ -9766,7 +9766,7 @@
     "id": "math-hu-2023-mid-tf-07",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "True or False: If the power set of the set A has one element (|P(A)| = 1), then A is the empty set (A = ∅).",
     "options": [
       "True",
@@ -9780,7 +9780,7 @@
     "id": "math-hu-2023-mid-mc-01",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Which of the following quantified propositions has a truth value of False?",
     "options": [
       "(∀x ∈ ℝ)(∃y ∈ ℕ)(y ≤ x²)",
@@ -9796,7 +9796,7 @@
     "id": "math-hu-2023-mid-mc-02",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "All of the following propositions are tautologies EXCEPT:",
     "options": [
       "p ⇒ (q ⇒ p)",
@@ -9812,7 +9812,7 @@
     "id": "math-hu-2023-mid-mc-03",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "If the number of elements of a set A is 4 (|A| = 4), then the number of non-empty proper subsets of set A is:",
     "options": [
       "16",
@@ -9828,7 +9828,7 @@
     "id": "math-hu-2023-mid-mc-04",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Which of the following sets is equal to the set A = {x ∈ ℕ | x + 7 < 11}?",
     "options": [
       "{a, b, c}",
@@ -9844,7 +9844,7 @@
     "id": "math-hu-2023-mid-mc-05",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Which of the following statements is NOT true?",
     "options": [
       "Every rational number is a real number.",
@@ -9860,7 +9860,7 @@
     "id": "math-hu-2023-mid-mc-06",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "What is the negation of the conditional proposition: \"If 3 is an odd number, then 27 is a prime number\"?",
     "options": [
       "If 3 is an odd number, then 27 is not prime number.",
@@ -9876,7 +9876,7 @@
     "id": "math-hu-2023-mid-mc-07",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "The greatest number that divides 70 and 125, leaving remainders of 5 and 8 respectively, is:",
     "options": [
       "25",
@@ -9892,7 +9892,7 @@
     "id": "math-hu-2023-mid-mc-08",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Let P: \"If the team is late, then it cannot play the game.\"\nLet Q: \"If the referee is here, then the team can play the game.\"\nIf P is true and Q is false, which one of the following is necessarily true?",
     "options": [
       "If the team is late, then the referee is here.",
@@ -9908,7 +9908,7 @@
     "id": "math-hu-2023-mid-sa-01",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Convert the non-terminating repeating decimal 0.9̄ (where 9 repeats indefinitely) to its simplified fraction form:",
     "options": [
       "1",
@@ -9924,7 +9924,7 @@
     "id": "math-hu-2023-mid-sa-02",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "If U = {0, 1, 2, 3, -4} is the universal set and open sentence p(x): x + 1 ≤ 4, what is the truth value of the proposition (∃x ∈ U) ¬p(x)?",
     "options": [
       "False",
@@ -9938,7 +9938,7 @@
     "id": "math-hu-2023-mid-sa-03",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Let U = {0, 1, 2, 3, 4} be the universal set. Let A = {x ∈ U | x³ - x = 0} and B = {1, 2, 4}. Find A ∪ B, A Δ B (symmetric difference), and P(A ∩ B):",
     "options": [
       "A ∪ B = {0, 1, 2, 4}; A Δ B = {0, 2, 4}; P(A ∩ B) = {∅, {1}}",
@@ -9954,7 +9954,7 @@
     "id": "math-hu-2023-mid-sa-04",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "What is the contrapositive of the statement: \"The farmer ploughs land whenever it is raining\"?",
     "options": [
       "If the farmer does not plough land, then it is not raining.",
@@ -9970,7 +9970,7 @@
     "id": "math-hu-2023-mid-sa-05",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "If a set is defined as A = {x ∈ ℝ : |x² - 6| < 3}, find the greatest lower bound (glb / infimum) and least upper bound (lub / supremum) of A:",
     "options": [
       "glb = -3, lub = 3",
@@ -9986,7 +9986,7 @@
     "id": "math-hu-2023-mid-wo-01",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Consider the argument: \"Tom is a Math Major or a Computer Science Major. If Tom does not know discrete math, then he is not a Math Major. If he knows discrete math, then he is smart. Tom is not a Computer Science major. Therefore, Tom is smart.\"\nWhich of the following represents the correct symbolic form and validity of this argument?",
     "options": [
       "Premises: p ∨ q, ¬r ⇒ ¬p, r ⇒ s, ¬q; Conclusion: s. The argument is Valid by Disjunctive Syllogism and Modus Ponens.",
@@ -10002,7 +10002,7 @@
     "id": "math-hu-2023-mid-wo-02",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Using the Principle of Mathematical Induction, prove that for all integers n ≥ 1:\n3¹ + 3² + 3³ + ... + 3ⁿ = (3ⁿ⁺¹ - 3) / 2.\nWhat is the inductive step simplification showing P(k+1) follows from P(k)?",
     "options": [
       "[(3ᵏ⁺¹ - 3) / 2] + 3ᵏ⁺¹ = (3ᵏ⁺¹ - 3 + 2·3ᵏ⁺¹) / 2 = (3·3ᵏ⁺¹ - 3) / 2 = (3ᵏ⁺² - 3) / 2",
@@ -12212,7 +12212,7 @@
     "id": "math-hu-2021-mid-tf-01",
     "university": "Haramaya University",
     "year": "2021 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "True or False: For any set A, the empty set (∅) and the set itself (A) are elements of the power set of A.",
     "options": [
       "True",
@@ -12226,7 +12226,7 @@
     "id": "math-hu-2021-mid-tf-02",
     "university": "Haramaya University",
     "year": "2021 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "True or False: The symmetric difference of two sets A and B (AΔB) is equal to the union of A and B without their intersection.",
     "options": [
       "True",
@@ -12240,7 +12240,7 @@
     "id": "math-hu-2021-mid-tf-03",
     "university": "Haramaya University",
     "year": "2021 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "True or False: The converse and inverse of conditional statements are logically equivalent.",
     "options": [
       "True",
@@ -12254,7 +12254,7 @@
     "id": "math-hu-2021-mid-tf-04",
     "university": "Haramaya University",
     "year": "2021 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "True or False: Two compound propositions P and Q are logically equivalent if and only if P ⇔ Q is a tautology.",
     "options": [
       "True",
@@ -12268,7 +12268,7 @@
     "id": "math-hu-2021-mid-tf-05",
     "university": "Haramaya University",
     "year": "2021 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "True or False: A rational number a/b is said to be in lowest form if LCM(a, b) = 1.",
     "options": [
       "True",
@@ -12282,7 +12282,7 @@
     "id": "math-hu-2021-mid-mc-01",
     "university": "Haramaya University",
     "year": "2021 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "How many elements does a set A contain if it has no proper subset?",
     "options": [
       "2",
@@ -12298,7 +12298,7 @@
     "id": "math-hu-2021-mid-mc-02",
     "university": "Haramaya University",
     "year": "2021 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Which one of the following statements is FALSE?",
     "options": [
       "a ∈ A ∪ B implies that if a ∉ A, then a ∈ B",
@@ -12314,7 +12314,7 @@
     "id": "math-hu-2021-mid-mc-03",
     "university": "Haramaya University",
     "year": "2021 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Two finite sets have m and n elements. The number of subsets of the first set is 56 more than that of the second set. The values of m and n are, respectively:",
     "options": [
       "4, 3",
@@ -12330,7 +12330,7 @@
     "id": "math-hu-2021-mid-mc-04",
     "university": "Haramaya University",
     "year": "2021 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Which one of the following is the logical negation of the biconditional statement P ⇔ Q?",
     "options": [
       "(P ∧ ¬Q) ∧ (Q ∧ ¬P)",
@@ -12346,7 +12346,7 @@
     "id": "math-hu-2021-mid-mc-05",
     "university": "Haramaya University",
     "year": "2021 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Find the logical negation of the following statement: \"If Sandra finishes her work, she will go to the basketball game.\"",
     "options": [
       "If Sandra goes to the basketball game, she will finish her work.",
@@ -12362,7 +12362,7 @@
     "id": "math-hu-2021-mid-mc-06",
     "university": "Haramaya University",
     "year": "2021 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Let the universal set be U = ℝ. Which of the following is an open statement?",
     "options": [
       "x² + 1 < 0",
@@ -12378,7 +12378,7 @@
     "id": "math-hu-2021-mid-mc-07",
     "university": "Haramaya University",
     "year": "2021 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "The converse of the contrapositive of the conditional statement p ⇒ q is:",
     "options": [
       "¬p ⇒ q",
@@ -12394,7 +12394,7 @@
     "id": "math-hu-2021-mid-sa-01",
     "university": "Haramaya University",
     "year": "2021 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "If the conditional proposition p ⇒ (¬p ∨ q) is false, determine the truth values of p and q respectively.",
     "options": [
       "p is True, q is False",
@@ -12410,7 +12410,7 @@
     "id": "math-hu-2021-mid-sa-02",
     "university": "Haramaya University",
     "year": "2021 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Let the universe of discourse U be the set of integers (ℤ) and open statement p(x, y): \"x is greater than y\" (x > y). What is the truth value of the quantified statement (∀y)(∃x)p(x, y)?",
     "options": [
       "True",
@@ -12424,7 +12424,7 @@
     "id": "math-hu-2021-mid-sa-03",
     "university": "Haramaya University",
     "year": "2021 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Let U = {1, 2, 3, 4, 5, 6, 7}, A = {1, 2, 3, 4, 5}, and B = {2, 5, 7}. Determine the results of: AΔB, A ∪ B', A' ∩ B', P(A ∩ B), and the cardinality |P(P(A ∩ B))|.",
     "options": [
       "AΔB = {1, 3, 4, 7}, A ∪ B' = {1, 2, 3, 4, 5, 6}, A' ∩ B' = {6}, P(A ∩ B) = {∅, {2}, {5}, {2, 5}}, |P(P(A ∩ B))| = 16",
@@ -12440,7 +12440,7 @@
     "id": "math-hu-2021-mid-sa-04",
     "university": "Haramaya University",
     "year": "2021 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Determine the Greatest Common Factor (GCF) and Least Common Multiple (LCM) of 12 and 20 respectively.",
     "options": [
       "GCF = 4 and LCM = 60",
@@ -12456,7 +12456,7 @@
     "id": "math-hu-2021-mid-wo-01",
     "university": "Haramaya University",
     "year": "2021 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Prove that for any real number r ≠ 1 and any positive integer n:\n1 + r + r² + ... + r^(n-1) = (1 - r^n)/(1 - r)\nusing the principle of mathematical induction.",
     "options": [
       "Base Step: For n = 1, LHS = 1 and RHS = (1 - r)/(1 - r) = 1 (True). Inductive Step: Assume true for n = k, then for n = k + 1: [1 + r + ... + r^(k-1)] + r^k = (1 - r^k)/(1 - r) + r^k = (1 - r^k + r^k - r^(k+1))/(1 - r) = (1 - r^(k+1))/(1 - r). Hence proven.",
@@ -13209,7 +13209,7 @@
     "id": "math-hu-2022-mid-tf-01",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "True or False: If the statement q is true, then the conditional statement p ⇒ q is true for any statement p.",
     "options": [
       "True",
@@ -13223,7 +13223,7 @@
     "id": "math-hu-2022-mid-tf-02",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "True or False: Every non-empty subset of natural numbers has a smallest element.",
     "options": [
       "True",
@@ -13237,7 +13237,7 @@
     "id": "math-hu-2022-mid-tf-03",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "True or False: If A and B are two sets with n(A \\ B) = 4 and n(A) = 7, then n(A ∩ B) = 11.",
     "options": [
       "True",
@@ -13251,7 +13251,7 @@
     "id": "math-hu-2022-mid-tf-04",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "True or False: For real numbers a, b, c, if a < b < c, then a + c < b + c < 2c.",
     "options": [
       "True",
@@ -13265,7 +13265,7 @@
     "id": "math-hu-2022-mid-tf-05",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "True or False: For any proposition p, the compound proposition ¬(¬p ∨ p) ⇒ (¬p ∨ p) is a contradiction.",
     "options": [
       "True",
@@ -13279,7 +13279,7 @@
     "id": "math-hu-2022-mid-mc-01",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Which of the following statements is NOT always true about the real number system?",
     "options": [
       "Every real number has an additive inverse.",
@@ -13295,7 +13295,7 @@
     "id": "math-hu-2022-mid-mc-02",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Which of the following sentences is NOT a proposition?",
     "options": [
       "2 is the only even prime number.",
@@ -13311,7 +13311,7 @@
     "id": "math-hu-2022-mid-mc-03",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Which of the following sets contains exactly three elements?",
     "options": [
       "{a, {a, {c, d}, b}}",
@@ -13327,7 +13327,7 @@
     "id": "math-hu-2022-mid-mc-04",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Let A be a non-empty set. Which of the following is FALSE regarding its power set P(A)?",
     "options": [
       "∅ ∈ P(A)",
@@ -13343,7 +13343,7 @@
     "id": "math-hu-2022-mid-mc-05",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Which of the following quantified statements is TRUE over the universe of real numbers ℝ?",
     "options": [
       "(∀y)(∃x)(x - y = 0) has a truth value false.",
@@ -13359,7 +13359,7 @@
     "id": "math-hu-2022-mid-mc-06",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Let U be the universal set and A be a proper subset of U. Which of the following is NOT necessarily true about set A?",
     "options": [
       "A ∪ Aᶜ = A",
@@ -13375,7 +13375,7 @@
     "id": "math-hu-2022-mid-mc-07",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Let a, b ∈ ℕ such that LCM(a, b) = c and GCF(a, b) = d. Which one of the following is TRUE?",
     "options": [
       "Both a and b are divisible by c.",
@@ -13391,7 +13391,7 @@
     "id": "math-hu-2022-mid-mc-08",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Let U be the universal set for an open proposition P(x). Given that (∃x ∈ U)P(x) ≡ F, which of the following is NOT true?",
     "options": [
       "(∀x ∈ U)P(x) ≡ F",
@@ -13407,7 +13407,7 @@
     "id": "math-hu-2022-mid-sa-01",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Write the contrapositive of the statement: \"If it is not raining and not windy, then I will go running.\"",
     "options": [
       "If I do not go running, then it is raining or it is windy.",
@@ -13423,7 +13423,7 @@
     "id": "math-hu-2022-mid-sa-02",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Let S = {x ∈ ℝ : |x - 2| < 3}. Determine: a) the least upper bound (lub / supremum), and b) the greatest lower bound (glb / infimum) of S.",
     "options": [
       "lub = 5, glb = -1",
@@ -13439,7 +13439,7 @@
     "id": "math-hu-2022-mid-sa-03",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Let A = {x ∈ ℝ : x² = x}. Find: a) all proper subsets of A; b) the number of subsets of A; and c) the power set P(A).",
     "options": [
       "Proper subsets: ∅, {0}, {1}; Number of subsets: 4; P(A) = {∅, {0}, {1}, {0, 1}}",
@@ -13455,7 +13455,7 @@
     "id": "math-hu-2022-mid-sa-04",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Convert the recurring decimal 0.0125 (where 25 is repeating, 0.01252525...) into simplified fraction form.",
     "options": [
       "31 / 2475 (or 124 / 9900)",
@@ -13471,7 +13471,7 @@
     "id": "math-hu-2022-mid-wo-01",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Demonstrate the validity of the argument using formal rules of inference:\nPremises: ¬p ∨ q, r ⇒ p, r\nConclusion: q",
     "options": [
       "1. r (Premise); 2. r ⇒ p (Premise); 3. p (Modus Ponens from 1, 2); 4. ¬p ∨ q ≡ p ⇒ q (Premise); 5. q (Modus Ponens from 3, 4). Valid.",
@@ -13487,7 +13487,7 @@
     "id": "math-hu-2022-mid-wo-02",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "question": "Use mathematical induction to prove that:\n1 + 3 + 5 + ... + (2n + 1) = (n + 1)² for all non-negative integers n ≥ 0.",
     "options": [
       "Base Step: for n = 0, LHS = 1 and RHS = (0 + 1)² = 1 (True). Inductive Step: Assume true for n = k, [1 + 3 + ... + (2k + 1)] = (k + 1)². For n = k + 1: [1 + ... + (2k + 1)] + (2k + 3) = (k + 1)² + 2k + 3 = k² + 4k + 4 = (k + 2)². Hence proven for all n ≥ 0.",
@@ -17478,7 +17478,7 @@
     "id": "math-hu-2023-final-tf-01",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "True or False: The range of a relation is always a subset of its codomain.",
     "options": [
@@ -17492,7 +17492,7 @@
     "id": "math-hu-2023-final-tf-02",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "True or False: A function is a relation in which each element of the domain is paired with exactly one element in the range.",
     "options": [
@@ -17506,7 +17506,7 @@
     "id": "math-hu-2023-final-tf-03",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "True or False: A polynomial function of degree n has at most n real zeros.",
     "options": [
@@ -17520,7 +17520,7 @@
     "id": "math-hu-2023-final-tf-04",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "True or False: If θ is an argument of a non-zero complex number, then θ + 2kπ (k ∈ ℤ) is also an argument of the complex number.",
     "options": [
@@ -17534,7 +17534,7 @@
     "id": "math-hu-2023-final-tf-05",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "True or False: The domain of a composite function (f ∘ g)(x) is a subset of the domain of g(x).",
     "options": [
@@ -17548,7 +17548,7 @@
     "id": "math-hu-2023-final-tf-06",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "True or False: There is no complex number that is equal to its conjugate.",
     "options": [
@@ -17562,7 +17562,7 @@
     "id": "math-hu-2023-final-mc-01",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Let R be a relation given by R = {(a, b) : a, b ∈ ℕ, a - b = -2}. Which of the following does not belong to R?",
     "options": [
@@ -17578,7 +17578,7 @@
     "id": "math-hu-2023-final-mc-02",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "What is the principal argument of the complex number z = (1 + √3 i)⁶?",
     "options": [
@@ -17594,7 +17594,7 @@
     "id": "math-hu-2023-final-mc-03",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Which of the following functions is a one-to-one correspondence (bijective)?",
     "options": [
@@ -17610,7 +17610,7 @@
     "id": "math-hu-2023-final-mc-04",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "What is the value of (x, y) that satisfies the complex number equation (x + yi) / (1 + i) = 1 - i?",
     "options": [
@@ -17626,7 +17626,7 @@
     "id": "math-hu-2023-final-mc-05",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Which of the following is not true about the complex number z = -2 - 2√3 i?",
     "options": [
@@ -17642,7 +17642,7 @@
     "id": "math-hu-2023-final-mc-06",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "If z is a complex number such that |z| = 4 and Arg(z) = 5π/6, then z is equal to:",
     "options": [
@@ -17658,7 +17658,7 @@
     "id": "math-hu-2023-final-mc-07",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Which of the following is true about the rational function f(x) = (2x² - 4x - 6) / (1 - x²)?",
     "options": [
@@ -17674,7 +17674,7 @@
     "id": "math-hu-2023-final-mc-08",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Which one of the following is not true about a function f(x) = 5^(1-x) - 1?",
     "options": [
@@ -17690,7 +17690,7 @@
     "id": "math-hu-2023-final-mc-09",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Which one of the following is not true about a function f(x) = log_a(x - 2) where a > 0 and a ≠ 1?",
     "options": [
@@ -17706,7 +17706,7 @@
     "id": "math-hu-2023-final-mc-10",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Given that the equation of a circle is (x + 1)² + (y - 1)² = 13. Which of the following equations of a line is tangent to the circle?",
     "options": [
@@ -17722,7 +17722,7 @@
     "id": "math-hu-2023-final-mc-11",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "All of the following about the line L: 4x - 2y + 6 = 0 are true except:",
     "options": [
@@ -17738,7 +17738,7 @@
     "id": "math-hu-2023-final-sa-01",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The inverse of a function f(x) = log₃(x - 1) is __________.",
     "options": [
@@ -17754,7 +17754,7 @@
     "id": "math-hu-2023-final-sa-02a",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Let f(x) = 3x / (2x - 4) and g(x) = √(2x). Find the domain of (f ∘ g)(x): __________",
     "options": [
@@ -17770,7 +17770,7 @@
     "id": "math-hu-2023-final-sa-02b",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Let f(x) = 3x / (2x - 4) and g(x) = √(2x). Find the value of (g ∘ f)(2): __________",
     "options": [
@@ -17786,7 +17786,7 @@
     "id": "math-hu-2023-final-sa-03",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The exact value of sinh(-2 ln 3) is __________.",
     "options": [
@@ -17802,7 +17802,7 @@
     "id": "math-hu-2023-final-sa-04a",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "If f(x) = -2 cos x and g(x) = f(x/2 - π/4), find the period of g: __________",
     "options": [
@@ -17818,7 +17818,7 @@
     "id": "math-hu-2023-final-sa-04b",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "If f(x) = -2 cos x and g(x) = f(x/2 - π/4), find the amplitude of g: __________",
     "options": [
@@ -17834,7 +17834,7 @@
     "id": "math-hu-2023-final-sa-05",
     "university": "Haramaya University",
     "year": "2023 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "If z = (a + 4i) / (1 + ai) and z is a real number, then all possible values of a are __________.",
     "options": [
@@ -17848,7 +17848,7 @@
   },
   {
     "id": "math-hu-2023-final-b-tf-01",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -17862,7 +17862,7 @@
   },
   {
     "id": "math-hu-2023-final-b-tf-02",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -17876,7 +17876,7 @@
   },
   {
     "id": "math-hu-2023-final-b-tf-03",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -17890,7 +17890,7 @@
   },
   {
     "id": "math-hu-2023-final-b-tf-04",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -17904,7 +17904,7 @@
   },
   {
     "id": "math-hu-2023-final-b-tf-05",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -17918,7 +17918,7 @@
   },
   {
     "id": "math-hu-2023-final-b-mc-01",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -17935,7 +17935,7 @@
   },
   {
     "id": "math-hu-2023-final-b-mc-02",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -17951,7 +17951,7 @@
   },
   {
     "id": "math-hu-2023-final-b-mc-03",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -17967,7 +17967,7 @@
   },
   {
     "id": "math-hu-2023-final-b-mc-04",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -17983,7 +17983,7 @@
   },
   {
     "id": "math-hu-2023-final-b-mc-05",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -17999,7 +17999,7 @@
   },
   {
     "id": "math-hu-2023-final-b-mc-06",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18015,7 +18015,7 @@
   },
   {
     "id": "math-hu-2023-final-b-mc-07",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18031,7 +18031,7 @@
   },
   {
     "id": "math-hu-2023-final-b-mc-08",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18047,7 +18047,7 @@
   },
   {
     "id": "math-hu-2023-final-b-mc-09",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18063,7 +18063,7 @@
   },
   {
     "id": "math-hu-2023-final-b-mc-10",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18079,7 +18079,7 @@
   },
   {
     "id": "math-hu-2023-final-b-sa-01a",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18095,7 +18095,7 @@
   },
   {
     "id": "math-hu-2023-final-b-sa-01b",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18111,7 +18111,7 @@
   },
   {
     "id": "math-hu-2023-final-b-sa-01c",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18127,7 +18127,7 @@
   },
   {
     "id": "math-hu-2023-final-b-sa-01d",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18143,7 +18143,7 @@
   },
   {
     "id": "math-hu-2023-final-b-sa-01e",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18159,7 +18159,7 @@
   },
   {
     "id": "math-hu-2023-final-b-sa-02",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18175,7 +18175,7 @@
   },
   {
     "id": "math-hu-2023-final-b-sa-03a",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18191,7 +18191,7 @@
   },
   {
     "id": "math-hu-2023-final-b-sa-03b",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18207,7 +18207,7 @@
   },
   {
     "id": "math-hu-2023-final-b-sa-03c",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18223,7 +18223,7 @@
   },
   {
     "id": "math-hu-2023-final-b-sa-03d",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18239,7 +18239,7 @@
   },
   {
     "id": "math-hu-2023-final-b-sa-04",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18255,7 +18255,7 @@
   },
   {
     "id": "math-hu-2023-final-b-sa-05",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18271,7 +18271,7 @@
   },
   {
     "id": "math-hu-2023-final-b-sa-06a",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18287,7 +18287,7 @@
   },
   {
     "id": "math-hu-2023-final-b-sa-06b",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18303,7 +18303,7 @@
   },
   {
     "id": "math-hu-2023-final-b-sa-07",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18319,7 +18319,7 @@
   },
   {
     "id": "math-hu-2023-final-b-sa-08a",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18335,7 +18335,7 @@
   },
   {
     "id": "math-hu-2023-final-b-sa-08b",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18351,7 +18351,7 @@
   },
   {
     "id": "math-hu-2023-final-b-sa-08c",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18367,7 +18367,7 @@
   },
   {
     "id": "math-hu-2023-final-b-sa-09",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18383,7 +18383,7 @@
   },
   {
     "id": "math-hu-2023-final-b-wo-01",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18399,7 +18399,7 @@
   },
   {
     "id": "math-hu-2023-final-b-wo-02a",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18415,7 +18415,7 @@
   },
   {
     "id": "math-hu-2023-final-b-wo-02b",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18431,7 +18431,7 @@
   },
   {
     "id": "math-hu-2023-final-b-wo-02c",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2024 Exam",
     "category": "Final Exam",
@@ -18447,7 +18447,7 @@
   },
   {
     "id": "math-hu-2021-final-tf-01",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18461,7 +18461,7 @@
   },
   {
     "id": "math-hu-2021-final-tf-02",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18475,7 +18475,7 @@
   },
   {
     "id": "math-hu-2021-final-tf-03",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18489,7 +18489,7 @@
   },
   {
     "id": "math-hu-2021-final-tf-04",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18503,7 +18503,7 @@
   },
   {
     "id": "math-hu-2021-final-tf-05",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18517,7 +18517,7 @@
   },
   {
     "id": "math-hu-2021-final-mc-01",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18534,7 +18534,7 @@
   },
   {
     "id": "math-hu-2021-final-mc-02",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18550,7 +18550,7 @@
   },
   {
     "id": "math-hu-2021-final-mc-03",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18566,7 +18566,7 @@
   },
   {
     "id": "math-hu-2021-final-mc-04",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18582,7 +18582,7 @@
   },
   {
     "id": "math-hu-2021-final-mc-05",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18598,7 +18598,7 @@
   },
   {
     "id": "math-hu-2021-final-mc-06",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18614,7 +18614,7 @@
   },
   {
     "id": "math-hu-2021-final-mc-07",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18630,7 +18630,7 @@
   },
   {
     "id": "math-hu-2021-final-mc-08",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18646,7 +18646,7 @@
   },
   {
     "id": "math-hu-2021-final-mc-09",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18662,7 +18662,7 @@
   },
   {
     "id": "math-hu-2021-final-mc-10",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18678,7 +18678,7 @@
   },
   {
     "id": "math-hu-2021-final-sa-01a",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18694,7 +18694,7 @@
   },
   {
     "id": "math-hu-2021-final-sa-01b",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18710,7 +18710,7 @@
   },
   {
     "id": "math-hu-2021-final-sa-01c",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18726,7 +18726,7 @@
   },
   {
     "id": "math-hu-2021-final-sa-01d",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18742,7 +18742,7 @@
   },
   {
     "id": "math-hu-2021-final-sa-01e",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18758,7 +18758,7 @@
   },
   {
     "id": "math-hu-2021-final-sa-02",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18774,7 +18774,7 @@
   },
   {
     "id": "math-hu-2021-final-sa-03a",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18790,7 +18790,7 @@
   },
   {
     "id": "math-hu-2021-final-sa-03b",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18806,7 +18806,7 @@
   },
   {
     "id": "math-hu-2021-final-sa-03c",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18822,7 +18822,7 @@
   },
   {
     "id": "math-hu-2021-final-sa-03d",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18838,7 +18838,7 @@
   },
   {
     "id": "math-hu-2021-final-sa-04",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18854,7 +18854,7 @@
   },
   {
     "id": "math-hu-2021-final-sa-05",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18870,7 +18870,7 @@
   },
   {
     "id": "math-hu-2021-final-sa-06a",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18886,7 +18886,7 @@
   },
   {
     "id": "math-hu-2021-final-sa-06b",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18902,7 +18902,7 @@
   },
   {
     "id": "math-hu-2021-final-sa-07",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18918,7 +18918,7 @@
   },
   {
     "id": "math-hu-2021-final-sa-08a",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18934,7 +18934,7 @@
   },
   {
     "id": "math-hu-2021-final-sa-08b",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18950,7 +18950,7 @@
   },
   {
     "id": "math-hu-2021-final-sa-08c",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18966,7 +18966,7 @@
   },
   {
     "id": "math-hu-2021-final-sa-09",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18982,7 +18982,7 @@
   },
   {
     "id": "math-hu-2021-final-wo-01",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -18998,7 +18998,7 @@
   },
   {
     "id": "math-hu-2021-final-wo-02a",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -19014,7 +19014,7 @@
   },
   {
     "id": "math-hu-2021-final-wo-02b",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -19030,7 +19030,7 @@
   },
   {
     "id": "math-hu-2021-final-wo-02c",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "university": "Haramaya University",
     "year": "2021 Exam",
     "category": "Final Exam",
@@ -21452,7 +21452,7 @@
     "id": "math-hu-2025-final-s2-01",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "If f(x) = -3 sin(2x + 1), then which one of the following is not true about f(x)?",
     "options": [
@@ -21468,7 +21468,7 @@
     "id": "math-hu-2025-final-s2-02",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "According to the rational root test theorem, which of the following numbers is not a possible rational zero for the function f(x) = 2x³ - x² - 10x - 3?",
     "options": [
@@ -21484,7 +21484,7 @@
     "id": "math-hu-2025-final-s2-03",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Which one of the following is not true about the function f(x) = log₂(x + 2)?",
     "options": [
@@ -21500,7 +21500,7 @@
     "id": "math-hu-2025-final-s2-04",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "If f(x) = x / (x - 1) and g(x) = √(x + 1) / (x + 4), then g(f(x)) is equal to:",
     "options": [
@@ -21516,7 +21516,7 @@
     "id": "math-hu-2025-final-s2-05",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The inverse of f(x) = (e^x + 1) / (e^x - 1) is equal to:",
     "options": [
@@ -21532,7 +21532,7 @@
     "id": "math-hu-2025-final-s2-06",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The function y = cos θ decreases from 0 to -1, when θ increases from π/2 to π.",
     "options": [
@@ -21546,7 +21546,7 @@
     "id": "math-hu-2025-final-s2-07",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "If f(x) = x³ - 2px - 4, where f(0) and f(2) have opposite signs so that f has a root in (0, 2), then which one of the following numbers is not a possible value of p?",
     "options": [
@@ -21562,7 +21562,7 @@
     "id": "math-hu-2025-final-s2-08",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Which one of the following is true about the graph of a function f(x) = (x + 1) / (x² + x)?",
     "options": [
@@ -21578,7 +21578,7 @@
     "id": "math-hu-2025-final-s2-09",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "A circle is tangent to the x-axis at the point (3, 0) and passes through (3, 4). What is the center of the circle?",
     "options": [
@@ -21594,7 +21594,7 @@
     "id": "math-hu-2025-final-s2-10",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Consider the equation of a circle given by x² + y² - 6x - 4y - 4 = 0. Which of the following equations of a line passes through the center of the circle?",
     "options": [
@@ -21610,7 +21610,7 @@
     "id": "math-hu-2025-final-s2-11",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "What is the domain of the function f(x) = √(x / (x - 1))?",
     "options": [
@@ -21626,7 +21626,7 @@
     "id": "math-hu-2025-final-s2-12",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Which of the following lines is tangent to a circle x² + y² - 6x + 8y = 0 at the point P(1, 1)?",
     "options": [
@@ -21642,7 +21642,7 @@
     "id": "math-hu-2025-final-s2-13",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "If the distance from a line to the center of a circle in a plane is less than the radius of the circle, then the line does not intersect the circle.",
     "options": [
@@ -21656,7 +21656,7 @@
     "id": "math-hu-2025-final-s2-14",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "If R = {(x, x²) | x is a prime number less than 11}, then the range of R is equal to:",
     "options": [
@@ -21672,7 +21672,7 @@
     "id": "math-hu-2025-final-s2-15",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The simplified form of the expression 2 log(4x) - (3 log x - 6 log A) is:",
     "options": [
@@ -21688,7 +21688,7 @@
     "id": "math-hu-2025-final-s2-16",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Which one of the following is not a rational function?",
     "options": [
@@ -21704,7 +21704,7 @@
     "id": "math-hu-2025-final-s2-17",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Consider the equation of a circle (x - 1)² + (y + 2)² = 25. Which one of the following is true about the point P(4, 2)?",
     "options": [
@@ -21720,7 +21720,7 @@
     "id": "math-hu-2025-final-s2-18",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Which one of the following is not true about the function f(x) = 3^(x - 1) - 3?",
     "options": [
@@ -21736,7 +21736,7 @@
     "id": "math-hu-2025-final-s2-19",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "For what value of k does the equation (k)x + (k + 1)y - 2k + 10 = 0 represent a vertical line?",
     "options": [
@@ -21752,7 +21752,7 @@
     "id": "math-hu-2025-final-s2-20",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "A polynomial function of degree 3 with real coefficients must have at least one real root.",
     "options": [
@@ -21766,7 +21766,7 @@
     "id": "math-hu-2025-final-s2-21",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "A point P is on line segment AB such that AP : PB = 1 : 3. If A is at (4, 0) and B is at (0, 3), what is the coordinate of point P?",
     "options": [
@@ -21782,7 +21782,7 @@
     "id": "math-hu-2025-final-s2-22",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Given a circle with radius 4 and centered at (-2, 2). Which one of the following is true about the line L: 2x - 3y - 23 = 0?",
     "options": [
@@ -21798,7 +21798,7 @@
     "id": "math-hu-2025-final-s2-23",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The inverse of a function is always a function.",
     "options": [
@@ -21812,7 +21812,7 @@
     "id": "math-hu-2025-final-s2-24",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The graph of the rational function f(x) = (ax + 2) / (bx - 1) has a horizontal asymptote of y = -2. What is the relationship between a and b?",
     "options": [
@@ -21828,7 +21828,7 @@
     "id": "math-hu-2025-final-s2-25",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "A real coefficients polynomial P(x) has 2 + 3i and 1 - i as roots. What is the minimum possible degree of P(x)?",
     "options": [
@@ -21844,7 +21844,7 @@
     "id": "math-hu-2025-final-s2-26",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The polynomial function f(x) = 2x³ - 5x² - 10x + 5 has at least one root between -1 and 1.",
     "options": [
@@ -21858,7 +21858,7 @@
     "id": "math-hu-2025-final-s2-27",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The range of a polynomial function is always all real numbers.",
     "options": [
@@ -21872,7 +21872,7 @@
     "id": "math-hu-2025-final-s2-28",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "If tan(x) + cot(x) = 3, what is the value of tan²(x) + cot²(x)?",
     "options": [
@@ -21888,7 +21888,7 @@
     "id": "math-hu-2025-final-s2-29",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The exact numerical value of cosh(ln 2) is equal to:",
     "options": [
@@ -21904,7 +21904,7 @@
     "id": "math-hu-2025-final-s2-30",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Let f and g be two functions defined by f = {(0, 2), (2, 5), (4, 1), (5, 3), (7, 0)} and g = {(-1, 2), (1, 5), (2, 7), (3, 1), (5, 0)}. Then the range of g ∘ f is:",
     "options": [
@@ -21920,7 +21920,7 @@
     "id": "math-hu-2025-final-s2-31",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "What is the value of x if coth(x) = 2?",
     "options": [
@@ -21936,7 +21936,7 @@
     "id": "math-hu-2025-final-s2-32",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The domain of csch(x) is always the set of real numbers.",
     "options": [
@@ -21950,7 +21950,7 @@
     "id": "math-hu-2025-final-s2-33",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The hyperbolic sine function is not periodic.",
     "options": [
@@ -21964,7 +21964,7 @@
     "id": "math-hu-2025-final-s2-34",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "If x - 2 is a factor of the polynomial p(x) = ax³ + bx² - 4x - 4 and a + b = 1, then the value of a + b is equal to:",
     "options": [
@@ -21980,7 +21980,7 @@
     "id": "math-hu-2025-final-s2-35",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The graph of a rational function can have both a horizontal and oblique asymptote at the same time.",
     "options": [
@@ -21994,7 +21994,7 @@
     "id": "math-hu-2025-final-s2-36",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The graph of a function and its inverse are always symmetric about the y-axis.",
     "options": [
@@ -22008,7 +22008,7 @@
     "id": "math-hu-2025-final-s2-37",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "If a function f: ℝ \\ {-1} → ℝ \\ {1} is defined by f(x) = (x - 1) / (x + 1), then f is:",
     "options": [
@@ -22024,7 +22024,7 @@
     "id": "math-hu-2025-final-s2-38",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The equation of the circle centered at (0, 3) passes through (√3, 0) is x² + (y - 3)² = k. Then the value of k is equal to:",
     "options": [
@@ -22040,7 +22040,7 @@
     "id": "math-hu-2025-final-s2-39",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The slope of line L through points A(2, 3) and B(-1, 1) is 2/3. Then the equation of the line perpendicular to L and passing through point B is:",
     "options": [
@@ -22056,7 +22056,7 @@
     "id": "math-hu-2025-final-s2-40",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 2)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Which of the following is not a zero of the polynomial f(x) = x³ - x² - 17x - 15?",
     "options": [
@@ -23704,7 +23704,7 @@
     "id": "math-hu-2025-final-s1-01",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The slope of the line l through points A(-x, 2) and B(1, x) is -1/2. Then the equation of the line parallel to l and passing through the point A is equal to:",
     "options": [
@@ -23720,7 +23720,7 @@
     "id": "math-hu-2025-final-s1-02",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The simplified form of the expression (sin x / (1 + cos x)) + cot x is:",
     "options": [
@@ -23736,7 +23736,7 @@
     "id": "math-hu-2025-final-s1-03",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The function y = sin θ increases from -1 to 0, when θ increases from -π/2 to -π.",
     "options": [
@@ -23750,7 +23750,7 @@
     "id": "math-hu-2025-final-s1-04",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Which one of the following is not true about the function f(x) = -2^(x + 1) + 4?",
     "options": [
@@ -23766,7 +23766,7 @@
     "id": "math-hu-2025-final-s1-05",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Which one of the following is not true about the function f(x) = 1 + log₂(x + 1)?",
     "options": [
@@ -23782,7 +23782,7 @@
     "id": "math-hu-2025-final-s1-06",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Which of the following lines is tangent to a circle x² + y² - 4x - 21 = 0 at the point P(5, 4)?",
     "options": [
@@ -23798,7 +23798,7 @@
     "id": "math-hu-2025-final-s1-07",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Given the equation of a circle (x + 1)² + (y - 2)² = 9. Which one of the following is true about the point P(-2, 2)?",
     "options": [
@@ -23814,7 +23814,7 @@
     "id": "math-hu-2025-final-s1-08",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "If the distance from a point to the center of a circle in the plane is greater than the radius of the circle, then the point must be inside the circle.",
     "options": [
@@ -23828,7 +23828,7 @@
     "id": "math-hu-2025-final-s1-09",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The equation of a circle tangent to the y-axis and having center at (1, 1) is:",
     "options": [
@@ -23844,7 +23844,7 @@
     "id": "math-hu-2025-final-s1-10",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "If f(x) = x³ + px + 1 where f(0) and f(1) have opposite signs so that f has a root in (0, 1), then which one of the following numbers is a possible value of p?",
     "options": [
@@ -23860,7 +23860,7 @@
     "id": "math-hu-2025-final-s1-11",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Let f and g be two functions given by f = {(0, 2), (2, 5), (4, 1), (5, 3), (7, 0)} and g = {(-1, 2), (1, 5), (2, 7), (3, 1), (5, 0)}. Then the domain of f ∘ g is:",
     "options": [
@@ -23876,7 +23876,7 @@
     "id": "math-hu-2025-final-s1-12",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "For what value of k does the equation (k² - k)x + (k + 1)y - 2k + 1 = 0 represent a horizontal line?",
     "options": [
@@ -23892,7 +23892,7 @@
     "id": "math-hu-2025-final-s1-13",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Which one of the following is necessarily true about the graph of the function f(x) = (x³ - 3x² + 2x) / (x² - 4)?",
     "options": [
@@ -23908,7 +23908,7 @@
     "id": "math-hu-2025-final-s1-14",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "A circle of radius √34 units passes through (1, 1) and the center is on the line y + x = 0. Which of the following points is the center of the circle?",
     "options": [
@@ -23924,7 +23924,7 @@
     "id": "math-hu-2025-final-s1-15",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The graph of a rational function with horizontal asymptote can cross its oblique asymptote.",
     "options": [
@@ -23938,7 +23938,7 @@
     "id": "math-hu-2025-final-s1-16",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The graph of the rational function f(x) = (ax + b) / (bx + 1) where b ≠ 0 has the y-intercept of 0. What is the value of a?",
     "options": [
@@ -23954,7 +23954,7 @@
     "id": "math-hu-2025-final-s1-17",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "If a function is not one-to-one on its domain, then it does not have an inverse function.",
     "options": [
@@ -23968,7 +23968,7 @@
     "id": "math-hu-2025-final-s1-18",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Consider a circle with radius 2 and center (1, -2). Which of the following is true about the line l: 3y - 4x + 20 = 0?",
     "options": [
@@ -23984,7 +23984,7 @@
     "id": "math-hu-2025-final-s1-19",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Which of the following is not the zero of the polynomial f(x) = x³ - 4x² + 9x - 10?",
     "options": [
@@ -24000,7 +24000,7 @@
     "id": "math-hu-2025-final-s1-20",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "What is the domain of the function f(x) = √(x / (1 - x))?",
     "options": [
@@ -24016,7 +24016,7 @@
     "id": "math-hu-2025-final-s1-21",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "If a function f: (0, ∞) → ℝ is defined by f(x) = x² - 1, then f is:",
     "options": [
@@ -24032,7 +24032,7 @@
     "id": "math-hu-2025-final-s1-22",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The values of a and b so that x⁴ + 3x³ + ax + b is divisible by x² - 1 are equal to:",
     "options": [
@@ -24048,7 +24048,7 @@
     "id": "math-hu-2025-final-s1-23",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The exact numerical value of sinh(-ln 2) is:",
     "options": [
@@ -24064,7 +24064,7 @@
     "id": "math-hu-2025-final-s1-24",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Which one of the following is not a polynomial function?",
     "options": [
@@ -24080,7 +24080,7 @@
     "id": "math-hu-2025-final-s1-25",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "If f(x) = (x + 2) / (x - 2) and g(x) = √x - 2, then f(g(x)) is equal to:",
     "options": [
@@ -24096,7 +24096,7 @@
     "id": "math-hu-2025-final-s1-26",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "For a polynomial function with real coefficients, the complex zeros occur in conjugate pairs.",
     "options": [
@@ -24110,7 +24110,7 @@
     "id": "math-hu-2025-final-s1-27",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "According to the rational root test theorem, which of the following numbers is not a possible rational zero for the function f(x) = 4x⁴ + 2x³ - 10x² - 5?",
     "options": [
@@ -24126,7 +24126,7 @@
     "id": "math-hu-2025-final-s1-28",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The simplified form of the expression 4 log a - (1/2 log b + log c) is:",
     "options": [
@@ -24142,7 +24142,7 @@
     "id": "math-hu-2025-final-s1-29",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "If f(x) = 2 cos(4x - 3), then which one of the following is not true about f?",
     "options": [
@@ -24158,7 +24158,7 @@
     "id": "math-hu-2025-final-s1-30",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The range of the relation R = {(x, x²) | x is a prime number less than 11} is:",
     "options": [
@@ -24174,7 +24174,7 @@
     "id": "math-hu-2025-final-s1-31",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "Let P(x) be a polynomial with real coefficients such that P(2 + i) = 0 and P(2) = 0. What is the smallest possible degree of P?",
     "options": [
@@ -24190,7 +24190,7 @@
     "id": "math-hu-2025-final-s1-32",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The polynomial function 2x³ - 5x² + 10x + 20 has at least one root between -1 and 1.",
     "options": [
@@ -24204,7 +24204,7 @@
     "id": "math-hu-2025-final-s1-33",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The equation of a circle with center (-1, 0) is x² + y² + 2kx = 9. Then the value of k is equal to:",
     "options": [
@@ -24220,7 +24220,7 @@
     "id": "math-hu-2025-final-s1-34",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The range of a relation is always a subset of its codomain.",
     "options": [
@@ -24234,7 +24234,7 @@
     "id": "math-hu-2025-final-s1-35",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "A point P and Q are on line segment AB such that AP = PQ = QB. If A is at (1, 2) and B is at (10, 11), what are the coordinates of point Q?",
     "options": [
@@ -24250,7 +24250,7 @@
     "id": "math-hu-2025-final-s1-36",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The domain of sech x is always the set of real numbers.",
     "options": [
@@ -24264,7 +24264,7 @@
     "id": "math-hu-2025-final-s1-37",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The inverse function of an increasing function is also increasing.",
     "options": [
@@ -24278,7 +24278,7 @@
     "id": "math-hu-2025-final-s1-38",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "What is the value of x if tanh x = 2/3?",
     "options": [
@@ -24294,7 +24294,7 @@
     "id": "math-hu-2025-final-s1-39",
     "university": "Haramaya University",
     "year": "2025 Exam (Session 1)",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Final Exam",
     "question": "The inverse of f(x) = 1 - 2e^(-x) is equal to:",
     "options": [
@@ -29899,7 +29899,7 @@
     "id": "math-hu-2024-mid-01",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "True or False: The inverse and converse of the conditional statement p => q are logically equivalent to each other.",
     "options": [
@@ -29913,7 +29913,7 @@
     "id": "math-hu-2024-mid-02",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "True or False: If A ⊆ B^c, then A ∩ B = ∅.",
     "options": [
@@ -29927,7 +29927,7 @@
     "id": "math-hu-2024-mid-03",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "True or False: The power set of any set is always a non-empty set.",
     "options": [
@@ -29941,7 +29941,7 @@
     "id": "math-hu-2024-mid-04",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "True or False: The set of irrational numbers is closed under addition.",
     "options": [
@@ -29955,7 +29955,7 @@
     "id": "math-hu-2024-mid-05",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "True or False: The product of any two non-negative real numbers is always greater than zero.",
     "options": [
@@ -29969,7 +29969,7 @@
     "id": "math-hu-2024-mid-06",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Which of the following is NOT a proposition?\nA. Either π or e is an irrational number.\nB. Trees produce oxygen.\nC. 2 is the smallest prime number.\nD. Neither team A nor team B won the match.",
     "options": [
@@ -29985,7 +29985,7 @@
     "id": "math-hu-2024-mid-07",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "The compound proposition (p => q) <=> (~p ∨ q) is _____",
     "options": [
@@ -30001,7 +30001,7 @@
     "id": "math-hu-2024-mid-08",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Premises:\n1. He is healthy and he is not angry.\n2. He is angry or his plane fails.\n3. His plane does not fail if he does not travel abroad.\n\nWhich conclusion makes the argument valid?",
     "options": [
@@ -30017,7 +30017,7 @@
     "id": "math-hu-2024-mid-09",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "The negation of 'If we plant trees, then we control air pollution' is _____",
     "options": [
@@ -30033,7 +30033,7 @@
     "id": "math-hu-2024-mid-10",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Which of the following is NOT logically equivalent to r => ~(p ∨ q)?",
     "options": [
@@ -30049,7 +30049,7 @@
     "id": "math-hu-2024-mid-11",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "How many elements does a set contain if its power set has only two non-empty proper subsets?",
     "options": [
@@ -30065,7 +30065,7 @@
     "id": "math-hu-2024-mid-12",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Which of the following quantified propositions has a truth value of TRUE?\nA. (∃x∈ℕ)(∀y∈ℕ)(y > x)\nB. (∀x∈ℕ)(x > 3 => x² ≤ 9)\nC. (∀x∈ℕ)(∃y∈ℕ)(x² - y² = 0)\nD. (∀y∈ℤ)(∃x∈ℝ)(xy = 1)",
     "options": [
@@ -30081,7 +30081,7 @@
     "id": "math-hu-2024-mid-13",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Which one of the following is NOT necessarily true for any real numbers a, b, and c?",
     "options": [
@@ -30097,7 +30097,7 @@
     "id": "math-hu-2024-mid-14",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "If the truth value of p => (r ∨ q) is False, then what is the truth value of (p ∨ ~r) ∧ ~(r ∧ ~q) => p?",
     "options": [
@@ -30113,7 +30113,7 @@
     "id": "math-hu-2024-mid-15",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "What is the negation of (∀x∈ℝ)(x² ≤ 0 ∨ x > 1)?",
     "options": [
@@ -30129,7 +30129,7 @@
     "id": "math-hu-2024-mid-16",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Convert the decimal number 0.2̄1̄2̄ (i.e., 0.212121...) to fraction form.",
     "options": [
@@ -30145,7 +30145,7 @@
     "id": "math-hu-2024-mid-17",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "What must be the value of n if GCF(65, 117) = 65n - 117?",
     "options": [
@@ -30161,7 +30161,7 @@
     "id": "math-hu-2024-mid-18",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Consider A = {(-1)^n / (1-2n)} for all natural numbers n ≥ 1. What are the least upper bound (lub) and greatest lower bound (glb) of set A?",
     "options": [
@@ -30177,7 +30177,7 @@
     "id": "math-hu-2024-mid-19",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Let G = Gemachu comes to the birthday party, F = Fanos comes, H = Hanan comes. What is the symbolic form of: 'Gemachu comes to the birthday party if Fanos and Hanan do not come'?",
     "options": [
@@ -30193,7 +30193,7 @@
     "id": "math-hu-2024-mid-20",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "passage": "Argument validity problem:\nPremises: P1: p => q, P2: ~v => ~q, P3: ~r. Conclusion: ~p.\n\nFormal Proof:\n1. p => q (Premise 1)\n2. ~v => ~q ≡ q => v (Contrapositive of Premise 2)\n3. From (1) and (2) by Hypothetical Syllogism: p => v\n4. v => ~r (Contrapositive of Premise 3, r => ~v)\n5. From (3) and (4) by Hypothetical Syllogism: p => ~r\n6. ~r => ~p is derived via Modus Tollens using p => ~r and given ~r is not the condition — actually using Modus Tollens on step 5 and assuming r (contradiction). Therefore ~p. The argument is valid.",
     "question": "Show that the argument p => q, ~v => ~q, ~r ⊢ ~p is valid. Which rule correctly derives p => v from premises p => q and q => v (contrapositive of ~v => ~q)?",
@@ -30210,7 +30210,7 @@
     "id": "math-hu-2024-mid-21",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "passage": "Argument validity problem:\nPremises: P1: p => q, P2: ~v => ~q, P3: ~r. Conclusion: ~p.\n\nFormal Proof:\n1. p => q (Premise 1)\n2. ~v => ~q ≡ q => v (Contrapositive of Premise 2)\n3. From (1) and (2) by Hypothetical Syllogism: p => v\n4. v => ~r (Contrapositive of Premise 3, r => ~v)\n5. From (3) and (4) by Hypothetical Syllogism: p => ~r\n6. ~r => ~p is derived via Modus Tollens using p => ~r and given ~r is not the condition — actually using Modus Tollens on step 5 and assuming r (contradiction). Therefore ~p. The argument is valid.",
     "question": "In the argument p => q, ~v => ~q, ~r ⊢ ~p, which step correctly concludes ~p?",
@@ -30227,7 +30227,7 @@
     "id": "math-hu-2024-mid-22",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "passage": "Prove using Mathematical Induction:\n1/2 + 1/4 + 1/8 + ... + 1/2^n = 1 - 1/2^n, for all natural numbers n >= 1.\n\nStep 1 (Base Step, n=1): LHS = 1/2, RHS = 1 - 1/2 = 1/2. LHS = RHS. True.\nStep 2 (Inductive Hypothesis): Assume 1/2 + 1/4 + ... + 1/2^k = 1 - 1/2^k holds for some k >= 1.\nStep 3 (Inductive Step): Show it holds for n = k+1.\nLHS = (1/2 + ... + 1/2^k) + 1/2^(k+1) = (1 - 1/2^k) + 1/2^(k+1) = 1 - 2/2^(k+1) + 1/2^(k+1) = 1 - 1/2^(k+1) = RHS.",
     "question": "Mathematical Induction proof: 1/2 + 1/4 + ... + 1/2^n = 1 - 1/2^n. What is verified in the base step (n = 1)?",
@@ -30244,7 +30244,7 @@
     "id": "math-hu-2024-mid-23",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "passage": "Prove using Mathematical Induction:\n1/2 + 1/4 + 1/8 + ... + 1/2^n = 1 - 1/2^n, for all natural numbers n >= 1.\n\nStep 1 (Base Step, n=1): LHS = 1/2, RHS = 1 - 1/2 = 1/2. LHS = RHS. True.\nStep 2 (Inductive Hypothesis): Assume 1/2 + 1/4 + ... + 1/2^k = 1 - 1/2^k holds for some k >= 1.\nStep 3 (Inductive Step): Show it holds for n = k+1.\nLHS = (1/2 + ... + 1/2^k) + 1/2^(k+1) = (1 - 1/2^k) + 1/2^(k+1) = 1 - 2/2^(k+1) + 1/2^(k+1) = 1 - 1/2^(k+1) = RHS.",
     "question": "In the inductive step of the PMI proof for 1/2 + 1/4 + ... + 1/2^n = 1 - 1/2^n, after substituting the inductive hypothesis, what expression results?",
@@ -30261,7 +30261,7 @@
     "id": "math-hu-2024-midexam-01",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "True or False: The inverse and converse of the conditional statement p => q are logically equivalent to each other.",
     "options": [
@@ -30275,7 +30275,7 @@
     "id": "math-hu-2024-midexam-02",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "True or False: If A ⊆ B' (B complement), then A ∩ B = ∅.",
     "options": [
@@ -30289,7 +30289,7 @@
     "id": "math-hu-2024-midexam-03",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "True or False: The power set of any set is always a non-empty set.",
     "options": [
@@ -30303,7 +30303,7 @@
     "id": "math-hu-2024-midexam-04",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "True or False: The set of irrational numbers is closed under addition.",
     "options": [
@@ -30317,7 +30317,7 @@
     "id": "math-hu-2024-midexam-05",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "True or False: The product of any two non-negative real numbers is always greater than zero.",
     "options": [
@@ -30331,7 +30331,7 @@
     "id": "math-hu-2024-midexam-06",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Which of the following is NOT a proposition?\nA. Either π or e is irrational number.\nB. Trees produce oxygen.\nC. 2 is the smallest prime number.\nD. Neither team A nor team B won the match.",
     "options": [
@@ -30347,7 +30347,7 @@
     "id": "math-hu-2024-midexam-07",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "The compound proposition (p => q) <=> (~p v q) is _____\nA. Tautology\nB. Contradiction\nC. Contingency\nD. B and C",
     "options": [
@@ -30363,7 +30363,7 @@
     "id": "math-hu-2024-midexam-08",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Premises:\n1. He is healthy and he is not angry.\n2. He is angry or his plane fails.\n3. His plane does not fail if he does not travel abroad.\n\nWhich conclusion makes the argument valid?\nA. His plane fails and he is angry.\nB. He is healthy and he travels abroad.\nC. His plane does not fail.\nD. His plane fails and he does not travel abroad.",
     "options": [
@@ -30379,7 +30379,7 @@
     "id": "math-hu-2024-midexam-09",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "The negation of 'If we plant trees, then we control air pollution' is _____\nA. We do not control air pollution and we do not plant trees.\nB. We do not plant trees or we control air pollution.\nC. We do not plant trees and we control air pollution.\nD. We plant trees and we do not control air pollution.",
     "options": [
@@ -30395,7 +30395,7 @@
     "id": "math-hu-2024-midexam-10",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Which of the following compound propositions is NOT logically equivalent to r => ~(p v q)?\nA. ~r v ~(p v q)\nB. ~(r ^ p) ^ ~(r ^ q)\nC. (~r v ~p) v ~q\nD. (~r v ~p) ^ (~r v ~q)",
     "options": [
@@ -30411,7 +30411,7 @@
     "id": "math-hu-2024-midexam-11",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "How many elements does a set contain if the power set has only two non-empty proper subsets?\nA. 0\nB. 1\nC. 2\nD. 3",
     "options": [
@@ -30427,7 +30427,7 @@
     "id": "math-hu-2024-midexam-12",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Which quantified proposition has a truth value of TRUE?\nA. (∃x∈N)(∀y∈N)(y > x)\nB. (∀x∈N)(x > 3 => x² ≤ 9)\nC. (∀x∈N)(∃y∈N)(x² - y² = 0)\nD. (∀y∈Z)(∃x∈R)(xy = 1)",
     "options": [
@@ -30443,7 +30443,7 @@
     "id": "math-hu-2024-midexam-13",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Which is NOT necessarily true for any real numbers a, b, c?\nA. If a + b = a + c, then b = c.\nB. If a + c > b + c, then a > b.\nC. If a > b and c ≤ 0, then ac ≤ bc.\nD. If ac = bc, then a = b.",
     "options": [
@@ -30459,7 +30459,7 @@
     "id": "math-hu-2024-midexam-14",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "If the truth value of p => (r v q) is False, then what is the truth value of (p v ~r) ^ ~(r ^ ~q) => p?",
     "options": [
@@ -30475,7 +30475,7 @@
     "id": "math-hu-2024-midexam-15",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "What is the negation of (∀x∈R)(x² ≤ 0 v x > 1)?",
     "options": [
@@ -30491,7 +30491,7 @@
     "id": "math-hu-2024-midexam-16",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Convert the repeating decimal 0.2̄1̄2̄ (= 0.212121...) to fraction form.",
     "options": [
@@ -30507,7 +30507,7 @@
     "id": "math-hu-2024-midexam-17",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "What must be the value of n if GCF(65, 117) = 65n - 117?",
     "options": [
@@ -30523,7 +30523,7 @@
     "id": "math-hu-2024-midexam-18",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Consider the set A = {(-1)^n / (1 - 2n)} for all natural numbers n ≥ 1. What are the least upper bound (lub) and greatest lower bound (glb) of A?",
     "options": [
@@ -30539,7 +30539,7 @@
     "id": "math-hu-2024-midexam-19",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Let G = Gemachu comes to the party, F = Fanos comes, H = Hanan comes.\nWhat is the symbolic form of: 'Gemachu comes if Fanos and Hanan do NOT come'?",
     "options": [
@@ -30555,7 +30555,7 @@
     "id": "math-hu-2024-midexam-20",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "passage": "Argument: p => q, ~r => ~q, ~r |- ~p\n\nFormal Proof:\n1. p => q          (Premise 1)\n2. ~r => ~q        (Premise 2)\n3. ~r              (Premise 3)\n4. ~q              (Modus Ponens: steps 2 and 3)\n5. ~p              (Modus Tollens: steps 1 and 4)\nConclusion: ~p. The argument is valid.",
     "question": "In the formal proof of p => q, ~r => ~q, ~r |- ~p, which rule is used to derive ~q from premises ~r => ~q and ~r?",
@@ -30572,7 +30572,7 @@
     "id": "math-hu-2024-midexam-21",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "passage": "Argument: p => q, ~r => ~q, ~r |- ~p\n\nFormal Proof:\n1. p => q          (Premise 1)\n2. ~r => ~q        (Premise 2)\n3. ~r              (Premise 3)\n4. ~q              (Modus Ponens: steps 2 and 3)\n5. ~p              (Modus Tollens: steps 1 and 4)\nConclusion: ~p. The argument is valid.",
     "question": "In the formal proof of p => q, ~r => ~q, ~r |- ~p, which rule is used to derive ~p from p => q and ~q?",
@@ -30589,7 +30589,7 @@
     "id": "math-hu-2024-midexam-22",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "passage": "Prove using Mathematical Induction:\n1/2 + 1/4 + 1/8 + ... + 1/2^n = 1 - 1/2^n, for all natural numbers n >= 1.\n\nStep 1 (Base Case, n=1):\nLHS = 1/2^1 = 1/2\nRHS = 1 - 1/2^1 = 1/2\nLHS = RHS. True for n=1.\n\nStep 2 (Inductive Hypothesis):\nAssume: 1/2 + 1/4 + ... + 1/2^k = 1 - 1/2^k holds for some k >= 1.\n\nStep 3 (Inductive Step, n=k+1):\nLHS = (1/2 + ... + 1/2^k) + 1/2^(k+1)\n    = (1 - 1/2^k) + 1/2^(k+1)     [by hypothesis]\n    = 1 - 2/2^(k+1) + 1/2^(k+1)\n    = 1 - 1/2^(k+1) = RHS\nBy PMI, the statement holds for all n >= 1.",
     "question": "PMI Proof: 1/2 + 1/4 + ... + 1/2^n = 1 - 1/2^n. What is verified in the base case (n = 1)?",
@@ -30606,7 +30606,7 @@
     "id": "math-hu-2024-midexam-23",
     "university": "Haramaya University",
     "year": "2024 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "passage": "Prove using Mathematical Induction:\n1/2 + 1/4 + 1/8 + ... + 1/2^n = 1 - 1/2^n, for all natural numbers n >= 1.\n\nStep 1 (Base Case, n=1):\nLHS = 1/2^1 = 1/2\nRHS = 1 - 1/2^1 = 1/2\nLHS = RHS. True for n=1.\n\nStep 2 (Inductive Hypothesis):\nAssume: 1/2 + 1/4 + ... + 1/2^k = 1 - 1/2^k holds for some k >= 1.\n\nStep 3 (Inductive Step, n=k+1):\nLHS = (1/2 + ... + 1/2^k) + 1/2^(k+1)\n    = (1 - 1/2^k) + 1/2^(k+1)     [by hypothesis]\n    = 1 - 2/2^(k+1) + 1/2^(k+1)\n    = 1 - 1/2^(k+1) = RHS\nBy PMI, the statement holds for all n >= 1.",
     "question": "In the PMI inductive step for 1/2 + ... + 1/2^n = 1 - 1/2^n, after applying the inductive hypothesis and simplifying, what is the final result?",
@@ -33170,7 +33170,7 @@
     "id": "math-hu-2020-tf-01",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "The graph of f(x) = ln(x+2) is the graph of f(x) = ln x shifted up two units.",
     "options": [
@@ -33184,7 +33184,7 @@
     "id": "math-hu-2020-tf-02",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "If θ is an argument of the complex number z, then -θ is always an argument of z̄ (the conjugate of z).",
     "options": [
@@ -33198,7 +33198,7 @@
     "id": "math-hu-2020-tf-03",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "If a is any real number, then a⁰ = 1.",
     "options": [
@@ -33212,7 +33212,7 @@
     "id": "math-hu-2020-tf-04",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Any exponential function is monotonic.",
     "options": [
@@ -33226,7 +33226,7 @@
     "id": "math-hu-2020-tf-05",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "The inverse of every function is a function.",
     "options": [
@@ -33240,7 +33240,7 @@
     "id": "math-hu-2020-tf-06",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "A horizontal asymptote is a line that the graph of a function approaches but never crosses.",
     "options": [
@@ -33254,7 +33254,7 @@
     "id": "math-hu-2020-tf-07",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "The polynomial equation 2x³ = 1 - x has a solution in the interval [0, 1].",
     "options": [
@@ -33268,7 +33268,7 @@
     "id": "math-hu-2020-tf-08",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "All members of the family y = log_b(x) (b > 0, b ≠ 1) have graphs which are asymptotic to the y-axis.",
     "options": [
@@ -33282,7 +33282,7 @@
     "id": "math-hu-2020-tf-09",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "The conjugate of a complex number z is the same as the reflection of z along the x-axis.",
     "options": [
@@ -33296,7 +33296,7 @@
     "id": "math-hu-2020-tf-10",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "The sum of a complex number and its conjugate is pure imaginary.",
     "options": [
@@ -33310,7 +33310,7 @@
     "id": "math-hu-2020-mc-01",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Which one of the following is true about P(x) = -3x + 7x⁵ + 13 - 6x⁴ + x² - 12x¹²?",
     "options": [
@@ -33326,7 +33326,7 @@
     "id": "math-hu-2020-mc-02",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Given Z = (1 + 2i)/(3 - 4i) + (2 - i)/(5i), which one of the following is incorrect about Z?",
     "options": [
@@ -33342,7 +33342,7 @@
     "id": "math-hu-2020-mc-03",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Identify the INCORRECT statement among the following:",
     "options": [
@@ -33358,7 +33358,7 @@
     "id": "math-hu-2020-mc-04",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Which one of the following is NOT true about the logarithmic function y = log_a(x) (where a > 0, a ≠ 1)?",
     "options": [
@@ -33374,7 +33374,7 @@
     "id": "math-hu-2020-mc-05",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "If x = ln(cosh(ln 3)), then tanh x equals:",
     "options": [
@@ -33390,7 +33390,7 @@
     "id": "math-hu-2020-sa-01",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "For the trigonometric function y = -6 sin(3x) + 3, find its amplitude, period, and frequency respectively.",
     "options": [
@@ -33406,7 +33406,7 @@
     "id": "math-hu-2020-sa-02",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "If x - 2 is a common factor of the expressions x²(m + n) - n and 2x² + (m - 1)x + (m + n), find the values of m and n respectively.",
     "options": [
@@ -33422,7 +33422,7 @@
     "id": "math-hu-2020-sa-03",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Let f(x) = 2 - x² and g(x) = √(x + 2). Find (g ∘ f)(x), its domain, and its range.",
     "options": [
@@ -33438,7 +33438,7 @@
     "id": "math-hu-2020-sa-04",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "If i is a zero of f(x) = x⁴ + 2x³ + 3x² + 2x + 2, what are the other three zeros of f(x)?",
     "options": [
@@ -33454,7 +33454,7 @@
     "id": "math-hu-2020-sa-05",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Find the value of x such that 2(3/2)^(2x) = 3(8/27)^((1/3)x - 1).",
     "options": [
@@ -33470,7 +33470,7 @@
     "id": "math-hu-2020-sa-06",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Given z = 1 / [(1 + i)(1 - 2i)(1 + 5i)], find Re(z), Im(z), and the conjugate z̄.",
     "options": [
@@ -33486,7 +33486,7 @@
     "id": "math-hu-2020-wo-01",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "For the rational function f(x) = (2x² - 2x - 12) / (x² + x - 12), which option correctly identifies its domain, intercepts, and asymptotes?",
     "options": [
@@ -33502,7 +33502,7 @@
     "id": "math-hu-2020-wo-02",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Solve the logarithmic equation: log(x - 2) + log(2x - 3) = 2 log(x).",
     "options": [
@@ -33518,7 +33518,7 @@
     "id": "math-hu-2020-wo-03",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Which of the following correctly demonstrates the hyperbolic identity cosh(x - y) = cosh x cosh y - sinh x sinh y?",
     "options": [
@@ -33534,7 +33534,7 @@
     "id": "math-hu-2020-wo-04",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Solve the complex equation z^(3/2) = 8i for all distinct complex roots.",
     "options": [
@@ -33550,7 +33550,7 @@
     "id": "math-hu-2020-wo-05",
     "university": "Haramaya University",
     "year": "2020 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Mathematics",
     "category": "Mid Exam",
     "question": "Using the exponential definitions cosh x = (eˣ + e⁻ˣ)/2 and sinh x = (eˣ - e⁻ˣ)/2, what is the value of cosh² x - sinh² x?",
     "options": [

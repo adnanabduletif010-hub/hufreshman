@@ -21,7 +21,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.curiovana.hufreshman"
+        applicationId = "com.curiovana.hufreshman" 
         minSdk = 24
         targetSdk = 37
         versionCode = 12
