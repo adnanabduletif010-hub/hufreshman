@@ -67,8 +67,18 @@ fun CommunityScreen(
     val filteredPosts = remember(posts, selectedTag) {
         val list = if (selectedTag == "All") posts
         else posts.filter { it.tag.equals(selectedTag, ignoreCase = true) }
+        val now = System.currentTimeMillis()
+        val oneDayMillis = 24 * 60 * 60 * 1000L
         list.sortedWith(
-            compareByDescending { post ->
+            compareByDescending<CommunityPost> { post ->
+                val isOfficial = post.tag.equals("Official", ignoreCase = true) ||
+                        post.role.contains("Freshman", ignoreCase = true) ||
+                        post.author.contains("Freshman", ignoreCase = true)
+                val postTime = if (post.timestamp > 0L) post.timestamp
+                else post.id.removePrefix("post_").toLongOrNull() ?: 0L
+                val isWithinOneDay = isOfficial && (now - postTime) in 0..oneDayMillis
+                if (isWithinOneDay) 1 else 0
+            }.thenByDescending { post ->
                 if (post.timestamp > 0L) post.timestamp
                 else post.id.removePrefix("post_").toLongOrNull() ?: 0L
             }

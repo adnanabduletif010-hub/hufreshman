@@ -11,7 +11,11 @@ data class ExamQuestion(
     val options: List<String>,
     val answer: Int,
     val explanation: String = "Detailed university solution provided.",
-    val originalUniversity: String? = null
+    val originalUniversity: String? = null,
+    /** Optional reading passage shared by a group of questions. */
+    val passage: String? = null,
+    /** Groups questions that belong to the same reading passage (same passageId = same passage). */
+    val passageId: String? = null
 )
 
 data class UniversityDetails(
@@ -133,3 +137,56 @@ sealed class LoginResult {
     data class Success(val isAdmin: Boolean) : LoginResult()
     data class Error(val message: String) : LoginResult()
 }
+
+data class PaymentAccount(
+    val id: String = "",
+    val method: String = "",
+    val accountNumber: String = "",
+    val accountName: String = "",
+    val shortCode: String = "",
+    val colorHex: String = "",
+    val note: String = ""
+)
+
+
+val DEFAULT_PAYMENT_ACCOUNTS = listOf(
+    PaymentAccount(
+        id = "telebirr_default",
+        method = "Telebirr",
+        accountNumber = "0955903175",
+        accountName = "Adinan",
+        shortCode = "T",
+        colorHex = "#0072CE",
+        note = "Telebirr"
+    ),
+    PaymentAccount(
+        id = "cbe_default",
+        method = "CBE Bank",
+        accountNumber = "1000650901731",
+        accountName = "Adinan",
+        shortCode = "C",
+        colorHex = "#800020",
+        note = "Commercial Bank of Ethiopia"
+    ),
+    PaymentAccount(
+        id = "ebirr_default",
+        method = "E-Birr",
+        accountNumber = "0955903175",
+        accountName = "Adinan",
+        shortCode = "E",
+        colorHex = "#FF6600",
+        note = "E-Birr"
+    )
+)
+
+data class PaymentConfig(
+    val title: String = "የአባልነት ክፍያ (Membership)",
+    val subtitle: String = "Haramaya University Freshman",
+    val instructions: String = "የአባልነት ክፍያ መጠን 250 ብር (ETB) ነው። ክፍያዎን ከፈጸሙ በኋላ የተላከበትን ስክሪንሾት ከታች ይላኩ፤ አድሚኑ እንዳረጋገጠ ሙሉ አገልግሎቱ ይከፈታል።",
+    val amount: String = "250 ETB (ብር)",
+    val accounts: List<PaymentAccount> = DEFAULT_PAYMENT_ACCOUNTS,
+    val supportTelegram: String = "@HUfreshman1",
+    val supportPhone: String = "0955903175",
+    val isLoaded: Boolean = false
+)
+

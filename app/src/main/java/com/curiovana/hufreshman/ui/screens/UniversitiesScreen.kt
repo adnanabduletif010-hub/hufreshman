@@ -9,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -39,8 +40,8 @@ import com.curiovana.hufreshman.viewmodel.MainViewModel
 @Composable
 fun UniversitiesScreen(
     viewModel: MainViewModel,
-    // Returns true if action is allowed, false if blocked (e.g. guest user)
-    onUniversitySelectedGate: () -> Boolean = { true }
+    // Returns true if action is allowed; isFirstItem=true means it's the free preview university
+    onUniversitySelectedGate: (isFirstItem: Boolean) -> Boolean = { true }
 ) {
     val universities by viewModel.universities.collectAsState()
     val userProfile by viewModel.userProfile.collectAsState()
@@ -129,13 +130,15 @@ fun UniversitiesScreen(
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            items(filteredList, key = { it.id }) { univ ->
+            itemsIndexed(filteredList, key = { index, univ -> if (univ.id.isNotBlank()) "${univ.id}_$index" else index }) { index, univ ->
                 UniversityCard(
                     university = univ,
                     isFlagship = univ.id == "univ_hu",
                     isAdmin = userProfile.isAdmin,
                     onClick = {
-                        if (onUniversitySelectedGate()) {
+                        // First university in the list is always a free preview for any user
+                        val isFirstUniversity = index == 0
+                        if (onUniversitySelectedGate(isFirstUniversity)) {
                             selectedUniversity = univ
                         }
                     },

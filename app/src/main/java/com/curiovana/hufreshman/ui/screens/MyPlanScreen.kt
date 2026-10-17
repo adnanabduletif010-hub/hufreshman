@@ -1,6 +1,7 @@
 package com.curiovana.hufreshman.ui.screens
 
 import android.content.Context
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -41,12 +42,12 @@ enum class UnderstandingCategory(
     val badgeOr: String
 ) {
     SLOW(
-        titleEn = "Slowly Understanding",
-        titleAm = "በዝግታ የሚረዱ (Slowly)",
-        titleOr = "Suuta Hubatan (Slowly)",
-        subtitleEn = "Deep & Methodical Learner",
-        subtitleAm = "ጥልቅ እና ረጋ ብሎ ተገንዛቢ",
-        subtitleOr = "Gadi Fageenyaan Hubataa",
+        titleEn = "Steady Student",
+        titleAm = "በዝግታና በጥልቀት የሚረዱ ተማሪዎች",
+        titleOr = "Barattoota Suuta Hubatan",
+        subtitleEn = "Deep & Step-by-Step Understanding",
+        subtitleAm = "ጥልቅ እና ደረጃ በደረጃ አረዳድ",
+        subtitleOr = "Gadi Fageenyaan Hubatan",
         icon = Icons.Default.HourglassTop,
         primaryColor = AmberWarning,
         badgeEn = "Foundation Builder",
@@ -54,11 +55,11 @@ enum class UnderstandingCategory(
         badgeOr = "Bu'uura Ijaaraa"
     ),
     MID(
-        titleEn = "Mid Understanding",
-        titleAm = "መካከለኛ አረዳድ (Mid)",
-        titleOr = "Giddu-galeessa (Mid)",
-        subtitleEn = "Balanced & Steady Climber",
-        subtitleAm = "ሚዛናዊ እና ቋሚ አጥኚ",
+        titleEn = "Moderate Student",
+        titleAm = "መካከለኛ አረዳድ ያላቸው ተማሪዎች",
+        titleOr = "Barattoota Giddu-galeessaan Hubatan",
+        subtitleEn = "Balanced & Consistent Pace",
+        subtitleAm = "ሚዛናዊ እና ወጥ አረዳድ",
         subtitleOr = "Madaalawaa fi Qajeelaa",
         icon = Icons.Default.Balance,
         primaryColor = RoyalBlue,
@@ -67,11 +68,11 @@ enum class UnderstandingCategory(
         badgeOr = "Milkaa'aa Dhaabbataa"
     ),
     FAST(
-        titleEn = "Fast Understanding",
-        titleAm = "ፈጣን አረዳድ (Fast)",
-        titleOr = "Saffisaan Hubatan (Fast)",
-        subtitleEn = "Agile & High-Yield Grasper",
-        subtitleAm = "ፈጣን እና ንቁ ተማሪ",
+        titleEn = "Fast Student",
+        titleAm = "ፈጣን አረዳድ ያላቸው ተማሪዎች",
+        titleOr = "Barattoota Saffisaan Hubatan",
+        subtitleEn = "Quick & High-Yield Grasping",
+        subtitleAm = "ንቁ እና ፈጣን አረዳድ",
         subtitleOr = "Saffisaa fi Qaxalee",
         icon = Icons.Default.Bolt,
         primaryColor = EmeraldGreen,
@@ -108,11 +109,18 @@ fun MyPlanScreen(viewModel: MainViewModel) {
         )
     }
 
+    var hasSelectedCategory by remember { mutableStateOf(false) }
     var showLanguageMenu by remember { mutableStateOf(false) }
+
+    // Intercept mobile phone back button to go back and choose understanding style
+    BackHandler(enabled = hasSelectedCategory) {
+        hasSelectedCategory = false
+    }
 
     fun updateCategory(cat: UnderstandingCategory) {
         selectedCategory = cat
         prefs.edit().putString("selected_category", cat.name).apply()
+        hasSelectedCategory = true
     }
 
     fun updateLanguage(lang: PlanLanguage) {
@@ -164,17 +172,25 @@ fun MyPlanScreen(viewModel: MainViewModel) {
                         }
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
-                            text = when (selectedLanguage) {
-                                PlanLanguage.ENGLISH -> "Tailored for Slow, Mid & Fast understanding students"
-                                PlanLanguage.AMHARIC -> "ለዝግታ፣ መካከለኛ እና ፈጣን ተማሪዎች የተዘጋጀ"
-                                PlanLanguage.OROMO -> "Barattoota suuta, giddu-galeessaa fi saffisaatiif qophaa'e"
+                            text = if (hasSelectedCategory) {
+                                when (selectedLanguage) {
+                                    PlanLanguage.ENGLISH -> "Tailored for ${selectedCategory.titleEn}"
+                                    PlanLanguage.AMHARIC -> "ለ${selectedCategory.titleAm} የተዘጋጀ"
+                                    PlanLanguage.OROMO -> "Akka ${selectedCategory.titleOr}tti qophaa'e"
+                                }
+                            } else {
+                                when (selectedLanguage) {
+                                    PlanLanguage.ENGLISH -> "Choose your learning profile to unlock tailored blueprints"
+                                    PlanLanguage.AMHARIC -> "ለእርስዎ የሚስማማውን የአረዳድ ዘይቤ በመምረጥ እቅድዎን ይጀምሩ"
+                                    PlanLanguage.OROMO -> "Karoora keessan argachuuf gosa hubannoo keessan filadhaa"
+                                }
                             },
                             fontSize = 11.5.sp,
                             color = Color.White.copy(alpha = 0.85f)
                         )
                     }
 
-                    // Language Selector Icon Button (Replaces Safe Pass & Rise, located right above tabs)
+                    // Top Action Controls: Language Selector
                     Box {
                         Surface(
                             color = Color.White.copy(alpha = 0.22f),
@@ -208,110 +224,124 @@ fun MyPlanScreen(viewModel: MainViewModel) {
                             }
                         }
 
-                        DropdownMenu(
-                            expanded = showLanguageMenu,
-                            onDismissRequest = { showLanguageMenu = false },
-                            modifier = Modifier.background(MaterialTheme.colorScheme.surface)
-                        ) {
-                            PlanLanguage.values().forEach { lang ->
-                                DropdownMenuItem(
-                                    text = {
-                                        Row(verticalAlignment = Alignment.CenterVertically) {
-                                            Text(lang.flag, fontSize = 16.sp)
-                                            Spacer(modifier = Modifier.width(8.dp))
-                                            Text(
-                                                lang.displayName,
-                                                fontWeight = if (selectedLanguage == lang) FontWeight.Bold else FontWeight.Normal,
-                                                color = if (selectedLanguage == lang) RoyalBlue else MaterialTheme.colorScheme.onSurface
-                                            )
-                                        }
-                                    },
-                                    onClick = {
-                                        updateLanguage(lang)
-                                        showLanguageMenu = false
-                                    },
-                                    leadingIcon = if (selectedLanguage == lang) {
-                                        { Icon(Icons.Default.Check, contentDescription = null, tint = RoyalBlue, modifier = Modifier.size(16.dp)) }
-                                    } else null
-                                )
+                            DropdownMenu(
+                                expanded = showLanguageMenu,
+                                onDismissRequest = { showLanguageMenu = false },
+                                modifier = Modifier.background(MaterialTheme.colorScheme.surface)
+                            ) {
+                                PlanLanguage.values().forEach { lang ->
+                                    DropdownMenuItem(
+                                        text = {
+                                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                                Text(lang.flag, fontSize = 16.sp)
+                                                Spacer(modifier = Modifier.width(8.dp))
+                                                Text(
+                                                    lang.displayName,
+                                                    fontWeight = if (selectedLanguage == lang) FontWeight.Bold else FontWeight.Normal,
+                                                    color = if (selectedLanguage == lang) RoyalBlue else MaterialTheme.colorScheme.onSurface
+                                                )
+                                            }
+                                        },
+                                        onClick = {
+                                            updateLanguage(lang)
+                                            showLanguageMenu = false
+                                        },
+                                        leadingIcon = if (selectedLanguage == lang) {
+                                            { Icon(Icons.Default.Check, contentDescription = null, tint = RoyalBlue, modifier = Modifier.size(16.dp)) }
+                                        } else null
+                                    )
+                                }
                             }
                         }
                     }
-                }
 
-                Spacer(modifier = Modifier.height(14.dp))
+                // Section Navigation Tabs (shown once category is chosen)
+                if (hasSelectedCategory) {
+                    Spacer(modifier = Modifier.height(14.dp))
 
-                // Section Navigation Tabs (Located right under header)
-                val tabTitles = when (selectedLanguage) {
-                    PlanLanguage.ENGLISH -> listOf("Understanding Plan", "Exam Attack Room", "Course Guides", "Daily Checklist")
-                    PlanLanguage.AMHARIC -> listOf("የአጠናን እቅድ", "የፈተና ስልት", "የኮርሶች መመሪያ", "የእለት ተግባራት")
-                    PlanLanguage.OROMO -> listOf("Karoora Hubannoo", "Tooftaa Qormaataa", "Qajeelcha Koorsii", "Hojii Guyyaa")
-                }
+                    val tabTitles = when (selectedLanguage) {
+                        PlanLanguage.ENGLISH -> listOf("Understanding Plan", "Exam Attack Room", "Course Guides", "Daily Checklist")
+                        PlanLanguage.AMHARIC -> listOf("የአጠናን እቅድ", "የፈተና ስልት", "የኮርሶች መመሪያ", "የእለት ተግባራት")
+                        PlanLanguage.OROMO -> listOf("Karoora Hubannoo", "Tooftaa Qormaataa", "Qajeelcha Koorsii", "Hojii Guyyaa")
+                    }
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .horizontalScroll(rememberScrollState()),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    tabTitles.forEachIndexed { index, title ->
-                        val isSelected = activeTab == index
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(20.dp))
-                                .background(
-                                    if (isSelected) Color.White else Color.White.copy(alpha = 0.15f)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .horizontalScroll(rememberScrollState()),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        tabTitles.forEachIndexed { index, title ->
+                            val isSelected = activeTab == index
+                            Box(
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(20.dp))
+                                    .background(
+                                        if (isSelected) Color.White else Color.White.copy(alpha = 0.15f)
+                                    )
+                                    .clickable { activeTab = index }
+                                    .padding(horizontal = 14.dp, vertical = 7.dp)
+                            ) {
+                                Text(
+                                    text = title,
+                                    color = if (isSelected) RoyalBlueDark else Color.White,
+                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                                    fontSize = 12.sp
                                 )
-                                .clickable { activeTab = index }
-                                .padding(horizontal = 14.dp, vertical = 7.dp)
-                        ) {
-                            Text(
-                                text = title,
-                                color = if (isSelected) RoyalBlueDark else Color.White,
-                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
-                                fontSize = 12.sp
-                            )
+                            }
                         }
                     }
                 }
             }
         }
 
-        // Main Tab Content
+        // Main Body Content
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .weight(1f)
         ) {
-            when (activeTab) {
-                0 -> UnderstandingCategoryTab(
+            if (!hasSelectedCategory) {
+                // First screen: 3 Choices placed VERTICALLY with modern attractive icons
+                CategoryVerticalSelectionView(
                     selectedCategory = selectedCategory,
                     onSelectCategory = { updateCategory(it) },
                     selectedLanguage = selectedLanguage
                 )
-                1 -> ExamStrategyTab(
-                    selectedCategory = selectedCategory,
-                    selectedLanguage = selectedLanguage
-                )
-                2 -> CourseBlueprintTab(
-                    selectedCategory = selectedCategory,
-                    selectedLanguage = selectedLanguage
-                )
-                3 -> DailyRoutineTab(
-                    context = context,
-                    selectedLanguage = selectedLanguage
-                )
+            } else {
+                // Main Tab Content once chosen
+                when (activeTab) {
+                    0 -> UnderstandingCategoryTab(
+                        selectedCategory = selectedCategory,
+                        selectedLanguage = selectedLanguage,
+                        onNext = { activeTab = 1 }
+                    )
+                    1 -> ExamStrategyTab(
+                        selectedCategory = selectedCategory,
+                        selectedLanguage = selectedLanguage,
+                        onNext = { activeTab = 2 }
+                    )
+                    2 -> CourseBlueprintTab(
+                        selectedCategory = selectedCategory,
+                        selectedLanguage = selectedLanguage,
+                        onNext = { activeTab = 3 }
+                    )
+                    3 -> DailyRoutineTab(
+                        context = context,
+                        selectedLanguage = selectedLanguage
+                    )
+                }
             }
         }
     }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// TAB 0: Understanding Categories (Slowly, Mid, Fast)
+// VERTICAL CATEGORY SELECTION VIEW (Steady, Moderate, Fast)
 // ─────────────────────────────────────────────────────────────────────────────
 
 @Composable
-private fun UnderstandingCategoryTab(
+private fun CategoryVerticalSelectionView(
     selectedCategory: UnderstandingCategory,
     onSelectCategory: (UnderstandingCategory) -> Unit,
     selectedLanguage: PlanLanguage
@@ -323,133 +353,351 @@ private fun UnderstandingCategoryTab(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text(
-            text = when (selectedLanguage) {
-                PlanLanguage.ENGLISH -> "CHOOSE YOUR UNDERSTANDING STYLE"
-                PlanLanguage.AMHARIC -> "የአረዳድ ዘይቤዎን ይምረጡ"
-                PlanLanguage.OROMO -> "GOSA HUBANNOO KEESSAN FILADHAA"
-            },
-            fontSize = 11.5.sp,
-            fontWeight = FontWeight.ExtraBold,
-            color = Slate700,
-            letterSpacing = 0.5.sp
-        )
+        Column {
+            Text(
+                text = when (selectedLanguage) {
+                    PlanLanguage.ENGLISH -> "CHOOSE YOUR UNDERSTANDING STYLE"
+                    PlanLanguage.AMHARIC -> "የአረዳድ ዘይቤዎን ይምረጡ"
+                    PlanLanguage.OROMO -> "GOSA HUBANNOO KEESSAN FILADHAA"
+                },
+                fontSize = 12.sp,
+                fontWeight = FontWeight.ExtraBold,
+                color = Slate700,
+                letterSpacing = 0.6.sp
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = when (selectedLanguage) {
+                    PlanLanguage.ENGLISH -> "Select the learning pace that best describes how you grasp concepts:"
+                    PlanLanguage.AMHARIC -> "ፅንሰ-ሀሳቦችን ለመረዳት ከእርስዎ ጋር የሚስማማውን የአጠናን ዘይቤ ይምረጡ፦"
+                    PlanLanguage.OROMO -> "Tooftaa hubannoo keessaniif mijatu filachuun itti fufaa:"
+                },
+                fontSize = 13.sp,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f)
+            )
+        }
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            UnderstandingCategory.values().forEach { cat ->
-                val isSelected = selectedCategory == cat
-                Card(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clickable { onSelectCategory(cat) },
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = if (isSelected) cat.primaryColor.copy(alpha = 0.08f) else MaterialTheme.colorScheme.surface
-                    ),
-                    border = androidx.compose.foundation.BorderStroke(
-                        width = if (isSelected) 2.dp else 1.dp,
-                        color = if (isSelected) cat.primaryColor else Color(0xFFE2E8F0)
-                    ),
-                    elevation = CardDefaults.cardElevation(defaultElevation = if (isSelected) 3.dp else 1.dp)
+        UnderstandingCategory.values().forEach { cat ->
+            val isCurrentSelection = selectedCategory == cat
+
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onSelectCategory(cat) },
+                shape = RoundedCornerShape(20.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                ),
+                border = androidx.compose.foundation.BorderStroke(
+                    width = if (isCurrentSelection) 2.dp else 1.5.dp,
+                    color = cat.primaryColor.copy(alpha = if (isCurrentSelection) 0.85f else 0.3f)
+                ),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = if (isCurrentSelection) 4.dp else 2.dp,
+                    pressedElevation = 6.dp
+                )
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    Column(
-                        modifier = Modifier.padding(12.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
+                        // Modern Icon Container with Gradient & Elevation
                         Box(
                             modifier = Modifier
-                                .size(38.dp)
-                                .clip(CircleShape)
-                                .background(cat.primaryColor.copy(alpha = 0.15f)),
+                                .size(52.dp)
+                                .clip(RoundedCornerShape(16.dp))
+                                .background(
+                                    Brush.linearGradient(
+                                        listOf(cat.primaryColor.copy(alpha = 0.82f), cat.primaryColor)
+                                    )
+                                ),
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
                                 imageVector = cat.icon,
                                 contentDescription = null,
-                                tint = cat.primaryColor,
-                                modifier = Modifier.size(20.dp)
+                                tint = Color.White,
+                                modifier = Modifier.size(28.dp)
                             )
                         }
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = when (selectedLanguage) {
-                                PlanLanguage.ENGLISH -> when (cat) {
-                                    UnderstandingCategory.SLOW -> "Slowly"
-                                    UnderstandingCategory.MID -> "Mid"
-                                    UnderstandingCategory.FAST -> "Fast"
-                                }
-                                PlanLanguage.AMHARIC -> when (cat) {
-                                    UnderstandingCategory.SLOW -> "በዝግታ"
-                                    UnderstandingCategory.MID -> "መካከለኛ"
-                                    UnderstandingCategory.FAST -> "ፈጣን"
-                                }
-                                PlanLanguage.OROMO -> when (cat) {
-                                    UnderstandingCategory.SLOW -> "Suuta"
-                                    UnderstandingCategory.MID -> "Giddu-galeessa"
-                                    UnderstandingCategory.FAST -> "Saffisaa"
-                                }
-                            },
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 13.5.sp,
-                            color = if (isSelected) cat.primaryColor else MaterialTheme.colorScheme.onSurface
-                        )
-                        Text(
-                            text = when (selectedLanguage) {
-                                PlanLanguage.ENGLISH -> cat.badgeEn
-                                PlanLanguage.AMHARIC -> cat.badgeAm
-                                PlanLanguage.OROMO -> cat.badgeOr
-                            },
-                            fontSize = 9.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = Slate700
-                        )
+
+                        Spacer(modifier = Modifier.width(14.dp))
+
+                        Column(modifier = Modifier.weight(1f)) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                Text(
+                                    text = when (selectedLanguage) {
+                                        PlanLanguage.ENGLISH -> cat.titleEn
+                                        PlanLanguage.AMHARIC -> cat.titleAm
+                                        PlanLanguage.OROMO -> cat.titleOr
+                                    },
+                                    fontWeight = FontWeight.ExtraBold,
+                                    fontSize = 16.5.sp,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(2.dp))
+
+                            Text(
+                                text = when (selectedLanguage) {
+                                    PlanLanguage.ENGLISH -> cat.subtitleEn
+                                    PlanLanguage.AMHARIC -> cat.subtitleAm
+                                    PlanLanguage.OROMO -> cat.subtitleOr
+                                },
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = Slate700
+                            )
+                        }
+
+                        // Badge Pill at top right
+                        Surface(
+                            color = cat.primaryColor.copy(alpha = 0.12f),
+                            shape = RoundedCornerShape(10.dp)
+                        ) {
+                            Text(
+                                text = when (selectedLanguage) {
+                                    PlanLanguage.ENGLISH -> cat.badgeEn
+                                    PlanLanguage.AMHARIC -> cat.badgeAm
+                                    PlanLanguage.OROMO -> cat.badgeOr
+                                },
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = cat.primaryColor,
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                            )
+                        }
+                    }
+
+                    // Key Highlights for this category
+                    val highlights = when (cat) {
+                        UnderstandingCategory.SLOW -> when (selectedLanguage) {
+                            PlanLanguage.ENGLISH -> listOf(
+                                "Deep conceptual breakdown & root mastery",
+                                "Step-by-step formula derivations & proofs",
+                                "Builds high-confidence exam foundations"
+                            )
+                            PlanLanguage.AMHARIC -> listOf(
+                                "ጥልቅ የፅንሰ-ሀሳብ ማብራሪያ እና የመሰረት ግንባታ",
+                                "ደረጃ በደረጃ የፎርሙላዎች አመጣጥ ማብራሪያ",
+                                "በራስ መተማመን ፈተናን ማለፍ የሚያስችል ዝግጅት"
+                            )
+                            PlanLanguage.OROMO -> listOf(
+                                "Qabiyyee bu'uuraa gadi fageenyaan hubachuu",
+                                "Madda foormulaa sadarkaa sadarkaan qabachuu",
+                                "Qormaata ofitti amanamummaan dabruu"
+                            )
+                        }
+                        UnderstandingCategory.MID -> when (selectedLanguage) {
+                            PlanLanguage.ENGLISH -> listOf(
+                                "Balanced pacing covering full syllabus",
+                                "Focused high-frequency exam question drills",
+                                "Consistent A-grade performance optimization"
+                            )
+                            PlanLanguage.AMHARIC -> listOf(
+                                "ሙሉ ሲላበስ የሚሸፍን ሚዛናዊ የጥናት ፍጥነት",
+                                "በፈተናዎች ተደጋጋሚ ጥያቄዎች ላይ ያተኮረ ልምምድ",
+                                "ወጥ የሆነ ከፍተኛ ውጤት ማረጋገጫ"
+                            )
+                            PlanLanguage.OROMO -> listOf(
+                                "Saffisa madaalawaa barnoota hunda qaqqabu",
+                                "Shaakala gaaffilee qormaataa yeroo baay'ee dhufan",
+                                "Qabxii olaanaa dhaabbataan mirkaneessuu"
+                            )
+                        }
+                        UnderstandingCategory.FAST -> when (selectedLanguage) {
+                            PlanLanguage.ENGLISH -> listOf(
+                                "Rapid pattern recognition & instant recall",
+                                "High-speed shortcuts & elimination tactics",
+                                "Maximum exam score in minimum time"
+                            )
+                            PlanLanguage.AMHARIC -> listOf(
+                                "ፈጣን የስልት ማስተዋል እና ፅንሰ-ሀሳብ የማስታወስ ችሎታ",
+                                "የላቁ የፈተና አቋራጭ መንገዶችና ምርጫዎችን የማስወገድ ዘዴ",
+                                "በአጭር ጊዜ የላቀ የፈተና ውጤት ማስመዝገብ"
+                            )
+                            PlanLanguage.OROMO -> listOf(
+                                "Tooftaalee qormaataa saffisaan baruu",
+                                "Qaxxaamuraa fi deebii sobaa dhabamsiisuu",
+                                "Yeroo gabaabaa keessatti qabxii guddaa fiduu"
+                            )
+                        }
+                    }
+
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                color = cat.primaryColor.copy(alpha = 0.05f),
+                                shape = RoundedCornerShape(12.dp)
+                            )
+                            .padding(horizontal = 12.dp, vertical = 10.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        highlights.forEach { highlight ->
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Box(
+                                    modifier = Modifier
+                                        .size(5.dp)
+                                        .clip(CircleShape)
+                                        .background(cat.primaryColor)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = highlight,
+                                    fontSize = 11.5.sp,
+                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f),
+                                    fontWeight = FontWeight.Medium
+                                )
+                            }
+                        }
+                    }
+
+                    // Action Button Row
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Surface(
+                            color = cat.primaryColor,
+                            shape = RoundedCornerShape(12.dp),
+                            shadowElevation = 2.dp
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = when (selectedLanguage) {
+                                        PlanLanguage.ENGLISH -> "Explore Plan"
+                                        PlanLanguage.AMHARIC -> "እቅዱን ክፈት"
+                                        PlanLanguage.OROMO -> "Karoora Bani"
+                                    },
+                                    fontSize = 12.5.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.White
+                                )
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Icon(
+                                    imageVector = Icons.Default.ArrowForward,
+                                    contentDescription = null,
+                                    tint = Color.White,
+                                    modifier = Modifier.size(15.dp)
+                                )
+                            }
+                        }
                     }
                 }
             }
         }
+    }
+}
 
-        // Active Adaptive Mode Notice
+@Composable
+private fun NextPlanButton(
+    onNext: () -> Unit,
+    selectedLanguage: PlanLanguage
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp, bottom = 20.dp),
+        horizontalArrangement = Arrangement.End
+    ) {
         Surface(
-            color = selectedCategory.primaryColor.copy(alpha = 0.09f),
-            shape = RoundedCornerShape(12.dp),
-            border = androidx.compose.foundation.BorderStroke(1.dp, selectedCategory.primaryColor.copy(alpha = 0.3f)),
+            color = RoyalBlue,
+            shape = RoundedCornerShape(14.dp),
+            shadowElevation = 3.dp,
+            modifier = Modifier.clickable { onNext() }
+        ) {
+            Row(
+                modifier = Modifier.padding(horizontal = 22.dp, vertical = 11.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = when (selectedLanguage) {
+                        PlanLanguage.ENGLISH -> "Next"
+                        PlanLanguage.AMHARIC -> "ቀጣይ (Next)"
+                        PlanLanguage.OROMO -> "Itti Aani (Next)"
+                    },
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Icon(
+                    imageVector = Icons.Default.ArrowForward,
+                    contentDescription = "Next",
+                    tint = Color.White,
+                    modifier = Modifier.size(18.dp)
+                )
+            }
+        }
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TAB 0: Understanding Categories (Steady, Moderate, Fast)
+// ─────────────────────────────────────────────────────────────────────────────
+
+@Composable
+private fun UnderstandingCategoryTab(
+    selectedCategory: UnderstandingCategory,
+    selectedLanguage: PlanLanguage,
+    onNext: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        // Active Adaptive Mode Notice with blue time symbol and active plan title
+        Surface(
+            color = RoyalBlue.copy(alpha = 0.08f),
+            shape = RoundedCornerShape(14.dp),
+            border = androidx.compose.foundation.BorderStroke(1.dp, RoyalBlue.copy(alpha = 0.25f)),
             modifier = Modifier.fillMaxWidth()
         ) {
             Row(
-                modifier = Modifier.padding(12.dp),
+                modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    imageVector = selectedCategory.icon,
-                    contentDescription = null,
-                    tint = selectedCategory.primaryColor,
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Column {
-                    Text(
-                        text = when (selectedLanguage) {
-                            PlanLanguage.ENGLISH -> "Adaptive Mode Active: ${selectedCategory.titleEn}"
-                            PlanLanguage.AMHARIC -> "የአጠናን ሞድ ተመርጧል፡ ${selectedCategory.titleAm}"
-                            PlanLanguage.OROMO -> "Gosti Hubannoo Filatame: ${selectedCategory.titleOr}"
-                        },
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 12.5.sp,
-                        color = selectedCategory.primaryColor
-                    )
-                    Text(
-                        text = when (selectedLanguage) {
-                            PlanLanguage.ENGLISH -> "Exam Attack Room and Course Guides have now automatically adapted to this pace."
-                            PlanLanguage.AMHARIC -> "የፈተና ስልት እና የኮርሶች መመሪያ በዚህ አረዳድ መሰረት ተስተካክለዋል።"
-                            PlanLanguage.OROMO -> "Tooftaan qormaataa fi qajeelchi koorsii akkaataan kanaan sirreeffamaniiru."
-                        },
-                        fontSize = 11.sp,
-                        color = Slate700
+                Box(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(RoyalBlue.copy(alpha = 0.12f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.HourglassTop,
+                        contentDescription = "Time",
+                        tint = RoyalBlue,
+                        modifier = Modifier.size(20.dp)
                     )
                 }
+                Spacer(modifier = Modifier.width(12.dp))
+                Text(
+                    text = when (selectedLanguage) {
+                        PlanLanguage.ENGLISH -> "Active Plan: ${selectedCategory.titleEn}"
+                        PlanLanguage.AMHARIC -> "የተመረጠ እቅድ፡ ${selectedCategory.titleAm}"
+                        PlanLanguage.OROMO -> "Karoora Filatame: ${selectedCategory.titleOr}"
+                    },
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp,
+                    color = RoyalBlue
+                )
             }
         }
 
@@ -459,6 +707,9 @@ private fun UnderstandingCategoryTab(
             UnderstandingCategory.MID -> MidUnderstandingPlan(selectedLanguage)
             UnderstandingCategory.FAST -> FastUnderstandingPlan(selectedLanguage)
         }
+
+        // Next Plan Button
+        NextPlanButton(onNext = onNext, selectedLanguage = selectedLanguage)
     }
 }
 
@@ -797,7 +1048,8 @@ private fun PlanFeatureItem(
 @Composable
 private fun ExamStrategyTab(
     selectedCategory: UnderstandingCategory,
-    selectedLanguage: PlanLanguage
+    selectedLanguage: PlanLanguage,
+    onNext: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -904,6 +1156,9 @@ private fun ExamStrategyTab(
                 )
             }
         }
+
+        // Next Plan Button
+        NextPlanButton(onNext = onNext, selectedLanguage = selectedLanguage)
     }
 }
 
@@ -1145,7 +1400,8 @@ private fun SecretItem(title: String, description: String) {
 @Composable
 private fun CourseBlueprintTab(
     selectedCategory: UnderstandingCategory,
-    selectedLanguage: PlanLanguage
+    selectedLanguage: PlanLanguage,
+    onNext: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -1184,194 +1440,547 @@ private fun CourseBlueprintTab(
             }
         }
 
-        // 1. Mathematics (Explicitly "Mathematics", NOT "Applied Mathematics", NO Biology)
+        // 1. Mathematics (Explicitly Freshman Mathematics curriculum based on Mid & Final exams)
         CourseCard(
-            courseName = "Mathematics",
-            credits = "4 Credits (High GPA Impact)",
+            courseName = when (selectedLanguage) {
+                PlanLanguage.ENGLISH -> "Mathematics"
+                PlanLanguage.AMHARIC -> "ሒሳብ (Mathematics)"
+                PlanLanguage.OROMO -> "Herrega (Mathematics)"
+            },
+            credits = when (selectedLanguage) {
+                PlanLanguage.ENGLISH -> "4 Credits (High GPA Impact)"
+                PlanLanguage.AMHARIC -> "4 ክሬዲት (ለ GPA ከፍተኛ ተፅዕኖ)"
+                PlanLanguage.OROMO -> "Kireeditii 4 (GPA irratti dhiibbaa guddaa)"
+            },
             color = RoyalBlue,
             tips = when (selectedCategory) {
-                UnderstandingCategory.SLOW -> listOf(
-                    "Work through every textbook theorem proof step-by-step with your own pencil. Never skip intermediate algebra steps.",
-                    "Solve 3 basic textbook examples before attempting previous university exam questions.",
-                    "Master limit definitions, product rule, and quotient rule thoroughly before attempting chain rule and implicit differentiation.",
-                    "Create a dedicated formula pocket notebook and review it for 15 minutes before going to sleep."
-                )
-                UnderstandingCategory.MID -> listOf(
-                    "Daily 5-Problem Rule: Solve 5 past exam questions from HU Freshman every evening without looking at solutions.",
-                    "Focus 60% of your energy on Mid Exam high-yield chapters: Limits, Continuity, Derivative applications.",
-                    "Pair up with a classmate to quiz each other on integration by substitution and integration by parts.",
-                    "Double check negative signs (-) in definite integral calculations."
-                )
-                UnderstandingCategory.FAST -> listOf(
-                    "Target hard indeterminate forms (0/0, inf/inf) and advanced L'Hôpital applications immediately.",
-                    "Practice speed runs on optimization word problems and related rates.",
-                    "Never trust an integration result without differentiating it backward to verify.",
-                    "Derive key formulas from first principles to ensure bulletproof problem-solving in finals."
-                )
+                UnderstandingCategory.SLOW -> when (selectedLanguage) {
+                    PlanLanguage.ENGLISH -> listOf(
+                        "Master Truth Tables, Sets, and Logic: Learn 2^n subset rules and practice truth values of compound propositions (~p v ~q => p ^ ~r) to secure early points.",
+                        "Rational & Polynomial Functions: Always find domain restrictions first (denominator != 0) and practice synthetic division with the Factor Theorem (x - c).",
+                        "Complex Numbers & Roots: Practice converting a + bi to polar form r(cos θ + i sin θ), and calculate modulus |z| and conjugate z̄ step-by-step.",
+                        "Lines and Circles: Memorize the distance formula from a point to a line (|ax₀ + by₀ + c| / √(a² + b²)) and standard circle form (x-h)² + (y-k)² = r²."
+                    )
+                    PlanLanguage.AMHARIC -> listOf(
+                        "የሎጂክ እና የሴት (Sets) ህጎችን ያካኑ፡ የ 2^n ሰብስቴት ቀመርን እና የኮምፓውንድ ፕሮፖዚሽን የእውነት ሰንጠረዦችን (~p v ~q => p ^ ~r) በማጥናት ቀላል ነጥቦችን ቀድመው ይሰብስቡ።",
+                        "ፖሊኖሚያል እና ራሽናል ፈንክሽንስ፡ በመጀመሪያ የዶሜይን ገደቦችን (የታችኛው ክፍል != 0) ያግኙ፤ እንዲሁም በፋክተር ቴዎረም ሲንቴቲክ ዲቪዥን መስራትን ይለማመዱ።",
+                        "ኮምፕሌክስ ነበሮች፡ a + bi ቅርፅን ወደ ፖላር ፎርም r(cos θ + i sin θ) መቀየርን፣ ሞጁለስን |z| እና ኮንጁጌትን z̄ በደረጃ ማስላትን ይለማመዱ።",
+                        "የመስመር እና የክብ (Circle) ቀመሮች፡ ከነጥብ ወደ መስመር ያለውን የርቀት ቀመር (|ax₀ + by₀ + c| / √(a² + b²)) እና የክብ ስታንዳርድ ቀመርን (x-h)² + (y-k)² = r² በቃላቸው ይያዙ።"
+                    )
+                    PlanLanguage.OROMO -> listOf(
+                        "Loojikii fi Seera Tuuta (Sets) qabadhaa: Seera subset 2^n fi gabatee dhugaa himoota walxaxaa (~p v ~q => p ^ ~r) qo'achuun qabxii salphaa dursaa sassaabbadhaa.",
+                        "Faankishinii Polynomial fi Rational: Yeroo hunda daangaa domain (hirmaan != 0) dursaa barbaadaa; Synthetic division fi Factor Theorem shaakalaa.",
+                        "Lakkoofsa Complex fi Hundee: a + bi gara bifa polar r(cos θ + i sin θ) jijjiiruu, modulus |z| fi conjugate z̄ suuta hojjechuu qabadhaa.",
+                        "Sarara fi Geengoo (Circle): Fageenya tuqaa irraa gara sararaatti jiru (|ax₀ + by₀ + c| / √(a² + b²)) fi bifa geengoo (x-h)² + (y-k)² = r² sammuutti qabadhaa."
+                    )
+                }
+                UnderstandingCategory.MID -> when (selectedLanguage) {
+                    PlanLanguage.ENGLISH -> listOf(
+                        "Logarithmic & Exponential Equations: Solve log equations by combining terms (log A + log B = log(AB)) and check for extraneous solutions where arguments are <= 0.",
+                        "Rational Asymptotes & Graphs: Master finding vertical asymptotes (zeros of denominator), horizontal asymptotes (degree comparison), and slant/oblique asymptotes.",
+                        "Hyperbolic & Trigonometric Identities: Practice evaluating hyperbolic functions (cosh(ln 3), tanh x) and identities cosh² x - sinh² x = 1 and amplitude/period (2π/|b|).",
+                        "Matrices & Vectors: Calculate 2x2 and 3x3 determinants quickly and verify orthogonality of vectors using the dot product (u · v = 0)."
+                    )
+                    PlanLanguage.AMHARIC -> listOf(
+                        "የሎጋሪዝም እና ኤክስፖኔንሺያል እኩልታዎች፡ ሎጎችን በማጣመር (log A + log B = log(AB)) ይፍቱ፤ ከዜሮ በታች የሆኑ የተሳሳቱ (extraneous) መልሶችን ውድቅ ማድረግዎን ያረጋግጡ።",
+                        "የራሽናል ፈንክሽን አሲምፕቶቶች፡ ቨርቲካል አሲምፕቶትን (የታችኛው ክፍል ዜሮዎች)፣ ሆሪዞንታል አሲምፕቶትን (የዲግሪ ንጽጽር) እና ስላንት አሲምፕቶትን መፈለግን ያካኑ።",
+                        "ሃይፐርቦሊክ እና ትሪጎኖሜትሪክ ቀመሮች፡ የሃይፐርቦሊክ ፈንክሽን ዋጋዎችን ማስላት (cosh(ln 3), tanh x)፣ cosh² x - sinh² x = 1 እና አምፕሊቲዩድ/ፒሬድ (2π/|b|) ይለማመዱ።",
+                        "ማትሪክስ እና ቬክተሮች፡ የ 2x2 እና 3x3 ዲተርሚናንትን በፍጥነት ያግኙ፤ እንዲሁም ሁለት ቬክተሮች ኦርቶጎናል (ቀጤ-ነክ) መሆናቸውን በዶት ፕሮዳክት (u · v = 0) ያረጋግጡ።"
+                    )
+                    PlanLanguage.OROMO -> listOf(
+                        "Walqixxee Logarithm fi Exponential: Logarithm walitti fiduun (log A + log B = log(AB)) hojjedhaa; deebii dogoggoraa (argument <= 0) ta'an kuffisaa.",
+                        "Asymptote Faankishinii Rational: Vertical asymptote (hirmaan = 0), horizontal asymptote (degree wal bira qabuun) fi slant asymptote adda baasaa.",
+                        "Kallattii Hyperbolic fi Trigonometric: Bu'aa faankishinii hyperbolic (cosh(ln 3), tanh x), cosh² x - sinh² x = 1 fi amplitude/period (2π/|b|) shaakalaa.",
+                        "Matrix fi Vector: Determinant 2x2 fi 3x3 saffisaan herreegaa; orthogonal ta'uu vector dot product (u · v = 0) fayyadamuun mirkaneeffadhaa."
+                    )
+                }
+                UnderstandingCategory.FAST -> when (selectedLanguage) {
+                    PlanLanguage.ENGLISH -> listOf(
+                        "Complex Roots & De Moivre's Theorem: Instantly solve complex polynomial roots and equations like z^(3/2) = 8i or find all roots of unity using trigonometric polar form.",
+                        "Inverse & Composite Functions: Rapidly solve (f ∘ g)(x) = (g ∘ f)(x) for unknown constants and determine the restricted domain and range of g(f(x)).",
+                        "Circle Tangents & Perpendicular Lines: Solve circle equations given tangent lines (y = mx + b) and points by combining radius slope and normal line equations.",
+                        "Fundamental Trig Limits & Continuity: Solve lim(x->0) [sin(kx)/x] = k and piecewise function continuity parameters (a and b) without hesitation."
+                    )
+                    PlanLanguage.AMHARIC -> listOf(
+                        "ኮምፕሌክስ ሩትስ እና ዲ ሞይቭርስ ቴዎረም፡ እንደ z^(3/2) = 8i ያሉ ውስብስብ የኮምፕሌክስ ነበሮች ጥያቄዎችን በፖላር ፎርም እና በዲ ሞይቭርስ ህግ በፍጥነት ይፍቱ።",
+                        "ኢንቨርስ እና ኮምፖዚት ፈንክሽንስ፡ ያልታወቁ ቋሚዎችን ለማግኘት (f ∘ g)(x) = (g ∘ f)(x) እኩልታዎችን እና የ g(f(x)) ጥብቅ ዶሜይንና ሬንጅ በፍጥነት ይተንትኑ።",
+                        "የክብ ታንጀንት እና ፐርፔንዲኩላር መስመሮች፡ ታንጀንት መስመር (y = mx + b) እና ነጥብ የተሰጣቸውን የክብ ቀመሮች በራዲየስ ስሎፕ እና ኖርማል መስመር ህጎች ይስሩ።",
+                        "መሰረታዊ የትሪጎኖሜትሪ ሊሚትስ፡ lim(x->0) [sin(kx)/x] = k እና የፒስዋይዝ ፈንክሽን ኮንቲኒውቲ ተለዋዋጮችን (a እና b) ያለምንም መዘግየት ይፍቱ።"
+                    )
+                    PlanLanguage.OROMO -> listOf(
+                        "Hundee Complex fi Seera De Moivre: Gaaffilee xaxamoo akka z^(3/2) = 8i bifa polar fi seera De Moivre fayyadamuun saffisaan xumuraa.",
+                        "Inverse fi Faankishinii Walxaxaa: Walqixxee (f ∘ g)(x) = (g ∘ f)(x) herreeguun gatii k argadhaa; domain fi range g(f(x)) daangaa qabu adda baasaa.",
+                        "Sarara Tangent Geengoo: Sarara tangent (y = mx + b) fi tuqaalee kenname irraa bu'uureffachuun walqixxee geengoo saffisaan argadhaa.",
+                        "Limit Bu'uuraa Trigonometric: lim(x->0) [sin(kx)/x] = k fi parameters continuity kan faankishinii piecewise (a fi b) saffisaan hojjedhaa."
+                    )
+                }
             }
         )
 
         // 2. General Physics
         CourseCard(
-            courseName = "General Physics",
-            credits = "4 Credits (High GPA Impact)",
+            courseName = when (selectedLanguage) {
+                PlanLanguage.ENGLISH -> "General Physics"
+                PlanLanguage.AMHARIC -> "አጠቃላይ ፊዚክስ (General Physics)"
+                PlanLanguage.OROMO -> "Fiiziksii Waliigalaa (General Physics)"
+            },
+            credits = when (selectedLanguage) {
+                PlanLanguage.ENGLISH -> "4 Credits (High GPA Impact)"
+                PlanLanguage.AMHARIC -> "4 ክሬዲት (ለ GPA ከፍተኛ ተፅዕኖ)"
+                PlanLanguage.OROMO -> "Kireeditii 4 (GPA irratti dhiibbaa guddaa)"
+            },
             color = Color(0xFFD97706),
             tips = when (selectedCategory) {
-                UnderstandingCategory.SLOW -> listOf(
-                    "Always draw a physical sketch and Free-Body Diagram (FBD) for every single problem before touching formulas.",
-                    "Create a 4-column table on scratch paper: (1) Given, (2) Unknown, (3) Formula, (4) Unit conversions.",
-                    "Master converting km/h to m/s (divide by 3.6) and grams to kilograms before calculating.",
-                    "Solidify 1D kinematics and Newton's three laws before touching circular motion and rotational dynamics."
-                )
-                UnderstandingCategory.MID -> listOf(
-                    "Identify the missing kinematic variable (t, v, u, s, a) to pick the correct formula instantly in under 15 seconds.",
-                    "Solve at least 25 numerical problems from previous freshman mid exams in HU Freshman.",
-                    "Memorize standard constants (g = 9.8 m/s², Coulomb's constant k, electron charge).",
-                    "Distinguish work done by conservative vs. non-conservative forces."
-                )
-                UnderstandingCategory.FAST -> listOf(
-                    "Derive rotational dynamics and moment of inertia formulas from translational analogues.",
-                    "Tackle combined multi-concept problems (e.g., conservation of energy coupled with projectile motion).",
-                    "Use dimensional analysis to eliminate wrong multiple choice options in under 5 seconds.",
-                    "Watch out for friction direction traps on inclined planes."
-                )
+                UnderstandingCategory.SLOW -> when (selectedLanguage) {
+                    PlanLanguage.ENGLISH -> listOf(
+                        "Always draw a physical sketch and Free-Body Diagram (FBD) for every single problem before touching formulas.",
+                        "Create a 4-column table on scratch paper: (1) Given, (2) Unknown, (3) Formula, (4) Unit conversions.",
+                        "Master converting km/h to m/s (divide by 3.6) and grams to kilograms before calculating.",
+                        "Solidify 1D kinematics and Newton's three laws before touching circular motion and rotational dynamics."
+                    )
+                    PlanLanguage.AMHARIC -> listOf(
+                        "ወደ ፎርሙላ ከመግባትዎ በፊት ለእያንዳንዱ ጥያቄ ነፃ የስዕል ንድፍ (Free-Body Diagram) ይሳሉ።",
+                        "በረቂቅ ወረቀት ላይ ባለ 4 ረድፍ ሰንጠረዥ ያዘጋጁ፡ (1) የተሰጠ፣ (2) የሚፈለግ፣ (3) ፎርሙላ፣ (4) የዩኒት ልወጣ።",
+                        "ስሌት ከመጀመርዎ በፊት km/h ወደ m/s (ለ 3.6 በማካፈል) እና ግራም ወደ ኪሎግራም መቀየርን ያካኑ።",
+                        "ሰርኩላር ሞሽንና ሮቴሽናል ዳይናሚክስን ከመጀመርዎ በፊት የአንድ አቅጣጫ ኪነማቲክስን እና የኒውተንን 3 ህጎች ያጠናክሩ።"
+                    )
+                    PlanLanguage.OROMO -> listOf(
+                        "Foormulaa fayyadamuun dura yeroo hunda fakkii qaama bilisaa (Free-Body Diagram) kaasaa.",
+                        "Waraqaa ragaa irratti gabatee sarara 4 qabu qopheessaa: (1) Kenname, (2) Barbaadamu, (3) Foormulaa, (4) Jijjiirraa Yuuniitii.",
+                        "Hojjechuun dura km/h gara m/s tti (3.6f qooduun) fi giraama gara kiiloo giraamaatti jijjiiruu qabaadhaa.",
+                        "Sochii geengoo fi rotational dynamics eegaluun dura kinematics fi seera Niiwutan sadan sirriitti jabeessaa."
+                    )
+                }
+                UnderstandingCategory.MID -> when (selectedLanguage) {
+                    PlanLanguage.ENGLISH -> listOf(
+                        "Identify the missing kinematic variable (t, v, u, s, a) to pick the correct formula instantly in under 15 seconds.",
+                        "Solve at least 25 numerical problems from previous freshman mid exams in HU Freshman.",
+                        "Memorize standard constants (g = 9.8 m/s², Coulomb's constant k, electron charge).",
+                        "Distinguish work done by conservative vs. non-conservative forces."
+                    )
+                    PlanLanguage.AMHARIC -> listOf(
+                        "የጎደለውን የኪነማቲክስ ተለዋዋጭ (t, v, u, s, a) በመለየት ትክክለኛውን ፎርሙላ በ15 ሰከንድ ውስጥ ይምረጡ።",
+                        "ከ HU Freshman ውስጥ ካሉ ያለፉ የፍሬሽማን ሚድ ፈተናዎች ቢያንስ 25 የስሌት ጥያቄዎችን ይስሩ።",
+                        "ቋሚ ቁጥሮችን (ኮንስታንት) በቃላቸው ይያዙ (g = 9.8 m/s²፣ የኮሎምብ ኮንስታንት k፣ የኤሌክትሮን ቻርጅ)።",
+                        "በኮንሰርቫቲቭ እና በኖን-ኮንሰርቫቲቭ ሃይሎች የሚሰራውን ስራ (Work) በግልፅ ይለዩ።"
+                    )
+                    PlanLanguage.OROMO -> listOf(
+                        "Jijjiiramaa kinematics kan hir'ate (t, v, u, s, a) adda baasuun foormulaa sirrii daqiiqaa 15 gadi keessatti filadhaa.",
+                        "Qormaata freshman mid darbe HU Freshman irraa yoo xiqqaate gaaffilee herregaa 25 hojjedhaa.",
+                        "Dhaabbattoota beekamoo sammuutti qabadhaa (g = 9.8 m/s², Coulomb constant k, chaarjii elektiroonii).",
+                        "Hojii humnoota conservative fi non-conservative gidduu jiru adda baasaa."
+                    )
+                }
+                UnderstandingCategory.FAST -> when (selectedLanguage) {
+                    PlanLanguage.ENGLISH -> listOf(
+                        "Derive rotational dynamics and moment of inertia formulas from translational analogues.",
+                        "Tackle combined multi-concept problems (e.g., conservation of energy coupled with projectile motion).",
+                        "Use dimensional analysis to eliminate wrong multiple choice options in under 5 seconds.",
+                        "Watch out for friction direction traps on inclined planes."
+                    )
+                    PlanLanguage.AMHARIC -> listOf(
+                        "የሮቴሽናል ዳይናሚክስ እና የሞመንት ኦፍ ኢነርሺያ ፎርሙላዎችን ከትራንስሌሽናል አምሳያቸው በማነጻጸር ያፍልቁ።",
+                        "የተጣመሩ ባለብዙ ፅንሰ-ሀሳብ ጥያቄዎችን (ለምሳሌ፡ የሃይል ቁጠባ ህግ ከፕሮጀክትይል ሞሽን ጋር) ይስሩ።",
+                        "በ 5 ሰከንድ ውስጥ የተሳሳቱ የምርጫ መልሶችን ለማጥፋት የዳይሜንሽናል አናሊሲስን (Dimensional Analysis) ይጠቀሙ።",
+                        "በተዳፋት ወለል (inclined planes) ላይ የፍሪክሽን አቅጣጫ ወጥመዶችን ይጠንቀቁ።"
+                    )
+                    PlanLanguage.OROMO -> listOf(
+                        "Foormulaalee rotational dynamics fi moment of inertia translational irraa wal bira qabuun hubadhaa.",
+                        "Gaaffilee xaxamoo yaada hedduu walitti qaban (fkn, eegumsa anniisaa fi projectile motion) hojjedhaa.",
+                        "Filannoowwan dogoggora ta'an sekoondii 5 keessatti balleessuuf xiinxala daayimeenshinii (dimensional analysis) fayyadamaa.",
+                        "Dallaa rarra'aa (inclined plane) irratti kallattii humna rigataa (friction) sirriitti hubadhaa."
+                    )
+                }
             }
         )
 
         // 3. Logic and Critical Thinking
         CourseCard(
-            courseName = "Logic and Critical Thinking",
-            credits = "3 Credits",
+            courseName = when (selectedLanguage) {
+                PlanLanguage.ENGLISH -> "Logic and Critical Thinking"
+                PlanLanguage.AMHARIC -> "ሎጂክ እና ሂሳዊ አስተሳሰብ (Logic)"
+                PlanLanguage.OROMO -> "Loojikii fi Yaada Qorannoo (Logic)"
+            },
+            credits = when (selectedLanguage) {
+                PlanLanguage.ENGLISH -> "3 Credits"
+                PlanLanguage.AMHARIC -> "3 ክሬዲት"
+                PlanLanguage.OROMO -> "Kireeditii 3"
+            },
             color = ElectricIndigo,
             tips = when (selectedCategory) {
-                UnderstandingCategory.SLOW -> listOf(
-                    "Write down the 15 common informal fallacies with simple real-life everyday examples in your own mother tongue.",
-                    "Identify premise indicator words ('because', 'since', 'for') vs. conclusion indicator words ('therefore', 'thus').",
-                    "Understand the difference between truth (factual) and validity (structural) step-by-step.",
-                    "Make flashcards for inductive vs. deductive argument definitions."
-                )
-                UnderstandingCategory.MID -> listOf(
-                    "Master the four argument combinations: Valid + Sound, Valid + Unsound, Invalid + Unsound.",
-                    "Solve 30 fallacy identification questions in HU Freshman past exam bank.",
-                    "Watch out for subtle fallacy traps: Straw Man vs. Red Herring, and Slippery Slope vs. False Cause.",
-                    "Practice truth table evaluations for conditional (->) and biconditional (<->) statements."
-                )
-                UnderstandingCategory.FAST -> listOf(
-                    "Instantly analyze syllogistic mood and figure without drawing long Euler or Venn diagrams.",
-                    "Rapidly dissect long, confusing reading passages into premise-conclusion structures.",
-                    "Spot subtle fallacies of relevance hidden inside seemingly logical university exam questions.",
-                    "Master predicate and propositional symbolic translations."
-                )
+                UnderstandingCategory.SLOW -> when (selectedLanguage) {
+                    PlanLanguage.ENGLISH -> listOf(
+                        "Write down the 15 common informal fallacies with simple real-life everyday examples in your own mother tongue.",
+                        "Identify premise indicator words ('because', 'since', 'for') vs. conclusion indicator words ('therefore', 'thus').",
+                        "Understand the difference between truth (factual) and validity (structural) step-by-step.",
+                        "Make flashcards for inductive vs. deductive argument definitions."
+                    )
+                    PlanLanguage.AMHARIC -> listOf(
+                        "15ቱን የተለመዱ የማሳሳቻ ስህተቶች (fallacies) ከዕለት ተዕለት ህይወት ጋር በማያያዝ በራስዎ ቋንቋ ፅፈው ይያዙ።",
+                        "የቅድመ-መነሻ ምልክት ቃላቶችን ('because', 'since', 'for') ከመደምደሚያ ምልክት ቃላት ('therefore', 'thus') ይለዩ።",
+                        "የእውነትነት (Truth - እውነታን የሚመለከት) እና የትክክለኛነትን (Validity - መዋቅርን የሚመለከት) ልዩነት በጥልቀት ይረዱ።",
+                        "ለኢንዳክቲቭ (inductive) እና ዲዳክቲቭ (deductive) ክርክሮች አጫጭር የማስታወሻ ካርዶችን ያዘጋጁ።"
+                    )
+                    PlanLanguage.OROMO -> listOf(
+                        "Dogoggoroota yaadaa (fallacies) beekamoo 15 fakkeenya jireenya guyyaa guyyaa wajjin afaan dhalootaatiin barreessaa.",
+                        "Jechoota premise agarsiisan ('because', 'since') fi conclusion agarsiisan ('therefore', 'thus') adda baasaa.",
+                        "Garaagarummaa Dhugummaa (Truth - qabatamaa) fi Seerummaa (Validity - caasaa) sirriitti hubadhaa.",
+                        "Hiika ragaa inductive fi deductive tiif kaardii yaadannoo gabaabaa qopheessaa."
+                    )
+                }
+                UnderstandingCategory.MID -> when (selectedLanguage) {
+                    PlanLanguage.ENGLISH -> listOf(
+                        "Master the four argument combinations: Valid + Sound, Valid + Unsound, Invalid + Unsound.",
+                        "Solve 30 fallacy identification questions in HU Freshman past exam bank.",
+                        "Watch out for subtle fallacy traps: Straw Man vs. Red Herring, and Slippery Slope vs. False Cause.",
+                        "Practice truth table evaluations for conditional (->) and biconditional (<->) statements."
+                    )
+                    PlanLanguage.AMHARIC -> listOf(
+                        "አራቱን የክርክር ጥንዶች ያካኑ፡ Valid + Sound, Valid + Unsound, Invalid + Unsound።",
+                        "በ HU Freshman የፈተና ባንክ ውስጥ ቢያንስ 30 የማሳሳቻ ስህተት (fallacy) መለያ ጥያቄዎችን ይስሩ።",
+                        "ተመሳሳይ የሚመስሉ የማሳሳቻ ወጥመዶችን ይጠንቀቁ፡ Straw Man vs. Red Herring፣ እንዲሁም Slippery Slope vs. False Cause።",
+                        "የኮንዲሽናል (->) እና ባይኮንዲሽናል (<->) አረፍተ ነገሮችን የ Truth Table ስራዎችን ይለማመዱ።"
+                    )
+                    PlanLanguage.OROMO -> listOf(
+                        "Walgitiinsa yaadaa arfan sirriitti qabadhaa: Valid + Sound, Valid + Unsound, Invalid + Unsound.",
+                        "Kuusaa qormaata HU Freshman keessatti gaaffilee fallacy adda baasuu 30 hojjedhaa.",
+                        "Kiyyoowwan wal fakkaatan eeggadhaa: Straw Man vs. Red Herring, fi Slippery Slope vs. False Cause.",
+                        "Gabatee dhugaa (truth table) kan conditional (->) fi biconditional (<->) shaakalaa."
+                    )
+                }
+                UnderstandingCategory.FAST -> when (selectedLanguage) {
+                    PlanLanguage.ENGLISH -> listOf(
+                        "Instantly analyze syllogistic mood and figure without drawing long Euler or Venn diagrams.",
+                        "Rapidly dissect long, confusing reading passages into premise-conclusion structures.",
+                        "Spot subtle fallacies of relevance hidden inside seemingly logical university exam questions.",
+                        "Master predicate and propositional symbolic translations."
+                    )
+                    PlanLanguage.AMHARIC -> listOf(
+                        "ረጅም የቬን ዲያግራም ሳይስሉ የሲሎጂዝም ሙድ (mood) እና ፊገር (figure) በፍጥነት መተንተን ይልመዱ።",
+                        "ረዣዥም እና ግራ የሚያጋቡ የንባብ ምንባቦችን ወደ ቅድመ-መነሻና መደምደሚያ መዋቅር በፍጥነት ይተንትኑ።",
+                        "በፈተና ውስጥ ምክንያታዊ በሚመስሉ አረፍተ ነገሮች ስር የተደበቁትን ረቂቅ የማሳሳቻ ስህተቶች (Fallacies of Relevance) ይለዩ።",
+                        "የፕሮፖዚሽናል እና ፕሪዲኬት ሎጂክ ምልክታዊ ትርጉሞችን (Symbolic Logic) ጠንቅቀው ይያዙ።"
+                    )
+                    PlanLanguage.OROMO -> listOf(
+                        "Fakkii Venn dheeraa utuu hin kaasne mood fi figure syllogism saffisaan xiinxaluu danda'aa.",
+                        "Barreeffamoota xaxamoo fi dheeraa gara caasaa premise fi conclusion tti saffisaan qoqqoodaa.",
+                        "Gaaffilee qormaataa yaada qajeelaa fakkaatan keessatti fallacy dhokatan daftaanii adda baasaa.",
+                        "Hiika mallattoo (symbolic translations) kan predicate fi propositional sirriitti qabadhaa."
+                    )
+                }
             }
         )
 
         // 4. General Psychology
         CourseCard(
-            courseName = "General Psychology",
-            credits = "3 Credits",
+            courseName = when (selectedLanguage) {
+                PlanLanguage.ENGLISH -> "General Psychology"
+                PlanLanguage.AMHARIC -> "አጠቃላይ ስነ-ልቦና (General Psychology)"
+                PlanLanguage.OROMO -> "Saayikoolojii Waliigalaa (General Psychology)"
+            },
+            credits = when (selectedLanguage) {
+                PlanLanguage.ENGLISH -> "3 Credits"
+                PlanLanguage.AMHARIC -> "3 ክሬዲት"
+                PlanLanguage.OROMO -> "Kireeditii 3"
+            },
             color = EmeraldGreen,
             tips = when (selectedCategory) {
-                UnderstandingCategory.SLOW -> listOf(
-                    "Build a memory table connecting theorists to concepts: Pavlov (Classical Conditioning), Skinner (Operant), Freud (Id/Ego/Superego), Piaget (Cognitive stages).",
-                    "Study in short 25-minute bursts with clear visual diagrams of the brain lobes.",
-                    "Learn sensory memory, short-term memory (STM), and long-term memory (LTM) through personal daily examples.",
-                    "Focus on basic definitions before tackling situational application questions."
-                )
-                UnderstandingCategory.MID -> listOf(
-                    "Application questions rule: University exams rarely ask pure definitions; they describe a student's behavior and ask for the psychological term.",
-                    "Compare conflicting theories: Behaviorist vs. Humanistic vs. Cognitive perspectives.",
-                    "Review positive reinforcement vs. negative reinforcement vs. punishment distinctions.",
-                    "Solve past mid exam psychology scenario questions."
-                )
-                UnderstandingCategory.FAST -> listOf(
-                    "Deep-dive into physiological psychology: neurotransmitters (dopamine, serotonin, acetylcholine) and sympathetic vs. parasympathetic systems.",
-                    "Identify independent vs. dependent variables in tricky psychological research designs.",
-                    "Look out for distractor options containing extreme words ('always', 'never').",
-                    "Connect memory retrieval failures (decay, interference, repression) to cognitive experiments."
-                )
+                UnderstandingCategory.SLOW -> when (selectedLanguage) {
+                    PlanLanguage.ENGLISH -> listOf(
+                        "Build a memory table connecting theorists to concepts: Pavlov (Classical Conditioning), Skinner (Operant), Freud (Id/Ego/Superego), Piaget (Cognitive stages).",
+                        "Study in short 25-minute bursts with clear visual diagrams of the brain lobes.",
+                        "Learn sensory memory, short-term memory (STM), and long-term memory (LTM) through personal daily examples.",
+                        "Focus on basic definitions before tackling situational application questions."
+                    )
+                    PlanLanguage.AMHARIC -> listOf(
+                        "አሳቢዎችን ከፅንሰ-ሀሳቦቻቸው ጋር የሚያገናኝ ሰንጠረዥ ይስሩ፡ ፓቭሎቭ (Classical Conditioning)፣ ስኪነር (Operant)፣ ፍሮይድ (Id/Ego/Superego)፣ ፒያጄት (Cognitive stages)።",
+                        "የአዕምሮ ክፍሎችን (brain lobes) በስዕላዊ መግለጫ እያዩ በየ 25 ደቂቃው እረፍት እየወሰዱ ያጥኑ።",
+                        "ሴንሰሪ ሜሞሪን፣ የአጭር ጊዜ (STM) እና የረጅም ጊዜ (LTM) ትውስታን ከዕለት ተዕለት ህይወትዎ ምሳሌዎች ጋር አያይዘው ይረዱ።",
+                        "ወደ ሁኔታዊ የተግባር ጥያቄዎች ከመግባትዎ በፊት በመሰረታዊ ትርጓሜዎች ላይ ያተኩሩ።"
+                    )
+                    PlanLanguage.OROMO -> listOf(
+                        "Beektota fi yaada isaanii gabateedhaan wal qabsiisaa: Pavlov (Classical), Skinner (Operant), Freud (Id/Ego/Superego), Piaget (Cognitive).",
+                        "Caasaa sammuu (brain lobes) fakkii wajjin daqiiqaa 25f boqonnaa fudhachaa qo'adhaa.",
+                        "Sensory memory, STM fi LTM fakkeenya jireenya keessanii wajjin wal qabsiisaatii hubadhaa.",
+                        "Gaaffilee qabatamaa hojjechuun dura hiikaalee bu'uuraa irratti xiyyeeffadhaa."
+                    )
+                }
+                UnderstandingCategory.MID -> when (selectedLanguage) {
+                    PlanLanguage.ENGLISH -> listOf(
+                        "Application questions rule: University exams rarely ask pure definitions; they describe a student's behavior and ask for the psychological term.",
+                        "Compare conflicting theories: Behaviorist vs. Humanistic vs. Cognitive perspectives.",
+                        "Review positive reinforcement vs. negative reinforcement vs. punishment distinctions.",
+                        "Solve past mid exam psychology scenario questions."
+                    )
+                    PlanLanguage.AMHARIC -> listOf(
+                        "የተግባር ጥያቄዎች ደንብ፡ የዩኒቨርሲቲ ፈተናዎች ቀጥተኛ ትርጓሜ ብዙም አይጠይቁም፤ የተማሪን ባህሪ ገልጸው የስነ-ልቦናዊ ፅንሰ-ሀሳቡን ስም ይጠይቃሉ።",
+                        "ተፎካካሪ አመለካከቶችን ያነጻጽሩ፡ የቢሄቪየሪስት፣ ሂውማኒስቲክ እና ኮግኒቲቭ እይታዎች።",
+                        "የፖዘቲቭ ሪኢንፎርስመንት፣ ኔጌቲቭ ሪኢንፎርስመንት እና ቅጣትን (Punishment) ልዩነቶች በሚገባ ይከልሱ።",
+                        "ያለፉ የሚድ ፈተና የስነ-ልቦና ሁኔታዊ (scenario) ጥያቄዎችን ይስሩ።"
+                    )
+                    PlanLanguage.OROMO -> listOf(
+                        "Seera gaaffilee qabatamaa: Qormaanni yuunivarsiitii hiika qofa hin gaafatu; amala namaa ibsee jecha saayikoolojii gaafata.",
+                        "Ilaalcha wal morkatan wal bira qabaa: Behaviorist, Humanistic fi Cognitive perspectives.",
+                        "Garaagarummaa positive reinforcement, negative reinforcement fi punishment sirriitti hubadhaa.",
+                        "Qormaata darbe irraa gaaffilee scenario saayikoolojii hojjedhaa."
+                    )
+                }
+                UnderstandingCategory.FAST -> when (selectedLanguage) {
+                    PlanLanguage.ENGLISH -> listOf(
+                        "Deep-dive into physiological psychology: neurotransmitters (dopamine, serotonin, acetylcholine) and sympathetic vs. parasympathetic systems.",
+                        "Identify independent vs. dependent variables in tricky psychological research designs.",
+                        "Look out for distractor options containing extreme words ('always', 'never').",
+                        "Connect memory retrieval failures (decay, interference, repression) to cognitive experiments."
+                    )
+                    PlanLanguage.AMHARIC -> listOf(
+                        "በፊዚዮሎጂካል ሳይኮሎጂ ላይ ጠለቅ ይበሉ፡ የነርቭ አስተላላፊዎች (ዶፓሚን፣ ሴሮቶኒን) እና ሲምፓተቲክ ከፓራሲምፓተቲክ ስርዓቶች ጋር።",
+                        "በምርምር ጥናት ጥያቄዎች ውስጥ ኢንዲፔንደንት እና ዲፔንደንት ተለዋዋጮችን በቀላሉ ይለዩ።",
+                        "ጽንፈኛ ቃላቶች ('always', 'never') ያሉባቸውን አሳሳች የምርጫ መልሶች ይለዩ።",
+                        "የትውስታ ክፍተቶችን (decay, interference, repression) ከታወቁ ሙከራዎች ጋር አያይዘው ይረዱ።"
+                    )
+                    PlanLanguage.OROMO -> listOf(
+                        "Saayikoolojii qaamaa (neurotransmitters - dopamine, serotonin) fi sympathetic/parasympathetic sirriitti qoradhaa.",
+                        "Qorannoo keessatti garaagarummaa independent fi dependent variables saffisaan adda baasaa.",
+                        "Filannoowwan jechoota cimaa ('always', 'never') qaban kiyyoo ta'uu isaanii beekaa.",
+                        "Sababoota yaadannoo dhabuu (decay, interference, repression) qorannoowwan cognitive wajjin wal qabsiisaa."
+                    )
+                }
             }
         )
 
         // 5. Communicative English
         CourseCard(
-            courseName = "Communicative English",
-            credits = "3 Credits",
+            courseName = when (selectedLanguage) {
+                PlanLanguage.ENGLISH -> "Communicative English"
+                PlanLanguage.AMHARIC -> "ኮሚዩኒኬቲቭ እንግሊዝኛ (Communicative English)"
+                PlanLanguage.OROMO -> "Afaan Ingiliffaa (Communicative English)"
+            },
+            credits = when (selectedLanguage) {
+                PlanLanguage.ENGLISH -> "3 Credits"
+                PlanLanguage.AMHARIC -> "3 ክሬዲት"
+                PlanLanguage.OROMO -> "Kireeditii 3"
+            },
             color = Color(0xFF0284C7),
             tips = when (selectedCategory) {
-                UnderstandingCategory.SLOW -> listOf(
-                    "In reading comprehension, ALWAYS read the questions first before reading the passage to know exactly what keywords to look for.",
-                    "Review basic subject-verb agreement rules and standard verb tenses.",
-                    "Highlight transition signal words (However, In addition, Consequently, On the other hand) in every text you read.",
-                    "Practice reading 1 page of university English text daily out loud."
-                )
-                UnderstandingCategory.MID -> listOf(
-                    "Master conditional sentence patterns: Type 1 (probable), Type 2 (unreal present), Type 3 (unreal past).",
-                    "Practice active to passive voice transformations for scientific lab reporting questions.",
-                    "Solve past exam vocabulary-in-context questions to deduce unfamiliar words from surrounding sentences.",
-                    "Focus on paragraph organization (Topic sentence, Supporting details, Concluding sentence)."
-                )
-                UnderstandingCategory.FAST -> listOf(
-                    "Skim and scan 500-word reading passages in under 2 minutes.",
-                    "Spot subtle grammatical errors in sentence correction items (dangling modifiers, faulty parallelism).",
-                    "Identify subtle tone, author purpose, and inference in reading comprehension passages.",
-                    "Master precise punctuation rules for complex compound sentences."
-                )
+                UnderstandingCategory.SLOW -> when (selectedLanguage) {
+                    PlanLanguage.ENGLISH -> listOf(
+                        "In reading comprehension, ALWAYS read the questions first before reading the passage to know exactly what keywords to look for.",
+                        "Review basic subject-verb agreement rules and standard verb tenses.",
+                        "Highlight transition signal words (However, In addition, Consequently, On the other hand) in every text you read.",
+                        "Practice reading 1 page of university English text daily out loud."
+                    )
+                    PlanLanguage.AMHARIC -> listOf(
+                        "በምንባብ ጥያቄዎች ወቅት፡ ምንባቡን ከማንበብዎ በፊት ሁልጊዜ ጥያቄዎቹን ቀድመው ያንብቡ፤ በዚህም ቁልፍ ቃላቱን በቀላሉ ያገኛሉ።",
+                        "መሰረታዊ የባለቤትና የግስ ስምምነትን (Subject-Verb Agreement) እና የግስ ጊዜያትን ይከልሱ።",
+                        "በምታነቡት ጽሑፍ ሁሉ ውስጥ የማሸጋገሪያ ቃላትን (However, In addition, Consequently) ምልክት ያድርጉባቸው።",
+                        "በየቀኑ 1 ገፅ የዩኒቨርሲቲ የእንግሊዝኛ ጽሑፍ ጮክ ብለው ያንብቡ።"
+                    )
+                    PlanLanguage.OROMO -> listOf(
+                        "Gaaffilee dubbisuu keessatti, keeyyata dubbisuun dura yeroo hunda jalqaba gaaffilee dubbisaa; kun jechoota furtuu akka argattan gargaara.",
+                        "Seera subject-verb agreement fi tenses bu'uuraa irra deebi'aa ilaalaa.",
+                        "Jechoota ce'umsaa (However, In addition, Consequently) barreeffama hunda keessatti sararaa.",
+                        "Guyyaa hunda fuula 1 barreeffama Ingiliffaa yuunivarsiitii sagalee ol kaasanii dubbisaa."
+                    )
+                }
+                UnderstandingCategory.MID -> when (selectedLanguage) {
+                    PlanLanguage.ENGLISH -> listOf(
+                        "Master conditional sentence patterns: Type 1 (probable), Type 2 (unreal present), Type 3 (unreal past).",
+                        "Practice active to passive voice transformations for scientific lab reporting questions.",
+                        "Solve past exam vocabulary-in-context questions to deduce unfamiliar words from surrounding sentences.",
+                        "Focus on paragraph organization (Topic sentence, Supporting details, Concluding sentence)."
+                    )
+                    PlanLanguage.AMHARIC -> listOf(
+                        "የኮንዲሽናል አረፍተ ነገር አይነቶችን ያካኑ፡ Type 1 (probable)፣ Type 2 (unreal present)፣ Type 3 (unreal past)።",
+                        "ለሳይንሳዊ ሪፖርት ጥያቄዎች አክቲቭ ወደ ፓሲቭ (Active to Passive Voice) መቀየርን ይለማመዱ።",
+                        "የማያውቋቸውን ቃላት ፍቺ ከአካባቢያቸው አረፍተ ነገሮች ለመረዳት ያለፉ ፈተናዎችን ይስሩ።",
+                        "በአንቀጽ መዋቅር ላይ ያተኩሩ (Topic sentence፣ Supporting details፣ Concluding sentence)።"
+                    )
+                    PlanLanguage.OROMO -> listOf(
+                        "Caasaa conditional sentences qabadhaa: Gosa 1 (probable), Gosa 2 (unreal present), Gosa 3 (unreal past).",
+                        "Gaaffilee gabaasa laabii saayinsiitiif active gara passive tti jijjiiruu shaakalaa.",
+                        "Hiika jechoota haaraa keeyyata keessaa hubachuuf qormaata darbe hojjedhaa.",
+                        "Caasaa keeyyataa irratti xiyyeeffadhaa (Topic sentence, Supporting details, Concluding sentence)."
+                    )
+                }
+                UnderstandingCategory.FAST -> when (selectedLanguage) {
+                    PlanLanguage.ENGLISH -> listOf(
+                        "Skim and scan 500-word reading passages in under 2 minutes.",
+                        "Spot subtle grammatical errors in sentence correction items (dangling modifiers, faulty parallelism).",
+                        "Identify subtle tone, author purpose, and inference in reading comprehension passages.",
+                        "Master precise punctuation rules for complex compound sentences."
+                    )
+                    PlanLanguage.AMHARIC -> listOf(
+                        "የ 500 ቃላት ምንባብን ከ 2 ደቂቃ ባነሰ ጊዜ ውስጥ አንብበው ዋና ፍሬ ነገሩን የመረዳት (Skim and Scan) ልምድ ያሳድጉ።",
+                        "በአረፍተ ነገር ማስተካከል ጥያቄዎች ውስጥ ረቂቅ ስህተቶችን (dangling modifiers, faulty parallelism) በቀላሉ ያግኙ።",
+                        "በምንባቦች ውስጥ የጸሐፊውን ድምፀት (Tone)፣ ዓላማ እና ድብቅ መልእክት የመረዳት ችሎታን ያሳድጉ።",
+                        "ለውስብስብ አረፍተ ነገሮች ትክክለኛ የስርዓተ-ነጥብ ህጎችን ጠንቅቀው ይረዱ።"
+                    )
+                    PlanLanguage.OROMO -> listOf(
+                        "Keeyyata jechoota 500 qabu daqiiqaa 2 gadi keessatti skim fi scan gochuun hubadhaa.",
+                        "Dogoggora caaslugaa dhokataa (dangling modifiers, faulty parallelism) daftaanii adda baasaa.",
+                        "Ilaalcha barreessaa (tone), kaayyoo fi ergaa dhokataa keeyyataa hubadhaa.",
+                        "Seera sirna tuqaalee (punctuation) himoota xaxamoof gargaaran sirriitti qabadhaa."
+                    )
+                }
             }
         )
 
         // 6. Geography of Ethiopia and the Horn
         CourseCard(
-            courseName = "Geography of Ethiopia and the Horn",
-            credits = "3 Credits",
+            courseName = when (selectedLanguage) {
+                PlanLanguage.ENGLISH -> "Geography of Ethiopia and the Horn"
+                PlanLanguage.AMHARIC -> "የኢትዮጵያና የአፍሪካ ቀንድ ጂኦግራፊ (Geography)"
+                PlanLanguage.OROMO -> "Jiograafii Itoophiyaa fi Gaanfa Afrikaa"
+            },
+            credits = when (selectedLanguage) {
+                PlanLanguage.ENGLISH -> "3 Credits"
+                PlanLanguage.AMHARIC -> "3 ክሬዲት"
+                PlanLanguage.OROMO -> "Kireeditii 3"
+            },
             color = Color(0xFF2563EB),
             tips = when (selectedCategory) {
-                UnderstandingCategory.SLOW -> listOf(
-                    "Study relief and physical maps of Ethiopia: clearly locate Western Highlands, Great Rift Valley, and Eastern Highlands.",
-                    "Memorize Ethiopian traditional agro-ecological zones: Bereha, Kolla, Woina-Dega, Dega, and Wurch.",
-                    "Group drainage basins into 3 systems: Mediterranean, Indian Ocean, and Inland drainage.",
-                    "Create simple flashcards for Ethiopian geological eras (Precambrian to Cenozoic)."
-                )
-                UnderstandingCategory.MID -> listOf(
-                    "Connect geological events to current Ethiopian topography (e.g., Cenozoic rifting, Mesozoic transgression).",
-                    "Memorize major river tributaries (Abbay, Baro-Akobo, Tekeze, Awash, Genale-Dawa).",
-                    "Review population distribution factors: environmental, historical, and socio-economic drivers.",
-                    "Solve past geography mid exam multiple choice items."
-                )
-                UnderstandingCategory.FAST -> listOf(
-                    "Analyze demographic transition models and spatial population density formulas in Ethiopia.",
-                    "Correlate climate regimes with ITCZ (Inter-Tropical Convergence Zone) seasonal shifts.",
-                    "Tackle data-driven and map-interpretation questions under timed pressure.",
-                    "Evaluate regional agricultural systems and soil degradation challenges."
-                )
+                UnderstandingCategory.SLOW -> when (selectedLanguage) {
+                    PlanLanguage.ENGLISH -> listOf(
+                        "Study relief and physical maps of Ethiopia: clearly locate Western Highlands, Great Rift Valley, and Eastern Highlands.",
+                        "Memorize Ethiopian traditional agro-ecological zones: Bereha, Kolla, Woina-Dega, Dega, and Wurch.",
+                        "Group drainage basins into 3 systems: Mediterranean, Indian Ocean, and Inland drainage.",
+                        "Create simple flashcards for Ethiopian geological eras (Precambrian to Cenozoic)."
+                    )
+                    PlanLanguage.AMHARIC -> listOf(
+                        "የኢትዮጵያን መልክዓ ምድራዊ ካርታ ያጥኑ፡ ምዕራባዊ ከፍተኛ ቦታዎችን፣ ስምጥ ሸለቆን እና ምስራቃዊ ከፍተኛ ቦታዎችን በግልፅ ይለዩ።",
+                        "የኢትዮጵያን ባህላዊ የአየር ንብረት ዞኖች በቃላቸው ይያዙ፡ በረሃ፣ ቆላ፣ ወይና-ደጋ፣ ደጋ እና ውርጭ።",
+                        "የወንዞች ተፋሰሶችን በ 3 ይክፈሉ፡ ሜዲትራኒያን፣ የህንድ ውቅያኖስ እና የውስጥ ተፋሰስ።",
+                        "ለኢትዮጵያ ጂኦሎጂካል ዘመናት (Precambrian እስከ Cenozoic) የማስታወሻ ካርዶችን ያዘጋጁ።"
+                    )
+                    PlanLanguage.OROMO -> listOf(
+                        "Kaartaa uumama Itoophiyaa qo'adhaa: Dachee olka'aa Lixaa, Sulula Qilee (Rift Valley) fi Dachee olka'aa Bahaa adda baasaa.",
+                        "Kutaalee qilleensaa aadaa Itoophiyaa sammuutti qabadhaa: Gammoojjii (Bereha, Kolla), Baddaa-dare (Woina-Dega), Baddaa (Dega) fi Qorra (Wurch).",
+                        "Lolaa lagaa bakka 3tti qoodaa: Meeditiraaniyaan, Garba Hindii fi kan keessaa (Inland).",
+                        "Bara jiolojii Itoophiyaa (Precambrian hanga Cenozoic) tiif kaardii yaadannoo qopheessaa."
+                    )
+                }
+                UnderstandingCategory.MID -> when (selectedLanguage) {
+                    PlanLanguage.ENGLISH -> listOf(
+                        "Connect geological events to current Ethiopian topography (e.g., Cenozoic rifting, Mesozoic transgression).",
+                        "Memorize major river tributaries (Abbay, Baro-Akobo, Tekeze, Awash, Genale-Dawa).",
+                        "Review population distribution factors: environmental, historical, and socio-economic drivers.",
+                        "Solve past geography mid exam multiple choice items."
+                    )
+                    PlanLanguage.AMHARIC -> listOf(
+                        "የጂኦሎጂካል ክስተቶችን አሁን ካለው የኢትዮጵያ ገጽታ ጋር ያዛምዱ (ለምሳሌ፡ ሴኖዞይክ ሪፍቲንግ፣ ሜሶዞይክ ትራንስግሬሽን)።",
+                        "ዋና ዋና የወንዝ ገባሮችን በቃላቸው ይያዙ (አባይ፣ ባሮ-አኮቦ፣ ተከዜ፣ አዋሽ፣ ገናሌ-ዳዋ)።",
+                        "የህዝብ ስርጭት መወሰኛ ምክንያቶችን ይከልሱ፡ አካባቢያዊ፣ ታሪካዊ እና ማህበራዊ-ኢኮኖሚያዊ ሁኔታዎች።",
+                        "ያለፉ የጂኦግራፊ ሚድ ፈተና የምርጫ ጥያቄዎችን ይስሩ።"
+                    )
+                    PlanLanguage.OROMO -> listOf(
+                        "Ta'iinsa jiolojii bocaa lafa Itoophiyaa ammaa wajjin wal qabsiisaa (fkn, babal'achuu Cenozoic, bishaan Mesozoic).",
+                        "Madda lageen gurguddoo sammuutti qabadhaa (Abbaayyaa, Baaroo-Akooboo, Takazee, Hawaash, Ganaalee-Daawaa).",
+                        "Sababoota faffaca'iinsa uummataa irra deebi'aa ilaalaa: naannoo, seenaa fi hawaas-dinagdee.",
+                        "Qormaata mid jiograafii darbe irraa gaaffilee filannoo hojjedhaa."
+                    )
+                }
+                UnderstandingCategory.FAST -> when (selectedLanguage) {
+                    PlanLanguage.ENGLISH -> listOf(
+                        "Analyze demographic transition models and spatial population density formulas in Ethiopia.",
+                        "Correlate climate regimes with ITCZ (Inter-Tropical Convergence Zone) seasonal shifts.",
+                        "Tackle data-driven and map-interpretation questions under timed pressure.",
+                        "Evaluate regional agricultural systems and soil degradation challenges."
+                    )
+                    PlanLanguage.AMHARIC -> listOf(
+                        "በኢትዮጵያ ያለውን የዴሞግራፊክ ሽግግር ሞዴል እና የህዝብ ጥግግት ስሌቶችን ይተንትኑ።",
+                        "የአየር ንብረት ለውጦችን ከ ITCZ (Inter-Tropical Convergence Zone) ወቅታዊ እንቅስቃሴ ጋር ያዛምዱ።",
+                        "የመረጃ ሰንጠረዦችና የካርታ ትንተና ጥያቄዎችን በጊዜ ገደብ ውስጥ ሰርተው ይጨርሱ።",
+                        "የክልላዊ ግብርና ስርዓቶችን እና የአፈር መሸርሸር ችግሮችን በጥልቀት ይገምግሙ።"
+                    )
+                    PlanLanguage.OROMO -> listOf(
+                        "Moodeela jijjiirama uummataa fi foormulaa rukkina uummataa Itoophiyaa xiinxalaa.",
+                        "Haala qilleensaa sochii ITCZ (Inter-Tropical Convergence Zone) wajjin wal qabsiisaa.",
+                        "Gaaffilee ragaa fi kaartaa irratti hundaa'an yeroo qabame keessatti hojjedhaa.",
+                        "Sirna qonnaa naannolee fi qormaata dhiqama biyyootti jiru madaalaa."
+                    )
+                }
             }
         )
 
         // 7. Introduction to Economics
         CourseCard(
-            courseName = "Introduction to Economics",
-            credits = "3 Credits",
+            courseName = when (selectedLanguage) {
+                PlanLanguage.ENGLISH -> "Introduction to Economics"
+                PlanLanguage.AMHARIC -> "የኢኮኖሚክስ መግቢያ (Economics)"
+                PlanLanguage.OROMO -> "Seensa Ikonoomiksii (Economics)"
+            },
+            credits = when (selectedLanguage) {
+                PlanLanguage.ENGLISH -> "3 Credits"
+                PlanLanguage.AMHARIC -> "3 ክሬዲት"
+                PlanLanguage.OROMO -> "Kireeditii 3"
+            },
             color = Color(0xFF16A34A),
             tips = when (selectedCategory) {
-                UnderstandingCategory.SLOW -> listOf(
-                    "Draw supply and demand curves with your own hand until shifts vs. movements along the curve become second nature.",
-                    "Understand opportunity cost using the Production Possibilities Frontier (PPF).",
-                    "Master the fundamental economic questions: What to produce, How to produce, For whom to produce.",
-                    "Define Microeconomics (individual consumers/firms) vs. Macroeconomics (national economy)."
-                )
-                UnderstandingCategory.MID -> listOf(
-                    "Practice calculating price elasticity of demand (Ed) using the midpoint formula.",
-                    "Master cost formulas: Total Cost (TC), Marginal Cost (MC), Average Variable Cost (AVC), Average Total Cost (ATC).",
-                    "Distinguish four market structures: Perfect Competition, Monopolistic Competition, Oligopoly, and Monopoly.",
-                    "Review GDP calculation approaches (Expenditure vs. Income method)."
-                )
-                UnderstandingCategory.FAST -> listOf(
-                    "Solve consumer utility maximization equations using marginal utility per birr (MUx / Px = MUy / Py).",
-                    "Analyze macro policy shifts: Expansionary vs. Contractionary Fiscal & Monetary policies.",
-                    "Solve price ceiling and price floor deadweight loss calculation problems.",
-                    "Evaluate real vs. nominal GDP deflator nuances under inflation."
-                )
+                UnderstandingCategory.SLOW -> when (selectedLanguage) {
+                    PlanLanguage.ENGLISH -> listOf(
+                        "Draw supply and demand curves with your own hand until shifts vs. movements along the curve become second nature.",
+                        "Understand opportunity cost using the Production Possibilities Frontier (PPF).",
+                        "Master the fundamental economic questions: What to produce, How to produce, For whom to produce.",
+                        "Define Microeconomics (individual consumers/firms) vs. Macroeconomics (national economy)."
+                    )
+                    PlanLanguage.AMHARIC -> listOf(
+                        "የፍላጎት እና የአቅርቦት (Demand & Supply) ከርቮችን በእጅዎ ደጋግመው ይሳሉ፤ ከርቭ ላይ መንሸራተት እና የከርቭ መቀየርን በደንብ ይለዩ።",
+                        "የዕድል ዋጋን (Opportunity Cost) በምርት አማራጮች ድንበር (PPF) አማካኝነት ይረዱ።",
+                        "መሰረታዊ የኢኮኖሚክስ ጥያቄዎችን ይረዱ፡ ምን ይመረት፣ እንዴት ይመረት፣ ለማን ይመረት።",
+                        "የማይክሮ-ኢኮኖሚክስ (የግለሰብ/ድርጅት) እና የማክሮ-ኢኮኖሚክስ (የሀገር አቀፍ ኢኮኖሚ) ልዩነትን ይያዙ።"
+                    )
+                    PlanLanguage.OROMO -> listOf(
+                        "Sarara fedhii fi dhiyeessii (demand & supply) harka keessaniin deddeebisaa kaasaa; sochiilee sarara irrattii fi jijjiirama sararaa adda baasaa.",
+                        "Baasii carraa (opportunity cost) Production Possibilities Frontier (PPF) fayyadamuun hubadhaa.",
+                        "Gaaffilee bu'uuraa ikonoomiksii qabadhaa: Maaltu oomishama, Akkamitti oomishama, Eenyuuf oomishama.",
+                        "Garaagarummaa Maayikiroo-ikonoomiksii (dhuunfaa/dhaabbata) fi Maakiroo-ikonoomiksii (biyyoolessaa) adda baasaa."
+                    )
+                }
+                UnderstandingCategory.MID -> when (selectedLanguage) {
+                    PlanLanguage.ENGLISH -> listOf(
+                        "Practice calculating price elasticity of demand (Ed) using the midpoint formula.",
+                        "Master cost formulas: Total Cost (TC), Marginal Cost (MC), Average Variable Cost (AVC), Average Total Cost (ATC).",
+                        "Distinguish four market structures: Perfect Competition, Monopolistic Competition, Oligopoly, and Monopoly.",
+                        "Review GDP calculation approaches (Expenditure vs. Income method)."
+                    )
+                    PlanLanguage.AMHARIC -> listOf(
+                        "የዋጋ ፍላጎት ልስላሴን (Elasticity of Demand - Ed) በሚድፖይንት ፎርሙላ ማስላትን ይለማመዱ።",
+                        "የወጪ ፎርሙላዎችን ያካኑ፡ ጠቅላላ ወጪ (TC)፣ ተጨማሪ ወጪ (MC)፣ አማካይ ተለዋዋጭ ወጪ (AVC)፣ አማካይ ጠቅላላ ወጪ (ATC)።",
+                        "አራቱን የገበያ መዋቅሮች ይለዩ፡ Perfect Competition, Monopolistic Competition, Oligopoly, and Monopoly።",
+                        "የሀገር ውስጥ አጠቃላይ ምርት (GDP) ማስያ መንገዶችን (Expenditure vs. Income) ይከልሱ።"
+                    )
+                    PlanLanguage.OROMO -> listOf(
+                        "Saffisa jijjiirama fedhii gatii (elasticity of demand - Ed) foormulaa midpoint tiin hojjechuu shaakalaa.",
+                        "Foormulaawwan baasii qabadhaa: Total Cost (TC), Marginal Cost (MC), Average Variable Cost (AVC), Average Total Cost (ATC).",
+                        "Caasaa gabaa arfan adda baasaa: Perfect Competition, Monopolistic Competition, Oligopoly, Monopoly.",
+                        "Tooftaalee herrega GDP (Baasii fi Galii) irra deebi'aa ilaalaa."
+                    )
+                }
+                UnderstandingCategory.FAST -> when (selectedLanguage) {
+                    PlanLanguage.ENGLISH -> listOf(
+                        "Solve consumer utility maximization equations using marginal utility per birr (MUx / Px = MUy / Py).",
+                        "Analyze macro policy shifts: Expansionary vs. Contractionary Fiscal & Monetary policies.",
+                        "Solve price ceiling and price floor deadweight loss calculation problems.",
+                        "Evaluate real vs. nominal GDP deflator nuances under inflation."
+                    )
+                    PlanLanguage.AMHARIC -> listOf(
+                        "የተጠቃሚ እርካታ ማብዛትን (Utility Maximization) በብር ማርጂናል እርካታ (MUx / Px = MUy / Py) አስልተው ይፍቱ።",
+                        "የማክሮ ፖሊሲ ለውጦችን ይተንትኑ፡ የፊስካል እና ሞኔተሪ ፖሊሲዎች (Expansionary vs. Contractionary)።",
+                        "የዋጋ ጣሪያ (Price Ceiling) እና የዋጋ ወለል (Price Floor) የፈጠሩትን ኪሳራ (Deadweight Loss) ስሌቶችን ይስሩ።",
+                        "በዋጋ ግሽበት ወቅት በሪል እና ኖሚናል GDP ዲፍሌተር መካከል ያለውን ረቂቅ ልዩነት ይገምግሙ።"
+                    )
+                    PlanLanguage.OROMO -> listOf(
+                        "Gaaffilee quubsa fayyadamaa (utility maximization) kan MUx / Px = MUy / Py fayyadamuun hojjedhaa.",
+                        "Imaammata gurguddoo dinagdee xiinxalaa: Imaammata Maallaqaa fi Taaksii (Expansionary vs Contractionary).",
+                        "Miidhaa gatii ol'aanaa (price ceiling) fi gatii gadi'aanaa (price floor) irraa dhufu (deadweight loss) herreegaa.",
+                        "Garaagarummaa real GDP fi nominal GDP deflator gidduu jiru ifatti madaalaa."
+                    )
+                }
             }
         )
+
+        // Next Plan Button
+        NextPlanButton(onNext = onNext, selectedLanguage = selectedLanguage)
     }
 }
 

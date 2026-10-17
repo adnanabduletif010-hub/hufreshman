@@ -47,8 +47,8 @@ import com.curiovana.hufreshman.viewmodel.MainViewModel
 fun ExamBoardScreen(
     viewModel: MainViewModel,
     onNavigateToAdmin: () -> Unit,
-    // Returns true if action is allowed, false if blocked (e.g. guest user)
-    onYearSelectedGate: () -> Boolean = { true }
+    // Returns true if action is allowed; isFirstItem=true means it's the free preview item
+    onYearSelectedGate: (isFirstItem: Boolean) -> Boolean = { true }
 ) {
     val activeSubject by viewModel.activeSubject.collectAsState()
     val activeExamType by viewModel.activeExamType.collectAsState()
@@ -217,7 +217,10 @@ fun ExamBoardScreen(
                         availableYears = availableYears,
                         allQuestions = allQuestions,
                         onSelectYear = { year ->
-                            if (onYearSelectedGate()) {
+                            // First year of the first subject is the free preview for any user
+                            val isFirstSubject = activeSubject == viewModel.subjectCategories.firstOrNull()
+                            val isFirstYear = isFirstSubject && (year == availableYears.firstOrNull())
+                            if (onYearSelectedGate(isFirstYear)) {
                                 viewModel.selectExamYear(year)
                             }
                         }
@@ -820,9 +823,10 @@ fun ExamYearsListView(
         ) {
             items(availableYears) { year: String ->
                 val countInYear = remember(allQuestions, subject.name, examType, year) {
+                    val isCoc = subject.name.contains("COC", ignoreCase = true)
                     allQuestions.count {
                         it.course.contains(subject.name, ignoreCase = true) &&
-                        it.category.contains(examType, ignoreCase = true) &&
+                        (isCoc || it.category.contains(examType, ignoreCase = true)) &&
                         it.year.contains(year, ignoreCase = true)
                     }
                 }
@@ -1065,46 +1069,20 @@ fun ExamQuestionsListView(
                                 )
                             }
                         }
-                        if (practiceMode == ExamPracticeMode.TIMED) {
-                            if (!examSubmitted) {
-                                Button(
-                                    onClick = { viewModel.submitExam() },
-                                    colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreen),
-                                    shape = RoundedCornerShape(8.dp),
-                                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp)
-                                ) {
-                                    Icon(Icons.Default.CheckCircle, contentDescription = null, modifier = Modifier.size(16.dp))
-                                    Spacer(modifier = Modifier.width(4.dp))
-                                    Text("Submit Exam", fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                                }
-                            } else {
-                                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                    OutlinedButton(
-                                        onClick = { viewModel.startTimedExam(examDurationSeconds) },
-                                        shape = RoundedCornerShape(8.dp),
-                                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
-                                    ) {
-                                        Icon(Icons.Default.Replay, contentDescription = null, modifier = Modifier.size(14.dp))
-                                        Spacer(modifier = Modifier.width(4.dp))
-                                        Text("Retake", fontSize = 11.sp)
-                                    }
-                                    Button(
-                                        onClick = { viewModel.submitExam() },
-                                        colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue),
-                                        shape = RoundedCornerShape(8.dp),
-                                        contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp)
-                                    ) {
-                                        Icon(Icons.Default.EmojiEvents, contentDescription = null, modifier = Modifier.size(14.dp))
-                                        Spacer(modifier = Modifier.width(4.dp))
-                                        Text("Score", fontSize = 11.sp, fontWeight = FontWeight.Bold)
-                                    }
-                                }
-                            }
-                        }
                     }
                 }
 
                 itemsIndexed(questions, key = { _, q -> q.id }) { index, question ->
+                    // Show the reading passage card once before the first question in a passage group
+                    val prevPassageId = if (index > 0) questions[index - 1].passageId else null
+                    val curPassageId = question.passageId
+                    if (!curPassageId.isNullOrBlank() && curPassageId != prevPassageId) {
+                        val passageText = question.passage
+                        if (!passageText.isNullOrBlank()) {
+                            PassageCard(passage = passageText)
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
+                    }
                     QuestionCard(
                         index = index + 1,
                         question = question,
@@ -1120,6 +1098,124 @@ fun ExamQuestionsListView(
                         onReport = { onReport(question) }
                     )
                 }
+
+                // Submit button for timed exam at the bottom of the questions
+                if (practiceMode == ExamPracticeMode.TIMED) {
+                    item {
+                        Spacer(modifier = Modifier.height(10.dp))
+                        if (!examSubmitted) {
+                            Button(
+                                onClick = { viewModel.submitExam() },
+                                colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreen),
+                                shape = RoundedCornerShape(12.dp),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(48.dp)
+                            ) {
+                                Icon(Icons.Default.CheckCircle, contentDescription = null, modifier = Modifier.size(18.dp))
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text("Submit Exam", fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                            }
+                        } else {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                            ) {
+                                OutlinedButton(
+                                    onClick = { viewModel.startTimedExam(examDurationSeconds) },
+                                    shape = RoundedCornerShape(12.dp),
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .height(48.dp)
+                                ) {
+                                    Icon(Icons.Default.Replay, contentDescription = null, modifier = Modifier.size(16.dp))
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Text("Retake", fontSize = 13.sp)
+                                }
+                                Button(
+                                    onClick = { viewModel.submitExam() },
+                                    colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue),
+                                    shape = RoundedCornerShape(12.dp),
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .height(48.dp)
+                                ) {
+                                    Icon(Icons.Default.EmojiEvents, contentDescription = null, modifier = Modifier.size(16.dp))
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Text("Score", fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                                }
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(20.dp))
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun PassageCard(passage: String) {
+    var expanded by remember { mutableStateOf(false) }
+    val previewLength = 420
+    val isLong = passage.length > previewLength
+    val displayText = if (!expanded && isLong) passage.take(previewLength) + "…" else passage
+
+    Card(
+        shape = RoundedCornerShape(14.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFF0FDF4)),
+        border = androidx.compose.foundation.BorderStroke(1.5.dp, Color(0xFF6EE7B7)),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            // Header
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    Icons.Default.MenuBook,
+                    contentDescription = null,
+                    tint = Color(0xFF059669),
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(modifier = Modifier.width(7.dp))
+                Text(
+                    text = "Reading Passage",
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 13.sp,
+                    color = Color(0xFF065F46),
+                    letterSpacing = 0.5.sp
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = "Read carefully before answering",
+                    fontSize = 10.sp,
+                    color = Color(0xFF059669),
+                    fontWeight = FontWeight.Medium
+                )
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+            HorizontalDivider(color = Color(0xFF6EE7B7), thickness = 1.dp)
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // Passage body
+            Text(
+                text = displayText,
+                fontSize = 14.sp,
+                lineHeight = 22.sp,
+                color = Color(0xFF1F2937),
+                fontWeight = FontWeight.Normal
+            )
+
+            if (isLong) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = if (expanded) "▲ Show less" else "▼ Read more",
+                    color = Color(0xFF059669),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 13.sp,
+                    modifier = Modifier.clickable { expanded = !expanded }
+                )
             }
         }
     }

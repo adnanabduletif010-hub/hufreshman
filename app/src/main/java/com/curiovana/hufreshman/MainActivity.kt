@@ -50,11 +50,14 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        // Subscribe to admin-post notifications on every launch (idempotent & offline-safe)
+        HuFreshmanMessagingService.subscribeToAdminTopic()
         setContent {
             HuFreshmanTheme(darkTheme = false, dynamicColor = false) {
                 val screenDimensions = rememberScreenDimensions()
                 val isLoading by viewModel.isLoading.collectAsState()
                 val userProfile by viewModel.userProfile.collectAsState()
+                val paymentConfig by viewModel.paymentConfig.collectAsState()
                 val allQuestions by viewModel.allQuestions.collectAsState()
                 var currentTab by remember { mutableStateOf(NavigationTab.EXAMS) }
                 val tabHistory = remember { mutableStateListOf(NavigationTab.EXAMS) }
@@ -64,6 +67,18 @@ class MainActivity : ComponentActivity() {
                         tabHistory.remove(tab)
                         tabHistory.add(tab)
                         currentTab = tab
+                    }
+                }
+
+                // Sync FCM admin subscription based on userProfile.isAdmin
+                LaunchedEffect(userProfile.isAdmin) {
+                    HuFreshmanMessagingService.syncAdminSubscription(userProfile.isAdmin)
+                }
+
+                // Handle push notification tap intent targeting Admin tab
+                LaunchedEffect(Unit) {
+                    if (intent?.getStringExtra("navigate_to") == "ADMIN" && userProfile.isAdmin) {
+                        navigateToTab(NavigationTab.ADMIN)
                     }
                 }
 
@@ -77,7 +92,7 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
-                // Auth dialog state — shown as overlays, not full-screen gate
+                // Auth dialog state Ã¢â‚¬â€ shown as overlays, not full-screen gate
                 var showLoginDialog by remember { mutableStateOf(false) }
                 var showRegistrationDialog by remember { mutableStateOf(false) }
                 var showPaymentDialog by remember { mutableStateOf(false) }
@@ -149,7 +164,7 @@ class MainActivity : ComponentActivity() {
                                                     text = when {
                                                         userProfile.isAdmin -> "ADMIN"
                                                         userProfile.isApproved -> "MEMBER"
-                                                        isWaitingApproval -> "⏳ PENDING"
+                                                        isWaitingApproval -> "PENDING"
                                                         userProfile.isGuest -> "GUEST"
                                                         else -> "LOGIN"
                                                     },
@@ -162,8 +177,8 @@ class MainActivity : ComponentActivity() {
                                         Text(
                                             text = when {
                                                 isWaitingApproval -> "Verification In Progress"
-                                                userProfile.isGuest -> "Ethiopian University Exam Hub"
-                                                else -> "Ethiopian University Exam Hub"
+                                                userProfile.isGuest -> "Haramaya University Freshman"
+                                                else -> "Haramaya University Freshman"
                                             },
                                             fontSize = if (screenDimensions.isCompactWidth) 9.sp else 10.sp,
                                             color = Color.White.copy(alpha = 0.85f),
@@ -175,30 +190,19 @@ class MainActivity : ComponentActivity() {
                                 }
                             },
                             actions = {
-                                if (isLoggedIn && !isWaitingApproval) {
-                                    IconButton(onClick = { navigateToTab(NavigationTab.PROFILE) }) {
-                                        Box(
-                                            modifier = Modifier
-                                                .size(32.dp)
-                                                .background(Color.White.copy(alpha = 0.2f), CircleShape),
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            Text(
-                                                text = userProfile.name.firstOrNull()?.toString() ?: "U",
-                                                color = Color.White,
-                                                fontWeight = FontWeight.Bold,
-                                                fontSize = 14.sp
-                                            )
-                                        }
-                                    }
-                                } else if (isWaitingApproval) {
-                                    IconButton(onClick = { viewModel.refreshUserProfile() }) {
-                                        Icon(Icons.Default.Refresh, contentDescription = "Refresh Status", tint = Color.White)
-                                    }
-                                } else {
-                                    // Guest — show login button in top bar
-                                    TextButton(onClick = { showLoginDialog = true }) {
-                                        Text("Login", color = Color.White, fontWeight = FontWeight.Bold)
+                                IconButton(onClick = { navigateToTab(NavigationTab.PROFILE) }) {
+                                    Box(
+                                        modifier = Modifier
+                                            .size(34.dp)
+                                            .background(Color.White.copy(alpha = 0.22f), CircleShape),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Filled.Person,
+                                            contentDescription = "Profile",
+                                            tint = Color.White,
+                                            modifier = Modifier.size(20.dp)
+                                        )
                                     }
                                 }
                             }
@@ -214,12 +218,11 @@ class MainActivity : ComponentActivity() {
                                     userProfile.isAdmin -> listOf(
                                         NavigationTab.EXAMS, NavigationTab.UNIVERSITIES,
                                         NavigationTab.SHORT_NOTES, NavigationTab.MY_PLAN, NavigationTab.COMMUNITY,
-                                        NavigationTab.ADMIN, NavigationTab.PROFILE
+                                        NavigationTab.ADMIN
                                     )
                                     isLoggedIn -> listOf(
                                         NavigationTab.EXAMS, NavigationTab.UNIVERSITIES,
-                                        NavigationTab.SHORT_NOTES, NavigationTab.MY_PLAN, NavigationTab.COMMUNITY,
-                                        NavigationTab.PROFILE
+                                        NavigationTab.SHORT_NOTES, NavigationTab.MY_PLAN, NavigationTab.COMMUNITY
                                     )
                                     else -> listOf(
                                         // Guests see all except Admin & Profile
@@ -307,15 +310,16 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                         } else {
-                            // Main content — users can browse Exams list, Universities list, Notes, Community posts
+                            // Main content Ã¢â‚¬â€ users can browse Exams list, Universities list, Notes, Community posts
                             Crossfade(targetState = currentTab, label = "TabCrossfade") { tab ->
                                 when (tab) {
                                     NavigationTab.EXAMS -> ExamBoardScreen(
                                         viewModel = viewModel,
                                         onNavigateToAdmin = { navigateToTab(NavigationTab.ADMIN) },
-                                        // Gated when clicking an exam year
-                                        onYearSelectedGate = {
+                                        // Gated when clicking an exam year Ã¢â‚¬â€ first year of first subject is free for everyone
+                                        onYearSelectedGate = { isFirstItem ->
                                             when {
+                                                isFirstItem -> true  // free preview: first year of the first subject
                                                 userProfile.isGuest -> {
                                                     showLoginDialog = true
                                                     false
@@ -328,11 +332,13 @@ class MainActivity : ComponentActivity() {
                                             }
                                         }
                                     )
+
                                     NavigationTab.UNIVERSITIES -> UniversitiesScreen(
                                         viewModel = viewModel,
-                                        // Gated when clicking into university detail
-                                        onUniversitySelectedGate = {
+                                        // First university is free for everyone; rest requires login+approval
+                                        onUniversitySelectedGate = { isFirstItem ->
                                             when {
+                                                isFirstItem -> true
                                                 userProfile.isGuest -> {
                                                     showLoginDialog = true
                                                     false
@@ -347,9 +353,10 @@ class MainActivity : ComponentActivity() {
                                     )
                                     NavigationTab.SHORT_NOTES -> ShortNotesScreen(
                                         viewModel = viewModel,
-                                        // Gated when clicking into short notes content
-                                        onContentGate = {
+                                        // Gated when clicking into short notes content Ã¢â‚¬â€ first note of the first subject is free
+                                        onContentGate = { isFirstItem ->
                                             when {
+                                                isFirstItem -> true  // free preview: first note of the first subject
                                                 userProfile.isGuest -> {
                                                     showLoginDialog = true
                                                     false
@@ -362,9 +369,7 @@ class MainActivity : ComponentActivity() {
                                             }
                                         }
                                     )
-                                    NavigationTab.MY_PLAN -> MyPlanScreen(
-                                        viewModel = viewModel
-                                    )
+                                    NavigationTab.MY_PLAN -> MyPlanScreen(viewModel = viewModel)
                                     NavigationTab.COMMUNITY -> CommunityScreen(
                                         viewModel = viewModel,
                                         // Gated when creating a post
@@ -414,6 +419,7 @@ class MainActivity : ComponentActivity() {
                         if (showPaymentDialog && !userProfile.isApproved && !userProfile.isGuest && !userProfile.isAdmin) {
                             PaymentVerificationDialog(
                                 phoneNumber = userProfile.phoneNumber,
+                                paymentConfig = paymentConfig,
                                 onDismiss = { showPaymentDialog = false },
                                 onPaymentSubmitted = { method, url ->
                                     viewModel.submitPaymentVerification(method, url)

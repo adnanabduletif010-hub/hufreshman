@@ -144,7 +144,7 @@ fun AuthScreen(
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "Ethiopian University Exam & Academic Hub",
+                        text = "Haramaya University Freshman",
                         fontSize = 12.sp,
                         color = Color.White.copy(alpha = 0.85f),
                         fontWeight = FontWeight.Medium,

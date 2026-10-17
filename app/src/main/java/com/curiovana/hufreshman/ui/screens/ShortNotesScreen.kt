@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items as gridItems
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -47,7 +48,7 @@ import com.curiovana.hufreshman.viewmodel.MainViewModel
 @Composable
 fun ShortNotesScreen(
     viewModel: MainViewModel,
-    onContentGate: () -> Boolean = { true }
+    onContentGate: (isFirstItem: Boolean) -> Boolean = { true }
 ) {
     var selectedSubject by remember { mutableStateOf<SubjectCategory?>(null) }
     var selectedUnit by remember { mutableStateOf<String?>(null) }
@@ -73,7 +74,7 @@ fun ShortNotesScreen(
                     note.subject.contains(searchQuery, ignoreCase = true) ||
                     note.unit.contains(searchQuery, ignoreCase = true)
                 }
-                NotesListView(notes = searchResults, onNoteClickGate = onContentGate)
+                NotesListView(notes = searchResults, isFirstSubject = false, onNoteClickGate = onContentGate)
             }
 
             // Level 0: Subject Grid with authentic images (identical to ExamBoardScreen structure)
@@ -82,7 +83,9 @@ fun ShortNotesScreen(
                     subjects = viewModel.subjectCategories,
                     allNotes = sampleNotes,
                     onSelectSubject = { subject ->
-                        if (onContentGate()) {
+                        // First subject is always accessible as a free preview
+                        val isFirstSubject = subject.id == viewModel.subjectCategories.firstOrNull()?.id
+                        if (onContentGate(isFirstSubject)) {
                             selectedSubject = subject
                             selectedUnit = null
                         }
@@ -97,6 +100,8 @@ fun ShortNotesScreen(
                     selectedUnit = selectedUnit,
                     onSelectUnit = { selectedUnit = it },
                     allNotes = sampleNotes,
+                    // First note of the first subject is always free
+                    isFirstSubject = selectedSubject?.id == viewModel.subjectCategories.firstOrNull()?.id,
                     onNoteClickGate = onContentGate
                 )
             }
@@ -301,7 +306,8 @@ fun SubjectNotesDetailView(
     selectedUnit: String?,
     onSelectUnit: (String?) -> Unit,
     allNotes: List<ShortNote>,
-    onNoteClickGate: () -> Boolean = { true }
+    isFirstSubject: Boolean = false,
+    onNoteClickGate: (isFirstItem: Boolean) -> Boolean = { true }
 ) {
     val subjectAllNotes = remember(allNotes, subject.id, subject.name, subject.shortName) {
         allNotes.filter { note ->
@@ -422,8 +428,12 @@ fun SubjectNotesDetailView(
 
         Spacer(modifier = Modifier.height(6.dp))
 
-        // Notes List
-        NotesListView(notes = subjectNotes, onNoteClickGate = onNoteClickGate)
+        // Notes List — pass isFirstSubject so first note gets free access
+        NotesListView(
+            notes = subjectNotes,
+            isFirstSubject = isFirstSubject,
+            onNoteClickGate = onNoteClickGate
+        )
     }
 }
 
@@ -433,7 +443,8 @@ fun SubjectNotesDetailView(
 @Composable
 fun NotesListView(
     notes: List<ShortNote>,
-    onNoteClickGate: () -> Boolean = { true }
+    isFirstSubject: Boolean = false,
+    onNoteClickGate: (isFirstItem: Boolean) -> Boolean = { true }
 ) {
     if (notes.isEmpty()) {
         Box(
@@ -469,8 +480,10 @@ fun NotesListView(
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(notes, key = { it.id }) { note ->
-                NoteCard(note = note, onNoteClickGate = onNoteClickGate)
+            itemsIndexed(notes, key = { _, note -> note.id }) { index, note ->
+                // Only the very first note of the first subject is freely accessible
+                val isFreePreview = isFirstSubject && index == 0
+                NoteCard(note = note, isFreePreview = isFreePreview, onNoteClickGate = onNoteClickGate)
             }
             item { Spacer(modifier = Modifier.height(28.dp)) }
         }
@@ -483,7 +496,8 @@ fun NotesListView(
 @Composable
 fun NoteCard(
     note: ShortNote,
-    onNoteClickGate: () -> Boolean = { true }
+    isFreePreview: Boolean = false,
+    onNoteClickGate: (isFirstItem: Boolean) -> Boolean = { true }
 ) {
     var expanded by remember { mutableStateOf(false) }
     var showReaderDialog by remember { mutableStateOf(false) }
@@ -554,7 +568,7 @@ fun NoteCard(
 
                 // Expand indicator button
                 IconButton(
-                    onClick = { if (expanded || onNoteClickGate()) expanded = !expanded },
+                    onClick = { if (expanded || onNoteClickGate(isFreePreview)) expanded = !expanded },
                     modifier = Modifier.size(30.dp)
                 ) {
                     Icon(
@@ -573,7 +587,7 @@ fun NoteCard(
                 fontWeight = FontWeight.ExtraBold,
                 fontSize = 15.sp,
                 color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.clickable { if (expanded || onNoteClickGate()) expanded = !expanded }
+                modifier = Modifier.clickable { if (expanded || onNoteClickGate(isFreePreview)) expanded = !expanded }
             )
 
             // Content preview or full text
@@ -603,7 +617,7 @@ fun NoteCard(
                     Spacer(modifier = Modifier.width(4.dp))
 
                     TextButton(
-                        onClick = { if (onNoteClickGate()) showReaderDialog = true },
+                        onClick = { if (onNoteClickGate(isFreePreview)) showReaderDialog = true },
                         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp)
                     ) {
                         Icon(Icons.AutoMirrored.Filled.MenuBook, contentDescription = null, modifier = Modifier.size(16.dp), tint = accentColor)
@@ -627,14 +641,14 @@ fun NoteCard(
                     lineHeight = 17.sp,
                     maxLines = 2,
                     color = Slate700,
-                    modifier = Modifier.clickable { if (onNoteClickGate()) expanded = true }
+                    modifier = Modifier.clickable { if (onNoteClickGate(isFreePreview)) expanded = true }
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Row(
                     modifier = Modifier
                         .clip(RoundedCornerShape(8.dp))
                         .background(accentColor.copy(alpha = 0.08f))
-                        .clickable { if (onNoteClickGate()) expanded = true }
+                        .clickable { if (onNoteClickGate(isFreePreview)) expanded = true }
                         .padding(horizontal = 10.dp, vertical = 4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {

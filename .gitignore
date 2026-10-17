@@ -14,3 +14,4 @@ local.properties
 *.aab
 node_modules
 .firebase
+scratch/

@@ -1,7 +1,11 @@
 package com.curiovana.hufreshman.ui.screens
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -26,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -39,6 +44,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.curiovana.hufreshman.data.EthiopianPhoneUtils
 import com.curiovana.hufreshman.data.ExamPracticeMode
+import com.curiovana.hufreshman.data.PaymentConfig
 import com.curiovana.hufreshman.ui.theme.*
 import com.curiovana.hufreshman.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
@@ -51,6 +57,7 @@ fun ProfileScreen(
     val userProfile by viewModel.userProfile.collectAsState()
     val bookmarks by viewModel.bookmarks.collectAsState()
     val allQuestions by viewModel.allQuestions.collectAsState()
+    val paymentConfig by viewModel.paymentConfig.collectAsState()
 
     var showEditProfileDialog by remember { mutableStateOf(false) }
     var showBookmarksSheet by remember { mutableStateOf(false) }
@@ -450,6 +457,7 @@ fun ProfileScreen(
     if (showPaymentDialog) {
         PaymentVerificationDialog(
             phoneNumber = userProfile.phoneNumber,
+            paymentConfig = paymentConfig,
             onDismiss = { showPaymentDialog = false },
             onPaymentSubmitted = { method, url ->
                 viewModel.submitPaymentVerification(method, url)
@@ -877,11 +885,14 @@ fun MemberRegistrationDialog(
 @Composable
 fun PaymentVerificationDialog(
     phoneNumber: String,
+    paymentConfig: PaymentConfig = PaymentConfig(),
     onDismiss: () -> Unit,
     onPaymentSubmitted: (paymentMethod: String, screenshotUrl: String) -> Unit
 ) {
     val context = LocalContext.current
-    var selectedPaymentMethod by remember { mutableStateOf("Telebirr") }
+    var selectedPaymentMethod by remember(paymentConfig.accounts) {
+        mutableStateOf(paymentConfig.accounts.firstOrNull()?.method ?: "")
+    }
     var screenshotUri by remember { mutableStateOf<Uri?>(null) }
     var screenshotUrl by remember { mutableStateOf("") }
     var isUploading by remember { mutableStateOf(false) }
@@ -905,7 +916,7 @@ fun PaymentVerificationDialog(
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                // Header
+                // Dynamic Header
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -914,21 +925,30 @@ fun PaymentVerificationDialog(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Box(
                             modifier = Modifier
-                                .size(40.dp)
+                                .size(42.dp)
                                 .background(
-                                    androidx.compose.ui.graphics.Brush.linearGradient(
+                                    Brush.linearGradient(
                                         listOf(Color(0xFFFFD700), Color(0xFFFFA500))
                                     ),
                                     RoundedCornerShape(12.dp)
                                 ),
                             contentAlignment = Alignment.Center
                         ) {
-                            Icon(Icons.Default.Star, contentDescription = null, tint = Color.White, modifier = Modifier.size(22.dp))
+                            Icon(Icons.Default.Star, contentDescription = null, tint = Color.White, modifier = Modifier.size(24.dp))
                         }
                         Spacer(modifier = Modifier.width(10.dp))
                         Column {
-                            Text("Unlock Full Access", fontWeight = FontWeight.Bold, fontSize = 17.sp, color = Slate900)
-                            Text("One-time membership payment", fontSize = 11.sp, color = Slate700)
+                            Text(
+                                text = paymentConfig.title.ifBlank { "Payment" },
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 17.sp,
+                                color = Slate900
+                            )
+                            Text(
+                                text = paymentConfig.subtitle,
+                                fontSize = 11.sp,
+                                color = Slate700
+                            )
                         }
                     }
                     IconButton(onClick = onDismiss) {
@@ -936,71 +956,265 @@ fun PaymentVerificationDialog(
                     }
                 }
 
-                // Info text
-                Surface(
-                    shape = RoundedCornerShape(14.dp),
-                    color = Color(0xFFFFFBEB),
-                    border = androidx.compose.foundation.BorderStroke(1.dp, AmberWarning.copy(alpha = 0.3f)),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Row(
-                        modifier = Modifier.padding(12.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                // Dynamic Info Text Banner
+                if (paymentConfig.instructions.isNotBlank()) {
+                    Surface(
+                        shape = RoundedCornerShape(14.dp),
+                        color = Color(0xFFFFFBEB),
+                        border = androidx.compose.foundation.BorderStroke(1.dp, AmberWarning.copy(alpha = 0.3f)),
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        Icon(Icons.Default.Lock, contentDescription = null, tint = AmberWarning, modifier = Modifier.size(18.dp))
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Text(
-                            text = "የአባልነት ክፍያዎን ከፈጸሙ በኋላ የተላከበትን ስክሪንሾት ከታች ይላኩ፤ አድሚኑ እንዳረጋገጠ ሙሉ አገልግሎቱ ይከፈታል።",
-                            fontSize = 11.5.sp,
-                            lineHeight = 16.sp,
-                            color = Slate800
-                        )
+                        Row(
+                            modifier = Modifier.padding(12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(Icons.Default.Lock, contentDescription = null, tint = AmberWarning, modifier = Modifier.size(18.dp))
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Text(
+                                text = paymentConfig.instructions,
+                                fontSize = 11.5.sp,
+                                lineHeight = 16.sp,
+                                color = Slate800
+                            )
+                        }
                     }
                 }
 
-                // Payment accounts card
+                // Dynamic Payment Accounts Card
                 Card(
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(containerColor = Color(0xFFEFF6FF)),
                     border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFBFDBFE)),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                        Text("የክፍያ አማራጮች", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Slate900)
-                        HorizontalDivider(color = Color(0xFFDBEAFE))
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Box(
-                                modifier = Modifier.size(38.dp).background(Color(0xFF0073E6), RoundedCornerShape(10.dp)),
-                                contentAlignment = Alignment.Center
-                            ) { Text("T", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.ExtraBold) }
-                            Spacer(modifier = Modifier.width(10.dp))
-                            Column {
-                                Text("Telebirr: 0955903175", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Slate900)
-                                Text("Account Name: Adnan", fontSize = 11.sp, color = Slate700)
+                    Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                        // Amount Banner
+                        Surface(
+                            shape = RoundedCornerShape(12.dp),
+                            color = Color.White,
+                            border = androidx.compose.foundation.BorderStroke(1.dp, EmeraldGreen.copy(alpha = 0.4f)),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(
+                                        Icons.Default.Payment,
+                                        contentDescription = null,
+                                        tint = EmeraldGreen,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(
+                                        text = "የአባልነት ክፍያ መጠን:",
+                                        fontSize = 12.5.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Slate900
+                                    )
+                                }
+                                Surface(
+                                    shape = RoundedCornerShape(8.dp),
+                                    color = EmeraldGreen.copy(alpha = 0.12f)
+                                ) {
+                                    Text(
+                                        text = paymentConfig.amount.ifBlank { "250 ETB (ብር)" },
+                                        fontSize = 13.5.sp,
+                                        fontWeight = FontWeight.ExtraBold,
+                                        color = EmeraldGreen,
+                                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
+                                    )
+                                }
                             }
                         }
-                        HorizontalDivider(color = Color(0xFFDBEAFE))
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Box(
-                                modifier = Modifier.size(38.dp).background(Color(0xFF800020), RoundedCornerShape(10.dp)),
-                                contentAlignment = Alignment.Center
-                            ) { Text("C", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.ExtraBold) }
-                            Spacer(modifier = Modifier.width(10.dp))
-                            Column {
-                                Text("CBE Bank: 1000650901731", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Slate900)
-                                Text("Account Name: Adnan", fontSize = 11.sp, color = Slate700)
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text("የክፍያ አማራጮች", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Slate900)
+                            if (selectedPaymentMethod.isNotBlank()) {
+                                Surface(
+                                    shape = RoundedCornerShape(6.dp),
+                                    color = RoyalBlue.copy(alpha = 0.12f)
+                                ) {
+                                    Text(
+                                        text = "የመረጡት: $selectedPaymentMethod",
+                                        fontSize = 11.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = RoyalBlue,
+                                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                    )
+                                }
                             }
                         }
-                        HorizontalDivider(color = Color(0xFFDBEAFE))
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Box(
-                                modifier = Modifier.size(38.dp).background(Color(0xFFFF6600), RoundedCornerShape(10.dp)),
-                                contentAlignment = Alignment.Center
-                            ) { Text("E", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.ExtraBold) }
-                            Spacer(modifier = Modifier.width(10.dp))
-                            Column {
-                                Text("E-Birr: 0955903175", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Slate900)
-                                Text("Account Name: Adnan", fontSize = 11.sp, color = Slate700)
+
+                        if (!paymentConfig.isLoaded && paymentConfig.accounts.isEmpty()) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 12.dp),
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                CircularProgressIndicator(modifier = Modifier.size(18.dp), strokeWidth = 2.dp, color = RoyalBlue)
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text("Loading payment accounts...", fontSize = 12.sp, color = Slate700)
+                            }
+                        } else if (paymentConfig.accounts.isEmpty()) {
+                            Surface(
+                                shape = RoundedCornerShape(10.dp),
+                                color = Color.White.copy(alpha = 0.7f),
+                                modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp)
+                            ) {
+                                Column(
+                                    modifier = Modifier.padding(12.dp),
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    Text(
+                                        "No payment accounts configured yet.",
+                                        fontSize = 12.sp,
+                                        color = Slate800,
+                                        fontWeight = FontWeight.Medium
+                                    )
+                                    Text(
+                                        "Please contact support below for payment details.",
+                                        fontSize = 11.sp,
+                                        color = Slate700
+                                    )
+                                }
+                            }
+                        } else {
+                            paymentConfig.accounts.forEachIndexed { index, account ->
+                                if (index > 0) {
+                                    HorizontalDivider(color = Color(0xFFDBEAFE))
+                                }
+
+                                val isSelected = selectedPaymentMethod.equals(account.method, ignoreCase = true)
+                                val brandColor = try {
+                                    Color(android.graphics.Color.parseColor(account.colorHex))
+                                } catch (_: Exception) {
+                                    RoyalBlue
+                                }
+                                val shortCode = account.shortCode.ifBlank { account.method.take(1).uppercase() }
+
+                                Surface(
+                                    shape = RoundedCornerShape(12.dp),
+                                    color = if (isSelected) brandColor.copy(alpha = 0.08f) else Color.White.copy(alpha = 0.5f),
+                                    border = androidx.compose.foundation.BorderStroke(
+                                        if (isSelected) 1.5.dp else 0.5.dp,
+                                        if (isSelected) brandColor else Color(0xFFCBD5E1)
+                                    ),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable { selectedPaymentMethod = account.method }
+                                ) {
+                                    Row(
+                                        modifier = Modifier.padding(10.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Box(
+                                            modifier = Modifier
+                                                .size(38.dp)
+                                                .background(brandColor, RoundedCornerShape(10.dp)),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Text(
+                                                text = shortCode,
+                                                color = Color.White,
+                                                fontSize = 15.sp,
+                                                fontWeight = FontWeight.ExtraBold
+                                            )
+                                        }
+
+                                        Spacer(modifier = Modifier.width(10.dp))
+
+                                        Column(modifier = Modifier.weight(1f)) {
+                                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                                Text(
+                                                    text = account.method,
+                                                    fontWeight = FontWeight.Bold,
+                                                    fontSize = 13.sp,
+                                                    color = Slate900
+                                                )
+                                                if (account.note.isNotBlank()) {
+                                                    Spacer(modifier = Modifier.width(6.dp))
+                                                    Box(
+                                                        modifier = Modifier
+                                                            .background(brandColor.copy(alpha = 0.12f), RoundedCornerShape(4.dp))
+                                                            .padding(horizontal = 4.dp, vertical = 1.dp)
+                                                    ) {
+                                                        Text(
+                                                            text = account.note,
+                                                            fontSize = 9.sp,
+                                                            fontWeight = FontWeight.Bold,
+                                                            color = brandColor
+                                                        )
+                                                    }
+                                                }
+                                            }
+
+                                            if (account.accountNumber.isNotBlank()) {
+                                                Spacer(modifier = Modifier.height(2.dp))
+                                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                                    Text(
+                                                        text = account.accountNumber,
+                                                        fontSize = 12.5.sp,
+                                                        fontWeight = FontWeight.SemiBold,
+                                                        color = if (isSelected) brandColor else Slate900,
+                                                        fontFamily = FontFamily.Monospace
+                                                    )
+                                                    Spacer(modifier = Modifier.width(6.dp))
+                                                    Surface(
+                                                        shape = RoundedCornerShape(4.dp),
+                                                        color = brandColor.copy(alpha = 0.12f),
+                                                        modifier = Modifier.clickable {
+                                                            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                                                            val clip = ClipData.newPlainText("Account Number", account.accountNumber)
+                                                            clipboard.setPrimaryClip(clip)
+                                                            Toast.makeText(context, "${account.method} copied!", Toast.LENGTH_SHORT).show()
+                                                        }
+                                                    ) {
+                                                        Row(
+                                                            modifier = Modifier.padding(horizontal = 5.dp, vertical = 2.dp),
+                                                            verticalAlignment = Alignment.CenterVertically
+                                                        ) {
+                                                            Icon(
+                                                                Icons.Default.ContentCopy,
+                                                                contentDescription = "Copy",
+                                                                tint = brandColor,
+                                                                modifier = Modifier.size(11.dp)
+                                                            )
+                                                            Spacer(modifier = Modifier.width(3.dp))
+                                                            Text("Copy", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = brandColor)
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            if (account.accountName.isNotBlank()) {
+                                                Spacer(modifier = Modifier.height(2.dp))
+                                                Text(
+                                                    text = "Account Name: ${account.accountName}",
+                                                    fontSize = 11.sp,
+                                                    color = Slate700
+                                                )
+                                            }
+                                        }
+
+                                        RadioButton(
+                                            selected = isSelected,
+                                            onClick = { selectedPaymentMethod = account.method },
+                                            colors = RadioButtonDefaults.colors(
+                                                selectedColor = brandColor,
+                                                unselectedColor = Color(0xFF94A3B8)
+                                            )
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
@@ -1034,31 +1248,40 @@ fun PaymentVerificationDialog(
                     }
                 )
 
-                // Help row
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text("Need help? ", fontSize = 11.sp, color = Slate700)
-                    Text(
-                        "@HUfreshman1",
-                        fontSize = 11.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = RoyalBlue,
-                        modifier = Modifier.clickable {
-                            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/HUfreshman1")))
+                // Dynamic Support Row
+                if (paymentConfig.supportTelegram.isNotBlank() || paymentConfig.supportPhone.isNotBlank()) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text("Need help? ", fontSize = 11.sp, color = Slate700)
+                        if (paymentConfig.supportTelegram.isNotBlank()) {
+                            val handle = paymentConfig.supportTelegram.removePrefix("@")
+                            Text(
+                                "@$handle",
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = RoyalBlue,
+                                modifier = Modifier.clickable {
+                                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/$handle")))
+                                }
+                            )
                         }
-                    )
-                    Text("  •  ", fontSize = 11.sp, color = Slate700)
-                    Text(
-                        "0955903175",
-                        fontSize = 11.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = RoyalBlue,
-                        modifier = Modifier.clickable {
-                            context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:0955903175")))
+                        if (paymentConfig.supportTelegram.isNotBlank() && paymentConfig.supportPhone.isNotBlank()) {
+                            Text("  •  ", fontSize = 11.sp, color = Slate700)
                         }
-                    )
+                        if (paymentConfig.supportPhone.isNotBlank()) {
+                            Text(
+                                paymentConfig.supportPhone,
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = RoyalBlue,
+                                modifier = Modifier.clickable {
+                                    context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:${paymentConfig.supportPhone}")))
+                                }
+                            )
+                        }
+                    }
                 }
 
                 if (errorMessage.isNotBlank()) {
@@ -1072,6 +1295,7 @@ fun PaymentVerificationDialog(
                     onClick = {
                         when {
                             isUploading -> errorMessage = "Please wait for the screenshot to finish uploading."
+                            selectedPaymentMethod.isBlank() -> errorMessage = "Please select a payment method above."
                             screenshotUrl.isBlank() -> errorMessage = "Please upload your payment screenshot first."
                             else -> onPaymentSubmitted(selectedPaymentMethod, screenshotUrl)
                         }

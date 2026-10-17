@@ -53,6 +53,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
 import com.curiovana.hufreshman.data.MemberRegistration
+import com.curiovana.hufreshman.data.PaymentAccount
 import com.curiovana.hufreshman.data.UniversityGuide
 import com.curiovana.hufreshman.ui.theme.*
 import com.curiovana.hufreshman.viewmodel.MainViewModel
@@ -1059,7 +1060,7 @@ fun ManageUniversitiesTab(
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            items(filtered, key = { it.id }) { uni ->
+            itemsIndexed(filtered, key = { index, uni -> if (uni.id.isNotBlank()) "${uni.id}_$index" else index }) { _, uni ->
                 Card(
                     shape = RoundedCornerShape(14.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
@@ -1657,6 +1658,7 @@ fun AdminSettingsTab(viewModel: MainViewModel) {
                 }
             }
         }
+
     }
 }
 

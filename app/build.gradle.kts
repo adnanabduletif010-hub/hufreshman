@@ -24,8 +24,8 @@ android {
         applicationId = "com.curiovana.hufreshman" 
         minSdk = 24
         targetSdk = 37
-        versionCode = 12
-        versionName = "3.1"
+        versionCode = 16
+        versionName = "3.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -41,9 +41,9 @@ android {
                 else -> file("release.keystore")
             }
             storeFile = keystoreFile
-            storePassword = localProperties.getProperty("RELEASE_STORE_PASSWORD") ?: "42434342"
+            storePassword = localProperties.getProperty("RELEASE_STORE_PASSWORD") ?: ""
             keyAlias = localProperties.getProperty("RELEASE_KEY_ALIAS") ?: "key0"
-            keyPassword = localProperties.getProperty("RELEASE_KEY_PASSWORD") ?: "42434342"
+            keyPassword = localProperties.getProperty("RELEASE_KEY_PASSWORD") ?: ""
             enableV1Signing = true
             enableV2Signing = true
         }
@@ -79,6 +79,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-messaging")
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)

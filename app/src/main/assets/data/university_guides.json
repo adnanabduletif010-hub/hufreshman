@@ -167,27 +167,7 @@
       "safetyAdvice": "ሰላማዊና ደስ የሚል ማህበረሰብ ያለበት ከተማ ነው።"
     }
   },
-  {
-    "id": "univ_hu",
-    "name": "Haramaya University",
-    "amharicName": "ሀረማያ ዩኒቨርሲቲ",
-    "location": "Haramaya, Oromia, Ethiopia",
-    "website": "https://www.haramaya.edu.et",
-    "telegram": "https://t.me/HaramayaUniversityOfficial",
-    "image": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&auto=format&fit=crop&q=80",
-    "description": "የግብርናና ሳይንስ ጥናት ፈርጥ፤ በሳምንት 5 ቀን ሥጋ በማቅረብ በካፌ ምግብ ቀዳሚ የሆነ አንጋፋ ተቋም።",
-    "details": {
-      "locationTransport": "ከሀረር 17 km፣ እንዲሁም ለድሬዳዋ ቅርብ በሆነ ርቀት ላይ በሐረማያ ከተማ ይገኛል።",
-      "weather": "ብርዳማ ነው (በተለይ ምሽት ላይ በጣም ይበርዳል፤ ሀረማያ ሞቃት ነው የሚባለውን አትስሙ፤ ወፍራም ልብስ መያዝ ያስፈልጋል፤ ልብስና ሸቀጥ ሀረማያ ላይ ርካሽ ስለሆነ መሸመት ይቻላል)።",
-      "campusesAndFields": "አንድ ትልቅ ግቢ ሆኖ 3 የተያያዙ Sub-ግቢዎች አሉት (ሀረር ከተማም ሌላ ግቢ አለው)፡\n• Main Campus፡ All Social, Computer Science, Business & Economics, Natural Computational Science, Law, Agriculture (ታዋቂው የእርሻ ፋኩልቲ)።\n• Gandajay (Techno Campus)፡ Engineering above 2nd year, Food Science።\n• Station፡ Fresh Engineering, Veterinary Medicine።\n• Hareri (ሀረር ከተማ)፡ Medicine, Health, Pharmacy።",
-      "cafeFood": "በኢትዮጵያ ዩኒቨርሲቲዎች መካከል ቀዳሚው ነው! በሳምንት 5 ጊዜ ሥጋ ያለው ብቸኛው ግቢ ነው፤ የካፌ ምግብ አያሳስብም! ምሳ 5 ቀን Therefore (ሥጋ)፣ 1 ቀን ፓስታ፣ 1 ቀን መኮረኒ፤ ቁርስ ሳንድዊች፣ ማርማላታ፣ ዳቦ በሥጋ፣ ፍርፍር በሩዝ።",
-      "outsideFood": "የተማሪዎች ካፌ ጥራት ያለው ስለሆነ አብዛኛው ተማሪ ካፌ ይመገባል፤ ከግቢ ውጪም በባቴና በሐረማያ ከተማ የተለያዩ ጥሩ ምግብ ቤቶች አሉ።",
-      "dormAndLockers": "ዶርሞች ምቹ ናቸው።",
-      "utilities": "የውሃ ችግር የለም (ቢጠፋም ካፌ አይጠፋም፣ ለሴቶች በብሎክ ውሃ አለ)፤ መብራት በፍጹም አይጠፋም፤ Wi-Fi ጥሩ ነው።",
-      "sanitation": "ጥሩ የሚባል ሽንት ቤት አለው አያጨናንቅም።",
-      "safetyAdvice": "⚠️ ጫት በግቢው ሕግ በጥብቅ ክልክል ነው፤ ፍሬሽ ተማሪዎች ከጫት እንዲርቁ ይመከራል። ብሔርተኝነት ፍጹም አይፈቀድም፤ የሀረር ልጆች አፍቃሪና ሰላማዊ ናቸው።"
-    }
-  },
+
   {
     "id": "univ_wu",
     "name": "Wollo University",

@@ -38,6 +38,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _userProfile = MutableStateFlow(repository.getUserProfile())
     val userProfile: StateFlow<UserProfile> = _userProfile.asStateFlow()
 
+    val paymentConfig: StateFlow<PaymentConfig> = repository.paymentConfig
+
     private val _memberRegistrations = MutableStateFlow<List<MemberRegistration>>(emptyList())
     val memberRegistrations: StateFlow<List<MemberRegistration>> = _memberRegistrations.asStateFlow()
 
@@ -175,13 +177,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         activeSubject,
         activeExamType
     ) { all, sub, type ->
-        if (sub == null || type == null) {
+        if (sub == null) {
             emptyList()
         } else {
+            val isCoc = sub.name.contains("COC", ignoreCase = true)
             val matching = all.filter { q ->
                 q.originalUniversity == null &&           // hide sourced questions from students
                 q.course.contains(sub.name, ignoreCase = true) &&
-                q.category.contains(type, ignoreCase = true)
+                (isCoc || (type != null && q.category.contains(type, ignoreCase = true)))
             }.map { it.year }.distinct()
             if (matching.isNotEmpty()) matching.sortedDescending()
             else listOf("2024 Exam", "2023 Exam", "2022 Exam")
@@ -198,8 +201,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     ) { all, (sub, examType, year), univ, query ->
         all.filter { q ->
             val isStudentVisible = q.originalUniversity == null  // hide sourced questions
+            val isCoc = sub?.name?.contains("COC", ignoreCase = true) == true
             val matchSub = sub == null || q.course.contains(sub.name, ignoreCase = true)
-            val matchType = examType == null || q.category.contains(examType, ignoreCase = true)
+            val matchType = isCoc || examType == null || q.category.contains(examType, ignoreCase = true)
             val matchYear = year == null || q.year.contains(year, ignoreCase = true)
             val matchUniv = univ == null || q.university.contains(univ, ignoreCase = true)
             val matchQuery = query.isBlank() ||
@@ -218,7 +222,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun selectSubject(subject: SubjectCategory) {
         activeSubject.value = subject
-        activeExamType.value = null
+        if (subject.name.contains("COC", ignoreCase = true)) {
+            activeExamType.value = "COC Exam"
+        } else {
+            activeExamType.value = null
+        }
         activeYear.value = null
     }
 
@@ -238,7 +246,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 true
             }
             activeExamType.value != null -> {
-                activeExamType.value = null
+                val isCoc = activeSubject.value?.name?.contains("COC", ignoreCase = true) == true
+                if (isCoc) {
+                    activeExamType.value = null
+                    activeSubject.value = null
+                } else {
+                    activeExamType.value = null
+                }
                 true
             }
             activeSubject.value != null -> {
@@ -276,6 +290,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             _userProfile.value = repository.getUserProfile()
             _memberRegistrations.value = repository.loadMemberRegistrations()
             observeCurrentUserApproval(phoneNumber)
+            if (screenshotUrl.isNotBlank() || paymentMethod.isNotBlank()) {
+                val student = if (fullName.isNotBlank()) fullName else "Student"
+                val method = if (paymentMethod.isNotBlank()) paymentMethod else "Payment"
+                repository.sendAdminVerificationNotification(student, method)
+            }
         }
     }
 
@@ -288,6 +307,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             if (phone.isNotBlank()) {
                 observeCurrentUserApproval(phone)
             }
+            val student = _userProfile.value.name.ifBlank { "Student ($phone)" }
+            val method = if (paymentMethod.isNotBlank()) paymentMethod else "Screenshot Verification"
+            repository.sendAdminVerificationNotification(student, method)
         }
     }
 
@@ -571,6 +593,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             // Only increment the daily counter for non-admin users
             if (!isAdmin) repository.incrementUserPostCount()
             _communityPosts.value = repository.getCachedCommunityPosts()
+
+            // Send push notification to all users only when admin posts
+            if (isAdmin) {
+                val preview = content.take(120).let { if (content.length > 120) "$it…" else it }
+                repository.sendAdminPostNotification(
+                    title = "📢 New Post from HU Freshman",
+                    body = preview
+                )
+            }
         }
     }
 
@@ -676,6 +707,23 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             } else {
                 onResult(false, "Failed to update passcode. Check your connection.")
             }
+        }
+    }
+
+    fun updatePaymentConfig(config: PaymentConfig, onResult: (Boolean, String) -> Unit) {
+        viewModelScope.launch {
+            val success = repository.updatePaymentConfigInFirebase(config)
+            if (success) {
+                onResult(true, "Payment settings updated in Firebase!")
+            } else {
+                onResult(false, "Failed to update payment settings. Check connection.")
+            }
+        }
+    }
+
+    fun refreshPaymentConfig() {
+        viewModelScope.launch {
+            repository.fetchPaymentConfigOnce()
         }
     }
 

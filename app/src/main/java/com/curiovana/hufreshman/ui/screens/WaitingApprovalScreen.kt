@@ -157,7 +157,7 @@ fun WaitingApprovalScreen(
                 InfoRow(label = "University", value = userProfile.university)
                 InfoRow(label = "Academic Year", value = userProfile.academicYear)
                 InfoRow(label = "Phone Number", value = userProfile.phoneNumber.ifBlank { "Not provided" })
-                InfoRow(label = "የተላከበት መንገድ (Channel)", value = userProfile.paymentMethod.ifBlank { "Telebirr" })
+                InfoRow(label = "የተላከበት መንገድ (Channel)", value = userProfile.paymentMethod.ifBlank { "Direct Transfer" })
 
                 Spacer(modifier = Modifier.height(6.dp))
 

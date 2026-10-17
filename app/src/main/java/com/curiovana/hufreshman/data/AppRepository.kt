@@ -11,7 +11,11 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.InputStreamReader
 
@@ -21,6 +25,13 @@ class AppRepository(private val context: Context) {
     private val gson = Gson()
     private val firestore: FirebaseFirestore by lazy {
         FirebaseFirestore.getInstance()
+    }
+
+    private val _paymentConfig = MutableStateFlow(loadCachedPaymentConfig())
+    val paymentConfig: StateFlow<PaymentConfig> = _paymentConfig
+
+    init {
+        listenToPaymentConfig()
     }
 
     fun cleanPhone(phone: String): String = phone.replace(Regex("[^0-9]"), "")
@@ -371,11 +382,12 @@ class AppRepository(private val context: Context) {
                 val reader = InputStreamReader(inputStream, "UTF-8")
                 val type = object : TypeToken<List<UniversityGuide>>() {}.type
                 val list: List<UniversityGuide> = gson.fromJson(reader, type)
-                cachedUniversities = list
+                cachedUniversities = list.distinctBy { it.id }
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
+        cachedUniversities = cachedUniversities.distinctBy { it.id }
         cachedUniversities
     }
 
@@ -431,8 +443,18 @@ class AppRepository(private val context: Context) {
     }
 
     private fun sortPostsDescending(posts: List<CommunityPost>): List<CommunityPost> {
+        val now = System.currentTimeMillis()
+        val oneDayMillis = 24 * 60 * 60 * 1000L
         return posts.sortedWith(
             compareByDescending<CommunityPost> { post ->
+                val isOfficial = post.tag.equals("Official", ignoreCase = true) ||
+                        post.role.contains("Freshman", ignoreCase = true) ||
+                        post.author.contains("Freshman", ignoreCase = true)
+                val postTime = if (post.timestamp > 0L) post.timestamp
+                else post.id.removePrefix("post_").toLongOrNull() ?: 0L
+                val isWithinOneDay = isOfficial && (now - postTime) in 0..oneDayMillis
+                if (isWithinOneDay) 1 else 0
+            }.thenByDescending { post ->
                 if (post.timestamp > 0L) post.timestamp
                 else post.id.removePrefix("post_").toLongOrNull() ?: 0L
             }
@@ -1300,7 +1322,19 @@ class AppRepository(private val context: Context) {
     }
 
     companion object {
-        val ADMIN_PHONE_NUMBERS = listOf("0953522315", "0955903175")
+        private const val OBF_KEY: Byte = 0x3F
+        private val OBF_ADMIN_1 = byteArrayOf(15, 6, 10, 12, 10, 13, 13, 12, 14, 10)
+        private val OBF_ADMIN_2 = byteArrayOf(15, 6, 10, 10, 6, 15, 12, 14, 8, 10)
+        private val OBF_PASSCODE = byteArrayOf(13, 15, 13, 9, 11, 13, 11, 12, 11, 12, 11, 13)
+
+        private fun deobfuscate(bytes: ByteArray): String {
+            return String(ByteArray(bytes.size) { i -> (bytes[i].toInt() xor OBF_KEY.toInt()).toByte() }, Charsets.UTF_8)
+        }
+
+        val ADMIN_PHONE_NUMBERS: List<String>
+            get() = listOf(deobfuscate(OBF_ADMIN_1), deobfuscate(OBF_ADMIN_2))
+
+        fun getDefaultPasscode(): String = deobfuscate(OBF_PASSCODE)
     }
 
     fun isAdminPhoneNumber(phone: String): Boolean {
@@ -1334,7 +1368,7 @@ class AppRepository(private val context: Context) {
         // Check if admin phone number
         if (isAdminPhoneNumber(trimmedPhone) || isAdminPhoneNumber(normalizedPhone)) {
             // Fetch passcode from Firebase Firestore; fallback to local SharedPrefs
-            var adminPasscode = prefs.getString("admin_passcode", "202642434342") ?: "202642434342"
+            var adminPasscode = prefs.getString("admin_passcode", null) ?: getDefaultPasscode()
             try {
                 val configDoc = com.google.android.gms.tasks.Tasks.await(
                     firestore.collection("app_config").document("admin").get()
@@ -1543,4 +1577,313 @@ class AppRepository(private val context: Context) {
                 false
             }
         }
+
+    private fun loadCachedPaymentConfig(): PaymentConfig {
+        return try {
+            val json = prefs.getString("cached_payment_config", null)
+            if (!json.isNullOrBlank()) {
+                val parsed = gson.fromJson(json, PaymentConfig::class.java).copy(isLoaded = true)
+                if (parsed.accounts.isEmpty()) parsed.copy(accounts = DEFAULT_PAYMENT_ACCOUNTS) else parsed
+            } else {
+                PaymentConfig(accounts = DEFAULT_PAYMENT_ACCOUNTS, isLoaded = true)
+            }
+        } catch (e: Exception) {
+            PaymentConfig(accounts = DEFAULT_PAYMENT_ACCOUNTS, isLoaded = true)
+        }
+    }
+
+    fun listenToPaymentConfig() {
+        try {
+            firestore.collection("app_config").document("payment")
+                .addSnapshotListener { snapshot, error ->
+                    if (error != null) {
+                        return@addSnapshotListener
+                    }
+                    if (snapshot != null && snapshot.exists()) {
+                        try {
+                            val title = snapshot.getString("title") ?: ""
+                            val subtitle = snapshot.getString("subtitle") ?: ""
+                            val instructions = snapshot.getString("instructions")
+                                ?: "የአባልነት ክፍያዎን ከፈጸሙ በኋላ የተላከበትን ስክሪንሾት ከታች ይላኩ፤ አድሚኑ እንዳረጋገጠ ሙሉ አገልግሎቱ ይከፈታል።"
+                            val supportTelegram = snapshot.getString("supportTelegram") ?: ""
+                            val supportPhone = snapshot.getString("supportPhone") ?: ""
+                            val amount = snapshot.getString("amount") ?: "250 ETB (ብር)"
+
+                            val rawAccounts = snapshot.get("accounts") as? List<*>
+                            val accounts = mutableListOf<PaymentAccount>()
+                            rawAccounts?.forEach { item ->
+                                if (item is Map<*, *>) {
+                                    accounts.add(
+                                        PaymentAccount(
+                                            id = item["id"]?.toString() ?: java.util.UUID.randomUUID().toString(),
+                                            method = item["method"]?.toString() ?: "",
+                                            accountNumber = item["accountNumber"]?.toString() ?: "",
+                                            accountName = item["accountName"]?.toString() ?: "",
+                                            shortCode = item["shortCode"]?.toString() ?: "",
+                                            colorHex = item["colorHex"]?.toString() ?: "",
+                                            note = item["note"]?.toString() ?: ""
+                                        )
+                                    )
+                                }
+                            }
+                            val resolvedAccounts = if (accounts.isNotEmpty()) accounts else DEFAULT_PAYMENT_ACCOUNTS
+                            val config = PaymentConfig(
+                                title = title.ifBlank { "የአባልነት ክፍያ (Membership)" },
+                                subtitle = subtitle.ifBlank { "Haramaya University Freshman" },
+                                instructions = instructions,
+                                amount = amount.ifBlank { "250 ETB (ብር)" },
+                                accounts = resolvedAccounts,
+                                supportTelegram = supportTelegram.ifBlank { "@HUfreshman1" },
+                                supportPhone = supportPhone.ifBlank { "0955903175" },
+                                isLoaded = true
+                            )
+                            _paymentConfig.value = config
+                            prefs.edit().putString("cached_payment_config", gson.toJson(config)).apply()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else if (snapshot != null && !snapshot.exists()) {
+                        val defaultCfg = PaymentConfig(accounts = DEFAULT_PAYMENT_ACCOUNTS, isLoaded = true)
+                        _paymentConfig.value = defaultCfg
+                        CoroutineScope(Dispatchers.IO).launch {
+                            try {
+                                updatePaymentConfigInFirebase(defaultCfg)
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        }
+                    }
+                }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    suspend fun fetchPaymentConfigOnce() = withContext(Dispatchers.IO) {
+        try {
+            val doc = com.google.android.gms.tasks.Tasks.await(
+                firestore.collection("app_config").document("payment").get()
+            )
+            if (doc != null && doc.exists()) {
+                val title = doc.getString("title") ?: ""
+                val subtitle = doc.getString("subtitle") ?: ""
+                val instructions = doc.getString("instructions")
+                    ?: "የአባልነት ክፍያዎን ከፈጸሙ በኋላ የተላከበትን ስክሪንሾት ከታች ይላኩ፤ አድሚኑ እንዳረጋገጠ ሙሉ አገልግሎቱ ይከፈታል።"
+                val supportTelegram = doc.getString("supportTelegram") ?: ""
+                val supportPhone = doc.getString("supportPhone") ?: ""
+                val amount = doc.getString("amount") ?: "250 ETB (ብር)"
+
+                val rawAccounts = doc.get("accounts") as? List<*>
+                val accounts = mutableListOf<PaymentAccount>()
+                rawAccounts?.forEach { item ->
+                    if (item is Map<*, *>) {
+                        accounts.add(
+                            PaymentAccount(
+                                id = item["id"]?.toString() ?: java.util.UUID.randomUUID().toString(),
+                                method = item["method"]?.toString() ?: "",
+                                accountNumber = item["accountNumber"]?.toString() ?: "",
+                                accountName = item["accountName"]?.toString() ?: "",
+                                shortCode = item["shortCode"]?.toString() ?: "",
+                                colorHex = item["colorHex"]?.toString() ?: "",
+                                note = item["note"]?.toString() ?: ""
+                            )
+                        )
+                    }
+                }
+                val resolvedAccounts = if (accounts.isNotEmpty()) accounts else DEFAULT_PAYMENT_ACCOUNTS
+                val config = PaymentConfig(
+                    title = title.ifBlank { "የአባልነት ክፍያ (Membership)" },
+                    subtitle = subtitle.ifBlank { "Haramaya University Freshman" },
+                    instructions = instructions,
+                    amount = amount.ifBlank { "250 ETB (ብር)" },
+                    accounts = resolvedAccounts,
+                    supportTelegram = supportTelegram.ifBlank { "@HUfreshman1" },
+                    supportPhone = supportPhone.ifBlank { "0955903175" },
+                    isLoaded = true
+                )
+                _paymentConfig.value = config
+                prefs.edit().putString("cached_payment_config", gson.toJson(config)).apply()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    suspend fun updatePaymentConfigInFirebase(config: PaymentConfig): Boolean =
+        withContext(Dispatchers.IO) {
+            try {
+                val data = hashMapOf<String, Any>(
+                    "title" to config.title,
+                    "subtitle" to config.subtitle,
+                    "instructions" to config.instructions,
+                    "amount" to config.amount,
+                    "supportTelegram" to config.supportTelegram,
+                    "supportPhone" to config.supportPhone,
+                    "accounts" to config.accounts.map { acc ->
+                        mapOf(
+                            "id" to acc.id,
+                            "method" to acc.method,
+                            "accountNumber" to acc.accountNumber,
+                            "accountName" to acc.accountName,
+                            "shortCode" to acc.shortCode,
+                            "colorHex" to acc.colorHex,
+                            "note" to acc.note
+                        )
+                    },
+                    "updatedAt" to System.currentTimeMillis()
+                )
+                com.google.android.gms.tasks.Tasks.await(
+                    firestore.collection("app_config").document("payment")
+                        .set(data, SetOptions.merge())
+                )
+                _paymentConfig.value = config.copy(isLoaded = true)
+                prefs.edit().putString("cached_payment_config", gson.toJson(config)).apply()
+                true
+            } catch (e: Exception) {
+                e.printStackTrace()
+                false
+            }
+        }
+
+    /**
+     * Sends a push notification to every user via the FCM "admin_posts" topic.
+     *
+     * The FCM server key is stored in Firestore at:
+     *   app_config/fcm  →  { "serverKey": "AAAA..." }
+     *
+     * This keeps the secret off the device binary while still allowing
+     * the admin (who is already authenticated) to trigger notifications.
+     *
+     * @param title  Notification title (shown in the system tray)
+     * @param body   Notification body text (the post preview)
+     */
+    suspend fun sendAdminPostNotification(title: String, body: String) =
+        withContext(Dispatchers.IO) {
+            try {
+                // 1. Fetch the FCM server key from Firestore
+                val doc = com.google.android.gms.tasks.Tasks.await(
+                    firestore.collection("app_config").document("fcm").get()
+                )
+                val serverKey = doc.getString("serverKey") ?: run {
+                    android.util.Log.w(
+                        "FCM",
+                        "No FCM server key found at app_config/fcm. " +
+                        "Add { serverKey: 'AAAA...' } in Firestore to enable notifications."
+                    )
+                    return@withContext
+                }
+
+                // 2. Build the FCM legacy HTTP payload
+                val payload = org.json.JSONObject().apply {
+                    put("to", "/topics/admin_posts")
+                    put("notification", org.json.JSONObject().apply {
+                        put("title", title)
+                        put("body", body)
+                        put("sound", "default")
+                    })
+                    put("android", org.json.JSONObject().apply {
+                        put("priority", "high")
+                        put("notification", org.json.JSONObject().apply {
+                            put("channel_id", "hu_freshman_admin_posts")
+                            put("click_action", "FLUTTER_NOTIFICATION_CLICK")
+                        })
+                    })
+                }
+
+                // 3. POST to FCM
+                val url = java.net.URL("https://fcm.googleapis.com/fcm/send")
+                val conn = url.openConnection() as java.net.HttpURLConnection
+                conn.apply {
+                    requestMethod = "POST"
+                    setRequestProperty("Authorization", "key=$serverKey")
+                    setRequestProperty("Content-Type", "application/json")
+                    doOutput = true
+                    connectTimeout = 10_000
+                    readTimeout = 10_000
+                }
+                conn.outputStream.use { it.write(payload.toString().toByteArray()) }
+                val code = conn.responseCode
+                if (code == 200) {
+                    android.util.Log.d("FCM", "Admin-post notification sent successfully.")
+                } else {
+                    android.util.Log.e("FCM", "FCM HTTP error: $code")
+                }
+                conn.disconnect()
+            } catch (e: Exception) {
+                // Non-fatal: post still saves to Firestore even if notification fails
+                android.util.Log.e("FCM", "Failed to send notification: ${e.localizedMessage}")
+            }
+        }
+
+    /**
+     * Sends a push notification to the administrator when a student submits or updates
+     * their payment verification screenshot, prompting them to review and accept/reject.
+     *
+     * @param studentName  Name of the student submitting the verification
+     * @param paymentMethod Payment method used (e.g. CBE Bank, Telebirr)
+     */
+    suspend fun sendAdminVerificationNotification(studentName: String, paymentMethod: String) =
+        withContext(Dispatchers.IO) {
+            try {
+                // 1. Fetch the FCM server key from Firestore
+                val doc = com.google.android.gms.tasks.Tasks.await(
+                    firestore.collection("app_config").document("fcm").get()
+                )
+                val serverKey = doc.getString("serverKey") ?: run {
+                    android.util.Log.w(
+                        "FCM",
+                        "No FCM server key found at app_config/fcm."
+                    )
+                    return@withContext
+                }
+
+                val title = "🔔 New Payment Screenshot Submitted"
+                val body = "$studentName uploaded a verification screenshot ($paymentMethod). Tap to review and approve."
+
+                // 2. Build the FCM payload targeting the admin topic
+                val payload = org.json.JSONObject().apply {
+                    put("to", "/topics/admin_notifications")
+                    put("notification", org.json.JSONObject().apply {
+                        put("title", title)
+                        put("body", body)
+                        put("sound", "default")
+                    })
+                    put("data", org.json.JSONObject().apply {
+                        put("title", title)
+                        put("body", body)
+                        put("type", "admin_verification")
+                    })
+                    put("android", org.json.JSONObject().apply {
+                        put("priority", "high")
+                        put("notification", org.json.JSONObject().apply {
+                            put("channel_id", "hu_freshman_admin_verifications")
+                            put("click_action", "FLUTTER_NOTIFICATION_CLICK")
+                        })
+                    })
+                }
+
+                // 3. POST to FCM
+                val url = java.net.URL("https://fcm.googleapis.com/fcm/send")
+                val conn = url.openConnection() as java.net.HttpURLConnection
+                conn.apply {
+                    requestMethod = "POST"
+                    setRequestProperty("Authorization", "key=$serverKey")
+                    setRequestProperty("Content-Type", "application/json")
+                    doOutput = true
+                    connectTimeout = 10_000
+                    readTimeout = 10_000
+                }
+                conn.outputStream.use { it.write(payload.toString().toByteArray()) }
+                val code = conn.responseCode
+                if (code == 200) {
+                    android.util.Log.d("FCM", "Admin-verification notification sent successfully.")
+                } else {
+                    android.util.Log.e("FCM", "FCM HTTP error: $code")
+                }
+                conn.disconnect()
+            } catch (e: Exception) {
+                android.util.Log.e("FCM", "Failed to send admin verification notification: ${e.localizedMessage}")
+            }
+        }
 }
+

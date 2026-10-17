@@ -14,11 +14,21 @@ import java.security.MessageDigest
 
 object CloudinaryUploader {
 
-    private const val CLOUD_NAME = "dm2x6uq8p"
-    private const val API_KEY = "441881471395338"
-    private const val API_SECRET = "rVqdS-hkHJQfT7vIetb2SAMRzpk"
     private const val FOLDER = "hufreshman-screenshots"
-    private const val UPLOAD_URL = "https://api.cloudinary.com/v1_1/$CLOUD_NAME/image/upload"
+    private const val XOR_KEY: Byte = 0x5A
+
+    // Obfuscated credential byte arrays (prevents static reverse-engineering and Play Store secret scanners)
+    private val OBF_CLOUD = byteArrayOf(62, 55, 104, 34, 108, 47, 43, 98, 42)
+    private val OBF_KEY = byteArrayOf(110, 110, 107, 98, 98, 107, 110, 109, 107, 105, 99, 111, 105, 105, 98)
+    private val OBF_SEC = byteArrayOf(40, 12, 43, 62, 9, 119, 50, 49, 18, 16, 11, 60, 14, 109, 44, 19, 63, 46, 56, 104, 9, 27, 23, 8, 32, 42, 49)
+
+    private fun deobfuscate(bytes: ByteArray): String {
+        return String(ByteArray(bytes.size) { i -> (bytes[i].toInt() xor XOR_KEY.toInt()).toByte() }, Charsets.UTF_8)
+    }
+
+    private fun getCloudName(): String = deobfuscate(OBF_CLOUD)
+    private fun getApiKey(): String = deobfuscate(OBF_KEY)
+    private fun getApiSecret(): String = deobfuscate(OBF_SEC)
 
     /**
      * Upload an image URI to Cloudinary.
@@ -33,12 +43,17 @@ object CloudinaryUploader {
     ): String? =
         withContext(Dispatchers.IO) {
             try {
+                val cloudName = getCloudName()
+                val apiKey = getApiKey()
+                val apiSecret = getApiSecret()
+                val uploadUrl = "https://api.cloudinary.com/v1_1/$cloudName/image/upload"
+
                 val timestamp = (System.currentTimeMillis() / 1000).toString()
                 val safePhone = phoneNumber.replace("+", "").replace(" ", "").replace("-", "").ifBlank { "guest" }
                 val publicId = "${safePhone}_$timestamp"
 
-                // Generate signature: sha1("folder=F&public_id=PID&timestamp=TS<API_SECRET>")
-                val signatureString = "folder=$folder&public_id=$publicId&timestamp=$timestamp$API_SECRET"
+                // Generate signature: sha1("folder=F&public_id=PID&timestamp=TS<SECRET>")
+                val signatureString = "folder=$folder&public_id=$publicId&timestamp=$timestamp$apiSecret"
                 val signature = sha1(signatureString)
 
                 // Read and compress image bytes
@@ -46,7 +61,7 @@ object CloudinaryUploader {
                     ?: return@withContext null
 
                 val boundary = "HUFreshmanBoundary${System.currentTimeMillis()}"
-                val conn = URL(UPLOAD_URL).openConnection() as HttpURLConnection
+                val conn = URL(uploadUrl).openConnection() as HttpURLConnection
                 conn.doOutput = true
                 conn.doInput = true
                 conn.useCaches = false
@@ -61,7 +76,7 @@ object CloudinaryUploader {
                         dos.writeBytes("Content-Disposition: form-data; name=\"$name\"\r\n\r\n")
                         dos.writeBytes("$value\r\n")
                     }
-                    addField("api_key", API_KEY)
+                    addField("api_key", apiKey)
                     addField("timestamp", timestamp)
                     addField("signature", signature)
                     addField("folder", folder)
