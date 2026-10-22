@@ -14,6 +14,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -79,12 +80,14 @@ fun AdminScreen(viewModel: MainViewModel) {
         val isSyncing by viewModel.isSyncing.collectAsState()
         val syncStatusMessage by viewModel.syncStatusMessage.collectAsState()
         val sourcedQuestions by viewModel.sourcedQuestions.collectAsState()
-        val pendingRegistrations = registrations.filter { !it.isApproved }
+        val pendingReceipts = registrations.filter {
+            !it.isApproved && it.rejectionReason == null && (it.screenshotUrl.isNotBlank() || it.transactionId.isNotBlank())
+        }
         var selectedAdminTab by remember { mutableIntStateOf(0) }
         var universityToEdit by remember { mutableStateOf<com.curiovana.hufreshman.data.UniversityGuide?>(null) }
         val adminTabs = listOf(
-            "Approvals (${pendingRegistrations.size})",
-            "All Users",
+            "📸 Receipts (${pendingReceipts.size})",
+            "👥 All Accounts (${registrations.size})",
             "Add Question",
             "Edit Universities",
             "Post Notice",
@@ -176,10 +179,10 @@ fun AdminScreen(viewModel: MainViewModel) {
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        StatCard(modifier = Modifier.weight(1f), title = "Pending", value = "${pendingRegistrations.size}", highlight = pendingRegistrations.isNotEmpty())
-                        StatCard(modifier = Modifier.weight(1f), title = "Members", value = "${registrations.filter { it.isApproved }.size}")
+                        StatCard(modifier = Modifier.weight(1f), title = "Pending Proofs", value = "${pendingReceipts.size}", highlight = pendingReceipts.isNotEmpty())
+                        StatCard(modifier = Modifier.weight(1f), title = "Approved", value = "${registrations.filter { it.isApproved }.size}")
+                        StatCard(modifier = Modifier.weight(1f), title = "All Accounts", value = "${registrations.size}")
                         StatCard(modifier = Modifier.weight(1f), title = "Questions", value = "${allQuestions.size}")
-                        StatCard(modifier = Modifier.weight(1f), title = "Reports", value = "${reports.size}", highlight = reports.isNotEmpty())
                     }
                 }
             }
@@ -241,7 +244,11 @@ fun AdminScreen(viewModel: MainViewModel) {
                     onReject = { id, reason -> viewModel.rejectMemberRegistration(id, reason) },
                     onDeleteProof = { viewModel.deleteMemberRegistration(it) }
                 )
-                1 -> AllUsersTab(registrations = registrations)
+                1 -> AllUsersTab(
+                    registrations = registrations,
+                    onApprove = { viewModel.approveMemberRegistration(it) },
+                    onReject = { id, reason -> viewModel.rejectMemberRegistration(id, reason) }
+                )
                 2 -> AddQuestionTab(viewModel = viewModel)
                 3 -> ManageUniversitiesTab(
                     universities = universities,
@@ -294,19 +301,25 @@ fun StatCard(modifier: Modifier, title: String, value: String, highlight: Boolea
 // ── All Users Tab ────────────────────────────────────────────────────────────
 
 @Composable
-fun AllUsersTab(registrations: List<MemberRegistration>) {
+fun AllUsersTab(
+    registrations: List<MemberRegistration>,
+    onApprove: ((String) -> Unit)? = null,
+    onReject: ((String, String) -> Unit)? = null
+) {
     val context = LocalContext.current
     var searchQuery by remember { mutableStateOf("") }
     var selectedFilter by remember { mutableStateOf("All") }
 
-    val pending = registrations.filter { !it.isApproved && it.rejectionReason == null }
     val approved = registrations.filter { it.isApproved }
+    val withProof = registrations.filter { !it.isApproved && (it.screenshotUrl.isNotBlank() || it.transactionId.isNotBlank()) }
+    val noProof = registrations.filter { !it.isApproved && it.screenshotUrl.isBlank() && it.transactionId.isBlank() && it.rejectionReason == null }
     val rejected = registrations.filter { !it.isApproved && it.rejectionReason != null }
 
     val filteredList = remember(registrations, selectedFilter, searchQuery) {
         val base = when (selectedFilter) {
             "Approved" -> approved
-            "Pending" -> pending
+            "Receipt Sent" -> withProof
+            "No Payment" -> noProof
             "Rejected" -> rejected
             else -> registrations
         }
@@ -331,17 +344,21 @@ fun AllUsersTab(registrations: List<MemberRegistration>) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column {
-                Text("All Registered Users", fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
-                Text("${registrations.size} total • ${approved.size} approved • ${pending.size} pending", fontSize = 11.sp, color = Slate700)
+                Text("User Accounts Directory", fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
+                Text("${registrations.size} registered students • ${approved.size} approved • ${withProof.size} receipts pending", fontSize = 11.sp, color = Slate700)
             }
         }
 
-        // Filter chips
-        Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+        // Horizontal scrolling filter chips
+        Row(
+            modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
             listOf(
                 "All" to registrations.size,
                 "Approved" to approved.size,
-                "Pending" to pending.size,
+                "Receipt Sent" to withProof.size,
+                "No Payment" to noProof.size,
                 "Rejected" to rejected.size
             ).forEach { (label, count) ->
                 FilterChip(
@@ -351,9 +368,10 @@ fun AllUsersTab(registrations: List<MemberRegistration>) {
                     colors = FilterChipDefaults.filterChipColors(
                         selectedContainerColor = when (label) {
                             "Approved" -> EmeraldGreen
-                            "Pending" -> AmberWarning
+                            "Receipt Sent" -> AmberWarning
+                            "No Payment" -> RoyalBlue
                             "Rejected" -> RoseRed
-                            else -> RoyalBlue
+                            else -> Slate900
                         },
                         selectedLabelColor = Color.White
                     )
@@ -402,7 +420,7 @@ fun AllUsersTab(registrations: List<MemberRegistration>) {
                         visible = visible,
                         enter = fadeIn(tween(250)) + slideInVertically(spring(Spring.DampingRatioMediumBouncy)) { it / 2 }
                     ) {
-                        UserCard(reg = reg, context = context)
+                        UserCard(reg = reg, context = context, onApprove = onApprove)
                     }
                 }
             }
@@ -411,16 +429,23 @@ fun AllUsersTab(registrations: List<MemberRegistration>) {
 }
 
 @Composable
-fun UserCard(reg: MemberRegistration, context: Context) {
+fun UserCard(
+    reg: MemberRegistration,
+    context: Context,
+    onApprove: ((String) -> Unit)? = null
+) {
+    val hasProof = reg.screenshotUrl.isNotBlank() || reg.transactionId.isNotBlank()
     val statusColor = when {
         reg.isApproved -> EmeraldGreen
         reg.rejectionReason != null -> RoseRed
-        else -> AmberWarning
+        hasProof -> AmberWarning
+        else -> RoyalBlue
     }
     val statusLabel = when {
         reg.isApproved -> "✓ APPROVED"
         reg.rejectionReason != null -> "✗ REJECTED"
-        else -> "⏳ PENDING"
+        hasProof -> "📸 RECEIPT SENT"
+        else -> "👤 ACCOUNT ONLY"
     }
 
     Card(
@@ -478,11 +503,39 @@ fun UserCard(reg: MemberRegistration, context: Context) {
                 }
                 Column(modifier = Modifier.weight(1f)) {
                     Text("Channel", fontSize = 10.sp, color = Slate700)
-                    Text(reg.paymentMethod.ifBlank { "—" }, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = RoyalBlue)
+                    Text(reg.paymentMethod.ifBlank { "None (Free)" }, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = RoyalBlue)
                 }
             }
 
-            if (reg.transactionId.isNotBlank()) {
+            if (reg.screenshotUrl.isNotBlank()) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Surface(
+                    shape = RoundedCornerShape(8.dp),
+                    color = AmberWarning.copy(alpha = 0.08f),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, AmberWarning.copy(alpha = 0.3f)),
+                    modifier = Modifier.fillMaxWidth().clickable {
+                        try {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(reg.screenshotUrl))
+                            context.startActivity(intent)
+                        } catch (e: Exception) {
+                            Toast.makeText(context, "Could not open screenshot link", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(Icons.Default.Image, contentDescription = null, tint = AmberWarning, modifier = Modifier.size(16.dp))
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text("Payment Screenshot Attached", fontSize = 11.sp, fontWeight = FontWeight.SemiBold, color = Slate900)
+                        }
+                        Text("View ↗", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = AmberWarning)
+                    }
+                }
+            } else if (reg.transactionId.isNotBlank()) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Surface(
                     shape = RoundedCornerShape(8.dp),
@@ -534,8 +587,31 @@ fun UserCard(reg: MemberRegistration, context: Context) {
                 }
             }
 
-            Spacer(modifier = Modifier.height(6.dp))
-            Text("Registered: ${reg.date}", fontSize = 10.sp, color = Slate700)
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text("Registered: ${reg.date}", fontSize = 10.sp, color = Slate700)
+
+                if (!reg.isApproved && onApprove != null) {
+                    Button(
+                        onClick = {
+                            onApprove(reg.id)
+                            Toast.makeText(context, "✓ Approved ${reg.fullName}!", Toast.LENGTH_SHORT).show()
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreen),
+                        shape = RoundedCornerShape(8.dp),
+                        contentPadding = PaddingValues(horizontal = 10.dp, vertical = 2.dp),
+                        modifier = Modifier.height(30.dp)
+                    ) {
+                        Icon(Icons.Default.CheckCircle, contentDescription = null, modifier = Modifier.size(12.dp))
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text("Approve Member", fontSize = 10.5.sp, fontWeight = FontWeight.Bold)
+                    }
+                }
+            }
         }
     }
 }
@@ -1134,14 +1210,18 @@ fun MemberApprovalsTab(
     var rejectingReg by remember { mutableStateOf<MemberRegistration?>(null) }
     var rejectReason by remember { mutableStateOf("Screenshot / confirmation could not be verified.") }
 
-    val pending = registrations.filter { !it.isApproved && it.rejectionReason == null }
-    val approved = registrations.filter { it.isApproved }
+    // Strictly filter users who submitted a screenshot or transaction ID
+    val proofSubmissions = remember(registrations) {
+        registrations.filter { it.screenshotUrl.isNotBlank() || it.transactionId.isNotBlank() }
+    }
+    val pending = proofSubmissions.filter { !it.isApproved && it.rejectionReason == null }
+    val approved = proofSubmissions.filter { it.isApproved }
 
-    val filteredList = remember(registrations, selectedFilter, searchQuery) {
+    val filteredList = remember(proofSubmissions, selectedFilter, searchQuery) {
         val base = when (selectedFilter) {
             "Pending" -> pending
             "Approved" -> approved
-            else -> registrations
+            else -> proofSubmissions
         }
         if (searchQuery.isBlank()) base
         else base.filter {
@@ -1163,8 +1243,8 @@ fun MemberApprovalsTab(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text("Member Verification Approvals", fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
-                Text("Verify member screenshots & verification details", fontSize = 11.sp, color = Slate700)
+                Text("Payment & Screenshot Approvals", fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
+                Text("Review uploaded Telebirr/CBE receipts and unlock accounts", fontSize = 11.sp, color = Slate700)
             }
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 FilledTonalButton(
@@ -1194,7 +1274,7 @@ fun MemberApprovalsTab(
         }
 
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            listOf("Pending (${pending.size})", "All (${registrations.size})", "Approved (${approved.size})").forEach { label ->
+            listOf("Pending (${pending.size})", "Approved (${approved.size})", "All Receipts (${proofSubmissions.size})").forEach { label ->
                 val key = when {
                     label.startsWith("Pending") -> "Pending"
                     label.startsWith("Approved") -> "Approved"

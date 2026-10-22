@@ -24,8 +24,8 @@ android {
         applicationId = "com.curiovana.hufreshman" 
         minSdk = 24
         targetSdk = 37
-        versionCode = 20
-        versionName = "3.9"
+        versionCode = 23
+        versionName = "4.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

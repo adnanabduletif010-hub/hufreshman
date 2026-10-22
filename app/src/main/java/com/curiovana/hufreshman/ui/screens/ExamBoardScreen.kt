@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items as gridItems
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -307,7 +308,12 @@ fun ExamBoardScreen(
                 }
             },
             text = {
-                Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
+                ) {
                     Text(
                         text = "$percentage%",
                         fontSize = 44.sp,
@@ -642,6 +648,7 @@ fun ExamTypeChoiceView(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
@@ -904,6 +911,7 @@ fun ExamQuestionsListView(
     bookmarks: Set<String>,
     onReport: (ExamQuestion) -> Unit
 ) {
+    val screenDimensions = rememberScreenDimensions()
     // Dynamic timer: 2 minutes (120 seconds) allocated per question for the whole exam
     val examDurationSeconds = maxOf(1, questions.size) * 120
     val examDurationMinutes = examDurationSeconds / 60
@@ -911,7 +919,7 @@ fun ExamQuestionsListView(
     val userProfile by viewModel.userProfile.collectAsState()
 
     Column(modifier = Modifier.fillMaxSize()) {
-        // Mode & Timer Bar
+        // Mode & Timer Bar: Guaranteed responsive layout on all screen sizes
         Surface(
             color = if (practiceMode == ExamPracticeMode.TIMED) RoyalBlueDark else MaterialTheme.colorScheme.surface,
             shadowElevation = 2.dp
@@ -919,15 +927,30 @@ fun ExamQuestionsListView(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                    .padding(horizontal = if (screenDimensions.isCompactWidth) 10.dp else 14.dp, vertical = 6.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                // Mode selector chips: weight(1f, fill = false) + horizontalScroll
+                // allows the chips to scroll gracefully on narrow screens without squeezing the timer.
+                Row(
+                    modifier = Modifier
+                        .weight(1f, fill = false)
+                        .horizontalScroll(rememberScrollState()),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     FilterChip(
                         selected = practiceMode == ExamPracticeMode.PRACTICE,
                         onClick = { viewModel.resetExam() },
-                        label = { Text("Practice Mode (No Timer)", fontSize = 12.sp, fontWeight = FontWeight.SemiBold) },
+                        label = {
+                            Text(
+                                text = if (screenDimensions.isCompactWidth) "Practice" else "Practice Mode",
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                maxLines = 1,
+                                softWrap = false
+                            )
+                        },
                         leadingIcon = { Icon(Icons.Default.MenuBook, contentDescription = null, modifier = Modifier.size(16.dp)) },
                         colors = FilterChipDefaults.filterChipColors(
                             selectedContainerColor = RoyalBlue,
@@ -938,7 +961,15 @@ fun ExamQuestionsListView(
                     FilterChip(
                         selected = practiceMode == ExamPracticeMode.TIMED,
                         onClick = { viewModel.startTimedExam(examDurationSeconds) },
-                        label = { Text("Timed Exam ($examDurationMinutes min)", fontSize = 12.sp, fontWeight = FontWeight.SemiBold) },
+                        label = {
+                            Text(
+                                text = if (screenDimensions.isCompactWidth) "Timed ($examDurationMinutes m)" else "Timed Exam ($examDurationMinutes min)",
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                maxLines = 1,
+                                softWrap = false
+                            )
+                        },
                         leadingIcon = { Icon(Icons.Default.Timer, contentDescription = null, modifier = Modifier.size(16.dp)) },
                         colors = FilterChipDefaults.filterChipColors(
                             selectedContainerColor = ElectricIndigo,
@@ -952,22 +983,27 @@ fun ExamQuestionsListView(
                 if (practiceMode == ExamPracticeMode.TIMED) {
                     val minutes = timerSeconds / 60
                     val seconds = timerSeconds % 60
+                    Spacer(modifier = Modifier.width(8.dp))
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .background(
-                                if (examSubmitted) EmeraldGreen.copy(alpha = 0.25f) else Color.White.copy(alpha = 0.2f),
-                                RoundedCornerShape(16.dp)
+                                color = when {
+                                    examSubmitted -> EmeraldGreen.copy(alpha = 0.28f)
+                                    timerSeconds < 180 -> RoseRed.copy(alpha = 0.35f) // Warning highlight when < 3 min
+                                    else -> Color.White.copy(alpha = 0.22f)
+                                },
+                                shape = RoundedCornerShape(16.dp)
                             )
-                            .padding(horizontal = 10.dp, vertical = 4.dp)
+                            .padding(horizontal = 10.dp, vertical = 6.dp)
                     ) {
                         Icon(
-                            if (examSubmitted) Icons.Default.LockClock else Icons.Default.HourglassBottom,
+                            imageVector = if (examSubmitted) Icons.Default.LockClock else Icons.Default.HourglassBottom,
                             contentDescription = null,
                             tint = Color.White,
                             modifier = Modifier.size(16.dp)
                         )
-                        Spacer(modifier = Modifier.width(4.dp))
+                        Spacer(modifier = Modifier.width(5.dp))
                         Text(
                             text = if (examSubmitted) {
                                 "Held (${String.format("%02d:%02d", minutes, seconds)})"
@@ -975,8 +1011,10 @@ fun ExamQuestionsListView(
                                 String.format("%02d:%02d", minutes, seconds)
                             },
                             color = Color.White,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 12.sp
+                            fontWeight = FontWeight.ExtraBold,
+                            fontSize = 13.sp,
+                            maxLines = 1,
+                            softWrap = false
                         )
                     }
                 }
@@ -1253,7 +1291,12 @@ fun QuestionCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .weight(1f)
+                        .horizontalScroll(rememberScrollState())
+                ) {
                     // Course Badge
                     Box(
                         modifier = Modifier

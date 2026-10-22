@@ -21,36 +21,75 @@ val sampleNotes: List<ShortNote> = listOf(
         subjectId = "c1",
         subject = "General Physics",
         unit = "Unit 1",
-        title = "Physics & Measurement, Dimensions & Vectors",
+        title = "Preliminaries: Measurement, Uncertainty & Vectors",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Physics is an experimental science rooted in precise measurement. All physical quantities are divided into fundamental (base) quantities and derived quantities. Measurement involves uncertainty, governed by rules of significant figures and dimensional consistency.
+Physics is inherently a science of measurement dealing with matter, energy, and natural phenomena. This unit establishes the foundational language of physical inquiry: base and derived SI units, dimensional analysis, uncertainty estimation, significant figures, and the composition, resolution, and algebra of vectors.
 
 🔍 DETAILED BREAKDOWN
-1. Standards & SI Base Units:
-   • Length: Meter (m), defined by the speed of light in vacuum (c = 299,792,458 m/s).
-   • Mass: Kilogram (kg), defined via Planck's constant (h = 6.62607015 × 10⁻³⁴ J·s).
-   • Time: Second (s), based on Cesium-133 radiation oscillations.
-   • Electric Current: Ampere (A); Temperature: Kelvin (K); Amount of Substance: Mole (mol); Luminous Intensity: Candela (cd).
+1. Physical Quantities & The SI System:
+   • Basic Quantities: Cannot be defined in terms of other quantities. The 7 SI Base Units (1960):
+     - Length: meter (m) [L]
+     - Mass: kilogram (kg) [M]
+     - Time: second (s) [T]
+     - Temperature: kelvin (K) [θ]
+     - Electric Current: ampere (A) [I]
+     - Amount of Substance: mole (mol) [1 or N]
+     - Luminous Intensity: candela (cd) [J]
+   • Derived Quantities & Dimensions:
+     - Force (F): newton (N) = kg·m·s⁻² = kg·m/s² [MLT⁻²]
+     - Speed / Velocity (v): m/s = m·s⁻¹ [LT⁻¹]
+     - Pressure (P): pascal (Pa) = N/m² = kg·m⁻¹·s⁻² [ML⁻¹T⁻²]
+     - Work / Energy (E): joule (J) = N·m = kg·m²·s⁻² [ML²T⁻²]
+     - Power (P): watt (W) = J/s = kg·m²·s⁻³ [ML²T⁻³]
+   • Key Conversion Factors:
+     - Length: 1 in = 0.0254 m; 1 ft = 0.3048 m; 1 mi = 1609.34 m
+     - Mass: 1 lb = 0.4536 kg; 1 metric ton (t) = 1000 kg; 1 oz = 0.02835 kg
+     - Volume: 1 L = 0.001 m³ = 10⁻³ m³; 1 gallon = 0.00379 m³
+     - Temperature: T(K) = [T(°F) - 32] × (5/9) + 273.15; T(K) = T(°C) + 273.15
 
-2. Dimensional Analysis:
-   • Dimensions describe the physical nature of a quantity: [M] mass, [L] length, [T] time, [I] electric current, [θ] temperature.
-   • Common Dimensions: Velocity [v] = LT⁻¹; Acceleration [a] = LT⁻²; Force [F] = MLT⁻²; Work/Energy [W] = ML²T⁻²; Power [P] = ML²T⁻³; Pressure [P] = ML⁻¹T⁻²; Frequency [f] = T⁻¹.
-   • Principle of Dimensional Homogeneity: Terms on both sides of any valid physical equation MUST have identical dimensions. Arguments of transcendental functions (sin, exp, ln) must be dimensionless.
+2. Measurement Uncertainty & Errors:
+   • Systematic Errors: Caused by miscalibrated instruments or flawed setups; consistently bias readings in one direction. Eliminated by pre-calibration against standard reference.
+   • Random Errors: Unpredictable fluctuations around true mean due to experimental environment and scale reading limits.
+   • Estimating Reading Uncertainty (σ_x):
+     - Analog (Scale) Instruments: Half of smallest scale division: σ_x = (Smallest Increment) / 2 (e.g., standard ruler with 1 mm markings has σ_x = 0.5 mm = 0.05 cm).
+     - Digital Instruments: Equal to the smallest display division: σ_x = Smallest Increment.
+   • Measurement Reporting Format: x = x_best ± σ_x (only one uncertain digit reported).
 
-3. Vectors & Coordinate Systems:
-   • Scalar: Magnitude only with appropriate units (e.g., mass, time, temperature, work, electric potential).
-   • Vector: Both magnitude and direction, obeying parallelogram law (e.g., displacement, velocity, acceleration, force, electric field).
-   • Unit Vectors: Dimensionless vectors of unit length along axes: î (x-axis), ĵ (y-axis), k̂ (z-axis).
-   • Vector Resolution: For vector A at angle θ with x-axis: A_x = A cos θ, A_y = A sin θ, |A| = √(A_x² + A_y²), tan θ = A_y / A_x.
+3. Significant Figures (Digits) Rules:
+   • Non-zero digits: Always significant (e.g., 24.7 has 3).
+   • Zeros between non-zeros: Always significant (e.g., 1.0005 has 5).
+   • Leading zeros: Never significant; merely locate decimal point (e.g., 0.0005 has 1, 0.0062 cm has 2).
+   • Trailing zeros: Significant ONLY if a decimal point is present (e.g., 5.00 has 3, 4.0500 cm has 5; 300 is ambiguous, write 3.00 × 10² for 3 sig figs).
+   • Calculation Rules:
+     - Multiplication / Division: Final result retains same number of significant figures as factor with the FEWEST significant figures.
+     - Addition / Subtraction: Final result rounded to the FEWEST decimal places of any term in calculation.
 
-4. Vector Multiplication:
-   • Scalar (Dot) Product: A · B = |A||B| cos θ = A_x B_x + A_y B_y + A_z B_z. Commutative: A · B = B · A. If A ⊥ B, A · B = 0.
-   • Vector (Cross) Product: A × B = |A||B| sin θ n̂. Anti-commutative: A × B = -(B × A). If A ∥ B, A × B = 0. Evaluated via determinant with î, ĵ, k̂.
+4. Vectors: Composition & Resolution:
+   • Scalar vs Vector: Scalars have magnitude and unit only (mass, time, volume, speed). Vectors require magnitude, unit, and spatial direction (displacement, velocity, force, momentum).
+   • Resultant Vector (R): Combined net vector of two or more vectors.
+     - Head-to-Tail (Polygon) Method: Chain successive vectors tail-to-head; R connects first tail to final head.
+     - Parallelogram Law: R = √(A² + B² - 2AB cos θ); Direction via Law of Sines: (sin θ)/R = (sin α)/A = (sin β)/B.
+   • Vector Resolution (2D Components):
+     - Horizontal: A_x = A cos θ; Vertical: A_y = A sin θ.
+     - Magnitude: A = √(A_x² + A_y²); Angle: θ = tan⁻¹(A_y / A_x).
+   • 3D Space & Direction Cosines:
+     - Vector: A = A_x î + A_y ĵ + A_z k̂; Magnitude: A = √(A_x² + A_y² + A_z²).
+     - Direction Cosines: cos θ_x = A_x / A, cos θ_y = A_y / A, cos θ_z = A_z / A, where cos² θ_x + cos² θ_y + cos² θ_z = 1.
+
+5. Unit Vectors & Analytical Addition:
+   • Unit Vector: Dimensionless vector of length exactly 1 indicating direction: u_A = A / |A|.
+   • Cartesian Unit Vectors: î (+x axis), ĵ (+y axis), k̂ (+z axis).
+   • For position vector r = x î + y ĵ + z k̂, unit vector:
+     u_r = (x/r) î + (y/r) ĵ + (z/r) k̂, where r = √(x² + y² + z²).
+   • Analytical Addition: Sum components independently:
+     A + B = (A_x + B_x) î + (A_y + B_y) ĵ + (A_z + B_z) k̂.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• When checking dimensional correctness, remember that constants like ½, 2π, and trigonometric factors are dimensionless ([1]).
-• Dot product produces a SCALAR (e.g., Work W = F · d), while Cross product produces a VECTOR perpendicular to both vectors (e.g., Torque τ = r × F).
+• Calculation Precision Distinction: Multiplication and division depend on the lowest count of SIGNIFICANT FIGURES, whereas addition and subtraction depend on the lowest number of DECIMAL PLACES.
+• Reading Uncertainty Rule of Thumb: Analog instruments have uncertainty equal to HALF the smallest scale division (0.5 mm on a 1 mm ruler). Digital devices have uncertainty equal to the FULL smallest display step.
+• Component Reference Angle Trap: A_x = A cos θ and A_y = A sin θ strictly assume θ is measured from the positive x-axis. If θ is given with the y-axis, A_x = A sin θ and A_y = A cos θ!
+• Unit vectors are strictly dimensionless and always have magnitude exactly equal to 1.
         """.trimIndent(),
         colorHex = 0xFF0052FE,
         initialLikes = 78
@@ -60,48 +99,88 @@ Physics is an experimental science rooted in precise measurement. All physical q
         subjectId = "c1",
         subject = "General Physics",
         unit = "Unit 2",
-        title = "Kinematics in 1D & 2D (Linear & Projectile Motion)",
+        title = "Kinematics & Dynamics of Particles, Energy & Momentum",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Kinematics describes motion without considering the forces causing it. It tracks position, displacement, velocity, and acceleration in one dimension (rectilinear) and two dimensions (curvilinear, projectile motion, uniform circular motion).
+This unit establishes the foundations of classical particle mechanics: kinematics (describing 1D and 2D motion without regard to causes), particle dynamics (Newton's laws, friction, and gravitation), planetary motion (Kepler's laws), work-energy conservation, impulse-momentum, and collisions.
 
 🔍 DETAILED BREAKDOWN
-1. Linear Kinematics:
-   • Position & Displacement: Displacement Δx = x_f - x_i (vector); Distance is total path length traveled (scalar).
-   • Velocity: Average velocity v_avg = Δx / Δt; Instantaneous velocity v(t) = dx/dt (slope of x-t graph).
-   • Acceleration: Average acceleration a_avg = Δv / Δt; Instantaneous acceleration a(t) = dv/dt = d²x/dt² (slope of v-t graph). Area under v-t curve represents displacement.
+1. Kinematics in 1D & 2D Motion:
+   • Basic Quantities:
+     - Displacement: Δx = x_f - x_i (1D) or Δr = r_f - r_i (2D, vector). Distance (S) is scalar actual path length.
+     - Velocity: Average v_av = Δr / Δt; Instantaneous v = dr/dt = lim_{Δt→0} (Δr / Δt).
+     - Acceleration: Average a_av = Δv / Δt; Instantaneous a = dv/dt = lim_{Δt→0} (Δv / Δt).
+   • Constant Acceleration Equations (1D & 2D):
+     - v_f = v_i + a t
+     - v_av = ½(v_i + v_f)
+     - Δr = v_i t + ½ a t²
+     - v_f² = v_i² + 2 a Δr
+   • Free Fall Motion (Choosing upward as positive, a = -g, g ≈ 9.8 m/s²):
+     - v = u - gt;  y - y_i = ut - ½gt²;  v² = u² - 2g(y - y_i).
+     - Gravity varies slightly with latitude (greater at poles) and altitude (greater at sea level).
+   • Projectile Motion (Parabolic Trajectory):
+     - Horizontal: a_x = 0, v_x = u cos θ (constant), x(t) = (u cos θ) t.
+     - Vertical: a_y = -g, v_y = u sin θ - gt, y(t) = (u sin θ) t - ½gt².
+     - Time to Peak: t = (u sin θ) / g.
+     - Total Time of Flight: t_tot = (2u sin θ) / g.
+     - Maximum Height: H = (u² sin² θ) / (2g).
+     - Horizontal Range: R = (u² sin 2θ) / g (Maximum at θ = 45°: R_max = u² / g; complementary angles yield equal range).
 
-2. Constant Acceleration Equations (1D Motion):
-   1. v = v₀ + at
-   2. x - x₀ = v₀t + ½at²
-   3. v² = v₀² + 2a(x - x₀)
-   4. x - x₀ = ½(v₀ + v)t
-   • Free-Fall Motion: Motion solely under gravity with a = -g (-9.8 m/s² or -10 m/s²). At peak height, instantaneous vertical velocity v_y = 0.
+2. Newton's Laws of Motion & Forces:
+   • Four Fundamental Interactions: Gravitational, Electromagnetic, Strong nuclear, Weak nuclear.
+   • Forces Classification:
+     - Contact: Normal force (perpendicular), Tension (taut cables), Spring force (Hooke's Law: F_s = -kx), Friction.
+     - Field (Non-Contact): Gravitational, Electrostatic, Magnetic.
+   • Newton's Three Laws:
+     - 1st Law (Inertia): ΣF = 0 ⇒ a = 0 (velocity is constant in inertial frames).
+     - 2nd Law: ΣF = m a (acceleration is proportional to net force and along net force).
+     - 3rd Law: F_AB = -F_BA (equal and opposite action-reaction pairs acting on DIFFERENT bodies; never cancel).
+   • Friction Forces:
+     - Static Friction: f_s ≤ f_s,max = μ_s N (opposes impending motion).
+     - Kinetic Friction: f_k = μ_k N (opposes active sliding, μ_k < μ_s). Both coefficients independent of contact surface area.
 
-3. Projectile Motion (2D Motion):
-   • Assumes air resistance is negligible. Motion splits into two independent perpendicular components:
-   • Horizontal Axis (No acceleration, a_x = 0):
-     - Horizontal velocity is constant: v_x = v₀ cos θ
-     - Horizontal displacement: x = (v₀ cos θ) t
-   • Vertical Axis (Constant acceleration, a_y = -g):
-     - Initial vertical velocity: v_y₀ = v₀ sin θ
-     - Vertical velocity: v_y = v₀ sin θ - gt
-     - Vertical displacement: y = (v₀ sin θ)t - ½gt²
-   • Key Trajectory Formulas:
-     - Time to Peak: t_peak = (v₀ sin θ) / g
-     - Total Time of Flight: T = (2 v₀ sin θ) / g
-     - Maximum Height: H_max = (v₀² sin²θ) / (2g)
-     - Horizontal Range: R = (v₀² sin 2θ) / g (Maximum range occurs at launch angle θ = 45°).
-     - Trajectory Equation: y = (tan θ)x - [g / (2v₀² cos²θ)] x² (parabolic profile).
+3. Circular Motion, Gravitation & Kepler's Laws:
+   • Uniform Circular Motion: Constant speed, continuously changing velocity direction.
+     - Centripetal Acceleration: a_c = v² / r (directed radially inward).
+     - Period: T = 2πr / v.
+   • Universal Gravitation: F = G m M / r² (G = 6.674 × 10⁻¹¹ N·m²/kg²).
+     - Surface Gravity: g = G M / r² ≈ 9.8 m/s².
+   • Kepler's Laws of Planetary Motion:
+     - 1st Law (Orbits): Planets move in elliptical orbits with the Sun at one focus.
+     - 2nd Law (Areas): Radius vector sweeps out equal areas in equal times (fastest at perihelion, slowest at aphelion).
+     - 3rd Law (Harmony): T² / R³ = constant for all bodies orbiting the same central mass.
+   • Weightlessness: Experienced when there are no supporting normal contact forces (objects and astronauts in orbit are in continuous free fall under gravity).
 
-4. Uniform Circular Motion:
-   • Speed is constant, but velocity vector changes direction continuously.
-   • Centripetal Acceleration: a_c = v² / r = ω² r, directed radially inward toward circle center.
-   • Period & Frequency: T = 2πr / v = 2π / ω; f = 1 / T.
+4. Work, Energy & Power:
+   • Work: W = F · Δr = |F||Δr| cos θ (Joules).
+     - Spring Work: W_s = ½ k x_i² - ½ k x_f² (by spring); W_app = ½ k x_f² - ½ k x_i² (by applied agent).
+   • Energies:
+     - Kinetic Energy: KE = ½ m v².
+     - Gravitational Potential Energy: ΔU_g = mg Δy.
+   • Work-Energy Theorem: W_net = ΔKE = ½ m v_f² - ½ m v_i².
+   • Conservation of Mechanical Energy:
+     - Isolated Conservative: K_i + U_i = K_f + U_f = constant.
+     - With Non-Conservative Forces (Friction): ΔK + ΔU = -f_k d.
+   • Power: Rate of doing work. Average: P_av = W / Δt; Instantaneous: P = F · v.
+     - Units: Watt (W = J/s); 1 hp = 746 W; 1 kWh = 3.6 × 10⁶ J.
+
+5. Momentum, Impulse & Collisions:
+   • Linear Momentum: p = m v (kg·m/s). Net force: F_net = Δp / Δt.
+   • Impulse-Momentum Theorem: I = F_net Δt = Δp = p_f - p_i.
+   • Conservation of Linear Momentum: p_1i + p_2i = p_1f + p_2f (strictly holds for all isolated systems).
+   • Types of Collisions:
+     - Elastic: Momentum AND Kinetic Energy are BOTH conserved. 1D relative velocity: v_1i - v_2i = -(v_1f - v_2f).
+     - Inelastic: Momentum conserved, but Kinetic Energy is NOT conserved (some converts to heat, sound, deformation).
+     - Perfectly Inelastic: Bodies stick together with common velocity: v_f = (m₁ v_1i + m₂ v_2i) / (m₁ + m₂).
+   • Center of Mass: Point where total system mass M = Σ m_i behaves as concentrated:
+     r_CM = (Σ m_i r_i) / M, with components x_CM = (Σ m_i x_i) / M, etc.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• In projectile problems, horizontal velocity NEVER changes: v_x(t) = v₀ cos θ throughout the entire flight.
-• Range is identical for complementary angles of launch (e.g., θ = 30° and θ = 60° produce the same range R if initial speed v₀ is equal).
+• Action-Reaction Pairs Never Cancel: Newton's 3rd law forces always act on TWO DIFFERENT bodies. Never include an action-reaction pair on the same free-body diagram!
+• Horizontal Projectile Velocity is Invariant: Because horizontal acceleration a_x = 0, horizontal velocity v_x = u cos θ remains unchanged across the entire flight.
+• Range Symmetry: Complementary launch angles (e.g. θ = 30° and θ = 60°) achieve the EXACT SAME horizontal range for the same launch speed.
+• Collision Distinctions: In ALL isolated collisions, linear momentum is conserved. ONLY in elastic collisions is kinetic energy conserved.
+• Friction Rule: Static friction is an inequality (f_s ≤ μ_s N) that adjusts to match applied force until impending motion threshold μ_s N is reached.
         """.trimIndent(),
         colorHex = 0xFF0052FE,
         initialLikes = 85
@@ -111,39 +190,68 @@ Kinematics describes motion without considering the forces causing it. It tracks
         subjectId = "c1",
         subject = "General Physics",
         unit = "Unit 3",
-        title = "Dynamics, Newton's Laws & Circular Dynamics",
+        title = "Fluid Mechanics & Bulk Properties of Matter",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Dynamics studies the relationship between forces and the resulting motion of objects. Isaac Newton formalized mechanics into three fundamental laws governing translational equilibrium, acceleration, and interactive contact forces.
+This unit explores the mechanics of fluids and deformable bulk matter. It covers elasticity and plasticity, stress, strain, elastic moduli, hydrostatics (density, hydrostatic pressure, Pascal's and Archimedes' principles), and hydrodynamics (equation of continuity and Bernoulli's equation).
 
 🔍 DETAILED BREAKDOWN
-1. Newton's Three Laws of Motion:
-   • 1st Law (Law of Inertia): An object remains at rest or continues moving at constant velocity in a straight line unless acted upon by a net non-zero external force. Valid only in inertial reference frames.
-   • 2nd Law: The acceleration of an object is directly proportional to net force and inversely proportional to its mass: ΣF = ma = dp/dt.
-   • 3rd Law (Action-Reaction): For every action force, there exists an equal in magnitude and opposite in direction reaction force (F_AB = -F_BA). Crucial: Action and reaction forces act on DIFFERENT objects and never cancel each other out.
+1. Elasticity & Mechanical Properties of Bulk Matter:
+   • Elastic vs Plastic Behavior:
+     - Elastic: Material returns completely to original shape and size when deforming forces are removed.
+     - Elastic Limit: Maximum stress beyond which deformation becomes permanent and irreversible (plastic deformation).
+   • Stress & Strain Definitions:
+     - Stress: Deforming force per unit area: Stress = F / A (SI Unit: Pascal, Pa = N/m²).
+     - Strain: Dimensionless fractional deformation: Strain = (Change in configuration) / (Initial configuration).
+   • Three Modes of Deformation:
+     - Tensile / Compressive: Stress = F_⊥ / A; Strain = Δl / l₀.
+     - Shear: Stress = F_∥ / A; Strain = x / h = tan φ (lateral displacement x, height h, shear angle φ).
+     - Volume (Bulk): Stress = ΔP = ΔF_⊥ / A; Strain = ΔV / V₀.
+   • Elastic Moduli (Stress / Strain within proportional limit):
+     - Young's Modulus (Y): Longitudinal resistance: Y = (F_⊥ l₀) / (A Δl).
+     - Shear Modulus (S): Resistance to internal planar sliding: S = (F_∥ / A) / (x / h). (Fluids cannot sustain shear/tension; S = Y = 0 for liquids).
+     - Bulk Modulus (B): Volume compression resistance: B = -ΔP / (ΔV / V₀) (negative sign ensures B > 0). Compressibility k = 1 / B.
+     - Strain Energy: Stored elastic potential energy: U = ½ k x².
 
-2. Types of Contact & Body Forces:
-   • Gravitational Weight: W = mg, acting toward Earth's center.
-   • Normal Force (N): Perpendicular force exerted by a contact surface. On flat ground N = mg; on plane inclined at angle θ, N = mg cos θ.
-   • Tension (T): Pulling force transmitted through a taut ideal massless rope or string.
+2. Density & Hydrostatic Pressure:
+   • Density (ρ): ρ = m / V (kg/m³). Specific Gravity (SG) = ρ_substance / ρ_water (where ρ_water = 1000 kg/m³ at 4°C).
+   • Hydrostatic Pressure with Depth:
+     - P = P₀ + ρ g h (where P₀ is surface pressure, h is depth).
+     - Pressure is isotropic (acts equally in all directions) and depends solely on depth h, independent of container geometry.
+     - All points at identical horizontal level in a continuous static fluid have equal pressure.
+   • Pressure Designations:
+     - Atmospheric Pressure: P_atm ≈ 101.3 kPa = 1.013 × 10⁵ Pa (1 atm).
+     - Gauge Pressure: P_gauge = P_system - P_atm = ρ g h.
+     - Absolute Pressure: P_abs = P_gauge + P_atm.
 
-3. Friction Forces:
-   • Static Friction (f_s): Opposes impending motion. It is self-adjusting up to a maximum limit: f_s ≤ f_s,max = μ_s N.
-   • Kinetic Friction (f_k): Opposes ongoing sliding motion: f_k = μ_k N.
-   • Coefficient relationship: Typically μ_s > μ_k. Friction depends on materials in contact and normal force, not on apparent contact surface area.
+3. Pascal’s & Archimedes' Principles:
+   • Pascal's Principle: Pressure applied to an enclosed, incompressible fluid transmits undiminished throughout the fluid and container walls.
+     - Hydraulic Lift: P₁ = P₂ ⇒ F₁ / A₁ = F₂ / A₂ ⇒ F₂ = F₁(A₂ / A₁).
+   • Archimedes' Principle: An object fully or partially submerged experiences an upward buoyant force equal to the weight of displaced fluid:
+     - Buoyant Force: F_b = W_fluid = m_fluid g = ρ_fluid V_displaced g.
+     - Origin: Increase of hydrostatic pressure with depth creates an upward net vertical pressure force.
+     - Apparent Weight: W_apparent = W_real - F_b.
+     - Floating Condition: Object floats in equilibrium when F_b = W_object ⇒ ρ_object / ρ_fluid = V_submerged / V_total.
 
-4. Free Body Diagrams (FBD) & Common Systems:
-   • Inclined Plane: Gravity decomposes into mg sin θ (parallel down incline) and mg cos θ (perpendicular into surface). Acceleration down frictionless incline: a = g sin θ. With friction: a = g(sin θ - μ_k cos θ).
-   • Atwood Machine: Two masses m₁, m₂ (m₂ > m₁) over a massless pulley: a = (m₂ - m₁)g / (m₁ + m₂); Tension T = (2 m₁ m₂ g) / (m₁ + m₂).
-
-5. Circular Dynamics & Road Banking:
-   • Centripetal Force: F_c = m a_c = (m v²) / r (provided by tension, gravity, or friction).
-   • Unbanked Curved Road: Maximum safe speed without skidding depends entirely on static friction: v_max = √(μ_s g r).
-   • Frictionless Banked Road: Optimal banking angle for design speed v: tan θ = v² / (r g).
+4. Fluid Dynamics & Moving Fluids:
+   • Flow Regimes:
+     - Laminar Flow: Smooth, steady streamlines where adjacent layers slide without mixing.
+     - Turbulent Flow: Chaotic, eddies and vortices above critical velocity, high energy dissipation.
+   • Ideal Fluid Assumptions: Non-viscous (no internal friction), Steady, Incompressible (constant density), Irrotational.
+   • Equation of Continuity (Conservation of Mass):
+     - Volume Flow Rate (Flux): Q = Av = ΔV / Δt = constant (m³/s).
+     - A₁ v₁ = A₂ v₂ (velocity is inversely proportional to cross-sectional area).
+   • Bernoulli's Equation (Conservation of Energy per unit volume):
+     - P + ½ ρ v² + ρ g y = constant along a streamline.
+     - P₁ + ½ ρ v₁² + ρ g y₁ = P₂ + ½ ρ v₂² + ρ g y₂.
+     - Terms: P is static pressure; ½ ρ v² is dynamic pressure (kinetic energy density); ρ g y is potential energy density.
+     - Bernoulli / Venturi Effect: For horizontal flow (y₁ = y₂), higher fluid speed causes lower static pressure (explains airplane wing lift, atomizers, and chimney drafts).
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• The Normal force does NOT always equal mg! If a force pulls upward at an angle θ, N = mg - F sin θ; inside an accelerating elevator N = m(g ± a).
-• Static friction reaches its peak value μ_s N only right before slippage occurs.
+• Fluid Moduli Constraint: Liquids possess Bulk Modulus (B), but CANNOT have Young's or Shear Moduli because they cannot sustain tensile or shearing stresses.
+• Buoyant Force Independence: F_b depends STRICTLY on the density of the surrounding FLUID and the DISPLACED volume (F_b = ρ_fluid V_disp g). It does NOT depend on the object's mass or composition!
+• Gauge vs Absolute Pressure: Tire pressure gauges and manometers measure GAUGE pressure (P_gauge = ρ g h). Always add atmospheric pressure (101.3 kPa) when absolute pressure is required.
+• Continuity & Bernoulli Tandem: Narrowing a pipe (A decreases) forces fluid velocity to increase (v increases via continuity), which directly causes static fluid pressure to DROP (Bernoulli effect).
         """.trimIndent(),
         colorHex = 0xFF0052FE,
         initialLikes = 92
@@ -153,44 +261,61 @@ Dynamics studies the relationship between forces and the resulting motion of obj
         subjectId = "c1",
         subject = "General Physics",
         unit = "Unit 4",
-        title = "Work, Energy, Conservation Laws & Power",
+        title = "Heat, Thermodynamics & Thermal Expansion",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Energy is the capacity to do work. Work and energy are scalar quantities measured in Joules (1 J = 1 N·m = 1 kg·m²/s²). The Work-Energy Theorem and the Principle of Conservation of Mechanical Energy provide powerful methods to solve dynamic problems without solving differential equations.
+Thermodynamics governs the transformation of thermal energy into mechanical work and the macroscopic properties of matter. This unit covers the Zeroth Law, temperature scales, thermal expansion (linear, areal, volumetric), calorimetry and latent heats, heat transfer mechanisms (conduction, convection, radiation), and the First Law of Thermodynamics across fundamental gas processes.
 
 🔍 DETAILED BREAKDOWN
-1. Work:
-   • Work by Constant Force: W = F · d = |F||d| cos θ, where θ is the angle between force F and displacement d.
-     - Positive Work (0° ≤ θ < 90°): Force aids motion (e.g., gravity on falling body).
-     - Negative Work (90° < θ ≤ 180°): Force opposes motion (e.g., kinetic friction W_f = -f_k d).
-     - Zero Work (θ = 90°): Force is perpendicular to displacement (e.g., normal force, centripetal force).
-   • Work by Variable Force: W = ∫ F(x) dx (area under force vs position curve). For Hooke's Law spring (F = -kx): W_spring = -½ k (x_f² - x_i²).
+1. Temperature, Equilibrium & Zeroth Law:
+   • Basic Definitions:
+     - Heat: Transient energy in transit between a system and surroundings caused solely by a temperature gradient. (Matter does not "contain" heat; it possesses Internal Energy).
+     - Thermal Equilibrium: Condition where two bodies in thermal contact cease exchanging net energy and share the same temperature.
+   • Zeroth Law of Thermodynamics (Fowler): If body A is in thermal equilibrium with B, and B is in thermal equilibrium with C, then A is in thermal equilibrium with C. (Establishes temperature as a universal measurable state variable).
+   • Temperature Scales & Conversions (Fixed at water freezing and boiling points at 1 atm):
+     - Celsius (°C): 0°C to 100°C.
+     - Fahrenheit (°F): 32°F to 212°F. Conversion: T_F = (9/5) T_C + 32; T_C = (5/9)(T_F - 32).
+     - Kelvin (K): Absolute scale based on triple point of water (273.16 K); 0 K is absolute zero (-273.15°C). Conversion: T_K = T_C + 273.15.
 
-2. Work-Kinetic Energy Theorem:
-   • Kinetic Energy (Translational): K = ½ m v².
-   • Theorem Statement: The net work done by all forces acting on a particle equals the change in kinetic energy: W_net = ΔK = K_f - K_i = ½ m v_f² - ½ m v_i².
+2. Thermal Expansion of Matter:
+   • Linear Expansion (Solids): Δl = α l₀ ΔT ⇒ l = l₀(1 + α ΔT), where α is coefficient of linear expansion (K⁻¹).
+     - Bimetallic Strip: Two bonded metals with unequal expansion coefficients (α_A ≠ α_B). Bends toward smaller-α metal when heated, and opposite when cooled.
+   • Areal Expansion: ΔA = β A₀ ΔT ⇒ A = A₀(1 + β ΔT), where areal coefficient β = 2α.
+   • Volume Expansion (Solids & Liquids): ΔV = γ V₀ ΔT ⇒ V = V₀(1 + γ ΔT), where volume coefficient γ = 3α.
 
-3. Conservative vs Non-Conservative Forces:
-   • Conservative Forces: Work done is independent of path taken, depending only on initial and final positions. Work around any closed loop is zero (∮ F · dr = 0). Examples: Gravity, electrostatic force, ideal spring force.
-   • Potential Energy (U): Defined ONLY for conservative forces such that F = -dU/dx:
-     - Gravitational Potential Energy: U_g = mgh (near Earth's surface).
-     - Elastic Potential Energy: U_s = ½ k x² (where x is displacement from equilibrium).
-   • Non-Conservative Forces: Work done depends on path taken (e.g., friction, air resistance, motor thrust). Energy is dissipated into internal/thermal energy.
+3. Heat Capacity, Calorimetry & Phase Transitions:
+   • Specific Heat Capacity (c): Heat needed to raise 1 kg of substance by 1°C (or 1 K): Q = m c ΔT. (Molar: Q = n C ΔT).
+   • Calorimetry Principle: In an insulated system, heat conservation requires:
+     Q_lost (by hotter bodies) = Q_gained (by cooler bodies).
+   • Latent Heat (L): Heat absorbed or released per unit mass during phase transition at CONSTANT temperature: Q_L = ± m L.
+     - Latent Heat of Fusion (L_f): Solid ↔ Liquid (for water at 0°C: L_f ≈ 3.33 × 10⁵ J/kg).
+     - Latent Heat of Vaporization (L_v): Liquid ↔ Gas (for water at 100°C: L_v ≈ 2.26 × 10⁶ J/kg).
 
-4. Conservation of Mechanical Energy:
-   • In an isolated system with only conservative forces: E_total = K + U = constant.
-     => K_i + U_i = K_f + U_f.
-   • In the presence of non-conservative forces: W_nc = ΔE_mech = (K_f + U_f) - (K_i + U_i).
+4. Heat Transfer Mechanisms:
+   • Conduction: Energy transfer through microscopic atomic collisions and free electrons in direct physical contact (dominant in solids; metals are prime conductors due to high free-electron density).
+   • Convection: Heat transfer via bulk displacement and circulation of heated fluid matter (liquids and gases). Thermal buoyancy drives warm, less dense fluid upward while cooler, denser fluid descends.
+   • Radiation: Energy propagation via electromagnetic waves (primarily infrared). Operates through vacuum without material medium. Dark, matte surfaces are superior absorbers and emitters; obeys inverse-square distance law.
+   • Direct Burning: Spreading of heat by continuous direct flame contact along available combustible fuel.
 
-5. Power:
-   • Time rate of doing work or transferring energy.
-   • Average Power: P_avg = ΔW / Δt.
-   • Instantaneous Power: P = dW/dt = F · v.
-   • SI Unit: Watt (1 W = 1 J/s). Common conversion: 1 Horsepower (hp) = 746 Watts; 1 kilowatt-hour (kWh) = 3.6 × 10⁶ J.
+5. First Law of Thermodynamics & Gas Processes:
+   • First Law Formulation: Conservation of energy for thermodynamic systems:
+     ΔU = Q + W  (where W = -P ΔV is work done ON the system).
+     - State vs Path Functions: Internal energy U is a state function (ΔU is path-independent). Heat Q and Work W are path-dependent.
+     - Work on PV Diagram: Area under the curve during expansion or compression: W = -∫ P dV.
+   • Special Ideal Gas Thermodynamic Processes:
+     - Isolated System: Q = 0, W = 0 ⇒ ΔU = 0 (Internal energy is conserved).
+     - Cyclic Process: System returns to initial state ⇒ ΔU = 0 ⇒ Q_net = -W_net (Net heat equals net work delivered; area inside PV loop).
+     - Isochoric (Isovolumetric, ΔV = 0): No boundary work (W = 0) ⇒ ΔU = Q (all added heat directly raises temperature).
+     - Adiabatic (Q = 0): Rapid process with no thermal exchange ⇒ ΔU = W (gas cools during expansion, warms during compression).
+     - Isothermal (Constant T, ΔT = 0): For ideal gas, ΔU = 0 ⇒ Q = -W = nRT ln(V_f / V_i) (all added heat converts to expansion work).
+     - Isobaric (Constant P): W = -P(V_f - V_i) ⇒ ΔU = Q - P(V_f - V_i).
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• The centripetal force in uniform circular motion does ZERO work because force is always perpendicular to instantaneous velocity (cos 90° = 0).
-• When using energy conservation, always set an explicit reference datum (y = 0) for gravitational potential energy.
+• Internal Energy vs Heat: A thermodynamic system possesses Internal Energy (U), NEVER heat! Heat (Q) exists purely as energy in transit across boundaries.
+• Thermal Expansion Ratios: Memorize the dimensional proportionality: Linear α : Area β : Volume γ = 1 : 2 : 3.
+• Constant Temperature During Phase Changes: During boiling or melting, adding heat does NOT change the temperature (ΔT = 0); all thermal energy Q = mL breaks intermolecular bonds.
+• Isothermal Ideal Gas Identity: Because internal energy of an ideal gas depends solely on temperature U = U(T), in ANY isothermal process (ΔT = 0), ΔU is strictly 0!
+• Work on PV Diagrams: Expansion (V_f > V_i) does work ON surroundings (work done on gas is negative); compression does positive work on the gas.
         """.trimIndent(),
         colorHex = 0xFF0052FE,
         initialLikes = 81
@@ -200,47 +325,68 @@ Energy is the capacity to do work. Work and energy are scalar quantities measure
         subjectId = "c1",
         subject = "General Physics",
         unit = "Unit 5",
-        title = "Linear Momentum, Impulse & Collisions",
+        title = "Oscillations, Waves & Geometric Optics",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Linear momentum is a vector describing the quantity of motion of a moving body. The principle of conservation of linear momentum is one of the most fundamental conservation laws in physics, applying from subatomic particles to cosmic collisions.
+This unit explores periodic motion, wave propagation, acoustic phenomena, and geometric optics. It covers Simple Harmonic Motion (mass-spring and simple pendulum), wave characteristics (mechanical vs electromagnetic, transverse vs longitudinal), resonance, the Doppler effect, wave interference, and image formation by plane mirrors and thin lenses.
 
 🔍 DETAILED BREAKDOWN
-1. Linear Momentum & Impulse:
-   • Linear Momentum: p = mv (SI unit: kg·m/s). It is a vector in the same direction as velocity.
-   • Newton's 2nd Law in terms of Momentum: ΣF_ext = dp/dt.
-   • Impulse (J): The integral of force over the time interval of impact:
-     J = ∫ F dt = F_avg Δt.
-   • Impulse-Momentum Theorem: Impulse delivered to a particle equals its change in linear momentum: J = Δp = mv_f - mv_i.
-   • Graphical representation: Impulse equals the area under the Force vs Time (F-t) curve.
+1. Simple Harmonic Motion (SHM):
+   • Dynamics & Kinematics:
+     - Restoring Force (Hooke's Law): F_s = -kx.
+     - Equation of Motion: ma = -kx ⇒ a = -(k/m)x = -ω²x.
+     - Angular Frequency: ω = √(k/m) = 2πf = 2π / T; Period T = 2π√(m/k); Frequency f = 1/T.
+     - Kinematics (equilibrium start): x(t) = A sin(ωt); v(t) = ωA cos(ωt); a(t) = -ω²A sin(ωt).
+     - Extrema: Maximum speed v_max = ωA (at equilibrium x = 0); Maximum acceleration a_max = ω²A (at turnaround x = ±A).
+   • Conservation of Energy in SHM:
+     - Potential Energy: PE = ½ k x² = ½ k A² sin²(ωt).
+     - Kinetic Energy: KE = ½ m v² = ½ k A² cos²(ωt).
+     - Total Mechanical Energy: E = KE + PE = ½ k A² = constant (E ∝ A²).
+   • The Simple Pendulum (for small angles θ < 15°):
+     - Restoring Force: F_t = -mg sin θ ≈ -(mg/L)s.
+     - Period: T = 2π√(L/g).
+     - Dependent solely on length L and gravitational field g; completely independent of the mass of the bob!
 
-2. Conservation of Linear Momentum:
-   • For an isolated system with no net external forces (ΣF_ext = 0):
-     p_total,initial = p_total,final => Σ m_i v_i = Σ m_i v_f.
-   • Momentum is conserved independently along each Cartesian axis: Σ p_x,i = Σ p_x,f and Σ p_y,i = Σ p_y,f.
+2. Wave Characteristics & Classification:
+   • Basic Terms: Crest (peak), Trough (valley), Amplitude (A), Wavelength (λ).
+   • Wave Speed Equation: v = λ f = λ / T (constant for a given homogeneous medium).
+   • Classification of Waves:
+     - By Medium: Mechanical waves (require physical medium: sound, seismic, water) vs. Electromagnetic waves (propagate through medium or vacuum at c ≈ 3.0 × 10⁸ m/s: light, X-rays, radio).
+     - By Particle Vibration: Transverse (vibrations perpendicular to propagation: light, string waves, surface ripples) vs. Longitudinal (vibrations parallel to propagation via compressions and rarefactions: sound waves).
+     - By Boundary: Travelling waves (unbounded) vs. Standing waves (bounded interference).
 
-3. Classification of Collisions:
-   • Perfectly Elastic Collision:
-     - Linear momentum is conserved: m₁v₁i + m₂v₂i = m₁v₁f + m₂v₂f.
-     - Total kinetic energy is conserved: ½m₁v₁i² + ½m₂v₂i² = ½m₁v₁f² + ½m₂v₂f².
-     - Relative speed of approach equals relative speed of separation: (v₁i - v₂i) = -(v₁f - v₂f).
-     - Head-on 1D elastic collision formulas (m₂ initially at rest, v₂i = 0):
-       v₁f = [(m₁ - m₂) / (m₁ + m₂)] v₁i
-       v₂f = [(2m₁) / (m₁ + m₂)] v₁i
-   • Inelastic Collision:
-     - Momentum is conserved, but kinetic energy is NOT conserved (some KE is converted into heat, acoustic energy, or structural deformation).
-   • Completely (Perfectly) Inelastic Collision:
-     - The colliding objects stick together and move with a single common final velocity V_f:
-       V_f = (m₁v₁i + m₂v₂i) / (m₁ + m₂).
-     - This collision type exhibits the MAXIMUM possible kinetic energy loss.
+3. Resonance, Wave Interactions & The Doppler Effect:
+   • Resonance: Phenomenon where driving frequency matches the natural frequency f₀ of a system, producing maximum energy transfer and dramatic amplitude peaks.
+   • Wave Behaviors:
+     - Reflection: Bouncing of waves at boundary interfaces (angle of incidence = angle of reflection).
+     - Refraction: Directional bending when entering a medium with different wave speed.
+     - Diffraction: Spreading and bending around obstacles or apertures (most pronounced when aperture ~ λ).
+     - Interference & Beats: Superposition of waves; slightly different frequencies produce pulsating beats: f_beat = |f₁ - f₂|.
+   • The Doppler Effect (Sound Waves):
+     - Apparent frequency shift caused by relative motion between source and observer:
+       f_o = f_s [(v ± v_o) / (v ∓ v_s)]
+     - Sign Rule: Use upper signs (+v_o, -v_s) for APPROACH (frequency increases); use lower signs (-v_o, +v_s) for RECEDING (frequency decreases).
 
-4. Center of Mass:
-   • Position of Center of Mass: R_cm = (Σ m_i r_i) / (Σ m_i) = (1 / M) ∫ r dm.
-   • Velocity of CM: V_cm = (Σ m_i v_i) / M = P_total / M. If ΣF_ext = 0, V_cm remains constant.
+4. Geometric Optics: Mirrors & Thin Lenses:
+   • Plane Mirror Images: Virtual, erect (upright), identical size (h_i = h_o, magnification m = 1), and image distance equals object distance (d_i = d_o).
+   • Thin Lens Equation & Magnification:
+     - Lens Formula: 1/s_o + 1/s_i = 1/f.
+     - Magnification: m = h_i / h_o = -s_i / s_o.
+   • Convex (Converging) Lens (f > 0):
+     - Object beyond 2F: Real, inverted, diminished (between F and 2F).
+     - Object at 2F: Real, inverted, same size (at 2F, m = -1).
+     - Object between F and 2F: Real, inverted, magnified (beyond 2F).
+     - Object at F: Refracted rays parallel; image at infinity.
+     - Object between F and lens: Virtual, erect, magnified (magnifying glass, on same side as object).
+   • Concave (Diverging) Lens (f < 0):
+     - Formed images are ALWAYS virtual, erect, and diminished, regardless of object position!
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• In an isolated explosion or bullet firing, momentum is conserved: m_bullet v_bullet + M_gun v_recoil = 0 => recoil velocity v_recoil = -(m/M) v_bullet.
-• Always remember: Kinetic energy is conserved ONLY in elastic collisions, but momentum is conserved in ALL collisions as long as the system is isolated.
+• SHM Energy-Amplitude Scaling: Total mechanical energy is proportional to the SQUARE of the amplitude (E ∝ A²). Doubling amplitude quadruples the stored energy!
+• Pendulum Mass Invariance: Changing the mass of a simple pendulum's bob has ZERO effect on its period T = 2π√(L/g).
+• Doppler Shift Direction: Approaching entities always hear/see higher frequencies (blueshift / higher pitch), while receding entities observe lower frequencies (redshift / lower pitch).
+• Sound Waves Cannot Travel in a Vacuum: Sound is a longitudinal mechanical wave requiring a material medium. Light is an electromagnetic wave and travels freely in a vacuum.
+• Concave Lens Image Rule: Any ray tracing through a concave (diverging) lens yields exclusively virtual, upright, and diminished images.
         """.trimIndent(),
         colorHex = 0xFF0052FE,
         initialLikes = 89
@@ -250,48 +396,74 @@ Linear momentum is a vector describing the quantity of motion of a moving body. 
         subjectId = "c1",
         subject = "General Physics",
         unit = "Unit 6",
-        title = "Rotational Motion, Moment of Inertia & Angular Momentum",
+        title = "Electromagnetism, Induction & Solid-State Electronics",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Rotational dynamics examines the motion of rigid bodies rotating about fixed or moving axes. Linear kinematic and dynamic quantities have exact rotational analogs: displacement (θ), velocity (ω), acceleration (α), mass/inertia (I), force/torque (τ), and momentum (L).
+This unit covers the unified framework of electrostatics, direct-current circuits, magnetostatics, electromagnetic induction, and semiconductor electronics (energy band theory, p-n junction diodes, rectification, bipolar transistors, and basic logic gates).
 
 🔍 DETAILED BREAKDOWN
-1. Rotational Kinematics & Relationships:
-   • Angular Position & Displacement: θ (in radians); Arc length s = rθ.
-   • Angular Velocity: ω = dθ/dt (rad/s); Tangential speed v_t = rω.
-   • Angular Acceleration: α = dω/dt (rad/s²); Tangential acceleration a_t = rα; Radial/Centripetal acceleration a_r = v_t²/r = rω².
-   • Constant Angular Acceleration Equations:
-     1. ω = ω₀ + αt
-     2. θ - θ₀ = ω₀t + ½αt²
-     3. ω² = ω₀² + 2α(θ - θ₀)
-     4. θ - θ₀ = ½(ω₀ + ω)t
+1. Electrostatics: Coulomb's Law & Electric Fields:
+   • Electric Charge: Inherent property of matter; Elementary charge unit e = 1.6 × 10⁻¹⁹ C. Like charges repel, unlike attract.
+   • Coulomb’s Law: Electrostatic force between point charges q₁, q₂ separated by distance r:
+     F = K (q₁ q₂ / r²) r̂, where Coulomb constant K = 1/(4πε₀) ≈ 9.0 × 10⁹ N·m²/C² (ε₀ ≈ 8.85 × 10⁻¹² C²/(N·m²)).
+     - Follows Newton’s 3rd Law: F₁₂ = -F₂₁. Satisfies vector superposition: F_net = Σ F_i.
+   • Electric Field (E): Force per unit positive test charge: E = F_e / q₀ = (1/4πε₀)(q / r²) r̂ (N/C or V/m).
+     - Field Lines: Emerge radially from positive charges, terminate on negative charges or infinity. Density reflects field strength; lines never intersect.
+   • Potential Energy & Voltage:
+     - Potential Energy: U = (1/4πε₀)(q₁ q₂ / r).
+     - Electric Potential (V): V = U / q (Volt, V = J/C). Potential difference: ΔU = q ΔV.
 
-2. Moment of Inertia & Rotational Kinetic Energy:
-   • Moment of Inertia (Rotational Inertia): I = Σ m_i r_i² = ∫ r² dm (kg·m²). Represents resistance to angular acceleration.
-   • Common Inertia Formulas:
-     - Thin hoop/ring about central axis: I = MR²
-     - Solid cylinder or disk: I = ½MR²
-     - Solid uniform sphere: I = ⅖MR²; Thin spherical shell: I = ⅔MR²
-     - Thin slender rod about center: I = (1/12)ML²; About one end: I = ⅓ML²
-   • Parallel-Axis Theorem: I = I_cm + Md², where d is distance between parallel axis and center of mass axis.
-   • Rotational Kinetic Energy: K_rot = ½Iω². Total KE of rolling body without slipping: K_total = ½M v_cm² + ½I_cm ω².
+2. Electric Current, Circuits & Kirchhoff's Rules:
+   • Current (I): Rate of charge flow: I = ΔQ / Δt (Ampere, A = C/s). 1 A = 6.25 × 10¹⁸ electrons/sec.
+   • Ohm’s Law & Resistance:
+     - Microscopic: J = σ E, with resistivity ρ = 1/σ = E / J (Ω·m).
+     - Macroscopic: V = IR, where resistance R = ρ(l / A) (Ohms, Ω).
+     - Electric Power: P = IV = I²R = V² / R (Watts, W).
+   • Resistor Combinations:
+     - Series: Current identical; R_eq = R₁ + R₂ + ... + R_N.
+     - Parallel: Voltage identical; 1/R_eq = 1/R₁ + 1/R₂ + ... + 1/R_N.
+   • Kirchhoff's Circuit Rules:
+     - Junction Rule (Charge Conservation): Σ I_in = Σ I_out ⇒ Σ I = 0 at any node.
+     - Loop Rule (Energy Conservation): Algebraic sum of potential differences around any closed circuit loop is zero: Σ V = 0.
 
-3. Torque & Newton's Second Law for Rotation:
-   • Torque (Moment of Force): τ = r × F = r F sin φ = F d_lever (N·m). Counterclockwise is typically positive (+).
-   • Rotational Second Law: Στ = Iα (valid about fixed axis or about center of mass).
-   • Work & Power in Rotation: W = ∫ τ dθ; Instantaneous Power P = τω.
+3. Magnetism & Electromagnetic Induction:
+   • Magnetic Force on Moving Charge:
+     - F_B = q(v × B); Magnitude: F = |q| v B sin θ. Direction given by Right-Hand Rule (reversed for negative charges).
+     - Force is zero if charge is at rest (v = 0) or moves parallel/antiparallel to field (θ = 0° or 180°).
+     - Magnetic force does ZERO work on the charge (velocity vector is always perpendicular to force: F ⊥ v).
+     - Units: Tesla (1 T = 1 N/(A·m) = 10⁴ Gauss).
+   • Magnetic Flux (Φ): Total field penetrating area A: Φ = B · A = BA cos θ (Weber, Wb = T·m²).
+   • Faraday’s Law of Induction: Induced emf is proportional to time rate of magnetic flux change:
+     ℰ = -N (ΔΦ / Δt).
+   • Lenz’s Law: The negative sign reflects that induced current always opposes the flux change producing it.
 
-4. Angular Momentum & Conservation:
-   • Angular Momentum of Particle: L = r × p = r m v sin φ.
-   • Angular Momentum of Rigid Body: L = Iω (kg·m²/s).
-   • Net External Torque: Στ_ext = dL/dt.
-   • Law of Conservation of Angular Momentum: If Στ_ext = 0, total angular momentum is strictly conserved:
-     L_initial = L_final  =>  I_i ω_i = I_f ω_f.
-     (Classic example: Figure skater pulling arms inward decreases I, drastically increasing angular speed ω).
+4. Semiconductor Physics & Energy Band Theory:
+   • Band Structure: Valence Band (V.B.), Conduction Band (C.B.), and Forbidden Energy Gap (E_g).
+     - Conductors: Overlapping bands (E_g ≈ 0); conductivity decreases as temperature rises.
+     - Semiconductors: Small energy gap (E_g < 3 eV; 1.1 eV for Si, 0.7 eV for Ge); conductivity INCREASES with temperature.
+     - Insulators: Large band gap (E_g > 3 eV; ~6 eV for diamond).
+   • Extrinsic Semiconductors (Doping):
+     - N-Type: Doped with pentavalent donors (P, As, Sb). Extra free conduction electrons; majority: electrons, minority: holes.
+     - P-Type: Doped with trivalent acceptors (B, Al, In). Lattice vacancies (holes); majority: holes, minority: electrons.
+
+5. Diodes, Transistors & Logic Gates:
+   • P-N Junction Diode:
+     - Depletion region and barrier potential: 0.7 V for Si, 0.3 V for Ge.
+     - Biasing: Forward bias (P to +, N to -; conducts in mA, ON); Reverse bias (P to -, N to +; widens barrier, microampere leakage, OFF).
+     - Rectification: Half-wave (1 diode) vs Full-wave bridge (4 diodes, continuous unidirectional DC output).
+   • Bipolar Junction Transistor (BJT):
+     - Terminals: Emitter (heavily doped), Base (very thin, lightly doped), Collector (moderately doped, collects carriers).
+     - Active Mode Bias: Emitter-base forward-biased, collector-base reverse-biased.
+     - Current Relation: I_E = I_B + I_C; Current Gain: β = I_C / I_B. Common Emitter (CE) amplifies with 180° phase inversion.
+   • Fundamental Digital Logic Gates:
+     - AND (Output 1 iff both inputs 1), OR (Output 1 if any input 1), NOT (Inverter), NAND (Universal gate), NOR (Universal gate).
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• For rolling without slipping: v_cm = Rω and a_cm = Rα. Friction is STATIC friction and does NO net work!
-• When solving rolling down an incline problems, acceleration is a = (g sin θ) / (1 + I_cm/(MR²)). Objects with smaller I_cm/(MR²) (like solid sphere 0.4) reach the bottom faster than disks (0.5) or hoops (1.0).
+• Zero Magnetic Work: Magnetic force F = q(v × B) is strictly perpendicular to instantaneous velocity (F ⊥ v). Therefore, magnetic fields change ONLY the direction of motion, NEVER the speed or kinetic energy!
+• Semiconductor Temperature Anomaly: Unlike metals whose resistance increases with temperature, semiconductors exhibit NEGATIVE temperature coefficient of resistance (heating frees more electron-hole pairs, decreasing resistance).
+• Junction Barrier Potentials: Keep in mind the baseline barrier voltages: 0.7 V for Silicon and 0.3 V for Germanium.
+• Transistor Current Conservation: Emitter current is always the sum of base and collector currents: I_E = I_B + I_C.
+• Kirchhoff Conservation Principles: Junction rule is conservation of CHARGE; Loop rule is conservation of ENERGY.
         """.trimIndent(),
         colorHex = 0xFF0052FE,
         initialLikes = 112
@@ -301,105 +473,185 @@ Rotational dynamics examines the motion of rigid bodies rotating about fixed or 
         subjectId = "c1",
         subject = "General Physics",
         unit = "Unit 7",
-        title = "Oscillations, Mechanical Waves & Fluid Mechanics",
+        title = "Cross-Cutting Applications of Physics",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-This unit synthesizes periodic vibratory motion (Simple Harmonic Motion), mechanical wave propagation (sound and standing waves), and fluid statics/dynamics governed by continuity and Bernoulli's conservation of energy principles.
+Physics serves as the foundational science connecting subatomic phenomena to macroscopic technologies. This unit explores modern cross-disciplinary applications: agrophysics and soil dynamics, heavy industrial machines (motors and generators), medical diagnostics and radiation physics, geophysics, telecommunications, and sustainable renewable energy systems.
 
 🔍 DETAILED BREAKDOWN
-1. Simple Harmonic Motion (SHM):
-   • Hooke's Law: Restoring force F = -kx.
-   • Equation of Motion: d²x/dt² + (k/m)x = 0  =>  x(t) = A cos(ωt + φ).
-   • Angular Frequency, Frequency & Period:
-     ω = √(k/m); f = ω / (2π) = (1/2π)√(k/m); T = 1/f = 2π√(m/k).
-   • Velocity & Acceleration:
-     v(t) = -ωA sin(ωt + φ)  =>  v_max = ωA (at equilibrium position x = 0).
-     a(t) = -ω²A cos(ωt + φ) = -ω²x  =>  a_max = ω²A (at maximum amplitude x = ±A).
-   • Conservation of Energy in SHM: E = ½mv² + ½kx² = ½kA² = ½m(v_max)² (constant).
-   • Simple Pendulum (for small angles θ < 15°): T = 2π√(L/g); Physical Pendulum: T = 2π√(I / (mgd)).
+1. Overview of Physics in Science & Technology:
+   • Historical Foundations & Technological Impacts:
+     - Newtonian Mechanics: Industrial revolution, machinery design, automation, robotics, and kinetic simulations.
+     - Thermodynamics: Heat engines, steam locomotives, refrigeration, and power generation cycles.
+     - Electricity & Magnetism: Power grids, transformers, electric motors, generators, and electronics.
+     - Quantum Mechanics: Lasers, semiconductor bandgap engineering, atomic clocks, and quantum computing.
+     - Nuclear Physics: Nuclear power generation, medical radioisotopes, radiotherapy, and Nuclear Magnetic Resonance (NMR).
+     - Condensed Matter Physics: Solid-state microelectronics, integrated circuits, liquid crystals (LCDs), and superconductors.
+     - Optics & Photonics: Fiber-optic communication cables, optical microscopes, telescopes, imaging sensors, and lasers.
 
-2. Mechanical Waves & Sound:
-   • Wave Speed Equation: v = λf = λ / T.
-   • Wave on a Stretched String: v = √(T_tension / μ), where μ = m/L is linear mass density.
-   • Standing Waves & Resonance (String fixed at both ends):
-     Normal modes λ_n = (2L) / n; Resonant frequencies f_n = n (v / 2L) = n f₁ (n = 1, 2, 3...).
-   • Doppler Effect (Sound): Observed frequency f' = f [(v ± v_observer) / (v ∓ v_source)]. Upper signs correspond to approaching motion.
+2. Physics in Agriculture & Environment (Agrophysics):
+   • Purpose: Applies physical laws to agro-ecosystems to prevent soil degradation, optimize water usage, reduce greenhouse emissions, and enhance crop yields.
+   • Soil as a Three-Phase System (Optimal upland plant conditions by volume):
+     - Solid Phase: ~50% (mineral particles and organic matter).
+     - Liquid Phase (Soil Water): ~25% (dissolved nutrients in soil solution).
+     - Gaseous Phase (Soil Air): ~25% (O₂ and CO₂ exchange for root respiration).
+   • Physical Properties of Soil:
+     - Soil Density: Particle density (solid phase only) vs. Bulk density (dry soil mass divided by total volume including pores). Expressed in g/cm³ or kg/m³.
+     - Soil Porosity: Fraction or percentage of void spaces relative to total volume; includes void ratio, air-filled porosity, and saturation degree.
+     - Soil Moisture Content & Retention: Gravimetric/volumetric water content and matric potential curves dictated by pore-size distribution.
+   • Surface Energy Balance at Soil–Atmosphere Interface:
+     Assuming negligible heat storage in a thin surface layer:
+     R_n + G + LE + H = 0
+     - R_n: Net incoming radiation.
+     - G: Soil heat flux (conductive transfer into the ground).
+     - LE: Latent heat flux of evaporation (E = evaporation rate, λ = latent heat of vaporization).
+     - H: Sensible heat flux (convective heat transfer between soil surface and ambient atmosphere).
+     - Applications: Calculating evapotranspiration (ET), bare-soil evaporation rates, residue decomposition, and germination thermal dynamics.
 
-3. Fluid Statics:
-   • Density: ρ = m/V; Pressure: P = F / A (1 Pa = 1 N/m²; 1 atm = 1.013 × 10⁵ Pa = 760 mmHg).
-   • Hydrostatic Pressure with Depth: P = P₀ + ρgh (pressure depends ONLY on vertical depth and fluid density, not vessel shape).
-   • Pascal's Principle: Pressure applied to an enclosed fluid is transmitted undiminished: F₁/A₁ = F₂/A₂.
-   • Archimedes' Principle & Buoyancy: Buoyant force equals weight of displaced fluid:
-     F_B = ρ_fluid · V_displaced · g. If floating: F_B = Weight_object  =>  (V_submerged / V_total) = ρ_object / ρ_fluid.
+3. Industrial Applications: Motors and Generators:
+   • Electric Motor (DC Motor):
+     - Energy Conversion: Converts ELECTRICAL energy into MECHANICAL energy.
+     - Working Principle: A current-carrying conductor in a magnetic field experiences a Lorentz magnetic force:
+       F = I L B sin θ (perpendicular to both conductor and magnetic flux), creating rotational torque on the rotor armature.
+     - Applications: Industrial cranes, elevators, winches, rolling mills, and electric vehicles.
+   • Electric Generator:
+     - Energy Conversion: Converts MECHANICAL energy into ELECTRICAL energy.
+     - Working Principle (Faraday's Law): Mechanical rotation forces conductors to cut across magnetic flux lines, inducing an electromotive force (emf / voltage):
+       ℰ = -N (ΔΦ / Δt).
+     - Factors Governing Induced EMF: Magnetic field strength (B), rotational/linear speed of conductor (v), active conductor length in field (L), and orientation angle (θ).
 
-4. Fluid Dynamics (Ideal Fluid: Incompressible, non-viscous, laminar, irrotational):
-   • Equation of Continuity (Conservation of Mass): A₁ v₁ = A₂ v₂ = Volume Flow Rate Q (constant).
-   • Bernoulli's Equation (Conservation of Energy along streamline):
-     P + ½ρv² + ρgy = constant  =>  P₁ + ½ρv₁² + ρgy₁ = P₂ + ½ρv₂² + ρgy₂.
-   • Torricelli's Law (Efflux speed from tank orifice): v = √(2gh).
-   • Venturi Effect: As pipe cross-section narrows, velocity v increases and fluid pressure P decreases.
+4. Physics in Health Sciences & Medical Imaging:
+   • Nature & Types of Radiation:
+     - Electromagnetic Radiation: Massless photons across the spectrum (radio waves, microwaves, IR, visible, UV, X-rays, gamma rays).
+     - Particulate Radiation: High-speed subatomic particles possessing mass and kinetic energy (electrons, positrons, protons, neutrons, α-particles).
+   • Ionization Mechanisms:
+     - Non-Ionizing Radiation: Low-frequency, long-wavelength photons with insufficient energy to remove orbital electrons (microwaves, RF, visible light).
+     - Ionizing Radiation: High-energy radiation with sufficient energy to break chemical bonds and strip orbital electrons:
+       * Directly Ionizing: Fast charged particles (electrons, protons, α-particles) that deposit energy directly via Coulomb interactions with atomic electrons along their path.
+       * Indirectly Ionizing: Uncharged photons or particles (X-rays, γ-rays, neutrons) that first liberate secondary charged particles via photoelectric effect, Compton scattering, or pair production, which subsequently ionize matter.
+   • Diagnostic Imaging Modalities:
+     - Conventional X-Ray: 2D projection imaging based on differential attenuation (absorption) through tissues of varying density (dense bone absorbs more than soft tissue).
+     - Computed Tomography (CT Scan): Cross-sectional X-ray beams rotated around the patient, mathematically reconstructed into detailed 3D volumetric slices.
+     - Magnetic Resonance Imaging (MRI): Utilizes Nuclear Magnetic Resonance (NMR) principles: aligns the magnetic dipole moments of hydrogen nuclei (protons) in strong static magnetic fields, perturbs them with radiofrequency (RF) pulses, and maps relaxation signals without ionizing radiation.
+     - Ultrasound Imaging: Completely non-ionizing technique utilizing high-frequency acoustic waves (megahertz range) reflected at tissue boundaries.
+
+5. Earth, Space Sciences & Renewable Energy Systems:
+   • Seismology & Earth Structure:
+     - Inertial seismometers record mechanical elastic waves from earthquakes:
+     - P-Waves (Primary): Longitudinal compressional waves that travel fastest through both solids and liquids.
+     - S-Waves (Secondary): Transverse shear waves that travel slower and CANNOT propagate through liquids (proving Earth's outer core is liquid).
+   • Atmospheric Physics & Telecommunications:
+     - Atmospheric thermodynamics and radiation budgets drive global climate cycles.
+     - Maxwellian electromagnetic wave propagation powers satellite communications, long-range radar, and mobile networks.
+   • Renewable Energy Technologies:
+     - Solar Photovoltaic (PV): Direct conversion of solar photon flux into direct-current (DC) electricity via the photoelectric effect at semiconductor p-n junctions.
+     - Solar Thermal: Concentrates solar irradiance via mirrors/absorbers to produce high-temperature steam that drives conventional turbine generators.
+     - Wind Energy: Aerodynamic turbine blades capture the kinetic energy of moving air masses (½ m v³) to drive inductive electric generators.
+     - Hydroelectric Power: Harnesses gravitational potential energy of elevated reservoir water (PE = mgh), converted to kinetic energy through penstocks to rotate hydraulic turbines coupled to electromagnetic generators.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• In SHM, total mechanical energy is proportional to the SQUARE of the amplitude (E ∝ A²). Doubling amplitude quadruples the energy!
-• In Bernoulli's principle, high fluid speed means LOW static pressure (explains aerodynamic lift, atomizers, and chimney draft).
+• Ideal Soil Phase Ratio: Remember the standard volumetric ratio for optimal upland soil: 50% Solids (mineral + organic), 25% Liquid (water), 25% Gas (air).
+• Motor vs. Generator Duality: Electric motors convert Electrical → Mechanical energy via magnetic force F = ILB sin θ; Electric generators convert Mechanical → Electrical energy via Faraday's electromagnetic induction.
+• Ionizing Radiation Classification: Charged particles (α, β, protons) are DIRECTLY ionizing via Coulomb forces; uncharged photons (X-rays, γ-rays) and neutrons are INDIRECTLY ionizing because they must first liberate secondary charged electrons.
+• MRI Radiation Safety: MRI uses strong static magnetic fields and RF waves to manipulate hydrogen nuclear spins—it uses ZERO ionizing radiation, making it distinct from CT and X-ray radiography.
+• Seismic S-Wave Liquid Barrier: Secondary (S) waves are shear waves and cannot propagate through fluids; their absence in the Earth's shadow zone confirms the outer core is liquid.
+• Surface Energy Balance Equation: Net radiation satisfies R_n + G + LE + H = 0 (incoming radiation equals heat conducted into ground G, latent heat of evaporation LE, and convective sensible heat H).
         """.trimIndent(),
         colorHex = 0xFF0052FE,
         initialLikes = 108
     ),
 
     // =========================================================================
-    // 2. MATHEMATICS (c2, Units 1 - 7)
+    // 2. MATHEMATICS (c2, Units 1 - 4)
     // =========================================================================
     ShortNote(
         id = "math-u1",
         subjectId = "c2",
         subject = "Mathematics",
         unit = "Unit 1",
-        title = "Vectors & Analytic Geometry of Space (Lines, Planes, Surfaces)",
+        title = "Propositional Logic and Set Theory",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-This unit extends two-dimensional calculus to three-dimensional Euclidean space (R³), providing foundational geometric language for physics and engineering through vectors, dot and cross products, lines, and planes.
+Mathematical logic provides the principles of valid reasoning and is used to judge the correctness of a mathematical proof based purely on its form rather than its content. This unit covers propositions, logical connectives, truth tables, rules of inference, quantifiers, and fundamental set theory.
 
 🔍 DETAILED BREAKDOWN
-1. 3D Coordinates & Vector Algebra:
-   • Distance between P₁(x₁,y₁,z₁) and P₂(x₂,y₂,z₂): d = √[(x₂-x₁)² + (y₂-y₁)² + (z₂-z₁)²].
-   • Equation of a Sphere centered at (h, k, l) with radius R: (x - h)² + (y - k)² + (z - l)² = R².
-   • Vector in component form: a = <a₁, a₂, a₃> = a₁î + a₂ĵ + a₃k̂; Magnitude: |a| = √(a₁² + a₂² + a₃²).
-   • Unit vector in direction of a: u = a / |a|.
+1. Propositional Logic & Fundamental Connectives:
+   • Proposition (Statement): A declarative sentence that has a definite truth value—either True (T) or False (F), but not both.
+   • Non-propositions: Questions, commands, and exclamations do not have truth values and are not propositions.
+   • The 5 Fundamental Logical Connectives:
+     - Conjunction ("and", ∧): p ∧ q is True if and only if both p and q are true. Otherwise, it is false.
+     - Disjunction ("or", ∨): p ∨ q (inclusive sense). False if and only if both p and q are false; true if at least one component is true.
+     - Implication ("if... then", ⇒): p ⇒ q (hypothesis/antecedent p, conclusion/consequent q). False ONLY when p is true and q is false (T ⇒ F ≡ F); true in all other cases.
+       * Alternative expressions: "q if p", "p only if q", "p is sufficient for q", "q is necessary for p".
+     - Bi-implication ("if and only if", ⇔): p ⇔ q is True if p and q have the same truth value; false if they have different truth values.
+       * Alternative expressions: "p iff q", "p is necessary and sufficient for q".
+     - Negation ("not", ¬): ¬p (or -p) reverses the truth value (if p is T, ¬p is F; if p is F, ¬p is T).
 
-2. The Dot Product (Scalar Product):
-   • Definition: a · b = a₁b₁ + a₂b₂ + a₃b₃ = |a||b| cos θ.
-   • Orthogonality: Two non-zero vectors a and b are perpendicular (orthogonal) iff a · b = 0.
-   • Vector Projection of b onto a:
-     proj_a(b) = [(a · b) / |a|²] a.
-   • Scalar Component of b along a: comp_a(b) = (a · b) / |a|.
+2. Compound Propositions, Truth Tables & Derived Conditionals:
+   • Compound Proposition: Formed by joining two or more propositions using connectives. For n propositions, a truth table contains 2ⁿ possible combinations.
+   • Logical Equivalence (P ≡ Q): Two compound propositions share identical truth values for all possible combinations.
+   • Derived Conditionals (Given p ⇒ q):
+     - Converse: q ⇒ p
+     - Inverse: ¬p ⇒ ¬q
+     - Contrapositive: ¬q ⇒ ¬p (Logically equivalent to original implication: p ⇒ q ≡ ¬q ⇒ ¬p).
+   • Important Logical Laws / Identities:
+     - Idempotent Laws: p ≡ p ∨ p, p ≡ p ∧ p
+     - Commutative Laws: p ∧ q ≡ q ∧ p, p ∨ q ≡ q ∨ p
+     - Associative Laws: (p ∧ q) ∧ r ≡ p ∧ (q ∧ r), (p ∨ q) ∨ r ≡ p ∨ (q ∨ r)
+     - Distributive Laws: p ∨ (q ∧ r) ≡ (p ∨ q) ∧ (p ∨ r), p ∧ (q ∨ r) ≡ (p ∧ q) ∨ (p ∧ r)
+     - De Morgan's Laws: ¬(p ∧ q) ≡ ¬p ∨ ¬q, and ¬(p ∨ q) ≡ ¬p ∧ ¬q
+     - Complement Law: ¬(¬p) ≡ p
+   • Classifications:
+     - Tautology: Always true regardless of truth values of components (e.g., p ∨ ¬p).
+     - Contradiction: Always false regardless of truth values of components (e.g., p ∧ ¬p).
+     - Contingency: Neither a tautology nor a contradiction.
+     - Note: P ≡ Q if and only if P ⇔ Q is a tautology.
 
-3. The Cross Product (Vector Product):
-   • Definition: a × b = det | î  ĵ  k̂ ; a₁ a₂ a₃ ; b₁ b₂ b₃ | = <a₂b₃ - a₃b₂, a₃b₁ - a₁b₃, a₁b₂ - a₂b₁>.
-   • Properties: a × b = -(b × a); a × a = 0.
-   • Geometric significance: |a × b| = |a||b| sin θ represents the AREA of the parallelogram spanned by a and b.
-   • Area of triangle with vertices P, Q, R: Area = ½ |PQ × PR|.
-   • Parallel vectors: a ∥ b iff a × b = 0.
+3. Open Propositions & Quantifiers:
+   • Open Proposition (Predicate): A sentence containing variables whose truth value depends on values assigned to those variables (e.g., P(x)).
+   • Universe of Discourse (U): Collection of all allowable values for the variable(s).
+   • Quantifiers (turn open propositions into propositions):
+     - Universal Quantifier (∀ - "for every", "for all", "for each"): (∀x)P(x) is true if P(x) holds for all x ∈ U. Disproven by finding a single counterexample.
+     - Existential Quantifier (∃ - "there exists", "for some", "for at least one"): (∃x)P(x) is true if there is at least one x ∈ U making P(x) true.
+   • Negation of Quantifiers:
+     - ¬(∀x)P(x) ≡ (∃x)¬P(x)
+     - ¬(∃x)P(x) ≡ (∀x)¬P(x)
 
-4. Scalar Triple Product & Coplanarity:
-   • Triple Product: a · (b × c) = det | a₁ a₂ a₃ ; b₁ b₂ b₃ ; c₁ c₂ c₃ |.
-   • Geometric meaning: Absolute value |a · (b × c)| equals the VOLUME of the parallelepiped formed by vectors a, b, and c.
-   • Three vectors are coplanar if and only if a · (b × c) = 0.
+4. Arguments & Validity:
+   • Argument: An assertion that hypotheses/premises (p₁, p₂, ..., pₙ) yield conclusion Q, written as p₁, p₂, ..., pₙ ⊢ Q.
+   • Validity: Valid if conclusion Q is true whenever all premises are simultaneously true (i.e., (p₁ ∧ p₂ ∧ ... ∧ pₙ) ⇒ Q is a tautology).
+   • Common Rules of Inference:
+     - Modus Ponens: p, p ⇒ q ⊢ q
+     - Modus Tollens: ¬q, p ⇒ q ⊢ ¬p
+     - Principle of Syllogism: p ⇒ q, q ⇒ r ⊢ p ⇒ r
+     - Simplification & Conjunction rules.
 
-5. Lines and Planes in 3D Space:
-   • Line through point r₀ = (x₀, y₀, z₀) parallel to direction vector v = <a, b, c>:
-     - Vector equation: r(t) = r₀ + t v
-     - Parametric equations: x = x₀ + at, y = y₀ + bt, z = z₀ + ct
-     - Symmetric equations: (x - x₀)/a = (y - y₀)/b = (z - z₀)/c.
-   • Plane through P₀(x₀, y₀, z₀) with normal vector n = <A, B, C>:
-     - Standard scalar equation: A(x - x₀) + B(y - y₀) + C(z - z₀) = 0
-     - General linear equation: Ax + By + Cz + D = 0.
-   • Distance from point P₁(x₁, y₁, z₁) to plane Ax + By + Cz + D = 0:
-     D = |A x₁ + B y₁ + C z₁ + D| / √(A² + B² + C²).
+5. Set Theory:
+   • Set: A well-defined collection of objects called elements (x ∈ A means x belongs to A; x ∉ A means it does not).
+   • Descriptions of Sets:
+     - Verbal Method: Described using ordinary descriptive language.
+     - Roster / Complete Listing Method: Elements listed explicitly inside braces, without repetition or regard to order.
+     - Partial Listing Method: Using an ellipsis (...) when elements are numerous/infinite with a clear pattern.
+     - Set-builder Method: A = {x | P(x)} (the set of all x such that P(x) is true).
+   • Subsets and Power Sets:
+     - Subset (B ⊆ A): Every element of B is also in A ((∀x)(x ∈ B ⇒ x ∈ A)).
+     - Proper Subset (B ⊂ A): B ⊆ A and A ≠ B.
+     - Power Set (𝒫(A)): Set of all subsets of A. If finite set A has n elements, it has 2ⁿ subsets and 2ⁿ - 1 proper subsets.
+   • Set Operations:
+     - Union (A ∪ B): Elements in A or in B (or both): {x | x ∈ A ∨ x ∈ B}
+     - Intersection (A ∩ B): Elements in both A and B: {x | x ∈ A ∧ x ∈ B}. Disjoint sets: A ∩ B = ∅.
+     - Difference / Relative Complement (A - B or A \ B): Elements in A but not in B.
+     - Absolute Complement (A' or Aᶜ): Elements of universal set U not in A (U - A).
+     - Symmetric Difference (A Δ B): (A - B) ∪ (B - A).
+   • Key Set Laws:
+     - De Morgan's Laws for Sets: (A ∪ B)' = A' ∩ B' and (A ∩ B)' = A' ∪ B'
+     - Complement Laws: (A')' = A, A ∪ A' = U, A ∩ A' = ∅
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• To find a normal vector n perpendicular to a plane containing three non-collinear points P, Q, R, calculate the cross product: n = PQ × PR.
-• Two planes are perpendicular if their normal vectors have dot product zero: n₁ · n₂ = 0.
+• The conditional p ⇒ q is ONLY false when p is True and q is False. If antecedent p is False, the conditional is ALWAYS True (vacuously true)!
+• A conditional statement p ⇒ q is logically equivalent ONLY to its contrapositive (¬q ⇒ ¬p), NOT to its converse or inverse.
+• For a finite set with n elements: Number of Subsets = 2ⁿ, Number of Proper Subsets = 2ⁿ - 1.
+• Negating a universal quantifier statement (∀) produces an existential quantifier (∃), and vice versa: ¬(∀x)P(x) ≡ (∃x)¬P(x).
         """.trimIndent(),
         colorHex = 0xFF4F46E5,
         initialLikes = 95
@@ -409,52 +661,87 @@ This unit extends two-dimensional calculus to three-dimensional Euclidean space 
         subjectId = "c2",
         subject = "Mathematics",
         unit = "Unit 2",
-        title = "Limits, Continuity & Foundational Theorems",
+        title = "The Real and Complex Number Systems",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Limits form the foundational basis of differential and integral calculus, formalizing the behavior of functions near specific points. Continuity guarantees smooth transitions without breaks, holes, or asymptotes.
+This unit establishes the hierarchy and algebraic structures of numbers—from Natural Numbers (ℕ) through Integers (ℤ), Rationals (ℚ), and Reals (ℝ) to the Complex Number System (ℂ). It covers axiomatic field properties, order, decimal representations, the completeness property, polar representations, De Moivre's theorem, and extraction of roots.
 
 🔍 DETAILED BREAKDOWN
-1. Intuitive & Formal Definitions of Limit:
-   • Intuitive: lim_{x→a} f(x) = L means f(x) gets arbitrarily close to L as x approaches a from either side.
-   • Precise (ε - δ) Definition: For every real ε > 0, there exists a real δ > 0 such that:
-     0 < |x - a| < δ  =>  |f(x) - L| < ε.
-   • One-Sided Limits: Left-hand limit lim_{x→a⁻} f(x) and right-hand limit lim_{x→a⁺} f(x).
-   • Limit Existence Theorem: lim_{x→a} f(x) = L exists if and only if:
-     lim_{x→a⁻} f(x) = lim_{x→a⁺} f(x) = L.
+1. The Real Number System (ℝ) Hierarchy:
+   • Natural Numbers (ℕ = {1, 2, 3, ...}):
+     - Closed under addition and multiplication; satisfies commutativity, associativity, and distributivity.
+     - Multiplicative identity is 1 (no additive identity in ℕ).
+     - Trichotomy: Exactly one holds: a > b, a < b, or a = b.
+     - Divisibility: Prime (exactly two factors: 1 and itself), Composite (≥ 3 factors). 1 is NEITHER prime nor composite.
+     - Fundamental Theorem of Arithmetic: Every composite number has a unique prime factorization up to order.
+     - GCF: Product of common prime factors with lowest exponents (relatively prime if GCF = 1).
+     - LCM: Product of all prime factors present with highest exponents.
+     - Well-Ordering Principle: Every non-empty subset of ℕ has a least (smallest) element.
+     - Principle of Mathematical Induction (PMI): 1) Verify base step P(1); 2) Assume P(k) is true; 3) Prove P(k+1) is true.
+     - Whole Numbers: W = {0, 1, 2, ...} = ℕ ∪ {0}.
+   • Integers (ℤ = {..., -2, -1, 0, 1, 2, ...}):
+     - Closed under addition, subtraction, and multiplication.
+     - Additive identity 0; additive inverse -a (a + (-a) = 0).
+     - Inequality rule: Multiplying by negative reverses inequality (a > b and c < 0 ⇒ ac < bc).
+   • Rational Numbers (ℚ = {a/b : a, b ∈ ℤ, b ≠ 0}):
+     - Lowest terms when GCF(a, b) = 1.
+     - Field properties: Additive inverse -a/b; multiplicative inverse (reciprocal) b/a for non-zero rational.
+     - Decimal representations:
+       * Terminating: Prime factors of simplified denominator are ONLY 2s and/or 5s.
+       * Periodic (Repeating): Contains recurring blocks. Converted via formula d = d × [(10^(k+p) - 10^k) / (10^(k+p) - 10^k)] (k = non-repeating digits after decimal, p = period length).
+   • Irrational Numbers (ℚ'): Non-terminating and non-periodic decimals (e.g., √2, π, e). Proof that √2 is irrational uses parity and coprimality contradiction.
+   • Real Numbers (ℝ = ℚ ∪ ℚ'): 1-to-1 correspondence with points on the real number line.
+     - Completeness Property of ℝ: Every non-empty subset of ℝ bounded above has a least upper bound (lub / supremum) in ℝ; every non-empty subset bounded below has a greatest lower bound (glb / infimum) in ℝ. (Fails in ℚ!).
 
-2. Essential Limit Laws & Squeeze Theorem:
-   • Limit Laws: Sum, Difference, Constant Multiple, Product, Quotient (if denominator limit ≠ 0), and Power rules.
-   • Squeeze (Sandwich) Theorem: If g(x) ≤ f(x) ≤ h(x) on an open interval containing a (except possibly at a) and lim_{x→a} g(x) = lim_{x→a} h(x) = L, then:
-     lim_{x→a} f(x) = L.
-   • Classic Trigonometric Limits:
-     - lim_{x→0} (sin x / x) = 1 (where x is in radians)
-     - lim_{x→0} [(1 - cos x) / x] = 0
-     - lim_{x→0} [(1 - cos x) / x²] = ½.
+2. The Complex Number System (ℂ):
+   • Definition: ℂ = {z : z = x + iy, where x, y ∈ ℝ and i² = -1}.
+     - Real part Re(z) = x; Imaginary part Im(z) = y.
+     - Purely real if y = 0; purely imaginary if x = 0 (with y ≠ 0).
+     - Equality: a + ib = c + id ⇔ a = c and b = d.
+   • Arithmetic in Rectangular Form (z₁ = a + ib, z₂ = c + id):
+     - Addition: (a + c) + i(b + d)
+     - Subtraction: (a - c) + i(b - d)
+     - Multiplication: (ac - bd) + i(ad + bc)
+     - Division: (z₁/z₂) = [(ac + bd)/(c² + d²)] + i[(bc - ad)/(c² + d²)] (c² + d² ≠ 0).
 
-3. Limits Involving Infinity:
-   • Infinite Limits: lim_{x→a} f(x) = ±∞ defines a Vertical Asymptote at line x = a.
-   • Limits at Infinity: lim_{x→±∞} f(x) = L defines a Horizontal Asymptote at line y = L.
-   • For rational function P(x)/Q(x): If deg(P) = deg(Q), limit at infinity is the ratio of leading coefficients; if deg(P) < deg(Q), limit is 0; if deg(P) > deg(Q), limit is ±∞.
+3. Conjugate, Modulus & Inverses:
+   • Complex Conjugate (z̄ = x - iy):
+     - Reflection across real axis: z̄̄ = z.
+     - z + z̄ = 2x = 2 Re(z); z - z̄ = 2iy = 2i Im(z).
+     - Distributes over addition, subtraction, multiplication, and division.
+   • Modulus / Norm (|z| = √(x² + y²)):
+     - Geometric distance from (x, y) to the origin: |z| = |z̄| = |-z|.
+     - Fundamental identity: |z|² = z · z̄.
+     - Multiplicative: |z₁ · z₂| = |z₁| · |z₂|, |z₁ / z₂| = |z₁| / |z₂|.
+     - Triangle Inequality: |z₁ + z₂| ≤ |z₁| + |z₂|, and |z₁ - z₂| ≥ |z₁| - |z₂|.
+   • Inverses:
+     - Additive Inverse: -z = -x - iy.
+     - Multiplicative Inverse (z ≠ 0): z⁻¹ = 1/z = z̄ / |z|² = x/(x² + y²) - i[y/(x² + y²)].
 
-4. Continuity:
-   • Definition: A function f is continuous at x = a if and only if all three conditions are satisfied:
-     1. f(a) is defined (a is in the domain of f).
-     2. lim_{x→a} f(x) exists.
-     3. lim_{x→a} f(x) = f(a).
-   • Classification of Discontinuities:
-     - Removable Discontinuity: lim_{x→a} f(x) exists, but f(a) is either undefined or ≠ limit.
-     - Jump Discontinuity: One-sided limits exist but are unequal (lim_{x→a⁻} f(x) ≠ lim_{x→a⁺} f(x)).
-     - Infinite Discontinuity: One or both one-sided limits are ±∞.
+4. Polar Form, De Moivre's Theorem & Euler's Formula:
+   • Arguments:
+     - General argument: arg(z) = tan⁻¹(y/x).
+     - Principal Argument (Arg z = θ): Unique angle such that -π < θ ≤ π.
+     - Arg(z₁ · z₂) = Arg(z₁) + Arg(z₂); Arg(z₁ / z₂) = Arg(z₁) - Arg(z₂).
+   • Polar Form: z = r(cos θ + i sin θ), where r = |z| and θ = Arg z.
+     - Multiplication: z₁ z₂ = r₁ r₂ [cos(θ₁ + θ₂) + i sin(θ₁ + θ₂)].
+     - Division: z₁ / z₂ = (r₁ / r₂) [cos(θ₁ - θ₂) + i sin(θ₁ - θ₂)].
+   • De Moivre's Formula: For any integer n:
+     zⁿ = [r(cos θ + i sin θ)]ⁿ = rⁿ (cos nθ + i sin nθ).
+   • Euler's Formula: e^(iθ) = cos θ + i sin θ ⇒ Exponential form: z = r e^(iθ), and zⁿ = rⁿ e^(inθ).
 
-5. Major Continuity Theorems:
-   • Intermediate Value Theorem (IVT): If f is continuous on closed interval [a, b] and N is any number strictly between f(a) and f(b), then there exists at least one c ∈ (a, b) such that f(c) = N.
-     - Root Finding Application: If f(a) and f(b) have opposite signs (f(a)·f(b) < 0), there exists c ∈ (a, b) where f(c) = 0.
-   • Extreme Value Theorem (EVT): If f is continuous on a closed interval [a, b], then f attains both an absolute maximum and an absolute minimum on [a, b].
+5. Extraction of n-th Roots of Complex Numbers:
+   • For non-zero z = r(cos θ + i sin θ) = r e^(iθ), there are exactly n distinct n-th roots:
+     w_k = r^(1/n) [cos((θ + 2kπ)/n) + i sin((θ + 2kπ)/n)] = r^(1/n) e^(i(θ + 2kπ)/n)
+     for k = 0, 1, 2, ..., n - 1.
+   • Geometric Representation: The n roots lie evenly spaced on a circle of radius r^(1/n) centered at the origin, with angular separation of 2π/n radians between adjacent roots.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• The expression 0/0 is indeterminate, NOT undefined. Always factor, rationalize radicals using conjugates, or apply trig identities to cancel vanishing terms.
-• To prove a polynomial has a root in [a, b], state that the polynomial is continuous everywhere, verify f(a) and f(b) have opposite signs, and cite the Intermediate Value Theorem.
+• The number 1 is NEITHER prime nor composite. 2 is the ONLY even prime number.
+• A reduced rational a/b yields a terminating decimal if and only if prime factorization of b has only 2s and 5s (2ᵐ · 5ⁿ). Any other prime factor produces a repeating decimal.
+• The Completeness Property holds in ℝ but fails in ℚ (e.g., the set {x ∈ ℚ : x² < 2} is bounded above in ℚ, but its lub √2 ∉ ℚ).
+• Modulus identity |z|² = z · z̄ is the fastest way to evaluate division and find multiplicative inverse: z⁻¹ = z̄ / |z|².
+• The n roots of any complex number always form vertices of a regular n-sided polygon inscribed in a circle of radius |z|^(1/n).
         """.trimIndent(),
         colorHex = 0xFF4F46E5,
         initialLikes = 88
@@ -464,51 +751,80 @@ Limits form the foundational basis of differential and integral calculus, formal
         subjectId = "c2",
         subject = "Mathematics",
         unit = "Unit 3",
-        title = "Derivatives, Applications & Optimization",
+        title = "Functions & Transcendental Equations",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-The derivative measures the instantaneous rate of change of a function and represents the slope of the tangent line. Applications include curve sketching, finding extreme values, motion analysis, and optimization.
+A function is a foundational mathematical object formalizing deterministic dependence between variables. This unit comprehensively covers relations, domain/range, algebraic operations, function composition, invertibility, polynomial and rational functions (with asymptotes), and transcendental functions (exponential, logarithmic, trigonometric, and hyperbolic).
 
 🔍 DETAILED BREAKDOWN
-1. Definition & Fundamental Rules:
-   • Definition: f'(x) = lim_{h→0} [f(x+h) - f(x)] / h = lim_{z→x} [f(z) - f(x)] / (z - x).
-   • Differentiability implies Continuity, but the converse is FALSE (e.g., f(x) = |x| is continuous at 0, but not differentiable because left/right derivatives differ).
-   • Essential Derivative Rules:
-     - Power Rule: d/dx (xⁿ) = n xⁿ⁻¹
-     - Product Rule: (u v)' = u'v + u v'
-     - Quotient Rule: (u / v)' = (u'v - u v') / v²
-     - Chain Rule: d/dx [f(g(x))] = f'(g(x)) · g'(x).
-     - Exponential & Log: d/dx (eˣ) = eˣ; d/dx (aˣ) = aˣ ln a; d/dx (ln x) = 1/x.
-     - Trigonometric: d/dx (sin x) = cos x; d/dx (cos x) = -sin x; d/dx (tan x) = sec² x; d/dx (sec x) = sec x tan x.
-     - Inverse Trig: d/dx (arcsin x) = 1 / √(1 - x²); d/dx (arctan x) = 1 / (1 + x²).
+1. Relations & Functions Fundamentals:
+   • Cartesian Product: A × B = {(a, b) : a ∈ A, b ∈ B}. Equality: (a, b) = (c, d) ⇔ a = c and b = d.
+   • Relation: Any subset R ⊆ A × B. Domain: Dom(R) = {a ∈ A : (a, b) ∈ R}; Range: Range(R) = {b ∈ B : (a, b) ∈ R} ⊆ B (Codomain).
+   • Special Relations on Set A: Universal (A × A), Identity ({(a, a) : a ∈ A}), Empty (∅).
+   • Inverse Relation (R⁻¹): R⁻¹ = {(b, a) : (a, b) ∈ R}. Notice Dom(R⁻¹) = Range(R) and Range(R⁻¹) = Dom(R).
+   • Function (f: A → B): Relation where Dom(f) = A and each element in A maps to EXACTLY ONE element in B (if (x, y) ∈ f and (x, z) ∈ f, then y = z). Notation: y = f(x).
 
-2. Implicit Differentiation & Higher Derivatives:
-   • Applied when y is not expressed explicitly in terms of x. Differentiate both sides with respect to x treating y as a function y(x) and applying chain rule (d/dx [y²] = 2y dy/dx), then solve algebraically for dy/dx.
+2. Operations, Composition & Inverses:
+   • Algebraic Operations:
+     - Sum, Difference, Product: Dom(f ± g) = Dom(f · g) = Dom(f) ∩ Dom(g).
+     - Quotient: Dom(f / g) = [Dom(f) ∩ Dom(g)] \ {x : g(x) = 0}.
+   • Composite Function (f ∘ g)(x) = f(g(x)): Dom(f ∘ g) = {x ∈ Dom(g) : g(x) ∈ Dom(f)}.
+   • Function Classifications:
+     - One-to-One (Injective): f(x₁) = f(x₂) ⇒ x₁ = x₂ (passes Horizontal Line Test).
+     - Onto (Surjective): Range(f) = B (every element in codomain has a pre-image).
+     - Bijective: Both one-to-one and onto.
+   • Inverse Function (f⁻¹): Exists if and only if f is 1-to-1.
+     - Dom(f⁻¹) = Range(f) and Range(f⁻¹) = Dom(f).
+     - Steps: Set y = f(x), swap x and y, and solve explicitly for y = f⁻¹(x). Note: f⁻¹(x) ≠ 1/f(x).
 
-3. Mean Value Theorem (MVT):
-   • If f is continuous on [a, b] and differentiable on (a, b), there exists at least one c ∈ (a, b) such that:
-     f'(c) = [f(b) - f(a)] / (b - a).
-   • Rolle's Theorem: If additionally f(a) = f(b), then there exists c ∈ (a, b) such that f'(c) = 0.
+3. Polynomials, Theorems & Rational Functions:
+   • Polynomial: p(x) = aₙ xⁿ + ... + a₁ x + a₀ (aₙ ≠ 0, n ∈ ℕ ∪ {0}). Domain = ℝ; at most n real zeros and n - 1 turning points.
+   • Core Polynomial Theorems:
+     - Division Algorithm: p(x) = d(x) · q(x) + R(x), where deg(R) < deg(d) or R(x) = 0.
+     - Remainder Theorem: Remainder when dividing p(x) by (x - r) is R = p(r).
+     - Factor Theorem: (x - r) is a factor of p(x) ⇔ p(r) = 0.
+     - Location Theorem (IVP): If p(a)·p(b) < 0, there is at least one real zero in (a, b).
+     - Fundamental Theorem of Algebra: Every degree n ≥ 1 polynomial has at least one complex zero.
+     - Linear Factorization: Factors into n linear factors p(x) = aₙ(x - r₁)...(x - rₙ) over ℂ.
+     - Conjugate Roots: For real coefficients, non-real roots occur in conjugate pairs (a ± bi).
+     - Rational Root Theorem: Rational zero p/q has p dividing constant term a₀ and q dividing leading coefficient aₙ.
+   • Rational Functions & Asymptotes (f(x) = n(x)/d(x)):
+     - Domain: {x ∈ ℝ : d(x) ≠ 0}.
+     - Vertical Asymptote (VA): Line x = a where d(a) = 0 and n(a) ≠ 0 in simplified form.
+     - Horizontal Asymptote (HA):
+       * deg(n) < deg(d) ⇒ y = 0.
+       * deg(n) = deg(d) ⇒ y = aₙ / bₙ (ratio of leading coefficients).
+       * deg(n) > deg(d) ⇒ No HA.
+     - Oblique (Slant) Asymptote (OA): Occurs ONLY when deg(n) = deg(d) + 1; found by quotient of division y = ax + b.
 
-4. Curve Sketching & Extrema:
-   • Critical Point: Any point c in domain of f where f'(c) = 0 or f'(c) does not exist.
-   • First Derivative Test:
-     - f'(x) changes from + to - at c => local maximum at c.
-     - f'(x) changes from - to + at c => local minimum at c.
-   • Concavity & Second Derivative Test:
-     - f''(x) > 0 on an interval => curve is concave upward (CU).
-     - f''(x) < 0 on an interval => curve is concave downward (CD).
-     - Inflection Point: Point where curve changes concavity and has a tangent line.
-     - If f'(c) = 0 and f''(c) > 0 => local minimum; if f''(c) < 0 => local maximum; if f''(c) = 0 => test is inconclusive.
+4. Exponential & Logarithmic Functions:
+   • Exponent Rules: ⁿ√(aⁿ) = a if n is odd; ⁿ√(aⁿ) = |a| if n is even.
+   • Exponential Function (y = bˣ, b > 0, b ≠ 1):
+     - Dom = ℝ, Range = (0, ∞); y-intercept (0, 1); HA at line y = 0.
+     - Increasing if b > 1; decreasing if 0 < b < 1. Natural base: eˣ (e ≈ 2.71828).
+   • Logarithmic Function (y = log_b x ⇔ bʸ = x):
+     - Dom = (0, ∞), Range = ℝ; x-intercept (1, 0); VA at line x = 0.
+     - Laws: log_b(uv) = log_b u + log_b v; log_b(u/v) = log_b u - log_b v; log_b(uʳ) = r log_b u.
+     - Change of Base: log_b x = (log_a x) / (log_a b).
 
-5. Indeterminate Forms & L'Hôpital's Rule:
-   • For limits of type 0/0 or ±∞/±∞:
-     lim_{x→a} [f(x) / g(x)] = lim_{x→a} [f'(x) / g'(x)].
-   • For product 0 · ∞, rewrite as f / (1/g). For exponential forms 0⁰, 1^∞, ∞⁰, use y = f(x)^g(x) => ln y = g(x) ln(f(x)).
+5. Trigonometric & Hyperbolic Functions:
+   • Angle & Coordinate Definitions: s = rθ (radians); sin θ = y/r, cos θ = x/r, tan θ = y/x.
+   • Periods: sin, cos, csc, sec have period 2π; tan and cot have period π.
+   • Key Trig Identities:
+     - Pythagorean: sin² x + cos² x = 1, 1 + tan² x = sec² x, 1 + cot² x = csc² x.
+     - Double-Angle: sin 2x = 2 sin x cos x; cos 2x = cos² x - sin² x = 2 cos² x - 1 = 1 - 2 sin² x.
+     - Half-Angle: sin(x/2) = ±√[(1 - cos x)/2]; cos(x/2) = ±√[(1 + cos x)/2].
+   • Hyperbolic Functions:
+     - Definitions: sinh x = (eˣ - e⁻ˣ)/2 (odd), cosh x = (eˣ + e⁻ˣ)/2 (even, Range [1, ∞)), tanh x = sinh x / cosh x.
+     - Identities: cosh² x - sinh² x = 1, 1 - tanh² x = sech² x, coth² x - 1 = csch² x.
+     - Notice: cosh x > sinh x for all real x.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• When applying L'Hôpital's rule, differentiate the numerator and denominator SEPARATELY (f'/g'). Do NOT use the quotient rule!
-• To find absolute extrema on a closed interval [a, b], evaluate f(x) at all critical points in (a, b) AND at both endpoints a and b, then compare values directly.
+• Invertibility Requirement: A function f must be one-to-one (bijective to its range) to have an inverse function f⁻¹. Always use the Horizontal Line Test!
+• Holes vs. Vertical Asymptotes: Always factor and reduce rational functions first! If (x - c) cancels from both numerator and denominator, x = c is a REMOVABLE HOLE, not a vertical asymptote.
+• Oblique Asymptotes exist strictly when deg(numerator) = deg(denominator) + 1. If numerator degree exceeds by 2 or more, no linear asymptote exists.
+• Radical simplification trap: √(x²) = |x|, NOT simply x!
+• Crucial sign difference: In circular trig, cos² x + sin² x = 1. In hyperbolic trig, cosh² x - sinh² x = 1.
         """.trimIndent(),
         colorHex = 0xFF4F46E5,
         initialLikes = 104
@@ -518,239 +834,97 @@ The derivative measures the instantaneous rate of change of a function and repre
         subjectId = "c2",
         subject = "Mathematics",
         unit = "Unit 4",
-        title = "Integration Techniques (Substitution, Parts, Partial Fractions)",
+        title = "Analytic Geometry & Conic Sections",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Integration is the reverse process of differentiation and the mechanism for computing accumulated quantities and areas. Mastering diverse analytical integration techniques is critical for solving differential and physical equations.
+Analytic geometry bridges algebra and Euclidean geometry via Cartesian coordinates. This unit covers line equations and division of segments, point-to-line distances, circles, conic sections (parabolas, ellipses, hyperbolas), rotation of coordinate axes, and discriminant classification of general second-degree equations.
 
 🔍 DETAILED BREAKDOWN
-1. Antiderivatives & Fundamental Theorem of Calculus (FTC):
-   • Standard Indefinite Integrals:
-     - ∫ xⁿ dx = (xⁿ⁺¹) / (n + 1) + C (for n ≠ -1)
-     - ∫ (1 / x) dx = ln|x| + C
-     - ∫ eᵃˣ dx = (1/a) eᵃˣ + C
-     - ∫ sin(kx) dx = -(1/k) cos(kx) + C; ∫ cos(kx) dx = (1/k) sin(kx) + C
-     - ∫ sec² x dx = tan x + C; ∫ sec x tan x dx = sec x + C
-     - ∫ dx / (a² + x²) = (1/a) arctan(x/a) + C
-     - ∫ dx / √(a² - x²) = arcsin(x/a) + C.
-   • Fundamental Theorem of Calculus:
-     - FTC Part 1: d/dx [∫_a^x f(t) dt] = f(x). With Leibniz rule:
-       d/dx [∫_u(x)^v(x) f(t) dt] = f(v(x)) v'(x) - f(u(x)) u'(x).
-     - FTC Part 2 (Evaluation Theorem): ∫_a^b f(x) dx = F(b) - F(a), where F'(x) = f(x).
+1. Lines, Distance & Division of Segments:
+   • Distance Formula: |PQ| = √[(x₂ - x₁)² + (y₂ - y₁)²]. Distance from origin: |OP| = √(x² + y²).
+   • Division of Segment: Point R(x₀, y₀) dividing PQ in ratio |PR| : |RQ| = r₁ : r₂:
+     x₀ = (x₁ r₂ + x₂ r₁) / (r₁ + r₂),  y₀ = (y₁ r₂ + y₂ r₁) / (r₁ + r₂).
+     - Midpoint Formula (r₁ : r₂ = 1 : 1): M = ((x₁ + x₂)/2, (y₁ + y₂)/2).
+   • Slope (m): m = (y₂ - y₁) / (x₂ - x₁) = tan θ (inclination angle 0 ≤ θ < π). Horizontal: m = 0; Vertical: slope undefined.
+   • Forms of Linear Equations:
+     - Point-Slope: y - y₁ = m(x - x₁)
+     - Slope-Intercept: y = mx + b (b is y-intercept)
+     - Intercept Form: x/a + y/b = 1 (a, b ≠ 0)
+     - General Form: ax + by + c = 0 (a, b not both zero).
+   • Parallel & Perpendicular Lines:
+     - Parallel (ℓ₁ ∥ ℓ₂): m₁ = m₂ (or both vertical).
+     - Perpendicular (ℓ₁ ⊥ ℓ₂): m₁ m₂ = -1 (or one vertical and one horizontal).
+   • Point-to-Line Distance: Perpendicular distance from P(x₀, y₀) to ax + by + c = 0:
+     d(P, L) = |a x₀ + b y₀ + c| / √(a² + b²). From origin: |c| / √(a² + b²).
 
-2. Integration by Substitution (u-substitution):
-   • Formula: ∫ f(g(x)) g'(x) dx = ∫ f(u) du, with u = g(x) and du = g'(x) dx.
-   • For definite integrals, adjust limits of integration:
-     ∫_a^b f(g(x)) g'(x) dx = ∫_{g(a)}^{g(b)} f(u) du.
+2. Circles:
+   • Standard Equation: (x - h)² + (y - k)² = r² (Center (h, k), radius r > 0). Origin: x² + y² = r².
+   • General Form (x² + y² + Dx + Ey + F = 0):
+     - Center: (-D/2, -E/2); Radius: r = ½√(D² + E² - 4F).
+     - Classification: D² + E² - 4F > 0 (real circle); = 0 (single point / point-circle); < 0 (no real locus).
+   • Tangency Condition: Perpendicular distance from center C to line ℓ:
+     - d(C, ℓ) > r ⇒ No intersection.
+     - d(C, ℓ) < r ⇒ Secant line (two intersection points).
+     - d(C, ℓ) = r ⇒ Tangent line (radius to point of tangency is perpendicular to tangent line).
 
-3. Integration by Parts:
-   • Formula: ∫ u dv = u v - ∫ v du.
-   • Selection priority for choosing u (LIATE Rule):
-     - L: Logarithmic functions (ln x, log₂ x)
-     - I: Inverse trigonometric functions (arcsin x, arctan x)
-     - A: Algebraic / polynomial functions (x², 3x)
-     - T: Trigonometric functions (sin x, cos x)
-     - E: Exponential functions (eˣ, 2ˣ).
-   • Tabular Integration: Fast method when polynomial u(x) is differentiated repeatedly until it reaches 0 while dv is repeatedly integrated.
+3. Parabolas:
+   • Definition: Set of points equidistant from focus F and directrix line L.
+   • Components: Vertex V (midpoint between focus and directrix), focal length p = |VF| > 0, Latus Rectum length = 4p.
+   • Standard Equations:
+     - Vertical (Opens Up): (x - h)² = 4p(y - k); Focus: (h, k + p); Directrix: y = k - p; Axis: x = h.
+     - Vertical (Opens Down): (x - h)² = -4p(y - k); Focus: (h, k - p); Directrix: y = k + p; Axis: x = h.
+     - Horizontal (Opens Right): (y - k)² = 4p(x - h); Focus: (h + p, k); Directrix: x = h - p; Axis: y = k.
+     - Horizontal (Opens Left): (y - k)² = -4p(x - h); Focus: (h - p, k); Directrix: x = h + p; Axis: y = k.
+     - At Origin (0, 0): Reduces to x² = ±4py and y² = ±4px.
 
-4. Trigonometric Substitutions:
-   • For expressions with:
-     - √(a² - x²) => substitute x = a sin θ, dx = a cos θ dθ; identity: a² - x² = a² cos² θ.
-     - √(a² + x²) => substitute x = a tan θ, dx = a sec² θ dθ; identity: a² + x² = a² sec² θ.
-     - √(x² - a²) => substitute x = a sec θ, dx = a sec θ tan θ dθ; identity: x² - a² = a² tan² θ.
+4. Ellipses:
+   • Definition: Set of points where sum of distances to two foci is constant: |PF'| + |PF| = 2a.
+   • Relationships: Major axis = 2a, Minor axis = 2b, Focal distance = c.
+     - Fundamental Relation: a² = b² + c² ⇒ c² = a² - b² (where a ≥ b).
+     - Eccentricity: e = c / a = √(a² - b²) / a (0 < e < 1; as e → 0, ellipse approaches circle).
+   • Standard Equations:
+     - Horizontal: (x - h)²/a² + (y - k)²/b² = 1 (a > b). Foci: (h ± c, k); Vertices: (h ± a, k).
+     - Vertical: (x - h)²/b² + (y - k)²/a² = 1 (a > b). Foci: (h, k ± c); Vertices: (h, k ± a).
+   • General Form (Ax² + Cy² + Dx + Ey + F = 0, A, C > 0):
+     - Ellipse if D²C + E²A - 4ACF > 0; degenerate point if = 0; empty if < 0.
 
-5. Integration of Rational Functions by Partial Fractions:
-   • For rational function P(x)/Q(x): If deg(P) ≥ deg(Q), perform polynomial long division first.
-   • Factor denominator Q(x) into linear and irreducible quadratic factors:
-     - Distinct linear factor (ax + b) => A / (ax + b)
-     - Repeated linear factor (ax + b)ᵏ => A₁/(ax+b) + A₂/(ax+b)² + ... + A_k/(ax+b)ᵏ
-     - Irreducible quadratic (ax² + bx + c) => (Ax + B) / (ax² + bx + c).
-   • Clear denominators and solve for unknown constants A, B, C via substitution or coefficient matching.
+5. Hyperbolas:
+   • Definition: Set of points where absolute difference of distances to two foci is constant: ||PF'| - |PF|| = 2a.
+   • Relationships: Transverse axis = 2a (connects vertices), Conjugate axis = 2b, Focal distance = c.
+     - Fundamental Relation: c² = a² + b² ⇒ c = √(a² + b²) (where c > a).
+     - Eccentricity: e = c / a > 1.
+   • Standard Equations & Asymptotes:
+     - Horizontal: (x - h)²/a² - (y - k)²/b² = 1. Asymptotes: y - k = ±(b/a)(x - h).
+     - Vertical: (y - k)²/a² - (x - h)²/b² = 1. Asymptotes: y - k = ±(a/b)(x - h).
+
+6. General Second-Degree Equations & Rotation of Axes:
+   • General Form: Ax² + Bxy + Cy² + Dx + Ey + F = 0.
+   • Classification Without Rotation (B = 0):
+     - Parabola: AC = 0 (exactly one quadratic term is present).
+     - Circle: A = C ≠ 0 (same sign and equal coefficient).
+     - Ellipse: AC > 0 with A ≠ C (same sign, unequal).
+     - Hyperbola: AC < 0 (opposite signs).
+   • Rotation of Axes (B ≠ 0):
+     - Coordinates rotate counterclockwise by θ: x = x' cos θ - y' sin θ, y = x' sin θ + y' cos θ.
+     - Eliminating xy-term: cot 2θ = (A - C) / B (if A = C, θ = 45°).
+   • Invariant Discriminant Test (Δ = B² - 4AC):
+     - Parabola: B² - 4AC = 0
+     - Ellipse / Circle: B² - 4AC < 0
+     - Hyperbola: B² - 4AC > 0
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Don't forget the integration constant (+ C) for all indefinite integrals!
-• In FTC Part 1 problems like d/dx ∫_0^{x³} sin(t²) dt, remember to multiply by the derivative of the upper limit: sin((x³)²) · (3x²) = 3x² sin(x⁶).
+• Contrast the Pythagorean relations: For an Ellipse, a² = b² + c² (a is longest, e < 1). For a Hyperbola, c² = a² + b² (c is longest, e > 1).
+• In parabolas, the focal width (length of latus rectum) is always 4p.
+• Tangency verification: A line is tangent to a circle if and only if the perpendicular distance from the center to the line equals the radius (d = r).
+• Rotation angle: When A = C in Ax² + Bxy + Cy² + ... = 0, the rotation angle to eliminate the xy-term is always exactly θ = 45° (π/4).
+• Conic discriminant invariant: B² - 4AC remains invariant under any axis rotation.
         """.trimIndent(),
         colorHex = 0xFF4F46E5,
         initialLikes = 97
     ),
-    ShortNote(
-        id = "math-u5",
-        subjectId = "c2",
-        subject = "Mathematics",
-        unit = "Unit 5",
-        title = "Applications of Integrals (Areas, Volumes & Arc Length)",
-        summary = """
-📌 KEY CONCEPTS & OVERVIEW
-Definite integrals sum infinitesimal slices to compute geometric and physical quantities including planar areas, volumes of revolution, arc lengths, surface areas, and average values.
-
-🔍 DETAILED BREAKDOWN
-1. Area Between Curves:
-   • Area between y = f(x) and y = g(x) from x = a to x = b, with f(x) ≥ g(x):
-     A = ∫_a^b [f(x) - g(x)] dx = ∫_a^b [y_top - y_bottom] dx.
-   • If integrating with respect to y (curves x = f(y) and x = g(y), with f(y) ≥ g(y)):
-     A = ∫_c^d [f(y) - g(y)] dy = ∫_c^d [x_right - x_left] dy.
-   • If curves cross each other, split the integral at intersection points: A = ∫ |f(x) - g(x)| dx.
-
-2. Volumes of Solids of Revolution:
-   • Disk Method (Cross-section perpendicular to axis of revolution, solid core):
-     - Revolution about x-axis: V = π ∫_a^b [R(x)]² dx.
-     - Revolution about y-axis: V = π ∫_c^d [R(y)]² dy.
-   • Washer Method (Solid with a hollow hole/inner core):
-     - Revolution about x-axis: V = π ∫_a^b ([R(x)]² - [r(x)]²) dx, where R(x) is outer radius and r(x) is inner radius from rotation axis.
-   • Cylindrical Shells Method (Slicing parallel to axis of revolution):
-     - Revolution about vertical axis (e.g. y-axis):
-       V = 2π ∫_a^b (radius)(height) dx = 2π ∫_a^b x [f(x) - g(x)] dx.
-     - Revolution about horizontal axis (e.g. x-axis):
-       V = 2π ∫_c^d y [f(y) - g(y)] dy.
-
-3. Arc Length of a Curve:
-   • Arc length L of smooth curve y = f(x) from x = a to x = b:
-     L = ∫_a^b √(1 + [f'(x)]²) dx = ∫_a^b √(1 + (dy/dx)²) dx.
-   • For curve x = g(y) from y = c to y = d:
-     L = ∫_c^d √(1 + [g'(y)]²) dy = ∫_c^d √(1 + (dx/dy)²) dy.
-
-4. Area of Surface of Revolution:
-   • Rotating smooth curve y = f(x) about the x-axis:
-     S = 2π ∫_a^b y ds = 2π ∫_a^b f(x) √(1 + [f'(x)]²) dx.
-   • Rotating curve about the y-axis:
-     S = 2π ∫_a^b x ds = 2π ∫_a^b x √(1 + [f'(x)]²) dx.
-
-5. Average Value of a Function:
-   • Formula: f_avg = [1 / (b - a)] ∫_a^b f(x) dx.
-   • Mean Value Theorem for Integrals: If f is continuous on [a, b], there exists at least one number c ∈ [a, b] such that:
-     f(c) = f_avg => ∫_a^b f(x) dx = f(c)(b - a).
-     (Geometrically, area under curve equals area of rectangle with width (b-a) and height f(c)).
-
-💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Washer method vs Shell method choice:
-  - If revolving around x-axis: Washer uses dx, Shell uses dy.
-  - If revolving around y-axis: Washer uses dy, Shell uses dx. Choose the one whose integrand is simpler to integrate!
-• In Washer method, compute (R² - r²), NOT (R - r)². Squaring must occur BEFORE subtraction!
-        """.trimIndent(),
-        colorHex = 0xFF4F46E5,
-        initialLikes = 91
-    ),
-    ShortNote(
-        id = "math-u6",
-        subjectId = "c2",
-        subject = "Mathematics",
-        unit = "Unit 6",
-        title = "Multivariable Calculus, Partial Derivatives & Double Integrals",
-        summary = """
-📌 KEY CONCEPTS & OVERVIEW
-Multivariable calculus extends single-variable concepts to functions of several independent variables z = f(x, y). It analyzes rates of change in multidimensional space through partial derivatives and evaluates volumes, masses, and planar areas using double integrals.
-
-🔍 DETAILED BREAKDOWN
-1. Functions of Several Variables & Limits:
-   • Domain & Range: Set of ordered pairs (x, y) for which the function is defined. Level Curves (contour lines) f(x, y) = c represent horizontal slices of 3D surfaces.
-   • Multivariable Limits: lim_{(x,y)→(x₀,y₀)} f(x, y) = L exists ONLY if f(x, y) approaches L along EVERY possible path approaching (x₀, y₀).
-   • Two-Path Test for Non-Existence: If f(x, y) approaches different values along two distinct curves (e.g., y = mx vs y = kx²), the limit does NOT exist.
-
-2. Partial Derivatives, Gradient Vector & Directional Derivatives:
-   • Partial Derivatives:
-     - ∂f/∂x = f_x: Differentiate with respect to x treating y as a constant.
-     - ∂f/∂y = f_y: Differentiate with respect to y treating x as a constant.
-     - Clairaut's Theorem (Schwarz's Theorem): If mixed partials f_xy and f_yx are continuous on an open disk, then f_xy = f_yx.
-   • Gradient Vector:
-     - ∇f(x, y) = ⟨f_x(x, y), f_y(x, y)⟩ = (∂f/∂x) î + (∂f/∂y) ĵ.
-     - Geometric Properties: ∇f points in the direction of MAXIMUM rate of increase of f; |∇f| is the maximum rate of increase; ∇f is ORTHOGONAL (perpendicular) to the level curve f(x, y) = k at (x₀, y₀).
-   • Directional Derivative:
-     - Rate of change of f in the direction of unit vector u = ⟨u₁, u₂⟩:
-       D_u f(x, y) = ∇f(x, y) · u = f_x cos θ + f_y sin θ.
-
-3. Double Integrals over General Regions:
-   • Fubini's Theorem: For continuous f on rectangle R = [a, b] × [c, d]:
-     ∬_R f(x, y) dA = ∫_a^b ∫_c^d f(x, y) dy dx = ∫_c^d ∫_a^b f(x, y) dx dy.
-   • Type I Region: Bounded by continuous curves y = g₁(x) and y = g₂(x) over a ≤ x ≤ b:
-     ∬_D f(x, y) dA = ∫_a^b [∫_{g₁(x)}^{g₂(x)} f(x, y) dy] dx.
-   • Type II Region: Bounded by continuous curves x = h₁(y) and x = h₂(y) over c ≤ y ≤ d:
-     ∬_D f(x, y) dA = ∫_c^d [∫_{h₁(y)}^{h₂(y)} f(x, y) dx] dy.
-   • Reversing Order of Integration: Essential technique when the inner integrand has no elementary antiderivative (e.g., ∫₀¹ ∫_y¹ e^{x²} dx dy).
-
-4. Polar Coordinates in Double Integrals & Geometric Applications:
-   • Coordinate Transformation: x = r cos θ, y = r sin θ, x² + y² = r².
-   • Area Element (Jacobian): dA = dx dy = r dr dθ (NEVER forget the extra factor r!).
-     ∬_R f(x, y) dA = ∫_α^β ∫_{r₁}^{r₂} f(r cos θ, r sin θ) r dr dθ.
-   • Key Applications:
-     - Area of Region D: Area = ∬_D 1 dA.
-     - Volume under surface z = f(x, y) ≥ 0: V = ∬_D f(x, y) dA.
-     - Mass of planar lamina with density ρ(x, y): M = ∬_D ρ(x, y) dA.
-
-💡 EXAM TIPS & HIGH-YIELD FOCUS
-• The most common student error in polar double integration is forgetting the Jacobian r in r dr dθ.
-• Directional derivative formula D_u f = ∇f · u requires u to be a UNIT vector (|u| = 1). If given a generic vector v, always normalize: u = v / |v|.
-        """.trimIndent(),
-        colorHex = 0xFF4F46E5,
-        initialLikes = 88
-    ),
-    ShortNote(
-        id = "math-u7",
-        subjectId = "c2",
-        subject = "Mathematics",
-        unit = "Unit 7",
-        title = "Infinite Sequences, Series Convergence Tests & Power / Taylor Series",
-        summary = """
-📌 KEY CONCEPTS & OVERVIEW
-Infinite series represent the summation of infinitely many terms. Understanding convergence criteria is fundamental to approximating transcendental functions through polynomial expansions (Taylor and Maclaurin series).
-
-🔍 DETAILED BREAKDOWN
-1. Sequences & Divergence Test:
-   • Sequence Convergence: A sequence {a_n} converges to limit L if lim_{n→∞} a_n = L.
-   • Monotonic Sequence Theorem: Every bounded, monotonic sequence is convergent.
-   • Test for Divergence (nth-Term Test): If lim_{n→∞} a_n ≠ 0 or does not exist, the series ∑ a_n DIVERGES.
-     - WARNING: If lim_{n→∞} a_n = 0, the test is INCONCLUSIVE (e.g., harmonic series ∑ 1/n diverges even though 1/n → 0).
-
-2. Benchmark Series & Fundamental Tests:
-   • Geometric Series: ∑_{n=0}^∞ ar^n = a + ar + ar² + ...
-     - Converges to S = a / (1 - r) if and only if |r| < 1. Diverges if |r| ≥ 1.
-   • p-Series Test: ∑_{n=1}^∞ 1 / n^p.
-     - Converges if p > 1.
-     - Diverges if p ≤ 1 (p = 1 is the divergent Harmonic Series).
-   • Integral Test: If f(x) is continuous, positive, and decreasing on [1, ∞) with f(n) = a_n:
-     ∑ a_n and ∫₁^∞ f(x) dx either BOTH converge or BOTH diverge.
-   • Direct Comparison Test (DCT): If 0 ≤ a_n ≤ b_n for all n:
-     - If ∑ b_n converges => ∑ a_n converges.
-     - If ∑ a_n diverges => ∑ b_n diverges.
-   • Limit Comparison Test (LCT): If a_n > 0, b_n > 0 and lim_{n→∞} (a_n / b_n) = c (where 0 < c < ∞):
-     Both series either BOTH converge or BOTH diverge.
-
-3. Advanced Tests & Alternating Series:
-   • Ratio Test: L = lim_{n→∞} |a_{n+1} / a_n|.
-     - If L < 1: Absolutely convergent.
-     - If L > 1: Divergent.
-     - If L = 1: Inconclusive (must use another test; standard for p-series and rational functions). Ideal for factorials (n!) and exponentials (c^n).
-   • Root Test: L = lim_{n→∞} (|a_n|)^{1/n}. Converges if L < 1, diverges if L > 1.
-   • Alternating Series Test (Leibniz's Test): Series ∑ (-1)^n b_n (b_n > 0) converges if:
-     1. b_{n+1} ≤ b_n for all n (terms are non-increasing), AND
-     2. lim_{n→∞} b_n = 0.
-   • Absolute vs Conditional Convergence:
-     - Absolutely Convergent: If ∑ |a_n| converges (implies ∑ a_n also converges).
-     - Conditionally Convergent: If ∑ a_n converges, but ∑ |a_n| diverges (e.g., alternating harmonic series ∑ (-1)^{n+1}/n).
-
-4. Power Series, Radius of Convergence & Taylor Series:
-   • Power Series: ∑_{n=0}^∞ c_n (x - a)^n centered at x = a.
-     - Radius of Convergence R: Found via Ratio Test lim |(c_{n+1}/c_n)(x - a)| < 1.
-     - Interval of Convergence: (a - R, a + R), with endpoints x = a ± R tested individually.
-   • Taylor & Maclaurin Series:
-     - Taylor series of f(x) centered at a: f(x) = ∑_{n=0}^∞ [f^(n)(a) / n!] (x - a)^n.
-     - Maclaurin series: Taylor series centered at a = 0.
-   • Essential Maclaurin Series to Memorize:
-     - e^x = ∑_{n=0}^∞ x^n / n! = 1 + x + x²/2! + x³/3! + ... (R = ∞)
-     - sin x = ∑_{n=0}^∞ (-1)^n x^{2n+1} / (2n+1)! = x - x³/3! + x⁵/5! - ... (R = ∞)
-     - cos x = ∑_{n=0}^∞ (-1)^n x^{2n} / (2n)! = 1 - x²/2! + x⁴/4! - ... (R = ∞)
-     - 1 / (1 - x) = ∑_{n=0}^∞ x^n = 1 + x + x² + x³ + ... (for |x| < 1).
-
-💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Remember: nth-term test can ONLY prove divergence, NEVER convergence!
-• In finding interval of convergence for power series, ALWAYS test the boundary endpoints separately using p-series or alternating series test.
-        """.trimIndent(),
-        colorHex = 0xFF4F46E5,
-        initialLikes = 94
-    ),
 
     // =========================================================================
-    // 3. GENERAL PSYCHOLOGY (c3, Units 1 - 5)
+    // 3. GENERAL PSYCHOLOGY (c3, Units 1 - 11)
     // =========================================================================
     ShortNote(
         id = "psyc-u1",
@@ -760,38 +934,92 @@ Infinite series represent the summation of infinitely many terms. Understanding 
         title = "Essence of Psychology, Schools & Research Foundations",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Psychology is the scientific study of human behavior (overt, directly observable actions) and mental processes (covert, internal experiences like thoughts, emotions, and memories). It seeks empirical evidence to understand mind and action.
+Psychology is the scientific study of human behavior (overt, directly observable actions and reactions) and the underlying mental processes (covert, private internal experiences). Rooted in the Greek words "Psyche" (mind, soul, spirit) and "Logos" (study, knowledge, discourse), psychology is symbolized by the Greek letter Ψ (psi). As an empirical science, it relies on systematic observation and experimentation to fulfill four fundamental objectives: Description, Explanation, Prediction, and Control.
 
 🔍 DETAILED BREAKDOWN
-1. Four Primary Goals of Psychology:
-   • Description: Accurately observing and recording behavior (What is happening?).
-   • Explanation: Determining causes, conditions, and reasons behind behaviors (Why does it happen?). Formulates hypotheses and theories.
-   • Prediction: Foreseeing future behaviors under specific environmental conditions (When will it occur?).
-   • Control / Modification: Applying psychological principles to enhance human functioning and alleviate distress (How can it be changed?).
+1. Definition & Fundamental Concepts:
+   • Etymological Roots: Derived from Greek "Psyche" (mind/soul/spirit) + "Logos" (study/knowledge). Epistemologically, the study of mind/soul, symbolized by Greek letter Ψ (psi).
+   • Modern Scientific Definition: The scientific study of human behavior and underlying mental processes.
+   • Three Essential Components:
+     - Science: Relies on empirical data, structured procedures, and systematic observation rather than intuition or common sense.
+     - Behavior: All overt, outward observable actions (walking, talking, facial expressions, gestures) as well as recognizing covert mental states.
+     - Mental Processes: Private, covert, internal activities that cannot be directly observed (thinking, feeling, reasoning, remembering, dreaming).
 
-2. Historical Evolution & Major Schools of Thought:
-   • Structuralism (Wilhelm Wundt, 1879 Leipzig - Father of experimental psychology; Edward Titchener): Analyzed the basic components of conscious experience using systematic introspection.
-   • Functionalism (William James): Influenced by Darwin; focused on the adaptive purpose and function of consciousness in survival rather than static elements.
-   • Gestalt Psychology (Max Wertheimer, Kurt Koffka, Wolfgang Köhler): Argued that "The whole is greater than the sum of its parts." Studied visual perception and problem solving.
-   • Behaviorism (John B. Watson, B.F. Skinner): Rejected introspection and the study of unobservable consciousness; insisted psychology study only observable, measurable stimulus-response behaviors.
-   • Psychoanalysis (Sigmund Freud): Emphasized the power of the unconscious mind, unresolved early childhood conflicts, and aggressive/sexual drives.
-   • Humanistic Psychology (Carl Rogers, Abraham Maslow): "Third Force"; emphasized conscious free will, innate human goodness, personal growth, and self-actualization.
-   • Cognitive Perspective: Focuses on mental processes like memory, thinking, language, perception, and problem-solving.
-   • Biological/Neuroscience Perspective: Explores physiological, neural, hormonal, and genetic mechanisms underlying behavior.
+2. Four Goals of Psychology:
+   • Description (What is happening?): Observing behavior objectively and recording everything about it (What? Where? To whom? Under what conditions?).
+   • Explanation (Why is it happening?): Discovering the underlying causes and reasons; aids in generating hypotheses and constructing overarching theories.
+   • Prediction (When will it happen again?): Forecasting the likelihood of future behaviors based on past patterns and scientific evidence.
+   • Control (How can it be changed?): Modifying or shaping behavior from undesirable states (e.g., phobias, failure) to desirable ones (resilience, success), and maintaining experimental control (holding extraneous variables constant).
 
-3. Psychological Research Methods:
-   • Descriptive Research: Naturalistic observation (recording in natural setting without interference), Case study (in-depth analysis of a single unique individual), and Survey method (questionnaires/interviews assessing self-reported attitudes).
-   • Correlational Research: Measures statistical association between two variables using correlation coefficient r (-1.00 ≤ r ≤ +1.00). Positive correlation (both move in same direction), negative correlation (inverse movement). Crucial rule: Correlation does NOT prove causation.
-   • Experimental Research: The ONLY method that demonstrates cause-and-effect relationships.
-     - Independent Variable (IV): Factor manipulated by the experimenter.
-     - Dependent Variable (DV): Measured response outcome influenced by IV.
-     - Experimental Group: Receives the treatment/manipulation.
-     - Control Group: Receives no treatment (or placebo), serving as comparison baseline.
-     - Random Assignment: Ensures each participant has equal chance of placement in any group, minimizing confounding variables.
+3. Historical Background & The Birth of Psychology:
+   • Independent Science: Founded in 1879 in Leipzig, Germany, when Wilhelm Wundt established the first formal psychological laboratory.
+   • Wilhelm Wundt: Recognized as the "Father of Modern Psychology."
+   • Objective Introspection: Wundt's method of systematic self-examination and measurement of one's own conscious mental experiences and sensations.
+
+4. Early Schools of Psychology:
+   • Structuralism (Edward Titchener, student of Wundt):
+     - Core Idea: Analyzed the conscious mind into fundamental building blocks/structures.
+     - 3 Basic Elements: Sensations, feelings, and images.
+     - Method: Introspection ("looking inward").
+   • Functionalism (William James, author of first psychology textbook):
+     - Core Idea: Influenced by Darwinian evolution; studied how the mind functions to help organisms adapt, survive, work, and play in their environment.
+     - Methods: Expanded beyond introspection to mental tests, questionnaires, and behavioral observations.
+   • Gestalt Psychology (Max Wertheimer & colleagues):
+     - Core Idea: "The whole is greater than the sum of its parts." The mind cannot be understood by reducing it to disconnected pieces.
+     - "Gestalt" translates to form, whole, configuration, or pattern; focused on perceptual organization.
+   • Behaviorism (John B. Watson; later B.F. Skinner & Edward Thorndike):
+     - Core Idea: Completely rejected non-observable consciousness or mental processes; restricted psychology strictly to observable, measurable behavior.
+     - Key Tenets: Behaviors are conditioned reflexes learned from the environment; organisms are reactive learners; heavy reliance on animal research.
+   • Psychoanalysis (Sigmund Freud, Austrian physician):
+     - Core Idea: Human behavior is governed by powerful unconscious drives, repressed biological instincts, and childhood emotional conflicts.
+     - Hysteria (Conversion Reaction): Physical symptoms originating from suppressed emotional turmoil.
+     - The Iceberg Analogy: Conscious awareness is only the visible tip; the vast submerged mass represents the unconscious mind (suppressed urges, unresolved traumas).
+     - Expressions of Unconscious: Dreams, "Freudian slips" (slips of the tongue), jokes, and accidents.
+     - Methods: Free association, dream analysis, hypnosis, and clinical case studies.
+
+5. Modern Perspectives in Psychology:
+   • Psychodynamic: Modern evolution of psychoanalysis; emphasizes unconscious dynamics, internal motives, and childhood experiences.
+   • Behavioral: Focuses on observable behavior shaped by environmental conditioning (rewards, reinforcers, punishments); known as the "black box" approach (input -> output).
+   • Humanistic: "Third Force"; rejects determinism; emphasizes free will, subjective experience, ethical values, and self-actualization (reaching full potential).
+   • Cognitive: Studies internal mental processing (reasoning, memory, problem-solving, perception, language); uses neuroimaging (PET, EEG).
+   • Biological: Examines physiological/neurological bases: brain structures, nervous system, neurotransmitters, hormones, and genetics.
+   • Socio-Cultural: Examines how cultural norms, social roles, expectations, and ethnic backgrounds shape thought and behavior.
+
+6. Branches and Subfields of Psychology:
+   • Developmental: Studies physical, cognitive, and psychosocial changes across the lifespan (conception to death).
+   • Personality: Investigates enduring traits, individual differences, self-concept, and moral development.
+   • Social: Explores social interactions, relationships, group dynamics, conformity, attitudes, and perception.
+   • Cross-Cultural: Compares behavioral patterns across diverse cultures to assess universality.
+   • Industrial/Organizational (I/O): Applies psychological principles to workplace efficiency, personnel selection, and job satisfaction.
+   • Forensic: Applies psychological principles to criminal justice, court evaluations, and eyewitness testimony.
+   • Educational: Enhances instructional methods, curriculum design, learning dynamics, and academic evaluation.
+   • Health: Investigates psychological factors in promoting physical wellness, disease prevention, and stress management.
+   • Clinical: Diagnoses and treats severe emotional, behavioral, and mental disorders.
+   • Counseling: Assists individuals with milder personal, vocational, marital, and day-to-day adjustment problems.
+
+7. Research Methods in Psychology:
+   • Descriptive Research (observes and describes behavior without assessing causality):
+     - Naturalistic Observation: Observing subjects in natural habitats without interference. (Strengths: high ecological validity; Limitations: observer effect & observer bias).
+     - Case Study: In-depth exploration of a single individual or unique situation. (Strength: rich detail; Limitation: lacks generalizability).
+     - Survey Method: Standardized questionnaires/interviews of large representative samples. (Strengths: fast, covert data; Limitations: sampling bias, social desirability bias).
+   • Correlational Research:
+     - Measures statistical association between variables (-1.00 to +1.00).
+     - CRITICAL RULE: Correlation does NOT prove causation!
+   • Experimental Research:
+     - The ONLY scientific method capable of demonstrating direct cause-and-effect relationships.
+     - Independent Variable (IV): Manipulated variable (the hypothesized cause).
+     - Dependent Variable (DV): Measured response outcome (the hypothesized effect).
+     - Experimental Group: Receives the experimental manipulation/treatment.
+     - Control Group: Receives baseline/placebo condition for comparison.
+     - Random Assignment: Eliminates preexisting participant differences.
+   • Steps of Scientific Research: (1) Defining Problem -> (2) Formulating Hypothesis -> (3) Testing Hypothesis (data collection & stats) -> (4) Drawing Conclusions -> (5) Reporting Results (peer review & replication).
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Remember: Wilhelm Wundt established the first formal psychology laboratory in 1879 in Leipzig, Germany.
-• A correlation coefficient of -0.85 is STRONGER than +0.70. Sign (+/-) indicates direction; absolute value indicates strength!
+• Wundt vs. Titchener: Wilhelm Wundt founded the first psychology lab (1879, Leipzig) and introduced introspection; Titchener brought structuralism to the US and formalized the 3 basic mental elements (sensations, feelings, images).
+• Clinical vs. Counseling Psychology: Clinical deals with severe psychopathology and mental disorders; Counseling deals with milder adjustment, academic, and vocational concerns.
+• IV vs. DV: IV is what the researcher manipulates/controls (cause); DV is what is measured to observe the effect.
+• "The Whole is Greater than the Sum of its Parts": Always identifies Gestalt psychology (Max Wertheimer).
+• Cause-and-Effect: ONLY experimental research establishes causality; correlational research only reveals relationships or associations.
         """.trimIndent(),
         colorHex = 0xFF0D9488,
         initialLikes = 76
@@ -801,52 +1029,96 @@ Psychology is the scientific study of human behavior (overt, directly observable
         subjectId = "c3",
         subject = "General Psychology",
         unit = "Unit 2",
-        title = "Biological Basis of Behavior & Brain Structures",
+        title = "Sensation and Perception",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-All human behavior, emotion, and thought originate from biological processes governed by the nervous and endocrine systems. The brain, with approximately 86 billion neurons, coordinates complex human functioning.
+Sensation and perception serve as the foundational starting points for all psychological processes, including learning, memory, thought, communication, and emotion. Sensation is the physiological detection and transmission of raw physical energy (stimuli) by sensory receptors to the brain. Perception is the higher-order cognitive process that organizes, interprets, and translates raw sensory data into meaningful, conscious experiences. Together, they operate along an unbroken continuum.
 
 🔍 DETAILED BREAKDOWN
-1. Anatomy and Function of the Neuron:
-   • Dendrites: Branching extensions that receive incoming electrochemical signals from adjacent neurons.
-   • Soma (Cell Body): Contains nucleus, maintains metabolic life of cell, and integrates incoming signals.
-   • Axon: Long fiber that transmits electrical impulses (action potentials) away from soma toward terminal buttons.
-   • Myelin Sheath: Fatty insulating glial layer accelerating conduction speed along axon via nodes of Ranvier (saltatory conduction). Degradation causes Multiple Sclerosis.
-   • Terminal Buttons / Synaptic Knobs: Contain synaptic vesicles that release neurotransmitters across the synaptic cleft.
+1. Meanings & Continuum of Sensation and Perception:
+   • Foundational Role: Sensation and perception are the prerequisites for all conscious awareness and cognition.
+   • Sensation:
+     - The process by which stimulation of sensory receptor cells (eyes, ears, nose, tongue, skin) generates and transmits nerve impulses to the brain.
+     - Originates from a stimulus—physical energy (e.g., light waves, sound vibrations) activating sensory receptors.
+     - Detects raw, uninterpreted physical qualities (e.g., color, brightness, pitch, bitterness).
+   • Perception:
+     - The psychological process that organizes, interprets, and translates raw sensory inputs into meaningful patterns and orders.
+     - Recognizing a melody, identifying a voice, or distinguishing geometric forms is perceptual.
+   • The Continuum & Prosopagnosia:
+     - Sensation and perception operate seamlessly: detection triggers immediate cortical interpretation.
+     - Prosopagnosia (Face Blindness): A neurological condition where visual sensation is intact (patient can see individual facial features or a tiny pin on the floor) but perceptual integration fails, making facial recognition impossible.
 
-2. Neural Transmission & Action Potential:
-   • Resting Potential: Neuron's electrical charge when inactive (~ -70 mV, interior negative relative to extracellular fluid due to Na⁺/K⁺ pump).
-   • Action Potential: Rapid depolarization triggered when threshold (~ -55 mV) is reached; voltage-gated Na⁺ channels open, rushing sodium into axon, peaking at +30 to +40 mV.
-   • All-or-None Law: Neuron fires with complete magnitude or does not fire at all.
-   • Synapse: Microscopic gap between presynaptic axon and postsynaptic dendrite. Neurotransmitters bind to specific receptor sites like a lock and key, followed by reuptake or enzymatic degradation.
+2. Sensory Laws & Thresholds:
+   • Absolute Threshold (Limen):
+     - The minimum physical energy of a stimulus that an individual can detect.
+     - Operational Definition: The stimulus intensity detected 50% of the time across repeated trials.
+     - Influenced by stimulus intensity and response bias (subjective cognitive readiness/expectancy).
+   • Difference Threshold / Just Noticeable Difference (JND):
+     - The minimum change in physical stimulation intensity required to detect that a change has occurred 50% of the time.
+   • Weber's Law:
+     - The amount of change required for a JND is a constant fraction (ratio) of the original stimulus intensity: ΔI / I = k.
+     - Example: Weight JND is ~2%. A 50-ounce weight requires a 1-ounce change to be noticed; a 100-ounce weight requires a 2-ounce change.
+     - Applies reliably to moderate stimulus intensities, but breaks down at extreme low or high limits.
+   • Sensory Adaptation:
+     - The physiological tendency of sensory receptors to decrease responsiveness to an unchanging, constant stimulus over time.
+     - Examples: Adjusting to cold pool water, ceasing to smell room odor, ignoring train seat vibrations.
+     - Evolutionary Value: Conserves sensory resources to detect novel, critical environmental changes.
+     - Critical Exception: Receptors do not completely adapt to extreme or intense stimuli (e.g., severe pain, freezing cold) to ensure survival.
 
-3. Key Neurotransmitters:
-   • Acetylcholine (ACh): Muscle contractions, learning, memory. Deficit strongly linked to Alzheimer's disease.
-   • Dopamine: Reward circuits, motor control, pleasure. Excess linked to Schizophrenia; deficit causes Parkinson's disease.
-   • Serotonin: Mood regulation, sleep cycles, appetite. Deficit linked to Clinical Depression.
-   • Norepinephrine: Arousal, fight-or-flight response, vigilance.
-   • GABA (Gamma-Aminobutyric Acid): Primary inhibitory neurotransmitter; dampens neural excitability. Deficit causes severe anxiety/seizures.
-   • Glutamate: Primary excitatory neurotransmitter; vital for synaptic plasticity and memory.
-   • Endorphins: Natural opiate-like pain relievers and mood elevators.
+3. Selectivity of Perception (Attention):
+   • Attention: The selective perceptual filter admitting specific stimuli into awareness while screening out competing inputs.
+   • Perceptual Field: Focus (sharp, clear center of awareness) vs. Margin (dim, vague periphery). Attention shifts dynamically between them.
+   • Determinants of Attention:
+     - External Factors (Stimulus): Size & Intensity (louder/larger/brighter), Repetition, Novelty & Contrast (unexpected differences), Movement (triggers reflexive orienting).
+     - Internal Factors (Observer): Set / Expectancy (mental readiness, e.g., expecting parent hearing phone/baby cry), Motives & Needs (hunger or thirst directing focus toward food/water).
 
-4. Divisions of the Nervous System:
-   • Central Nervous System (CNS): Brain and Spinal Cord (spinal reflex arcs operate without prior brain intervention).
-   • Peripheral Nervous System (PNS):
-     - Somatic Nervous System: Controls voluntary movements of skeletal muscles.
-     - Autonomic Nervous System (ANS): Controls involuntary automatic visceral organs.
-       * Sympathetic Division: "Fight-or-Flight" (dilates pupils, accelerates heart, inhibits digestion, releases adrenaline).
-       * Parasympathetic Division: "Rest-and-Digest" (calms body, slows heart, stimulates digestion, conserves energy).
+4. Form Perception & Gestalt Organization:
+   • Figure-Ground Perception:
+     - The automatic visual division of the field into an object of interest (figure, appearing solid, structured, and closer) and the background (ground, formless and receding).
+     - Reversible figures prove figure-ground segregation is an active, dynamic cognitive process.
+     - Contours: Sharp gradients in brightness, color, or texture delineating figure from ground; disruption creates camouflage.
+   • Gestalt Grouping Laws ("The whole is greater than the sum of its parts"):
+     - Law of Proximity (Nearness): Elements close together in space or time are grouped into units.
+     - Law of Similarity: Elements sharing physical characteristics (color, shape, size) are grouped together.
+     - Law of Good Figure (Symmetry / Prägnanz): Stimuli are organized into symmetrical, stable, and orderly configurations.
+     - Law of Continuity: Lines and curves are perceived as continuing smoothly along an established path rather than making abrupt angular turns.
+     - Law of Closure: Perceptual filling in of gaps in incomplete figures to perceive a unified whole.
 
-5. Cerebral Cortex Lobes & Subcortical Systems:
-   • Frontal Lobe: Motor cortex, planning, reasoning, executive decision-making. Houses Broca's Area (speech production - damage causes Broca's expressive aphasia).
-   • Parietal Lobe: Somatosensory cortex (processes touch, pressure, temperature, body position).
-   • Occipital Lobe: Primary visual cortex (processes visual information).
-   • Temporal Lobe: Primary auditory cortex, houses Wernicke's Area (language comprehension - damage causes fluent but meaningless speech).
-   • Limbic System: Amygdala (fear, aggression, emotional processing), Hippocampus (formation and consolidation of new long-term declarative memories), Hypothalamus (homeostatic regulation: hunger, thirst, temperature, endocrine control).
+5. Depth Perception:
+   • Translates 2D retinal projections (proximal stimuli) into 3D spatial representations (distal stimuli) to judge distance.
+   • Binocular Cues (Require both eyes):
+     - Retinal Disparity: Anatomical separation of the eyes produces slightly different retinal images; closer objects produce greater disparity, computed by cortical neurons.
+     - Convergence: Neuromuscular tension from inward rotation of eyes when focusing on nearby objects; greater muscular strain signals proximity (disrupted by alcohol).
+   • Monocular Cues (Require only one eye):
+     - Accommodation: Muscular feedback from the crystalline lens changing shape; greater curvature signals close proximity.
+     - Motion Parallax: During observer motion, nearby stationary objects appear to move backward rapidly, while distant objects move slowly forward.
+     - Pictorial Cues (Static artistic depth indicators):
+       * Interposition (Overlap): Partially obscured object is perceived as farther.
+       * Relative Size: Smaller retinal image perceived as more distant.
+       * Linear Perspective: Parallel lines (e.g., railroad tracks) converge toward a vanishing point.
+       * Elevation (Relative Height): Objects higher in the visual plane appear more distant.
+       * Shading & Shadows: Highlights/shadows provide 3D depth since light comes from above.
+       * Aerial Perspective: Distant objects appear hazier, bluer, and less distinct due to atmospheric scattering.
+       * Texture Gradient: Coarse, detailed textures appear nearby; dense, fine, uniform textures appear distant.
+
+6. Perceptual Constancies:
+   • Recognizing objects as stable and unchanging despite continuous fluctuations in retinal images:
+     - Size Constancy: Perceiving true physical size regardless of distance (shrinking retinal image interpreted as greater distance).
+     - Shape Constancy: Recognizing geometric shape despite changing viewing angles (e.g., open door remains rectangular though retina receives a trapezoid).
+     - Brightness / Lightness Constancy: Perceiving constant brightness under varying illumination, evaluated relative to surrounding objects.
+
+7. Perceptual Illusions & ESP:
+   • Perceptual Illusions: Distorted mental perceptions resulting from misapplied or misinterpreted sensory cues.
+     - Moon Illusion: Moon appears larger on the horizon than at zenith due to horizon depth cues, despite identical retinal size.
+     - Müller-Lyer Illusion: Identical lines appear unequal due to inward- vs. outward-facing arrowheads (perspective/corner cues).
+   • Extrasensory Perception (ESP): Purported perception without sensory organ involvement (telepathy, clairvoyance, precognition). Not accepted in scientific psychology due to lack of reliable, replicable empirical evidence.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Broca's area is in the Frontal lobe (speech production), while Wernicke's area is in the Temporal lobe (language comprehension).
-• Sympathetic = energy expenditure in emergencies; Parasympathetic = restoration and conservation.
+• Sensation vs. Perception: Sensation is physiological/detection (receptor activation); Perception is cognitive/interpretation (meaning and organization).
+• Absolute Threshold vs. Difference Threshold: Absolute threshold is the minimum energy detected 50% of the time; Difference threshold (JND) is the minimum change detected 50% of the time.
+• Weber's Law: ΔI / I = k (the ratio, not the absolute amount, remains constant).
+• Prosopagnosia: Normal sensation + impaired perception.
+• Retinal Disparity vs. Convergence: Both are binocular; disparity is visual/optical (retinal image difference), convergence is neuromuscular (eye muscle inward pull).
         """.trimIndent(),
         colorHex = 0xFF0D9488,
         initialLikes = 82
@@ -856,279 +1128,758 @@ All human behavior, emotion, and thought originate from biological processes gov
         subjectId = "c3",
         subject = "General Psychology",
         unit = "Unit 3",
-        title = "Sensation, Perception & Gestalt Organization",
+        title = "Theories of Learning & Their Applications",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Sensation is the physiological process of detecting environmental energy via sensory receptors. Perception is the psychological cognitive process of organizing, identifying, and interpreting sensory data to understand the external environment.
+Learning is defined as any relatively permanent change in behavior, knowledge, or mental capability resulting from experience, practice, or environmental interactions. It explicitly excludes behavioral changes caused by biological maturation, fatigue, illness, or psychoactive substances. Psychological theories explain learning through behavioral connections (stimulus-response associations), social observational modeling, and internal cognitive restructuring.
 
 🔍 DETAILED BREAKDOWN
-1. Fundamentals of Psychophysics:
-   • Transduction: Conversion of physical energy (light photons, sound waves) into electro-chemical neural impulses.
-   • Absolute Threshold: Minimum stimulus intensity detectable 50% of the time (e.g., candle flame seen at 30 miles on dark clear night).
-   • Difference Threshold / Just Noticeable Difference (JND): Minimum difference between two stimuli detectable 50% of the time.
-   • Weber's Law: The just noticeable difference is a constant proportion (k) of the original stimulus intensity: ΔI / I = k. (Heavier weights require larger absolute differences to notice a change).
-   • Sensory Adaptation: Diminished sensitivity to constant, unchanging stimulation (e.g., odor in a room becomes imperceptible after prolonged exposure).
+1. Behavioral Theories of Learning:
+   • Focuses on observable, measurable relationships between environmental stimuli (S) and behavioral responses (R).
 
-2. Signal Detection Theory:
-   • Rejects fixed absolute thresholds. Assumes stimulus detection depends on both stimulus strength and psychological state (expectation, fatigue, motivation). Four outcomes: Hit, Miss, False Alarm, Correct Rejection.
+2. Classical Conditioning (Ivan Pavlov - Learning by Association):
+   • Process whereby a neutral stimulus acquires the power to evoke an involuntary, reflexive response after paired association with an unconditioned stimulus.
+   • Five Core Elements:
+     - Unconditioned Stimulus (UCS): Naturally triggers an innate, unlearned physiological reflex (e.g., food/meat powder).
+     - Unconditioned Response (UCR): Innate, unlearned reflex triggered automatically by the UCS (e.g., salivation to food).
+     - Neutral Stimulus (NS): Stimulus that does not evoke the target reflex prior to training (e.g., bell or tone).
+     - Conditioned Stimulus (CS): Previously neutral stimulus that, via repeated contiguous pairing with UCS, elicits a response (e.g., bell sound alone).
+     - Conditioned Response (CR): Learned response elicited by the CS alone following conditioning (e.g., salivation to bell).
+   • Three Conditioning Phases:
+     - Before: NS (Bell) -> No Salivation; UCS (Meat) -> UCR (Salivation).
+     - During: NS (Bell) + UCS (Meat) -> UCR (Salivation).
+     - After: CS (Bell) -> CR (Salivation).
+   • Core Conditioning Principles:
+     - Stimulus Generalization: Eliciting the CR to stimuli physically similar to the original CS (e.g., responding to chimes/phone rings).
+     - Stimulus Discrimination: Differentiating between the original CS and other similar stimuli, responding exclusively to the trained cue.
+     - Extinction: Gradual weakening and cessation of the CR when the CS is repeatedly presented without the reinforcing UCS.
+     - Spontaneous Recovery: Sudden reappearance of an extinguished CR after a rest interval without further training (typically with lower intensity).
 
-3. Gestalt Principles of Perceptual Organization:
-   • Figure-Ground Relationship: Visual system automatically separates the focal object (figure) from background surroundings (ground).
-   • Law of Proximity: Objects placed close together are perceived as belonging to the same group.
-   • Law of Similarity: Visual items sharing physical characteristics (color, shape, size) are grouped together.
-   • Law of Continuity: Preference to perceive smooth, continuous flowing lines rather than abrupt, jagged changes.
-   • Law of Closure: The mind automatically fills in missing gaps in incomplete figures to perceive a complete, enclosed whole.
-   • Law of Simplicity (Prägnanz): Visual stimulus is organized into the simplest, most stable possible interpretation.
+3. Operant Conditioning (B.F. Skinner - Learning by Consequences):
+   • Voluntary behaviors are strengthened or weakened by the environmental consequences that immediately follow them. Organisms "operate" on their environment to produce outcomes.
+   • Consequences of Behavior:
+     - Neutral Consequence: Environmental outcome that does not alter future probability of the response.
+     - Reinforcement: ANY consequence that INCREASES the likelihood that the preceding behavior will recur.
+       * Primary Reinforcers: Biologically innate rewards requiring no training (food, water, pain relief).
+       * Secondary (Conditioned) Reinforcers: Acquired rewards learned through association with primary reinforcers (money, praise, high grades, tokens).
+       * Positive Reinforcement: Adding a desirable stimulus to increase target behavior (e.g., praise, wages, awards).
+       * Negative Reinforcement: Removing/terminating an unpleasant, aversive stimulus to increase target behavior.
+         > Escape Learning: Performing a response that terminates an active unpleasant stimulus (e.g., taking aspirin to end a headache).
+         > Avoidance Learning: Performing a response that prevents a predicted aversive stimulus from occurring (e.g., buckling seatbelt to prevent warning chime).
+     - Punishment: ANY consequence that DECREASES the likelihood that the preceding behavior will recur.
+       * Positive Punishment (Application): Administering an unpleasant event to decrease behavior (e.g., reprimands, fines).
+       * Negative Punishment (Removal): Withdrawing a valued privilege or desirable item to decrease behavior (e.g., loss of phone privileges, grounding, time-out).
+   • The Four Operant Contingencies Grid:
+     - Add Stimulus to Increase Behavior -> Positive Reinforcement (Reward added).
+     - Remove Stimulus to Increase Behavior -> Negative Reinforcement (Aversive stimulus removed).
+     - Add Stimulus to Decrease Behavior -> Positive Punishment (Unpleasant event applied).
+     - Remove Stimulus to Decrease Behavior -> Negative Punishment (Privilege/pleasant item removed).
+   • Schedules of Reinforcement:
+     - Continuous Reinforcement: Reinforcing every single response; optimal for rapid initial acquisition.
+     - Intermittent / Partial Reinforcement: Reinforcing only certain responses; produces high resistance to extinction:
+       * Fixed-Ratio (FR): Reinforcement delivered after a set, fixed number of responses (e.g., factory piecework).
+       * Variable-Ratio (VR): Reinforcement delivered after an unpredictable, varying average number of responses (e.g., slot machines, gambling). Yields highest response rates and highest resistance to extinction!
+       * Fixed-Interval (FI): Reinforcement available for first response after a set elapsed time period (e.g., cramming before fixed weekly exams; scalloped response curve).
+       * Variable-Interval (VI): Reinforcement available for first response after varying, unpredictable time intervals (e.g., unannounced pop quizzes); produces slow, steady responses.
+   • Shaping (Successive Approximations): Reinforcing incremental steps that get progressively closer to the final complex target behavior.
+   • Limitations of Punishment: Ineffective when inconsistent; triggers fear, resentment, or aggression; suppresses behavior only in the presence of the punisher; teaches what NOT to do without demonstrating desirable replacement behaviors.
 
-4. Depth Perception:
-   • Monocular Cues (requires one eye):
-     - Linear Perspective: Parallel lines appear to converge in distance.
-     - Relative Size: Smaller images on retina are perceived as farther away.
-     - Interposition (Overlap): Object partially blocking another is perceived as closer.
-     - Texture Gradient: Coarse detailed textures indicate proximity; smooth dense textures indicate distance.
-     - Motion Parallax: Nearby objects appear to move backward rapidly; distant objects appear stationary or move slowly forward.
-   • Binocular Cues (requires both eyes):
-     - Retinal Disparity: Slight difference between retinal images seen by left and right eyes due to eye separation; greater disparity signifies closer object.
-     - Convergence: Inward muscular rotation of eyes when focusing on nearby objects.
+4. Social Learning Theory / Observational Learning (Albert Bandura):
+   • Behavior is acquired socially by observing, retaining, and imitating the actions of external models.
+   • Three Forms of Reinforcement:
+     - Direct Reinforcement: Concrete rewards given directly to the observer for imitating the model.
+     - Vicarious Reinforcement: Behavioral change from witnessing a model being rewarded or punished for their actions.
+     - Self-Reinforcement: Internal self-evaluation yielding personal feelings of pride, competence, and satisfaction.
+   • Four Essential Conditions for Modeling:
+     1. Attention: Actively perceiving and focusing on the model's significant actions.
+     2. Retention: Storing mental representations of the behavior via imagery or verbal rehearsal.
+     3. Motor Reproduction: Physical and developmental capability to execute the stored mental patterns.
+     4. Motivation: Anticipating an incentive, reward, or goal to demonstrate the learned response.
+   • Educational Applications: Prosocial teacher modeling, peer tutoring building student self-efficacy, and self-regulation training.
 
-5. Perceptual Constancies:
-   • Tendency to perceive objects as unchanging despite shifting sensory inputs on retina:
-     - Size Constancy (person walking away perceived as moving, not shrinking).
-     - Shape Constancy (door opening perceived as maintaining rectangular shape, despite trapezoidal retinal projection).
-     - Color & Brightness Constancy.
+5. Cognitive Learning Theories:
+   • Learning explained through internal mental processing, mental representations, and cognitive reorganization rather than passive stimulus-response bonds.
+   • Latent Learning & Cognitive Maps (Edward Tolman):
+     - Learning that occurs without explicit reinforcement and remains hidden until incentives encourage demonstration.
+     - Tolman & Honzik's 1930 Maze Study: Unreinforced rats formed internal mental representations (cognitive maps) of the maze layout; when food was introduced on day 11, their performance instantly matched rats rewarded continuously from day 1.
+   • Insight Learning (Wolfgang Köhler / Gestalt Psychology):
+     - Cognitive problem-solving through a sudden perceptual restructuring of environmental relationships.
+     - Initial unproductive attempts followed by a sudden realization of the complete solution (the "Aha!" experience).
+     - Insight solutions are retained long-term and readily transferred to solve related novel problems.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Top-down processing is driven by past experience, expectations, and context (concept-driven), whereas bottom-up processing begins with raw sensory inputs (data-driven).
-• Remember: Sensory receptors do not adapt to pain as rapidly or completely as they do to smells, sounds, or touch.
+• Negative Reinforcement vs. Punishment: Reinforcement ALWAYS increases behavior; punishment ALWAYS decreases behavior. Negative reinforcement is NOT punishment—it increases behavior by removing discomfort.
+• Involuntary vs. Voluntary: Classical conditioning governs involuntary reflexes (salivation, fear); Operant conditioning governs voluntary, emitted behaviors.
+• Reinforcement Schedules: Variable-Ratio (VR) produces the highest rate of responding and is the most resistant to extinction.
+• Latent Learning proves that learning (internal mental acquisition) can occur without external reinforcement, whereas reinforcement motivates behavioral performance.
+• Insight Learning is characterized by sudden perceptual restructuring ("Aha!" moment), not gradual trial-and-error.
         """.trimIndent(),
         colorHex = 0xFF0D9488,
-        initialLikes = 79
+        initialLikes = 85
     ),
     ShortNote(
         id = "psyc-u4",
         subjectId = "c3",
         subject = "General Psychology",
         unit = "Unit 4",
-        title = "Theories & Principles of Learning",
+        title = "Memory Systems, Retrieval & Theories of Forgetting",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Learning is defined as any relatively permanent change in behavior, knowledge, or capability resulting from experience, practice, or environmental interaction. It excludes behavioral changes caused by maturation, illness, fatigue, or drugs.
+Memory is the cognitive capacity to encode, store, and retrieve information, skills, and personal experiences across time. It serves as an internal bridge connecting an individual's past to their present cognitive functioning. According to the Atkinson–Shiffrin multi-store model, memory operates as an integrated three-stage information-processing system: Sensory Memory, Short-Term (Working) Memory, and Long-Term Memory. Forgetting is the inability to access or recover previously stored information due to encoding failure, trace decay, interference, displacement, motivated repression, or retrieval cue absence.
 
 🔍 DETAILED BREAKDOWN
-1. Classical Conditioning (Ivan Pavlov - Learning by Association):
-   • Core Components:
-     - Unconditioned Stimulus (UCS): Naturally triggers reflex without prior training (e.g., food/meat powder).
-     - Unconditioned Response (UCR): Involuntary innate reflex to UCS (e.g., salivation to food).
-     - Conditioned Stimulus (CS): Previously neutral stimulus that, through repeated pairing with UCS, triggers conditioned response (e.g., bell/tuning fork).
-     - Conditioned Response (CR): Learned response to previously neutral CS (e.g., salivation to bell).
-   • Conditioning Phenomena:
-     - Acquisition: Initial learning stage where CS is paired with UCS.
-     - Extinction: Gradual weakening and disappearance of CR when CS is presented repeatedly without UCS.
-     - Spontaneous Recovery: Sudden reappearance of an extinguished CR after a rest period.
-     - Stimulus Generalization: Responding to stimuli similar to the original CS (e.g., salivating to a buzzer of similar pitch).
-     - Stimulus Discrimination: Learning to respond exclusively to specific CS while withholding response to different stimuli.
-     - Little Albert Experiment (John Watson): Conditioned fear of white rats paired with loud noise, demonstrating emotional conditioning.
+1. Information-Processing Stages of Memory:
+   • Encoding: Transforming raw sensory input into neural representational codes that the brain can process and retain.
+   • Storage: Maintaining and preserving the encoded memory trace (engram) over time within neural networks.
+   • Retrieval: Accessing, locating, and recovering stored information from memory into conscious awareness when needed.
+   • Note: Forgetting can stem from breakdown at any stage (encoding failure, storage degradation, or retrieval cue failure).
 
-2. Operant Conditioning (B.F. Skinner & Edward Thorndike - Learning by Consequences):
-   • Thorndike's Law of Effect: Responses followed by satisfying outcomes are strengthened; responses followed by unpleasant outcomes are weakened.
-   • Four Behavioral Contingencies:
-     - Positive Reinforcement: Adding a desirable stimulus to INCREASE target behavior (e.g., praise, bonus).
-     - Negative Reinforcement: Removing or avoiding an unpleasant/aversive stimulus to INCREASE target behavior (e.g., putting on seatbelt to stop annoying beep; taking aspirin to relieve headache).
-     - Positive Punishment: Adding an unpleasant stimulus to DECREASE target behavior (e.g., speeding ticket, reprimand).
-     - Negative Punishment (Penalty): Removing a pleasant/valued stimulus to DECREASE target behavior (e.g., revoking phone privileges, grounding).
-   • Schedules of Reinforcement:
-     - Continuous Reinforcement: Reinforcing every response (best for initial acquisition).
-     - Fixed-Ratio (FR): Reinforcement after a set number of responses (e.g., paid every 10 garments produced).
-     - Variable-Ratio (VR): Reinforcement after an unpredictable number of responses (e.g., gambling, slot machines). Produces highest response rates and highest resistance to extinction!
-     - Fixed-Interval (FI): Reinforcement for first response after a set time period (e.g., cramming before weekly exams; scalloped curve).
-     - Variable-Interval (VI): Reinforcement after unpredictable time intervals (e.g., unannounced pop quizzes).
-   • Shaping: Reinforcing successive approximations of a desired complex behavior until final target is achieved.
+2. The Three Memory Stores (Atkinson–Shiffrin Model):
+   • Sensory Memory (Sensory Register):
+     - Initial entry portal capturing an exact, unanalyzed replica of environmental sensory impressions.
+     - Iconic Memory: Visual sensory buffer holding visual/photographic impressions for ~0.5 to 1 second.
+     - Echoic Memory: Auditory sensory buffer holding acoustic traces for ~2 seconds.
+     - High storage capacity, but rapid loss via decay unless selected by attention.
+   • Short-Term Memory (STM) / Working Memory:
+     - Conscious mental workspace holding actively processed information.
+     - Active Processing: Data remains only as long as it is consciously manipulated or rehearsed.
+     - Rapid Accessibility: Immediately available for ongoing cognitive tasks (problem-solving, reasoning, speech).
+     - Temporal Sequence: Preserves the sequential order of incoming items.
+     - Capacity: George Miller's "magic number 7 ± 2" discrete items (5 to 9 bits).
+     - Duration: Approximately 30 seconds without active rehearsal.
+     - Chunking: Grouping smaller, isolated bits of information into meaningful, higher-order units (chunks) to expand capacity (e.g., memorizing phone digits as groups).
+     - Rehearsal Modes:
+       * Maintenance Rehearsal: Rote mental repetition to prevent immediate decay and extend STM duration.
+       * Elaborative Rehearsal: Deep processing linking new information to established knowledge in long-term memory for permanent storage.
+   • Long-Term Memory (LTM):
+     - Permanent, vast storehouse with virtually unlimited storage capacity and indefinite duration.
+     - Declarative (Explicit) Memory (conscious, intentional, verbally communicable recollection):
+       * Episodic Memory: Autobiographical recollections of personally experienced, context-specific events (e.g., your first day at university, what you ate for breakfast).
+       * Semantic Memory: Impersonal, generalized factual knowledge of the world, vocabulary, mathematical rules, and abstract concepts.
+     - Non-Declarative (Implicit) Memory (influences behavior without conscious recollection):
+       * Procedural Memory: Motor skills, automated habits, and "how-to" physical routines (e.g., swimming, cycling, typing).
 
-3. Social Learning / Observational Learning (Albert Bandura):
-   • Asserts that learning occurs without direct reinforcement by observing models (vicarious learning).
-   • Classic Bobo Doll Study: Children exposed to aggressive adult models imitated aggressive actions toward the doll.
-   • Four Essential Mediating Cognitive Processes:
-     1. Attention: Noticing and focusing on the model's behavior.
-     2. Retention: Storing mental representation of observed behavior in memory.
-     3. Motor Reproduction: Physical capability of executing the stored behavior.
-     4. Motivation / Reinforcement: Expectation of reward, incentive, or anticipated consequences.
+3. The Serial Position Effect:
+   • The position of an item in an ordered list determines its recall probability, producing a characteristic U-shaped retention curve:
+   • Primacy Effect: Superior recall of items at the beginning of a sequence; explained by greater rehearsal time enabling transfer to LTM.
+   • Recency Effect: Superior recall of items at the end of a sequence; explained by terminal items actively lingering in STM at the moment of recall.
+   • Middle Items: Lowest recall efficiency; crowded out by limited STM capacity and vulnerable to both proactive and retroactive interference.
+
+4. Factors Influencing Memory Efficiency:
+   • Ability to Retain: Quality and strength of neurobiological memory traces established during learning.
+   • Physical Health & Maturity: Sound physical wellness, age appropriateness, and mature neurological organization.
+   • Will to Remember & Interest: Conscious motivation and active curiosity yield deeper cognitive processing and stronger recall.
+   • Intelligence & Learning Speed: Higher intellectual capability and faster learning support more efficient encoding.
+   • Meaningfulness of Material: Semantically meaningful concepts are retained far longer than abstract or nonsense syllables.
+   • Overlearning: Continuing intentional study and active practice beyond initial mastery strengthens retention and retrieval durability.
+   • Rest & Sleep: Adequate sleep taken immediately after study minimizes waking interference and supports memory consolidation.
+
+5. Meaning & Ebbinghaus Curve of Forgetting:
+   • Forgetting: The inability to retrieve, recognize, or recall information previously encoded in long-term storage.
+   • Hermann Ebbinghaus's Pioneering Research (1885):
+     - Tested himself with lists of nonsense three-letter syllables (e.g., FIW, BOZ) to eliminate semantic bias.
+     - The Forgetting Curve: Forgetting is extremely rapid immediately following initial learning (especially within the first hour); after ~9 hours, memory loss levels off into a gradual, stable plateau.
+     - Relearning Advantage: Relearning previously studied material is significantly faster than initial acquisition (savings score).
+
+6. Theoretical Models of Forgetting:
+   • Decay Theory (Trace Decay): Physical memory traces (engrams) in the brain erode passively over time if not regularly refreshed. Explains sensory and unrehearsed STM decay, but poorly accounts for LTM.
+   • Interference Theory: Competing memories collide and disrupt recall:
+     - Proactive Interference: OLD learning disrupts and interferes with retrieval of NEW information (e.g., calling new roommate by previous roommate's name).
+     - Retroactive Interference: NEW learning disrupts and interferes with recall of PREVIOUSLY learned material (e.g., learning a new phone number makes you forget your old one).
+   • Displacement Theory: Incoming items knock out and displace older items when capacity limits are exceeded; exclusively explains STM loss (7 ± 2 limit).
+   • Motivated Forgetting (Freudian Repression): Unconsciously pushing anxiety-provoking, painful, or traumatic memories into the unconscious as a psychological defense mechanism.
+   • Cue-Dependent Forgetting (Retrieval Failure): Memory remains intact in LTM but cannot be located because appropriate retrieval cues are absent.
+     - Context-Dependent Memory: Retrieval is enhanced when tested in the same environmental/physical setting where encoding occurred.
+     - State-Dependent Memory: Retrieval is improved when an individual's internal physiological or emotional state matches that present during encoding.
+
+7. Evidence-Based Strategies for Enhancing Memory:
+   • Attention & Deliberate Focus: Eliminates divided attention to ensure robust initial sensory encoding.
+   • Elaborative Encoding: Connect concepts through visual, verbal, and conceptual associations.
+   • Add Meaning & Personal Relevance: Link abstract ideas to personal experiences and existing knowledge frameworks.
+   • Distributed Practice & Adequate Sleep: Space study sessions over intervals; sleep facilitates neural consolidation.
+   • Overlearning: Continue review beyond initial 100% mastery to reinforce retrieval pathways.
+   • Active Self-Testing: Practice retrieval testing rather than passive rereading (the testing effect).
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Negative reinforcement is NOT punishment! Reinforcement ALWAYS increases behavior; punishment ALWAYS decreases behavior. Negative simply means removing a stimulus.
-• Variable-Ratio schedule exhibits the highest resistance to extinction in operant conditioning.
+   • Proactive vs. Retroactive Interference:
+     - Proactive: P = Prior/Past interferes with Present/New.
+     - Retroactive: R = Recent/New interferes with Retro/Old.
+   • Primacy vs. Recency Effect: Primacy reflects LTM transfer (rehearsal time); Recency reflects active presence in STM. If recall is delayed by 30 seconds with distraction, the Recency Effect disappears!
+   • Iconic (~0.5s visual) vs. Echoic (~2s auditory) Sensory Memory.
+   • Context-Dependent (external environment) vs. State-Dependent (internal mood/physiological state) retrieval.
+   • Ebbinghaus Curve: Most forgetting occurs rapidly within the first hour of learning.
         """.trimIndent(),
         colorHex = 0xFF0D9488,
-        initialLikes = 93
+        initialLikes = 89
     ),
     ShortNote(
         id = "psyc-u5",
         subjectId = "c3",
         subject = "General Psychology",
         unit = "Unit 5",
-        title = "Memory Systems, Retrieval & Theories of Forgetting",
+        title = "Motivation, Conflict of Motives & Theories of Emotion",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Memory is the cognitive capacity to encode, store, and retrieve information. The multi-store information processing model provides the conceptual architecture for understanding how information flows through sensory, working, and long-term memory.
+Motivation refers to the internal and external forces that start, direct, and sustain goal-directed activities to satisfy physical or psychological needs and wants (derived from Latin "movere" = to move). Emotion is the affective feeling aspect of consciousness characterized by physiological autonomic arousal, overt expressive behavior, and subjective cognitive appraisal. Human action is driven by the dynamic interplay between internal biological needs (push factors), external incentives (pull factors), and emotional evaluations.
 
 🔍 DETAILED BREAKDOWN
-1. The Three Memory Stages (Atkinson-Shiffrin Model):
-   • Sensory Memory:
-     - Brief preservation of sensory impressions in raw, unprocessed sensory registers.
-     - Iconic Memory: Visual sensory memory lasting ~0.5 seconds.
-     - Echoic Memory: Auditory sensory memory lasting ~3 to 4 seconds.
-   • Short-Term Memory (STM) & Working Memory:
-     - Active workspace holding consciously processed information.
-     - Duration: ~20 to 30 seconds without maintenance rehearsal.
-     - Capacity: George Miller's magical number 7 ± 2 items (modern working memory estimates ~4 ± 1 items).
-     - Chunking: Grouping individual bits into meaningful units (e.g., phone numbers 0911-23-45-67) to expand capacity.
-     - Alan Baddeley's Working Memory Model: Central Executive (coordinates attention), Phonological Loop (verbal/auditory rehearsal), Visuospatial Sketchpad (visual images), Episodic Buffer (integrates into coherent sequence).
-   • Long-Term Memory (LTM):
-     - Permanent, unlimited capacity storage system.
-     - Elaborative Rehearsal: Deep processing by connecting new material with existing knowledge (Craik & Lockhart's Levels of Processing).
+1. Definition & Types of Motivation:
+   • Etymology: Latin "movere" (to move). Explains why an organism acts, persists, and directs energy toward a specific goal.
+   • Intrinsic Motivation: Driven by internal satisfaction, enjoyment, or personal curiosity. The activity itself is inherently rewarding without external payoff.
+   • Extrinsic Motivation: Driven by external reinforcements, tangible outcomes, or incentives outside the person (e.g., grades, money, awards, praise, avoiding punishment).
 
-2. Dual Architecture of Long-Term Memory:
-   • Explicit / Declarative Memory (Conscious, intentional recollection):
-     - Semantic Memory: General factual knowledge about concepts, words, rules, and logic (e.g., "The capital of Ethiopia is Addis Ababa").
-     - Episodic Memory: Autobiographical memories of personally experienced events tied to specific times and places (e.g., "My first day at university").
-   • Implicit / Non-Declarative Memory (Automatic, unconscious recall):
-     - Procedural Memory: Motor skills, physical habits, learned reflexes (e.g., riding a bicycle, typing, swimming).
-     - Priming: Enhanced identification of objects/words based on prior exposure.
+2. Approaches and Theories of Motivation:
+   • Instinct Approaches: Behavior is governed by innate, unlearned biological predispositions (e.g., flight, reproduction, maternal care). Highlights genetic and evolutionary roots.
+   • Drive-Reduction Approaches (Clark Hull):
+     - Need: A biological requirement for essential survival resources (food, water).
+     - Drive: State of physiological arousal and psychological tension arising from unfulfilled needs, motivating corrective behavior to reduce tension.
+     - Primary Drives: Unlearned biological survival needs (hunger, thirst).
+     - Secondary (Acquired) Drives: Learned through social conditioning (money, status, social approval).
+     - Homeostasis: The biological thermostat maintaining stable internal physiological equilibrium; imbalances trigger corrective drives.
+     - Limitation: Cannot explain sensation-seeking or eating when full.
+   • Arousal Approaches: Organisms are motivated to achieve and maintain an optimal level of physiological/neurological stimulation (reducing excessive stress, seeking novelty when understimulated).
+   • Incentive Approaches: Behavior is "pulled" by desirable external environmental goals/rewards (incentives), contrasting with the internal biological "push" of drives.
+   • Cognitive Approaches: Motivation is governed by mental representations: expectations of success, perceived value of outcomes, and self-efficacy judgments.
+   • Humanistic Approach (Maslow's Hierarchy of Needs):
+     - Pyramid of 5 developmental levels; lower deficiency needs (D-needs) must be partially satisfied before pursuing higher growth needs (B-needs):
+       1. Physiological Needs: Fundamental survival (food, water, sleep, oxygen).
+       2. Safety Needs: Physical security, stability, order, freedom from fear.
+       3. Love & Belongingness: Social integration, affectionate relationships, group acceptance.
+       4. Esteem Needs: Self-respect, competence, mastery, social recognition, prestige.
+       5. Self-Actualization: Peak tier; realizing one's fullest potential, creativity, and self-fulfillment.
 
-3. Retrieval Processes & Context Effects:
-   • Recall: Retrieving information without external cues (e.g., essay questions).
-   • Recognition: Identifying previously learned material when presented among alternatives (e.g., multiple choice exams). Recognition is typically easier than recall.
-   • Serial Position Effect: Tendency to recall first items (Primacy Effect - stored in LTM) and last items (Recency Effect - still in STM) better than middle items.
-   • Encoding Specificity Principle: Retrieval is superior when external cues match conditions during encoding (Context-dependent and State-dependent memory).
+3. Motivational Conflicts & Frustration:
+   • Approach–Approach Conflict: Choosing between two equally desirable, positive alternatives (e.g., choosing between two appealing vacations; lowest stress).
+   • Avoidance–Avoidance Conflict: Choosing between two equally undesirable, negative alternatives (e.g., taking an unappealing job or facing unemployment; "between a rock and a hard place").
+   • Approach–Avoidance Conflict: A single goal possesses both attractive benefits and negative drawbacks (e.g., accepting a great promotion that requires exhausting relocation; causes vacillation).
+   • Multiple Approach–Avoidance Conflict: Choosing between two or more options, each offering a complex mixture of positive advantages and negative drawbacks (most common in real-world decisions).
 
-4. Theories of Forgetting:
-   • Decay Theory: Memory traces (engrams) in the brain fade passively over time if not refreshed.
-   • Interference Theory:
-     - Proactive Interference: OLD learning disrupts and interferes with retrieval of NEW information (e.g., repeatedly calling new teacher by previous teacher's name).
-     - Retroactive Interference: NEW learning interferes with retrieval of OLD information (e.g., learning new phone number causes you to forget your childhood phone number).
-   • Retrieval Failure: Information is in LTM but cannot be accessed due to insufficient retrieval cues (e.g., Tip-of-the-Tongue phenomenon).
-   • Motivated Forgetting (Freudian Repression): Defense mechanism unconsciously blocking traumatic or painful memories from conscious awareness.
-   • Amnesia: Anterograde Amnesia (inability to form new long-term memories post-injury; damage to hippocampus, e.g., Patient H.M.); Retrograde Amnesia (loss of memories formed prior to brain trauma).
+4. Nature & Tripartite Elements of Emotion:
+   • Emotion: Acute, stimulus-specific feeling state with three interrelated components:
+     1. Physiological Component: Autonomic arousal triggered by the Sympathetic Nervous System (accelerated heart rate, rapid respiration, pupil dilation, sweating) modulated by the Amygdala.
+     2. Behavioral Component: Outward physical displays communicating emotional states (facial expressions, posture, vocal tone, body language). Paul Ekman identified six universally recognized facial expressions: Happiness, Sadness, Fear, Anger, Surprise, and Disgust.
+     3. Subjective (Cognitive) Component: Conscious labeling, cognitive appraisal, and mental interpretation of the internal state, informed by memories and context.
+
+5. Major Classical Theories of Emotion:
+   • James-Lange Theory (William James & Carl Lange):
+     - Emotion is the cognitive consequence of physiological arousal.
+     - Sequence: Stimulus -> Bodily Arousal -> Conscious Emotion ("I am afraid because my heart is racing and I am running").
+   • Cannon-Bard Theory (Walter Cannon & Philip Bard):
+     - Visceral bodily changes are too slow and non-specific to cause distinct emotions.
+     - Sequence: Stimulus -> Thalamus sends simultaneous, independent signals to the Cerebral Cortex (subjective feeling) and Autonomic Nervous System (physiological arousal).
+     - Arousal and emotional experience occur at the exact same time.
+   • Schachter-Singer Two-Factor Theory (Cognitive Arousal Theory):
+     - Emotion requires BOTH general physiological arousal AND cognitive appraisal/labeling based on situational context.
+     - Sequence: Stimulus -> Physiological Arousal -> Cognitive Interpretation of Surrounding Clues -> Felt Emotional Experience.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Proactive vs Retroactive interference mnemonic: PORN (Proactive = Old interferes with new; Retroactive = New interferes with old).
-• The Hippocampus consolidates explicit declarative memories, while the Cerebellum and Basal Ganglia handle implicit procedural memories.
+   • Push vs. Pull: Drives PUSH internally (e.g., hunger pains); Incentives PULL externally (e.g., aroma of fresh pizza).
+   • Maslow's Levels: Physiological -> Safety -> Belongingness -> Esteem -> Self-Actualization.
+   • Emotion Theory Distinctions:
+     - James-Lange: Physiological arousal comes FIRST, causing emotion.
+     - Cannon-Bard: Physiological arousal and emotional experience occur SIMULTANEOUSLY via the thalamus.
+     - Schachter-Singer: Physiological arousal + Cognitive appraisal of external context = Emotion.
+   • Conflict Types: Avoidance-Avoidance is the most stressful and causes avoidance/freezing; Approach-Avoidance creates back-and-forth hesitation.
         """.trimIndent(),
         colorHex = 0xFF0D9488,
-        initialLikes = 87
+        initialLikes = 92
     ),
     ShortNote(
         id = "psyc-u6",
         subjectId = "c3",
         subject = "General Psychology",
         unit = "Unit 6",
-        title = "Motivation, Drive-Reduction, Maslow's Hierarchy & Emotion Theories",
+        title = "Theories of Personality (Psychoanalytic, Trait & Humanistic)",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Motivation refers to internal physiological states and psychological forces that initiate, direct, and sustain goal-directed human action. Emotion is a complex feeling state involving physiological arousal, expressive behavior, and cognitive appraisal.
+Personality refers to the unique, relatively enduring pattern of thoughts, emotional reactions, motives, and overt actions that characterize how an individual interacts with the world. Originating from the Latin word "persona" (theatrical masks worn by ancient actors), personality encompasses both innate biological traits and socially acquired styles of adaptation. Modern personality psychology is anchored by three prominent theoretical paradigms: Sigmund Freud's Psychoanalytic Theory, the Trait Perspective (The Big Five / OCEAN), and Carl Rogers' Humanistic Theory.
 
 🔍 DETAILED BREAKDOWN
-1. Theories of Motivation & Biological Drives:
-   • Drive-Reduction Theory (Clark Hull): Biological physiological needs (food, water) produce psychological tension states called drives. The organism is motivated to reduce tension to restore Homeostasis (internal biological equilibrium).
-     - Primary Drives: Unlearned, innate biological necessities (hunger, thirst, sleep, sex).
-     - Secondary (Acquired) Drives: Learned through conditioning and association (money, academic grades, social approval).
-   • Arousal Theory & Yerkes-Dodson Law: Organisms seek an optimal level of arousal, not minimal arousal.
-     - Performance increases with arousal up to an optimal midpoint, beyond which performance deteriorates (inverted-U curve).
-     - Task Difficulty Rule: Simple, well-practiced tasks are best performed under higher arousal; complex, difficult cognitive tasks require lower arousal.
-   • Incentive Theory: Emphasizes the "pull" of external environmental stimuli and rewards (e.g., aroma of fresh bread), contrasting with the internal "push" of drives.
-   • Intrinsic vs Extrinsic Motivation:
-     - Intrinsic: Engaging in an activity purely for inherent personal enjoyment, curiosity, or mastery.
-     - Extrinsic: Performing an activity to attain external rewards or avoid punishment.
-     - Overjustification Effect: Introducing unexpected extrinsic tangible rewards for already intrinsically motivating tasks can paradoxically erode intrinsic interest.
+1. Meaning & Critical Distinctions of Personality:
+   • Etymology: Derived from Latin "persona" (actors' masks).
+   • Definition: The unique, relatively consistent pattern of thinking, feeling, and behaving that distinguishes an individual across situations and time.
+   • Critical Distinctions:
+     - Personality vs. Character: Character involves moral, ethical, and value evaluations of behavior (e.g., integrity, honesty, decency).
+     - Personality vs. Temperament: Temperament refers to the raw, innate, biological, and physiological baseline dispositions present from birth (e.g., emotional reactivity, activity level, irritability).
+     - Relationship: Temperament (biological substrate) and character (learned values) both feed into the overarching construct of personality.
 
-2. Abraham Maslow's Hierarchy of Needs:
-   • Humanistic Model arranging human motivation in hierarchical pyramid:
-     1. Physiological Needs: Base tier; survival necessities (food, water, shelter, oxygen).
-     2. Safety & Security: Physical stability, order, employment, health, legal protection.
-     3. Love & Belongingness: Social integration, friendship, family, intimate relationships.
-     4. Esteem Needs: Self-respect, competence, status, prestige, recognition from others.
-     5. Self-Actualization: Peak pinnacle; realizing one's fullest unique human potential and creative capacities.
-   • Distinction: Stages 1–4 are Deficiency Needs (D-needs: arise due to deprivation); Stage 5 is a Growth / Being Need (B-need).
+2. Psychoanalytic Theory of Personality (Sigmund Freud):
+   • Personality is forged from the continuous internal conflict between primitive biological animal impulses and internalized societal restraints.
+   • Structural Model of the Psyche:
+     - Id ("It"):
+       * Oldest, fully unconscious, amoral core present at birth.
+       * Houses instinctual biological drives (libido/Eros and aggression/Thanatos).
+       * Operates on the Pleasure Principle: Demands immediate gratification to alleviate tension, ignoring logic, danger, and social morality ("If it feels good, do it").
+     - Ego ("I"):
+       * Rational, realistic executive branch that develops out of the id during early infancy.
+       * Operates on the Reality Principle: Satisfies id demands through realistic, safe, and socially acceptable methods ("If it feels good, do it, but only if you can get away with it safely").
+     - Superego ("Over the Self"):
+       * The moral center and internalized conscience that develops during early childhood as parental and societal values are absorbed.
+       * Ego-Ideal: Standards of approved, virtuous behavior inspiring pride and self-worth.
+       * Conscience: Internalized rules producing guilt, remorse, and moral anxiety when violated.
+   • Ego Defense Mechanisms (Unconscious tactics deploying reality distortion to cope with anxiety):
+     - Repression: Involuntarily pushing threatening or traumatic thoughts/impulses into the unconscious mind (the foundation of all defense mechanisms).
+     - Denial: Refusing to acknowledge, perceive, or accept an objective, painful reality (e.g., refusing to accept a severe medical diagnosis).
+     - Regression: Reverting to immature, childlike behaviors typical of earlier developmental security (e.g., temper tantrums or thumb-sucking under stress).
+     - Rationalization: Formulating plausible, socially acceptable, logical excuses to justify questionable conduct or failures.
+     - Displacement: Redirecting aggressive or sexual impulses from the original threatening target onto a safer, less powerful substitute (e.g., yelling at a sibling after being scolded by a parent).
+     - Projection: Attributing one's own unacceptable impulses, flaws, or hostile motives onto others (e.g., an unfaithful partner suspecting their spouse of infidelity).
+     - Reaction Formation: Expressing conscious feelings and behaviors that are the diametrical opposite of unconscious, unacceptable desires.
+     - Sublimation: Channeling socially unacceptable instinctual drives into productive, culturally praised endeavors (e.g., aggressive urges channeled into contact sports or surgical careers).
+     - Mental Health Note: Defense mechanisms are universal and healthy for acute coping, but chronic or excessive reliance distorts reality and impairs adjustment.
 
-3. Anatomy & Tripartite Components of Emotion:
-   • Emotion vs Mood: Emotions are intense, acute, stimulus-specific responses; moods are milder, generalized, longer-lasting emotional climates lacking clear trigger.
-   • Three Integrated Dimensions:
-     1. Physiological Arousal: Regulated by Autonomic Nervous System (Sympathetic branch triggers fight-or-flight; Parasympathetic restores calm) and the Amygdala (evaluates threat and fear).
-     2. Expressive Behavior: Observable non-verbal signals, gestures, and facial expressions. Paul Ekman identified six universally recognized facial expressions across all human cultures: Happiness, Sadness, Anger, Fear, Surprise, and Disgust.
-     3. Conscious Cognitive Experience: Subjective interpretation, labeling, and personal meaning attributed to the event.
+3. Trait Theory of Personality & The Five-Factor Model:
+   • Describes personality as a constellation of enduring, measurable characteristics (traits) that direct behavior across varied situations.
+   • Three Core Assumptions:
+     1. Stability: Traits remain relatively stable, consistent, and predictable across the lifespan.
+     2. Cross-Situational Consistency: Traits influence behavior consistently across diverse settings.
+     3. Individual Differences: People vary quantitatively in the degree to which they possess each trait.
+   • The Big Five Model ("OCEAN" Dimensions):
+     - Openness to Experience (O):
+       * High: Curious, imaginative, creative, open-minded, appreciative of art/novelty.
+       * Low: Conventional, pragmatic, down-to-earth, prefers routine and familiar tradition.
+     - Conscientiousness (C):
+       * High: Organized, dependable, self-disciplined, methodical, punctual, goal-directed.
+       * Low: Disorganized, careless, spontaneous, unreliable, prone to procrastination.
+     - Extraversion (E):
+       * High: Outgoing, sociable, enthusiastic, assertive, energized by social stimulation.
+       * Low (Introverted): Reserved, reflective, solitary, quiet, prefers intimate settings.
+     - Agreeableness (A):
+       * High: Trusting, cooperative, empathetic, altruistic, compassionate, warm.
+       * Low: Cynical, competitive, suspicious, argumentative, irritable.
+     - Neuroticism (N) / Emotional Stability:
+       * High: Emotionally reactive, anxious, insecure, moody, easily stressed.
+       * Low: Emotionally stable, calm, resilient under pressure, even-tempered.
 
-4. Major Classical Theories of Emotion:
-   • James-Lange Theory: Physiological autonomic arousal PRECEDES and causes emotional feeling.
-     - Sequence: Stimulus -> Physiological Arousal -> Emotional Feeling ("We feel afraid because we tremble; we feel sorry because we cry").
-   • Cannon-Bard Theory: Arousal and emotional experience occur SIMULTANEOUSLY and independently via the Thalamus.
-     - Sequence: Stimulus -> Thalamus sends simultaneous signals to Cortex (conscious feeling) and Autonomic Nervous System (bodily arousal).
-   • Schachter-Singer Two-Factor Theory: Emotion requires BOTH physiological arousal AND cognitive interpretation/labeling based on environmental context.
-     - Sequence: Stimulus -> General Physiological Arousal -> Cognitive Appraisal of Context -> Distinct Emotional State.
-   • Lazarus Cognitive-Mediational Theory: Cognitive appraisal occurs FIRST, preceding both autonomic arousal and emotional response.
+4. Humanistic Theory of Personality (Carl Rogers):
+   • "Third Force" rejecting psychoanalytic biological determinism and behavioral mechanical conditioning. Emphasizes innate human goodness, free will, subjective experience, and self-direction.
+   • Core Concepts:
+     - Self-Actualizing Tendency: Innate biological striving to fulfill one's unique potential, capabilities, and talents.
+     - Self-Concept: The organized, consistent set of perceptions and beliefs that a person holds about their identity, worth, and competence.
+     - Real Self vs. Ideal Self:
+       * Real Self: One's actual perception of current traits, capabilities, and behaviors.
+       * Ideal Self: The standard of who one aspires to be or feels one ought to be.
+     - Congruence vs. Incongruence:
+       * Congruence: Close alignment between Real Self and Ideal Self, producing emotional harmony, psychological health, and self-worth.
+       * Incongruence: Wide divergence between Real Self and Ideal Self, generating anxiety, self-doubt, defensiveness, and neurosis.
+   • Conditions of Regard:
+     - Positive Regard: Warmth, approval, acceptance, and love from significant others.
+     - Conditional Positive Regard: Acceptance granted only when the individual satisfies specific expectations or conforms to parental standards ("I love you only if you succeed"). Breeds incongruence.
+     - Unconditional Positive Regard: Complete, non-judgmental love, acceptance, and respect given freely without prerequisites. Essential for healthy self-actualization.
+   • The Fully Functioning Person: An individual experiencing high congruence who is actively moving toward self-actualization; characterized by openness to experience, existential living (present-focused), organismic trusting, and creative autonomy.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• The key differentiator between emotion theories: James-Lange says arousal comes first; Cannon-Bard says arousal and emotion happen simultaneously; Schachter-Singer requires cognitive labeling of the arousal.
-• Under the Yerkes-Dodson Law, complex academic exams require LOW to MODERATE arousal for optimal concentration and recall.
+   • Personality vs. Temperament: Temperament is biological/innate from birth; Character represents moral/ethical values.
+   • Id, Ego, Superego Principles:
+     - Id = Pleasure Principle (immediate gratification).
+     - Ego = Reality Principle (rational executive mediation).
+     - Superego = Moral Imperative (Ego-ideal gives pride; Conscience gives guilt).
+   • Projection vs. Displacement: Projection attributes one's OWN flaws onto someone else ("You are angry, not me"); Displacement redirects emotion to a SAFER substitute (kicking the dog).
+   • Big Five Mnemonic: OCEAN (Openness, Conscientiousness, Extraversion, Agreeableness, Neuroticism).
+   • Rogers' Congruence: Psychological wellness = overlap between Real Self and Ideal Self fostered by Unconditional Positive Regard.
         """.trimIndent(),
         colorHex = 0xFF0D9488,
-        initialLikes = 92
+        initialLikes = 94
     ),
     ShortNote(
         id = "psyc-u7",
         subjectId = "c3",
         subject = "General Psychology",
         unit = "Unit 7",
-        title = "Personality Theories, Psychological Disorders & Coping Mechanisms",
+        title = "Psychological Disorders & Treatment Techniques",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Personality encompasses enduring, distinctive patterns of thinking, feeling, and behaving that characterize an individual's adaptation to life. Abnormal psychology classifies mental disorders, while health psychology explores stress, coping, and mental hygiene.
+A psychological disorder is a clinically significant disturbance in an individual's cognition, emotional regulation, or behavior that causes personal distress and impairs occupational, academic, or social functioning. Psychopathology is the scientific study of psychological disorders, investigating their etiology (causes), symptoms, manifestations, and treatment. Clinicians evaluate psychological abnormalities through three primary diagnostic pillars (Abnormality/Deviance, Maladaptiveness/Dysfunction, and Personal Distress) and deploy evidence-based psychotherapeutic and pharmacological interventions.
 
 🔍 DETAILED BREAKDOWN
-1. Psychoanalytic Perspective on Personality (Sigmund Freud):
-   • Structural Model of the Psyche:
-     - Id: Entirely unconscious; operates on the Pleasure Principle, demanding immediate gratification of instinctual impulses (Eros: life instinct; Thanatos: death/aggressive instinct).
-     - Ego: Operates on the Reality Principle; conscious executive that mediates realistically between the unreasonable demands of the Id, Superego, and external reality.
-     - Superego: Moral compass; internalizes parental and cultural ethical standards, inducing guilt and striving for perfection.
-   • Ego Defense Mechanisms (Unconscious protective strategies against anxiety):
-     - Repression: Banishing threatening or traumatic memories from conscious awareness.
-     - Projection: Attributing one's own unacceptable impulses or flaws onto other individuals.
-     - Rationalization: Formulating comforting, logical excuses to justify unacceptable behaviors.
-     - Reaction Formation: Transforming unacceptable impulses into their exact opposite extreme.
-     - Displacement: Redirecting emotional or aggressive reactions from original threatening target onto safer substitute.
-     - Sublimation: Channeling socially unacceptable drives into constructive, highly valued societal outputs (art, sports).
-     - Regression: Reverting to immature behaviors typical of an earlier developmental stage under acute stress.
+1. Nature & Three Core Criteria of Abnormality:
+   • Abnormality (Deviance): Behavior deviating significantly from statistical norms or cultural/social/legal standards. Must always be interpreted within cultural context.
+   • Maladaptiveness (Dysfunction): Behaviors disrupting everyday functioning, safety, academic success, work, or healthy social relationships.
+   • Personal Distress (Subjective Discomfort): Internal emotional suffering (severe anxiety, depression, feelings of hopelessness). Note: not present in all disorders (e.g., mania or antisocial personality disorder).
 
-2. Trait Theories & The Big Five Model:
-   • Gordon Allport's Hierarchy: Cardinal traits (rare dominant traits shaping whole life), Central traits (core building blocks of personality), Secondary traits (situational preferences).
-   • Five-Factor Model (The Big Five / OCEAN mnemonic):
-     - Openness to Experience: Intellectual curiosity, imagination, aesthetic appreciation vs pragmatic, routine-bound.
-     - Conscientiousness: Self-discipline, organized, dependable, goal-directed vs careless, spontaneous.
-     - Extraversion: Outgoing, enthusiastic, assertive, socially energized vs reserved, solitary (introverted).
-     - Agreeableness: Compassionate, cooperative, empathetic, trusting vs cynical, competitive, hostile.
-     - Neuroticism: Emotional instability, anxiety, irritability, vulnerability to distress vs calm, emotionally resilient.
+2. Theoretical Perspectives on Etiology:
+   • Biological Perspective: Physical illness or neural pathology. Emphasizes genetics, structural brain abnormalities, and neurotransmitter imbalances (e.g., dopamine excess linked to schizophrenia; serotonin/norepinephrine deficits linked to depression).
+   • Psychological Perspectives:
+     - Psychoanalytic (Freud): Unconscious conflicts between id, ego, and superego; unresolved childhood emotional traumas producing conversion symptoms and chronic anxiety.
+     - Behavioral / Learning: Disorders acquired through normal learning principles:
+       * Classical Conditioning: Learned pairings producing irrational phobias.
+       * Operant Conditioning: Negative reinforcement maintaining avoidance behaviors (e.g., agoraphobia avoidance reducing immediate anxiety).
+       * Modeling / Observational: Imitating dysfunctional familial behaviors.
+     - Cognitive: Psychological distress stems from faulty perception, distorted schemas, irrational beliefs, and negative automatic thoughts.
 
-3. Psychological Disorders (Psychopathology Criteria):
-   • The 4 Ds of Abnormality: Deviance (statistically or culturally atypical), Distress (personal emotional pain), Dysfunction (impairment in daily social/occupational roles), Danger (threat to self or others).
-   • Major Diagnostic Categories:
-     - Anxiety Disorders: Generalized Anxiety Disorder (persistent chronic worry), Panic Disorder (sudden episodes of terror), Phobias (irrational fear of specific objects/situations).
-     - Obsessive-Compulsive Disorder (OCD): Recurrent intrusive thoughts (obsessions) generating anxiety relieved by ritualistic repetitive actions (compulsions).
-     - Mood Disorders: Major Depressive Disorder (prolonged depressed mood, anhedonia, fatigue, feelings of worthlessness) vs Bipolar Disorder (fluctuations between major depression and manic hyperactivity).
-     - Schizophrenia: Severe psychotic disorder characterized by Positive Symptoms (hallucinations - mainly auditory, delusions of grandeur or persecution) and Negative Symptoms (flat affect, avolition, social withdrawal).
+3. Major Diagnostic Categories of Psychological Disorders:
+   • Mood Disorders (Severe emotional distortions):
+     - Major Depressive Disorder (Clinical Depression): Persistent depressed mood, anhedonia (inability to experience pleasure), significant weight changes, insomnia/hypersomnia, fatigue, feelings of worthlessness, suicidal ideation.
+     - Dysthymic Disorder (Persistent Depressive Disorder): Chronic, continuous, milder depressive symptoms lasting over prolonged years.
+     - Bipolar Disorder (Manic-Depression): Dramatic oscillations between depression and mania (extreme euphoria, grandiosity, boundlessly energetic, racing thoughts, reckless impulsivity):
+       * Bipolar I: Full-blown manic episodes causing severe social/occupational impairment.
+       * Bipolar II: Milder hypomanic episodes alternating with major depression.
+     - Cyclothymic Disorder: Chronic, mild cyclical mood swings between hypomania and mild depression.
+   • Anxiety Disorders (Excessive, irrational, uncontrollable fear):
+     - Panic Disorder: Recurrent unpredictable panic attacks (surges of intense terror, palpitations, dyspnea, trembling, dizziness, terror of impending death).
+     - Agoraphobia ("Fear of the marketplace"): Intense fear and avoidance of public spaces or crowded areas where escape is difficult or help unavailable.
+     - Specific Phobia: Persistent, irrational fear of specific objects or situations (heights, snakes, flying, injections).
+     - Social Phobia (Social Anxiety Disorder): Marked fear of social scrutiny, evaluation, or public humiliation.
+     - Obsessive-Compulsive Disorder (OCD):
+       * Obsessions: Recurrent, uncontrollable intrusive thoughts causing distress.
+       * Compulsions: Repetitive ritualistic behaviors (hand-washing, checking, counting) executed to neutralize anxiety.
+     - Post-Traumatic Stress Disorder (PTSD): Triggered by exposure to traumatic life-threatening events (war, assault, disasters); causes flashbacks, nightmares, trauma cue avoidance, and hyperarousal.
+     - Generalized Anxiety Disorder (GAD): Chronic, excessive, uncontrollable worry spanning multiple life areas (health, money, family) without a single focal trigger.
+   • Personality Disorders (Enduring, rigid, maladaptive patterns):
+     - Paranoid: Unjustified chronic distrust and suspicion; perceives benign acts as hostile.
+     - Schizoid: Social detachment, emotional coldness, preference for solitary isolation.
+     - Schizotypal: Interpersonal discomfort, eccentric behavior, magical/odd thinking.
+     - Antisocial: Disregard for and violation of the rights of others; deceitful, aggressive, reckless, lacking empathy or remorse.
+     - Borderline: Extreme instability in relationships, self-image, and moods; fear of abandonment, impulsivity.
+     - Histrionic: Excessive, theatrical emotionality and chronic attention-seeking.
+     - Narcissistic: Pervasive grandiosity, need for admiration, inflated self-importance, lack of empathy.
+     - Avoidant: Pervasive social inhibition, feelings of inadequacy, hypersensitivity to rejection.
+     - Obsessive-Compulsive Personality Disorder (OCPD): Rigid preoccupation with perfectionism, control, and rules at the cost of efficiency.
 
-4. Stress, Hans Selye's GAS & Coping Strategies:
-   • General Adaptation Syndrome (GAS): Body's universal response to chronic stress in 3 phases:
-     1. Alarm Reaction: Immediate fight-or-flight activation; sympathetic nervous system releases adrenaline/noradrenaline.
-     2. Resistance: Body attempts physiological adaptation to ongoing stress; adrenal cortex secretes cortisol.
-     3. Exhaustion: Depletion of bodily physical resources, immune suppression, high susceptibility to chronic illnesses.
-   • Coping Strategies (Lazarus & Folkman):
-     - Problem-Focused Coping: Directly confronting and solving the root cause of stress (time management, study schedules).
-     - Emotion-Focused Coping: Regulating and managing emotional distress associated with stressor (reframing, seeking emotional support, mindfulness).
+4. Treatment Techniques & Psychotherapy:
+   • Psychotherapy: Professional psychological intervention to resolve cognitive, emotional, and behavioral problems.
+   • Core Therapeutic Elements: Empathy, unconditional non-judgmental acceptance, mutual trust, and collaborative problem-solving.
+   • Major Theoretical Approaches:
+     - Cognitive Therapy (Beck): Identifies, challenges, and reframes automatic irrational cognitions and depressive schemas. Highly effective for mood disorders.
+     - Behavioral Therapy: Deploys conditioning principles (systematic desensitization, exposure therapy, operant reinforcement, shaping) to extinguish maladaptive actions. Highly effective for phobias and OCD.
+     - Psychodynamic Therapy: Uncovers unconscious conflicts, repressed childhood trauma, and defensive dynamics to build conscious insight.
+     - Eclectic / Integrative Approach: Modern clinicians blend techniques from multiple schools customized to client needs.
+   • Treatment Modalities:
+     - Individual Therapy: One-on-one tailored private sessions.
+     - Group Therapy: 3 to 20 individuals sharing common challenges; reduces isolation, provides social modeling, and fosters mutual hope.
+     - Couples & Family Therapy: Resolves systemic relationship communication and structural friction.
+     - Multimodal: Combining psychotherapy with biological pharmacotherapy (antidepressants, anxiolytics, mood stabilizers).
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Sublimation is considered the most mature and constructive defense mechanism in psychoanalysis.
-• In GAS, exhaustion phase occurs when bodily reserves are depleted following chronic prolonged exposure to stress.
+   • The 3 Diagnostic Pillars: Abnormality (statistical/cultural deviance), Maladaptiveness (functional impairment), and Personal Distress (subjective discomfort).
+   • Obsession vs. Compulsion: Obsession = recurrent intrusive THOUGHT; Compulsion = repetitive ritualistic BEHAVIOR performed to reduce anxiety.
+   • Bipolar I vs. Bipolar II: Bipolar I has full MANIC episodes; Bipolar II has HYPOMANIC episodes paired with major depression.
+   • Agoraphobia: Fear of places where escape is difficult during panic (NOT just fear of crowds).
+   • Dopamine Hypothesis: Excess dopamine activity is strongly associated with Schizophrenia; Serotonin deficit with Depression.
+   • Behavioral vs. Cognitive Therapy: Behavioral targets overt actions (exposure for phobias); Cognitive targets internal schemas (reframing thoughts for depression).
         """.trimIndent(),
         colorHex = 0xFF0D9488,
         initialLikes = 96
+    ),
+    ShortNote(
+        id = "psyc-u8",
+        subjectId = "c3",
+        subject = "General Psychology",
+        unit = "Unit 8",
+        title = "Introduction to Life Skills & Psychosocial Competence",
+        summary = """
+📌 KEY CONCEPTS & OVERVIEW
+Life skills represent psychosocial abilities that enable individuals to adapt, navigate everyday developmental challenges, maintain positive mental health, and achieve personal and professional competence. Moving from theoretical foundations to practical self-management, life skills translate psychological knowledge into actionable behavioral competencies. The World Health Organization (WHO) defines life skills as the "abilities for adaptive and positive behavior that enable individuals to deal effectively with the demands and challenges of everyday life," while UNICEF frames them as a behavioral development model balancing Knowledge, Attitudes, and Skills (KAS).
+
+🔍 DETAILED BREAKDOWN
+1. Nature, Institutional Definitions & Value of Life Skills:
+   • Conceptual Overview: Psychosocial and cognitive competencies promoting psychological resilience, positive self-efficacy, and constructive interpersonal functioning.
+   • WHO Definition: "Abilities for adaptive and positive behavior that enable individuals to deal effectively with the demands and challenges of everyday life."
+     - Adaptive: Flexibility in adjusting approaches across diverse, shifting life circumstances.
+     - Positive: Constructive, forward-looking orientation even under stress or difficulty.
+   • UNICEF Definition: A behavioral change and developmental approach balancing three essential domains:
+     - Knowledge (cognitive understanding).
+     - Attitudes (values, beliefs, mindsets).
+     - Skills (practical application and behavioral execution).
+   • Value for University Students: Complements formal academic credentials with psychosocial competence, enhancing academic performance, employability, and leadership readiness.
+
+2. Tripartite Classification of Life Skills:
+   • Thinking (Cognitive) Skills:
+     - Critical Thinking: Analyzing objective evidence, evaluating arguments, identifying logical fallacies, and making reasoned judgments.
+     - Creative Thinking: Generating novel, innovative solutions and looking beyond conventional boundaries.
+     - Decision-Making: Assessing alternatives, weighing pros and cons, predicting consequences, and choosing the optimal constructive path.
+     - Problem-Solving: Recognizing discrepancies between current conditions and desired goals, formulating action plans, and overcoming obstacles.
+   • Intrapersonal (Personal) Skills:
+     - Self-Awareness: Accurate perception of one's own strengths, limitations, emotions, core values, motivations, and behavioral triggers.
+     - Self-Esteem: Subjective emotional appraisal of one's personal self-worth, dignity, and self-respect.
+     - Self-Confidence: Unshakable trust in one's abilities, judgment, and capacity to handle daily responsibilities successfully.
+     - Self-Control / Emotional Regulation: Managing impulses, delaying gratification, and regulating emotional distress.
+   • Interpersonal (Social) Skills:
+     - Interpersonal Relationships: Building and sustaining healthy, supportive, mutually respectful human connections.
+     - Reflective Communication: Active, mindful listening and self-reflective verbal and non-verbal expression.
+     - Peer Pressure Resistance (Refusal Skills): Assertiveness and communication strategies to resist coercive, negative social pressure without violence or submission.
+     - Empathy & Teamwork: Understanding others' feelings and collaborating toward shared objectives.
+     - Conflict Resolution: Constructively resolving interpersonal disputes through negotiation, mediation, and active listening.
+     - Knowing Rights & Duties: Understanding civic, legal, and moral rights alongside personal societal obligations.
+
+3. Goals, Applications & Concrete Outcomes:
+   • Primary Goals:
+     - Smooth Functioning: Fostering harmonious living across household, university, social, and workplace environments.
+     - Lifelong Process: Continual, dynamic upgrading of coping strategies across life transitions.
+     - Rational Guidance: Objective analysis of situations to prevent impulsive or destructive choices.
+   • Concrete Application Domains:
+     - Health Promotion: Preventing substance abuse, drug addiction, and risky alcohol consumption.
+     - Reproductive Health: Protecting against high-risk sexual behaviors, teenage pregnancy, and STIs/HIV.
+     - Mental Health Protection: Preventing suicide, self-harm, depression, and interpersonal violence.
+     - Broader Social Impact: Environmental stewardship, consumer awareness, community peace-building, and ethical citizenship.
+   • Documented Behavioral Outcomes:
+     - Significant reduction in aggressive, delinquent, and self-destructive behaviors.
+     - Substantial increase in prosocial conduct, empathy, and collaborative teamwork.
+     - Enhanced emotional self-regulation, impulse control, and stress management.
+     - Superior academic performance, active classroom engagement, and lower dropout rates.
+
+💡 EXAM TIPS & HIGH-YIELD FOCUS
+   • WHO Definition: Focus on the key terms "adaptive and positive behavior" to deal effectively with "demands and challenges of everyday life."
+   • UNICEF Model: The KAS triad — Knowledge, Attitudes, and Skills.
+   • Self-Awareness vs. Self-Esteem vs. Self-Confidence:
+     - Self-Awareness = Knowing who you are (strengths, weaknesses, emotions).
+     - Self-Esteem = Value/Worth placed on yourself (feeling worthy).
+     - Self-Confidence = Belief in your capacity to perform and succeed.
+   • Three Life Skill Categories: Thinking/Cognitive, Intrapersonal (internal self), and Interpersonal (social relationships).
+   • Peer Pressure Resistance: Involves assertiveness (clear, direct, firm communication) without passive compliance or aggressive hostility.
+        """.trimIndent(),
+        colorHex = 0xFF0D9488,
+        initialLikes = 88
+    ),
+    ShortNote(
+        id = "psyc-u9",
+        subjectId = "c3",
+        subject = "General Psychology",
+        unit = "Unit 9",
+        title = "Intra-Personal and Interpersonal Skills",
+        summary = """
+📌 KEY CONCEPTS & OVERVIEW
+Intrapersonal and interpersonal skills form the psychosocial cornerstone of emotional maturity, effective communication, and adaptive problem-solving. Intrapersonal skills encompass an individual's internal cognitive and emotional self-regulation (self-concept, self-awareness, self-esteem, self-control, and emotional intelligence), while interpersonal skills govern outward relational competence, empathetic collaboration, conflict resolution, and stress coping. Together with critical and creative thinking, these competencies translate psychological understanding into lifelong personal resilience and relational success.
+
+🔍 DETAILED BREAKDOWN
+1. Self-Concept & Self-Awareness:
+   • Self-Concept:
+     - Definition: A reflexive mental construct developed through social interaction and language; the totality of beliefs, perceptions, and attitudes an individual holds regarding their physical, social, academic, and moral identity.
+     - Multi-dimensional: Encompasses past recollections, present evaluations, and idealized/feared future selves across diverse life domains.
+   • Self-Awareness:
+     - Definition: Accurate perception of one's personality, including traits, limitations, strengths, emotions, values, motivations, and thinking patterns.
+     - Predictor of Success: Enables individuals to select environments aligned with their core strengths.
+     - Barriers: Ego defensiveness, rationalization, and externalizing blame.
+     - Cultivation: Mindfulness, seeking objective feedback, active listening, and honest self-reflection.
+
+2. Self-Esteem & Self-Confidence:
+   • Self-Esteem (Latin "aestimare" = to value/appraise):
+     - Cognitive and affective self-evaluation of personal worth, dignity, and significance.
+     - Competency-Based Self-Esteem: Grounded in personal efficacy, skill mastery, performance accomplishments, and social comparison.
+     - Virtue-Based Self-Esteem (Self-Worth): Grounded in adherence to ethical norms, moral integrity, reciprocity, and reflected appraisals from valued others.
+   • Self-Confidence (Latin "fidere" = to trust):
+     - Trust in one's aptitudes, judgment, and capacity to handle everyday demands successfully.
+     - Reciprocal Nature: Performance accomplishment builds confidence, which in turn elevates performance (often domain-specific).
+     - Confidence vs. Courage:
+       * Confidence operates within the realm of the known and familiar.
+       * Courage operates within the realm of the unknown, uncertain, and fearful (requires greater moral and psychological fortitude).
+
+3. Self-Control & The Ego Depletion Model:
+   • Self-Control: The volitional capacity to inhibit immediate impulses, delay gratification, and persist through uncomfortable tasks to attain long-term goals.
+   • Ego Depletion Model: Self-regulation operates like a finite mental muscle; exerting willpower on trivial tasks depletes available mental energy for high-priority challenges.
+
+4. Anger Management & Emotional Intelligence (EI):
+   • Nature of Anger: Emotional response triggered by blocked goals, perceived injustice, loss of valued possessions, or threats to self-esteem.
+   • Management Strategies: Treat anger as a warning signal; defer crucial decisions while angry (anger narrows cognitive focus); understand situational complexity; view conflict from the other's perspective; check physiological states (hunger/fatigue).
+   • Emotional Intelligence (EI / EQ):
+     - Definition: The capacity to identify, assess, harness, and regulate emotions in oneself and others.
+     - Core Triad: Emotional Awareness (labeling feelings) -> Harnessing Emotions (applying emotional energy to problem-solving) -> Emotion Regulation (soothing distress).
+     - Five Competence Domains:
+       * Personal Competencies: Self-awareness, self-regulation, and self-motivation.
+       * Social Competencies: Social awareness (empathy) and relationship management (social skills).
+
+5. Stress, Coping Mechanisms & Resilience:
+   • Stress: Both the cognitive appraisal of threat/pressure and the physiological autonomic arousal across bodily systems.
+   • Three Stressor Types: Catastrophes (unpredictable, massive disasters), Significant Life Transitions (bereavement, job loss, divorce), and Daily Hassles (micro-stressors that accumulate over time).
+   • Coping Strategies (Lazarus & Folkman):
+     - Problem-Focused Coping: Taking direct, constructive action to modify or remove controllable stressors (e.g., studying harder, addressing conflicts directly).
+     - Emotion-Focused Coping: Regulating internal emotional distress when stressors are uncontrollable (e.g., cognitive reframing, seeking emotional support).
+   • Resilience: The psychosocial capacity to adapt positively and "bounce back" from acute adversity, trauma, or chronic difficulty.
+
+6. Critical vs. Creative Thinking:
+   • Critical Thinking: Purposeful, analytical, vertical, and linear thinking using logic, hypothesis testing, and rigorous evidence evaluation (Convergent thinking; orientation toward probability; approach: "Yes, but...").
+   • Creative Thinking: Generative, lateral, and imaginative thinking forming novel associations and unconventional perspectives (Divergent thinking; orientation toward possibility; suspended judgment; approach: "Yes, and...").
+
+7. Problem Solving & Decision-Making:
+   • Problem Solving: Bridging the gap between a present state and a target goal.
+     - Well-Defined Problems: Explicit goals, clear steps, and structured parameters (e.g., math problems).
+     - Ill-Defined Problems: Ambiguous paths, unclear definitions, and multiple possible solutions (e.g., career or relationship choices).
+     - Seven Problem-Solving Steps: (1) Identify Problem -> (2) Define/Represent -> (3) Formulate Strategy -> (4) Organize Knowledge -> (5) Allocate Effort -> (6) Monitor Progress -> (7) Evaluate Solution.
+   • Decision-Making: Evaluating alternatives and committing to a specific course of action.
+
+💡 EXAM TIPS & HIGH-YIELD FOCUS
+   • Critical vs. Creative Thinking:
+     - Critical = Convergent, analytic, linear, evaluative ("Yes, but...").
+     - Creative = Divergent, lateral, generative, possibility-seeking ("Yes, and...").
+   • Problem-Focused vs. Emotion-Focused Coping: Use problem-focused coping for CONTROLLABLE stressors; use emotion-focused coping for UNCONTROLLABLE stressors.
+   • Confidence vs. Courage: Confidence acts within the familiar/known; Courage acts despite fear in the unknown.
+   • Ego Depletion: Willpower is a limited, exhaustible cognitive resource.
+   • Competency vs. Virtue Self-Esteem: Competency is achievement-based; Virtue is moral/ethical-based.
+        """.trimIndent(),
+        colorHex = 0xFF0D9488,
+        initialLikes = 91
+    ),
+    ShortNote(
+        id = "psyc-u10",
+        subjectId = "c3",
+        subject = "General Psychology",
+        unit = "Unit 10",
+        title = "Academic Skills, Time Management & Exam Mastery",
+        summary = """
+📌 KEY CONCEPTS & OVERVIEW
+Academic skills encompass the cognitive strategies, self-regulation habits, and behavioral methodologies essential for scholastic success, lifelong learning, and professional competence. Anchored in psychological principles of memory, motivation, and executive functioning, this domain integrates effective time management, structured note-taking systems (e.g., Cornell and Outlining methods), evidence-based test-taking strategies (such as the SQ3R study framework), cognitive restructuring for test anxiety, SMART goal setting, and lifelong career management skills (CMS).
+
+🔍 DETAILED BREAKDOWN
+1. Time Management & Core Strategies:
+   • Definition: The self-regulatory ability to plan, allocate, and intentionally control hours in a day to achieve goals effectively across academic, social, personal, and leisure domains.
+   • Nature of Time: A finite, non-renewable asset; lost time cannot be regained. Requires deliberate allocation similar to financial budgeting.
+   • Documented Benefits: Elevated productivity and scholastic efficiency, enhanced motivation, minimized stress, and improved self-esteem.
+   • Ten Core Time-Management Strategies (Chapman & Burpured):
+     1. Track Time: Audit daily activities to identify hidden leaks.
+     2. Set Priorities: Distinguish urgent vs. essential long-term tasks (Eisenhower Matrix).
+     3. Use Planning Tools: Utilize physical agendas, task checklists, or digital calendars.
+     4. Get Organized: Keep study materials systematically arranged to reduce retrieval friction.
+     5. Schedule Deep Blocks: Reserve dedicated, uninterrupted blocks for intensive cognitive study.
+     6. Delegate: Share or distribute collaborative duties when working in peer teams.
+     7. Eliminate Procrastination: Initiate academic tasks immediately rather than postponing.
+     8. Manage Distractions: Regulate notifications, unplanned visits, and environmental noise.
+     9. Avoid Multitasking: Practice single-tasking to preserve working memory bandwidth.
+     10. Maintain Physical Wellness: Ensure adequate sleep, balanced nutrition, and regular exercise.
+
+2. Note-Taking & Active Study Methodologies:
+   • Function: Facilitates active cognitive encoding during lectures and provides structured external storage for review.
+   • Three Stages of Effective Note-Taking:
+     - Before Class (Preparation): Review prior notes and syllabus outlines; complete background readings; formulate questions on difficult concepts.
+     - During Class (Active Recording): Maintain focus on central themes; paraphrase into personal vocabulary rather than transcribing verbatim; leave gaps when falling behind to maintain listening flow.
+     - After Class (Consolidation): Review and edit notes immediately post-lecture; discuss ambiguities with instructors or peers; summarize concepts aloud.
+   • Common Note-Taking Systems:
+     - Cornell Method: Formats the page into three functional sectors:
+       * Note-Taking Area (Right column): Captures raw lecture concepts during class.
+       * Cue Column (Left column): Formulates review questions, key terms, and prompts after class.
+       * Summary Box (Bottom): 2-to-3 sentence synthesis consolidating the page's core ideas.
+     - Outlining Method: Hierarchical indentation structure (Roman numerals -> capital letters -> numbers) for structured conceptual taxonomies.
+     - Charting Method: Tabular matrices organizing information across comparative rows and columns (ideal for dates, competing theories, or opposing perspectives).
+
+3. Test-Taking Skills & The SQ3R System:
+   • Systematic Preparation: Consistent lecture attendance, distributed practice across the term (avoiding massed last-minute cramming), analyzing past examination questions, and establishing incremental milestones.
+   • The SQ3R Study Method:
+     - S - Survey: Skim chapter headings, subheadings, diagrams, and summary blocks to build a mental scaffold.
+     - Q - Question: Convert headings into inquiry questions (e.g., "What are the stages of memory?").
+     - R1 - Read: Read actively to locate specific answers to formulated questions.
+     - R2 - Recite: Mentally rehearse or speak answers aloud from memory without looking at text.
+     - R3 - Review: Periodically review notes over spaced intervals to reinforce retrieval pathways.
+   • Exam Execution: Confirm testing formats (objective vs. essay); get adequate sleep; arrive early; regulate breathing; carefully read instructions before answering.
+
+4. Test Anxiety & Cognitive Restructuring:
+   • Nature: An unpleasant affective mood state marked by physiological tension, apprehension, and catastrophic cognitive worry regarding impending examinations. Excessive adrenaline disrupts working memory and impairs recall.
+   • Multidimensional Symptoms:
+     - Physical: Tachycardia, tremors, nausea, dyspnea, headaches, diaphoresis (sweating).
+     - Emotional: Dread, helplessness, irritability, panicky feelings.
+     - Behavioral: Fidgeting, restlessness, procrastination, task avoidance.
+     - Cognitive: "Going blank", intrusive negative self-talk, attentional disorganization.
+   • Overcoming Anxiety via Cognitive Restructuring (3 Steps):
+     1. Pay Attention to Internal Self-Talk: Identify automatic catastrophic thoughts (e.g., "I'm going to fail and ruin my future").
+     2. Identify Thinking Traps: Pinpoint underlying cognitive distortions (black-and-white thinking, catastrophizing, fortune-telling).
+     3. Challenge & Reframe: Evaluate evidence objectively and substitute balanced, realistic appraisals (e.g., "I have studied consistently and reviewed past questions; I am prepared to handle this exam").
+
+5. SMART Goal Setting & Career Development:
+   • Goal Setting: The deliberate process of imagining, specifying, and executing actions toward an intended future outcome.
+   • SMART Goal Criteria:
+     - S: Specific (clearly defined targets).
+     - M: Measurable (quantifiable criteria for progress).
+     - A: Action-oriented / Achievable (realistic action steps).
+     - R: Realistic / Relevant (aligned with capabilities and values).
+     - T: Time-bound (clear target deadlines).
+   • Functions: Focuses selective attention, mobilizes persistent effort, establishes performance standards, and enhances self-efficacy.
+   • Career Development & CMS:
+     - Career: An evolving sequence of life, learning, and occupational roles across the lifespan.
+     - Career Development: Continuous self-discovery regarding abilities, interests, values, and environmental workplace realities.
+     - Career Management Skills (CMS): Proactive competencies enabling individuals to self-assess skills, navigate occupational pathways, and intentionally pursue personal and professional aspirations.
+
+💡 EXAM TIPS & HIGH-YIELD FOCUS
+   • Cornell System: 3 areas (Notes column right, Cue column left, Summary bottom).
+   • SQ3R Sequence: Survey -> Question -> Read -> Recite -> Review.
+   • SMART Criteria: Specific, Measurable, Action-oriented, Realistic, Time-bound.
+   • Cognitive Restructuring for Test Anxiety: Pay attention to self-talk -> Identify anxious thoughts -> Challenge and reframe thinking traps.
+   • Time Management: Proactive single-tasking and prioritizing deep study blocks out-perform reactive multi-tasking.
+        """.trimIndent(),
+        colorHex = 0xFF0D9488,
+        initialLikes = 86
+    ),
+    ShortNote(
+        id = "psyc-u11",
+        subjectId = "c3",
+        subject = "General Psychology",
+        unit = "Unit 11",
+        title = "Social Skills, Diversity & Conflict Resolution",
+        summary = """
+📌 KEY CONCEPTS & OVERVIEW
+Social skills encompass the psychosocial and communicative competencies required to interact effectively, build positive relationships, navigate cultural diversity, and resolve interpersonal conflicts constructively. In an interconnected society, psychological competence extends beyond intrapersonal self-regulation to social fluency: managing diversity, advancing gender inclusion, practicing open assertiveness, resisting coercive peer pressure, resolving disputes through collaborative "Win-Win" problem-solving, fostering high-performing team dynamics, and mitigating risky adolescent behaviors.
+
+🔍 DETAILED BREAKDOWN
+1. Cultural Diversity & Diversity Management:
+   • Cultural Diversity: Human social environments are multifaceted, with identity shaped by overlapping dimensions: ethnicity, nationality, religion, gender, language, socio-economic status, and politics.
+   • Ethnocentrism vs. Multiculturalism:
+     - Culture as Evaluation Standard: Judging other cultural practices exclusively through the lens of one's own culture creates prejudice, fear of the unfamiliar, and discrimination. Exposure to radical cultural differences can provoke Culture Shock.
+     - Multiculturalism: A framework that actively recognizes, respects, and values cultural differences, fostering an inclusive climate where all diverse groups contribute equally.
+   • Core Principles of Diversity Management:
+     - Recognize the human capacity for complex, multifaceted social identities.
+     - Proactively engage across cultural boundaries to build intercultural empathy.
+     - Avoid imposing personal assumptions, values, or stereotypes onto others.
+     - Linguistic Empathy: Second-language limitations reflect linguistic exposure, never innate intellectual capacity.
+     - Intervene constructively against micro-aggressions, cultural insensitivity, or discrimination.
+
+2. Gender & Social Inclusion:
+   • Sex vs. Gender:
+     - Sex: Innate biological, anatomical, chromosomal, and physiological distinctions.
+     - Gender: Socially constructed roles, cultural institutions, and behavioral expectations assigned to males and females.
+   • Barbara Risman's Three Levels of Gender Analysis:
+     1. Individual Level: Early gender socialization and internal identity development across the lifespan.
+     2. Interactional Level: Interpersonal expectations, cultural stereotypes, and social pressure regarding how men and women "should" act.
+     3. Structural Level: Macro-institutional arrangements, wage disparities, legal policies, and unequal distribution of resources.
+   • Promoting Gender Equity: Discarding discriminatory socioeconomic barriers, ensuring equitable educational access, and securing equal leadership representation.
+
+3. Interpersonal Communication & Social Influence:
+   • Interpersonal Communication: Dynamic exchange of information, ideas, and emotional states through verbal (diction, syntax) and non-verbal channels.
+   • Non-Verbal Communication: Facial expressions, eye contact (gaze), body posture, physical distance (proxemics), and paralinguistics (tone, volume, speech rate).
+   • Social Influence: When an influencing agent uses persuasion, authority, promises, or threats to alter a target individual's behavior.
+     - Attitude Change: Genuine, deep internal transformation of beliefs, perspectives, and values.
+     - Compliance: Outward behavioural agreement to a request or demand without genuine internal agreement.
+
+4. Peer Pressure & Resistance Strategies:
+   • Peer Pressure: Social force exerted by a peer network to adopt their norms, values, or actions.
+     - Positive: Motivates academic achievement, prosocial volunteerism, healthy lifestyle choices, and sportsmanship.
+     - Negative: Uses manipulation, teasing, or coercion to push individuals toward risky, illegal, or harmful actions.
+   • Assertive Refusal & Resistance Strategies:
+     - Recognize coercive or belittling manipulation immediately.
+     - Use the "Delay Tactic": Pausing to reflect before reacting impulsively.
+     - Deliver clear, direct, and unapologetic refusals ("No thanks, that doesn't work for me").
+     - Cultivate relationships with peers who respect autonomy and personal boundaries.
+     - Bystander Intervention: Actively supporting fellow peers facing social intimidation.
+
+5. Assertiveness vs. Passivity vs. Aggressiveness:
+   • Assertiveness: Expressing feelings, beliefs, needs, and boundaries directly, honestly, and calmly while preserving mutual respect for others' dignity.
+   • Passivity: Concealing authentic feelings, appeasing others, and relinquishing rights; breeds low self-esteem, unexpressed resentment, and helplessness.
+   • Aggressiveness: Forcing one's will onto others through intimidation, verbal hostility, or coercion; disregards others' rights.
+   • Core Assertive Skills: Clear "I" statements, maintaining composed eye contact, active listening, and admitting errors without defensiveness.
+
+6. Conflict & Constructive Resolution:
+   • Nature of Conflict: Incompatibility of goals, values, or scarce resources between interdependent parties; inevitable in human interaction.
+   • Daniel Katz's Four Sources of Conflict:
+     1. Economic Conflict: Competition over scarce material or financial resources.
+     2. Value Conflict: Incompatibility between worldviews, moral principles, or religious ideologies.
+     3. Power Conflict: Struggles to gain, maintain, or maximize authority, control, or status.
+     4. Communication Breakdowns: Misperceptions, rumors, and cognitive distortions creating conflict without genuine material incompatibility.
+   • Five Levels of Conflict: Intrapersonal -> Interpersonal -> Role Conflict -> Intergroup/Societal -> International.
+   • Conflict Resolution Approaches:
+     - Win–Lose (Competitive): One party dominates at the other's expense; breeds resentment and unstable compliance.
+     - Lose–Lose (Compromise/Sacrifice): Both parties absorb losses or settle for sub-optimal outcomes.
+     - Win–Win (Collaborative Integrative): Reframing the dispute into "We versus the problem"; maximizes mutual gains and strengthens long-term partnership.
+
+7. Teamwork & Overcoming Risky Behaviors:
+   • Teamwork: Group with complementary skills mutually committed to a shared mission, common performance goals, and joint accountability.
+   • High-Performance Team Traits: Transparent communication, psychological safety, equitable workload distribution, mutual trust, and facilitative leadership.
+   • Mitigating Adolescent Risky Behaviors: Strengthening family stability, deepening student-school-teacher bonds, expanding youth community clubs, and fostering mentorship with trusted adults.
+
+💡 EXAM TIPS & HIGH-YIELD FOCUS
+   • Sex vs. Gender: Sex is biological/physiological; Gender is socially and culturally constructed.
+   • Risman's 3 Gender Levels: Individual (socialization), Interactional (interpersonal norms), Structural (institutional policies).
+   • Conflict Resolution: Win-Win is the collaborative model ("we vs. the problem"), contrasting with adversarial Win-Lose.
+   • Katz's Conflict Typology: Economic (scarce goods), Value (ideology/morals), Power (authority/dominance), Communication (misunderstanding).
+   • Assertiveness Formula: Direct, honest expression of needs while respecting others' rights (contrasts with passive submission or aggressive dominance).
+        """.trimIndent(),
+        colorHex = 0xFF0D9488,
+        initialLikes = 90
     ),
 
     // =========================================================================
@@ -1139,80 +1890,241 @@ Personality encompasses enduring, distinctive patterns of thinking, feeling, and
         subjectId = "c4",
         subject = "Logic and Critical Thinking",
         unit = "Unit 1",
-        title = "Philosophy, Meaning & Critical Thinking Foundations",
+        title = "Introducing Philosophy: Nature, Features, Fields & Value",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Philosophy originates from the Greek words "Philo" (love) and "Sophia" (wisdom) — the systematic inquiry into fundamental questions regarding reality, knowledge, values, and reasoning. Critical thinking is disciplined, self-directed, rational evaluation of beliefs.
+Philosophy originates from the ancient Greek words "Philo" (love) and "Sophia" (wisdom) — literally translating to the "love of wisdom." Coined by Pythagoras and championed by Socrates ("The unexamined life is not worth living"), philosophy is an active, open-ended, and critical enterprise without a bounded empirical subject matter. It operates through both a Constructive Dimension (formulating coherent, rationally defensible frameworks regarding reality, knowledge, and value) and a Critical Dimension (rigorous analysis, conceptual clarification, and evaluation of competing claims).
 
 🔍 DETAILED BREAKDOWN
-1. Core Characteristics of Philosophical Inquiry:
-   • Highly critical, systematic, radical, foundational, comprehensive, and non-dogmatic.
-   • Examines basic presuppositions that ordinary science takes for granted (e.g., What is truth? What is justice?).
+1. Meaning, Etymology & Nature of Philosophy:
+   • Etymological Roots: Greek "Philo" (love) + "Sophia" (wisdom) = "Love of wisdom." Pythagoras was the first to call himself a philosopher (lover of wisdom).
+   • The Elusive Nature: Unlike specialized sciences (physics, chemistry) that inspect bounded material domains, philosophy possesses no single restricted subject matter; it examines universal foundational questions.
+   • Socratic Insight: "Wonder is the feeling of a philosopher, and philosophy begins in wonder." Genuine philosophy requires moving beyond passive wonder into systematic, critical reflection.
+   • Wisdom vs. Technical Expertise: Technical expertise is factual, specialized data recall; philosophical wisdom is a critical habit of mind, intellectual vigilance, and an unceasing commitment to pursue truth wherever it leads.
+   • "Questioning the Apparent": Peeling back common-sense assumptions and unexamined dogmas (Vincent Barry: "an active imaginative process of formulating proper questions and resolving them by rigorous, persistent analysis").
+   • Dual Interdependent Dimensions:
+     - Constructive Dimension: Developing rationally defensible, systematic answers to fundamental questions.
+     - Critical Dimension: Rational critique, deconstruction, and evaluation of existing assumptions.
+   • Philosophy as Dynamic Activity: Philosophy is a living process ("philosophizing") rather than a static catalog of memorized doctrines.
 
-2. Major Branches of Philosophy:
-   • Metaphysics: Study of ultimate reality and the nature of existence.
-     - Ontology: Study of being and existence as such.
-     - Cosmology: Study of the origin and structure of the universe.
-   • Epistemology: Theory of knowledge, its nature, sources, scope, and validity.
-     - Rationalism: Reason is the primary source of knowledge (Descartes, Spinoza, Leibniz).
-     - Empiricism: Sensory experience is the primary source of knowledge (Locke, Berkeley, Hume).
-   • Axiology: Philosophical study of value and valuation.
-     - Ethics (Moral Philosophy): Investigates moral values, right vs wrong, good vs bad conduct.
-     - Aesthetics: Study of beauty, art, taste, and sublime experiences.
-   • Logic: Study of correct reasoning, valid argumentation, and methods for evaluating arguments.
+2. Five Basic Features of Philosophy:
+   • 1. Informal vs. Formal Sense:
+     - Informal ("Having" a philosophy): An unreflective personal attitude, passive outlook, or general worldview.
+     - Formal ("Doing" philosophy): The active, disciplined, and self-conscious critical examination of fundamental beliefs.
+   • 2. A Reflective and Critical Enterprise: Why philosophers disagree:
+     - Diverse cultural backgrounds, historical epochs, and training.
+     - A dynamic, constantly evolving natural and social world.
+     - Incomplete empirical evidence for ultimate metaphysical and normative questions.
+   • 3. A Holistic, Comprehensive Worldview: Synthesizes fragmented findings of natural sciences, historical insights, and human experiences into a unified, coherent synthesis.
+   • 4. Logical Analysis of Language & Conceptual Clarification: Dissolves linguistic confusion, exposes nonsense, and ensures precision in thought and communication.
+   • 5. Inquiry into Perennial Human Questions: Enduring questions spanning existence, justice, free will, morality, and truth that transcend empirical factual queries.
 
-3. Critical Thinking & Intellectual Virtues:
-   • Critical thinking is the disciplined cognitive process of actively evaluating information, arguments, and beliefs without bias.
-   • Core Intellectual Virtues: Intellectual humility, courage, empathy, autonomy, integrity, perseverance, and confidence in reason.
-   • Barriers to Critical Thinking: Egocentrism (self-centered thinking), Sociocentrism (group bias, conformism), Stereotyping, Relativistic thinking, and Wishful thinking.
+3. Core Fields of Philosophy — Metaphysics & Epistemology:
+   • Metaphysics (Study of Ultimate Reality and Being):
+     - Etymology: Greek "meta" (beyond/after) + "physika" (physics) — coined by Andronicus of Rhodes when cataloging Aristotle's works.
+     - George Knight's Floor Example: Common sense sees a solid stationary floor; the physicist sees swirling subatomic particles and energy; the chemist sees hydrocarbon polymers. Reality is multilayered!
+     - Four Core Subsets:
+       1. Cosmological Aspect: Theories regarding the origin, evolution, and orderly structure of the universe (purpose vs. random chance).
+       2. Theological Aspect: Religious conceptions, proofs of God's existence, divine attributes, and the Problem of Evil.
+       3. Anthropological Aspect: Philosophical inquiry into human nature (mind-body problem, free will vs. determinism, moral nature, immortality).
+       4. Ontological Aspect: Study of Being and existence as such (materialism vs. idealism, static vs. dynamic reality).
+   • Epistemology (Study of Knowledge):
+     - Etymology: Greek "episteme" (knowledge) + "logos" (study of).
+     - Foundational Positions:
+       * Skepticism: Asserts objective knowledge is unattainable (e.g., Gorgias the Sophist).
+       * Agnosticism: Profession of ignorance regarding transcendent or ultimate reality.
+       * Relativism: Truth is culture-bound and shifting vs. Absolutism: Truth is eternal, universal, and objective.
+     - Five Sources of Knowledge:
+       1. Empiricism: Sensory perception (sight, hearing, touch). Strength: Publicly verifiable and replicable. Limitation: Senses can deceive (e.g., bent stick in water).
+       2. Rationalism: Pure reason, deduction, and abstract logic. Strength: Internal certainty (e.g., mathematics). Limitation: Can detach from empirical facts.
+       3. Intuition: Immediate insight below conscious awareness. Strength: Sparks creative breakthroughs. Limitation: Highly subjective and prone to error.
+       4. Revelation: Transcendent divine disclosure. Strength: Perceived as omniscient/pure by believers. Limitation: Relies on faith; non-verifiable empirically.
+       5. Authority: Established expertise, textbooks, and traditions. Strength: Preserves cultural heritage. Limitation: Perpetuates dogmatic error if source is biased.
+
+4. Core Fields of Philosophy — Axiology & Logic:
+   • Axiology (Study of Value):
+     - Etymology: Greek "axios" (worth/value) + "logos".
+     - Three Branches:
+       1. Ethics (Moral Philosophy): Right vs. wrong conduct.
+          * Normative Ethics: Consequentialist/Teleological (ends justify means), Deontological (duty-based rules), Virtue Ethics (moral character).
+          * Meta-Ethics: Meaning of ethical words (good, bad) and objectivity of moral facts.
+          * Applied Ethics: Concrete dilemmas (euthanasia, abortion, environmental ethics).
+       2. Aesthetics: Nature of beauty, art, taste, and sensory evaluation (objective qualities vs. subjective viewer appraisal).
+       3. Social & Political Philosophy: Justification of governance, legitimacy of political power, justice, and civic obligation.
+   • Logic: The study of arguments and the methods used to distinguish valid, sound reasoning from fallacious reasoning.
+
+5. Significance of Studying Philosophy:
+   • Socratic Dictum: "The unexamined life is not worth living." Fulfills actualizing needs beyond mere survival maintenance.
+   • Five Core Benefits:
+     1. Intellectual and Behavioral Independence (emancipation from unexamined societal prejudices).
+     2. Deep Reflective Self-Awareness.
+     3. Intellectual Humility, Tolerance, and Open-Mindedness.
+     4. Rigorous Creative and Critical Thinking.
+     5. Constructing a Feasible, Purposeful Value Framework.
+   • Bertrand Russell on Philosophical Uncertainty (1912, "The Problems of Philosophy"):
+     - Unphilosophical living leaves one imprisoned by cultural prejudices and habitual dogmas.
+     - Philosophy's value lies in its liberating uncertainty: while diminishing dogmatic arrogance about what things are, it dramatically expands our knowledge of what they may be, keeping intellectual wonder alive.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Metaphysics asks "What is real?", Epistemology asks "How do we know?", and Axiology asks "What is of value?".
-• Critical thinking is not negative or cynical; it is constructive, objective, and evidence-grounded evaluation.
+   • Etymological Origins: Philo + Sophia (Love of wisdom), Episteme + Logos (Knowledge), Axios + Logos (Value), Meta + Physika (Beyond physics).
+   • Socrates: "Philosophy begins in wonder" and "The unexamined life is not worth living."
+   • Pythagoras: First thinker to formally coin and use the term "philosopher."
+   • Four Metaphysical Branches: Cosmology (universe), Theology (God), Anthropology (human nature), Ontology (being/existence).
+   • Consequentialist vs. Deontological Ethics: Consequentialism judges morality by OUTCOMES; Deontology judges morality by DUTY/RULES regardless of consequences.
+   • Russell's Value of Philosophy: Resides in its liberating uncertainty, not in providing definitive scientific answers.
         """.trimIndent(),
         colorHex = 0xFFD97706,
-        initialLikes = 75
+        initialLikes = 85
     ),
     ShortNote(
         id = "logic-u2",
         subjectId = "c4",
         subject = "Logic and Critical Thinking",
         unit = "Unit 2",
-        title = "Basic Concepts of Arguments (Deduction, Induction, Validity & Soundness)",
+        title = "Basic Concepts of Logic: Arguments, Deduction, Induction & Evaluation",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Logic evaluates arguments. An argument is a structured group of statements where one or more premises claim to provide evidentiary support or reasons to believe a conclusion.
+Logic is the philosophical science and systematic study of methods and principles used to evaluate arguments—distinguishing correct (good) from incorrect (bad) reasoning. An argument is a structured group of statements where premises provide evidentiary support or reasons to establish a single conclusion.
 
 🔍 DETAILED BREAKDOWN
-1. Structure of an Argument:
-   • Statement (Proposition): A declarative sentence that is either true or false (Truth Value). Commands, questions, and exclamations are NOT statements.
-   • Premises: Statements setting forth evidence, reasons, or grounds.
-   • Conclusion: The claim supported by the premises.
-   • Premise Indicators: Since, because, for, as, given that, for the reason that, inasmuch as.
-   • Conclusion Indicators: Therefore, thus, hence, consequently, so, it follows that, implies that.
+1. What is Logic?
+   • Etymology: Originates from the ancient Greek "logos" (word, sentence, discourse, reason, rule, or truth).
+   • Core Definitions:
+     - The organized body of knowledge or philosophical science that evaluates arguments.
+     - The systematic study of methods and principles distinguishing good reasoning from bad reasoning.
+     - An effort to codify formal rules of rational thought to determine whether premises adequately support conclusions.
+   • Benefits of Studying Logic:
+     - Refines natural reasoning, critical thinking, and argumentative skills.
+     - Equips individuals to construct sound arguments and critically assess others' claims.
+     - Defends against prejudice, unreflective dogmatism, and misleading rhetoric in public and personal life.
+     - Detects errors in reasoning and semantic confusions from language misuse.
 
-2. Recognizing Non-Arguments:
-   • Non-inferential passages lack the claim that one statement proves another:
-     - Reports, warnings, pieces of advice, expressions of belief/opinion.
-     - Conditional Statements ("If P, then Q"): Not arguments by themselves, though they can be premises within arguments.
-     - Explanations: Contain an explanandum (the accepted fact being explained) and an explanans (the claim explaining why it occurred). Unlike arguments, explanations do not aim to prove THAT something happened.
+2. What is an Argument?
+   • Technical Definition: A group of statements in which one or more statements (premises) are claimed to provide support, reasons, or evidence to believe another single statement (conclusion).
+   • Non-Technical Contrast: Not a mere dispute, quarrel, or verbal fight between individuals.
+   • Statements and Truth Values:
+     - Statement (Proposition): A declarative sentence having a truth value (either strictly true or false).
+     - Truth: Describes things as they actually are in reality.
+     - Falsity: Asserts what is not the case.
+   • Non-Statements (Cannot serve as premises or conclusions):
+     - Questions ("Would you close the window?")
+     - Proposals ("Let us study together")
+     - Commands / Imperatives ("Give me your ID card!")
+     - Suggestions ("I suggest reading philosophy")
+     - Exclamations ("Right on!")
+   • Components of an Argument:
+     - Premise(s): Statements setting forth evidence, reasons, or grounds. Must contain at least one premise (can contain many).
+     - Conclusion: The single statement claimed to follow from the premises; the central claim established. Every argument has one and only one conclusion.
+     - Canonical Model:
+       * Premise 1: All Ethiopians are Africans.
+       * Premise 2: Tsionawit is an Ethiopian.
+       * Conclusion: Therefore, Tsionawit is an African.
 
-3. Deductive Arguments:
-   • Claim: Conclusion is claimed to follow with strict NECESSITY from premises.
-   • Validity: A deductive argument is Valid if it is impossible for the premises to be true and the conclusion simultaneously false. Validity depends purely on logical form, NOT factual truth!
-   • Invalid: An argument where it is possible for true premises to yield a false conclusion.
-   • Soundness: An argument is Sound if and only if it is (1) Valid AND (2) possesses all factual TRUE premises. If either condition fails, it is Unsound.
-   • Deductive Forms: Arguments based on mathematics, definitions, categorical syllogisms, hypothetical syllogisms, disjunctive syllogisms.
+3. Identifying Premises and Conclusions:
+   • Conclusion Indicators:
+     - Therefore, thus, so, consequently, hence, whence, wherefore, accordingly, it follows that, we may conclude, entails that, as a result, it implies that, it shows that.
+   • Premise Indicators:
+     - Since, because, for, as, given that, seeing that, owing to, in that, inasmuch as, as indicated by, for the reason that, may be inferred from.
+   • Crucial Distinction ("For this reason" vs "For the reason that"):
+     - "For this reason": Preceding statement is the PREMISE; following statement is the CONCLUSION.
+     - "For the reason that": Introduces a PREMISE.
+   • Arguments Without Indicators:
+     - Determine the conclusion by asking: What is the arguer trying to prove? What is the main point? Which single claim follows from the others?
+     - Extraneous remarks and background comments are neither premises nor conclusions and must be excluded.
 
-4. Inductive Arguments:
-   • Claim: Conclusion is claimed to follow only with PROBABILITY from premises.
-   • Strength: An inductive argument is Strong if, assuming premises are true, it is probable (more than 50% chance) that the conclusion is true. Otherwise it is Weak.
-   • Cogency: An inductive argument is Cogent if and only if it is (1) Strong AND (2) has all true premises (meeting the total evidence requirement). If weak or having false premises, it is Uncogent.
-   • Inductive Forms: Inductive generalizations, predictive arguments, arguments from analogy, causal inferences, arguments from authority.
+4. Techniques of Recognizing Arguments:
+   • Two Essential Conditions for Purporting to Prove Something:
+     1. Factual Claim: At least one statement claims to present evidence, facts, or reasons.
+     2. Inferential Claim: There is a claim that the alleged evidence supports, implies, or leads to the conclusion.
+        - Inferential claim is an objective structural property of language, not the subjective intent of the author.
+        - Explicit: Directly signaled by indicator words ("therefore", "because").
+        - Implicit: Established through an inferential relationship without indicators.
+   • Non-Argumentative Passages (Lack an Inferential Claim):
+     1. Simple Non-Inferential Passages:
+        - Warnings: Putting someone on guard against potential danger ("Never confide secrets to strangers").
+        - Pieces of Advice: Recommendations on future courses of action without logical proof.
+        - Statements of Belief / Opinion: Personal convictions lacking supporting evidence.
+        - Loosely Associated Statements: Share a general topic but lack inferential connection.
+        - Reports: Conveying factual data/narrative without attempting to prove a conclusion.
+     2. Expository Passages:
+        - Begins with a topic sentence followed by sentences that merely elaborate, clarify, or flesh it out.
+        - Borderline Test: If subsequent sentences merely describe, it is expository; if intended to prove an unfamiliar or contested topic sentence, it functions as an argument.
+     3. Illustrations & Arguments from Example:
+        - Illustrations: Examples demonstrating what something means or how it operates (e.g., chemical formulas).
+        - Argument from Example: Examples explicitly cited to substantiate a contested general claim.
+     4. Explanations:
+        - Sheds light on or accounts for WHY an accepted fact or phenomenon occurred (does NOT prove that it occurred).
+        - Explanandum: Statement describing the accepted event/fact to be explained.
+        - Explanans: Statement(s) purporting to do the explaining (causes/reasons).
+        - Difference: Argument seeks to prove a claim is TRUE (Premises -> Conclusion); Explanation shows WHY an accepted fact is true (Explanans -> Explanandum).
+     5. Conditional Statements ("If... then..."):
+        - Antecedent (follows "if") and Consequent (follows "then").
+        - A single conditional statement is NEVER an argument (neither component is asserted as true).
+        - Can serve as premises, conclusions, or both within an argument.
+        - Sufficient Condition (A for B): Occurrence of A is all that is needed for B (If A, then B). E.g., Being a dog is a sufficient condition for being an animal.
+        - Necessary Condition (B for A): A cannot occur without B (If not B, then not A). E.g., Being an animal is a necessary condition for being a dog.
+
+5. Types of Arguments: Deduction vs. Induction:
+   • Core Differences:
+     - Deductive Argument: Claims it is IMPOSSIBLE for the conclusion to be false if premises are true. Involves strict, necessary reasoning. Conclusion does not go beyond the scope of premises.
+     - Inductive Argument: Claims it is IMPROBABLE for the conclusion to be false if premises are true. Involves probabilistic reasoning. Conclusion goes beyond the content of premises.
+   • Factors Distinguishing Deduction from Induction:
+     1. Indicator Words: Deductive ("definitely", "certainly", "necessarily", "absolutely") vs Inductive ("probably", "likely", "plausible", "reasonable to conclude").
+     2. Actual Strength of Inferential Link: Necessary connection (deductive) vs Probable connection (inductive).
+     3. Form or Character of Argumentation.
+   • Common Deductive Forms:
+     - Arguments Based on Mathematics: Arithmetic or geometric deductions (excludes statistics, which are inductive).
+     - Arguments from Definition: Conclusion depends entirely on definition of a word (e.g., "Angel is honest; therefore, Angel tells the truth").
+     - Syllogisms (2 premises + 1 conclusion):
+       * Categorical Syllogism: Begins with "all", "no", or "some".
+       * Hypothetical Syllogism: Contains conditional ("if... then") premises.
+       * Disjunctive Syllogism: Contains an "either... or" premise.
+   • Common Inductive Forms:
+     - Predictions: Reasoning from past/present observations to future occurrences.
+     - Arguments from Analogy: Shared properties in two things imply sharing an additional property.
+     - Inductive Generalizations: Projecting sample group traits onto an entire population.
+     - Arguments from Authority: Concluding based on expert testimony or witness statements.
+     - Arguments Based on Signs: Concluding a condition exists from visual markers/signs.
+     - Causal Inferences: Inferring effect from cause, or cause from observed effect.
+   • Debunking Historical Misconception: Deductive arguments do NOT always proceed general-to-particular, nor induction particular-to-general. Both can proceed in either direction.
+
+6. Evaluating Arguments:
+   • Two-Step Evaluation Order:
+     Step 1: Evaluate Inferential Claim (Do premises logically support conclusion?).
+     Step 2: Evaluate Factual Claim (Are premises actually true in reality?).
+   • 6.1 Deductive Evaluation: Validity & Soundness
+     - Validity (Structural Inferential Test):
+       * Valid: Impossible for premises to be true and conclusion false simultaneously. Conclusion follows with strict logical necessity.
+       * Invalid: Possible for premises to be true and conclusion false. Conclusion fails to follow necessarily.
+       * Core Rule: Validity depends strictly on form/structure, NOT factual truth!
+       * The ONLY Impossible Combination for Validity: True Premises + False Conclusion = Guaranteed INVALID.
+       * Validity Matrix:
+         · True Premises + True Conclusion -> Valid OR Invalid
+         · True Premises + False Conclusion -> MUST BE INVALID
+         · False Premises + True Conclusion -> Valid OR Invalid
+         · False Premises + False Conclusion -> Valid OR Invalid
+     - Soundness (Inferential + Factual Test):
+       * Sound Argument = Valid Argument + All Actually True Premises (Conclusion is guaranteed to be true).
+       * Unsound Argument: Any deductive argument that is invalid, contains one or more false premises, or both.
+   • 6.2 Inductive Evaluation: Strength & Cogency
+     - Strength (Probabilistic Inferential Test):
+       * Strong: Improbable for conclusion to be false assuming premises are true (>50% probability).
+       * Weak: Conclusion does not follow with probability, even if claimed to.
+       * Unlike validity (all-or-nothing), inductive strength admits of degrees.
+       * The ONLY Impossible Combination for Strength: True Premises + False Conclusion = Guaranteed WEAK.
+       * Strength Matrix:
+         · True Premises + True Conclusion -> Strong OR Weak
+         · True Premises + False Conclusion -> MUST BE WEAK
+         · False Premises + True Conclusion -> Strong OR Weak
+         · False Premises + False Conclusion -> Strong OR Weak
+     - Cogency (Inferential + Factual Test):
+       * Cogent Argument = Strong Argument + All Actually True Premises + Satisfies Total Evidence Requirement (does not ignore key evidence).
+       * Uncogent Argument: Inductive argument that is weak, has one or more false premises, or ignores critical countervailing evidence.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• True premises + True conclusion does NOT automatically mean valid! Check if conclusion NECESSARILY follows.
-• Only one combination is strictly forbidden for valid arguments: True premises leading to a False conclusion. If this occurs, the argument is guaranteed to be INVALID.
+• The "Golden Matrix Rule": The ONLY combination that definitively determines inferential status alone is [True Premises + False Conclusion]. In deduction it guarantees INVALIDITY; in induction it guarantees WEAKNESS. All other truth-value combinations can be either valid/invalid or strong/weak.
+• Soundness & Cogency require BOTH valid/strong structure AND factually true premises. A single false premise instantly ruins soundness or cogency!
+• Never confuse conditional statements or explanations with arguments. "If P then Q" asserts nothing as true; an explanation explains WHY an accepted fact occurred rather than proving THAT it occurred.
         """.trimIndent(),
         colorHex = 0xFFD97706,
         initialLikes = 89
@@ -1222,196 +2134,391 @@ Logic evaluates arguments. An argument is a structured group of statements where
         subjectId = "c4",
         subject = "Logic and Critical Thinking",
         unit = "Unit 3",
-        title = "Logic & Language, Definitions & Terminology",
+        title = "Logic and Language: Philosophy, Meaning, Terms & Definitions",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Language serves multiple functions. Clear reasoning requires resolving vagueness, ambiguity, and emotional coloring through precise definitions and intentional/extensional analysis of terms.
+Language is the primary vehicle for human thought and logical reasoning. Critical thinking requires understanding the philosophy of language, separating cognitive meaning from emotive distortion, resolving vagueness and ambiguity, analyzing terms through intension and extension, and constructing rigorous definitions following logical criteria.
 
 🔍 DETAILED BREAKDOWN
-1. Functions of Language:
-   • Cognitive (Informative) Function: Communicates factual objective information, descriptions, and arguments. Evaluated as true or false. Logic primarily analyzes cognitive language.
-   • Emotive Function: Expresses or evokes feelings, attitudes, and emotional responses.
-   • Directive Function: Commands, requests, or directs behavior.
-   • Performative Function: Actions performed through speech (e.g., "I promise", "I now pronounce you husband and wife").
+1. Philosophy of Language: An Overview
+   • Definition & Scope: A reasoned investigation into the nature of meaning, origins and cognition of language, its use in thought, and the relationship connecting linguistic symbols, logic, and external reality.
+   • Distinction from Linguistics:
+     - Linguistics empirically studies grammar, phonetics, and comparative structural features of specific languages.
+     - Modern Linguistics (Noam Chomsky): Highlights Universal Grammar—an innate cognitive foundation—distinguishing internal competence (I-languages) from external social conventions (E-languages).
+   • Semantic Holism: Proposes that meaning does not reside within an isolated word or proposition, but emerges solely through the wider web of an entire linguistic system.
+   • Historical Milestones:
+     - Ancient Greece: Plato debated natural vs. conventional naming; Aristotle analyzed predicates and properties (laying roots for nominalism and moderate realism).
+     - The Stoics: Introduced the "lektón" (intelligible sense of a statement), foreshadowing modern propositions with truth-values.
+     - Scholastic Logic: Explored ambiguity, vagueness, supposition (context-dependent meaning), and categorized terms into categorematic (independent meaning) vs. syncategorematic (auxiliary grammatical markers).
+     - Modern Era: The "Linguistic Turn" of the 19th and 20th centuries placed linguistic analysis at the center of analytic philosophy.
+   • Philosophical Theories of Meaning:
+     - Idea Theories (Locke, Berkeley, Hume): Meaning consists of subjective mental representations/ideas triggered by signs.
+     - Truth-Conditional Theories (Gottlob Frege): Meaning is defined by objective conditions under which a statement is judged true or false.
+     - Use Theories (Ludwig Wittgenstein): Meaning is determined by how words are applied in social practices and speech acts ("meaning is use").
+     - Reference Theories / Externalism (Tyler Burge, Saul Kripke): Meaning corresponds directly to real-world objects designated by terms.
+     - Verificationist Theories (Logical Positivists): Meaning is identical to its empirical method of verification or falsification.
+     - Pragmatist Theories: Meaning is grounded in the practical, observable consequences of applying an idea.
 
-2. Meaning of Terms (Intension vs Extension):
-   • Term: A word or phrase capable of serving as the subject of a proposition (proper names, common names, descriptive phrases).
-   • Intensional Meaning (Connotation): The set of attributes, qualities, or characteristics that determine what a term refers to (e.g., intension of "tiger" = large, carnivorous, striped feline).
-   • Extensional Meaning (Denotation): The actual individual members or objects of the class referred to by the term (e.g., denotation of "African country" = Ethiopia, Kenya, Nigeria, etc.).
-   • Law of Inverse Variation: As intension increases (more specific attributes added), extension decreases (fewer objects qualify).
+2. Logic and Meaning: Cognitive vs. Emotive
+   • Two Principal Functions in Logic:
+     - Cognitive Function: Communicates factual information, assertions, or evidence; conveys verifiable descriptions and carries truth-values. Primary focus of logic!
+     - Emotive Function: Expresses or evokes feelings, affective reactions, and emotional states.
+   • Emotive Terminology in Arguments:
+     - Value Claims: Judgments asserting that an action/phenomenon is good, bad, moral, immoral, better, or worse.
+     - Logical Danger: Emotional vocabulary masks unsubstantiated value claims, generating persuasive momentum that nudges audiences to accept claims without evidence.
+     - Remedy: Disengage emotional language, isolate underlying value claims, and restate the argument into neutral premises to evaluate validity.
 
-3. Types of Definitions:
-   • Stipulative Definition: Assigns a brand new meaning to a newly coined term (or repurposed word). Cannot be true or false. (e.g., selfie, blog).
-   • Lexical Definition: Reports established, standard dictionary meaning already in use. Can be true or false. Eliminates ambiguity.
-   • Precising Definition: Reduces the vagueness of an existing term for a specific specialized context (e.g., defining "poverty line" as household income below $2/day for aid eligibility).
-   • Theoretical Definition: Formulates an intellectually adequate or scientifically rigorous description of the nature of a phenomenon (e.g., "Light is electromagnetic radiation").
-   • Persuasive Definition: Formulated using emotionally charged or biased terms to influence attitudes (e.g., "Abortion is the murder of innocent fetuses").
+3. Deficiencies of Cognitive Meaning & Types of Disputes:
+   • Vagueness vs. Ambiguity:
+     - Vagueness: Occurs when an expression has borderline cases, creating a continuous, hazy blur of meaning (e.g., "rich", "poor", "fresh", "excessive", "polluted"). Impossible to determine exact application boundaries.
+     - Ambiguity: Occurs when an expression admits of two or more distinct, separate meanings in a single context (e.g., "bank", "light", "sound", "proper").
+   • Forms of Disputes in Logic:
+     - Verbal Disputes: Disagreements arising from linguistic misunderstandings, vague terminology, or ambiguous words. Resolved by clarifying definitions.
+     - Factual Disputes: Genuine disagreements over empirical facts, verifiable events, or objective states of affairs.
 
-4. Definitional Techniques:
-   • Extensional (Denotative) Techniques: Demonstrative (ostensive pointing), Enumerative (naming individual members), Definition by Subclass.
-   • Intensional (Connotative) Techniques: Synonymous definition, Etymological definition (root origins), Operational definition (specifying testing procedure), Definition by Genus and Difference (identifies broader class and differentiating attribute).
+4. The Intension and Extension of Terms:
+   • Term: Any word or syntactic phrase that can serve as the subject of a declarative statement (proper names, common nouns, descriptive phrases). Standalone verbs, adverbs, prepositions, and conjunctions are NOT terms.
+   • Use vs. Mention: A word is used when directing attention to reality ("Paris is crowded"); it is mentioned when set in quotes to examine the word itself ("'Paris' has five letters").
+   • Intensional Meaning (Connotation / Sense):
+     - The set of attributes, qualities, or characteristics implied by a term.
+     - Conventional Connotation: Standard attributes recognized by competent speakers, maintaining stable meaning.
+   • Extensional Meaning (Denotation / Reference):
+     - The actual physical entities or class members referred to across past, present, and future.
+     - Empty Extension (Null Class): Terms with clear intension but zero real-world referents (e.g., "unicorn", "current king of France").
+   • Core Rule: Intension determines extension (attributes establish membership criteria).
+   • Ordering of Terms:
+     - Increasing Intension (Decreasing Extension): Broader category -> progressively more specific concept with more attributes (e.g., Animal -> Mammal -> Feline -> Tiger).
+     - Increasing Extension (Decreasing Intension): Smaller class -> progressively larger class with more members (e.g., Tiger -> Feline -> Mammal -> Animal).
+
+5. Logic and Definition: Types and Purposes:
+   • Structure: Definition = Definiendum (word being defined) + Definiens (words performing the defining).
+   • Five Types of Definitions:
+     1. Stipulative Definition: Assigns meaning to a term for the first time (coining a word or giving a new meaning). Arbitrary; cannot be true or false.
+     2. Lexical Definition: Reports the conventional meaning already established in standard usage (dictionary definition). Can be true or false; eliminates ambiguity.
+     3. Précising Definition: Reduces the vagueness of a term by establishing explicit operational boundaries for specialized settings (legal, medical, scientific). Non-arbitrary.
+     4. Theoretical Definition: Formulates a scientific or philosophical theory that conceptualizes the true nature of an entity (e.g., defining heat as kinetic molecular motion).
+     5. Persuasive Definition: Employs emotionally charged vocabulary to influence audience attitudes while disguising itself as an objective definition.
+
+6. Definitional Techniques:
+   • Extensional (Denotative) Techniques (assigns meaning by pointing to or naming class members):
+     - Demonstrative (Ostensive): Physically pointing at an object (limited by physical presence).
+     - Enumerative: Naming individual class members individually ("Actor means someone like X, Y, or Z").
+     - Definition by Subclass: Naming specific subgroups that make up the class ("Tree means oak, pine, or cedar").
+     - Limitation: Extensional definitions cannot fully determine intension.
+   • Intensional (Connotative) Techniques (specifies attributes and qualities):
+     - Synonymous Definition: Providing a single word sharing the same intensional meaning.
+     - Etymological Definition: Tracing ancestral linguistic roots to convey seminal meaning.
+     - Operational Definition: Specifying measurable, observable empirical actions or experimental tests.
+     - Definition by Genus and Difference: Identifies the broader category (Genus) and the distinguishing characteristic (Specific Difference) setting the target species apart.
+
+7. Criteria for Lexical Definitions (8 Core Rules):
+   1. Standard Grammar: Must conform to established syntactic conventions.
+   2. Convey Essential Meaning: Must capture primary distinguishing attributes of the definiendum.
+   3. Neither Too Broad nor Too Narrow:
+      - Too Broad: Includes entities outside the denoted class (e.g., "A bird is a feathered creature that flies" - excludes ostriches).
+      - Too Narrow: Excludes legitimate members of the class.
+   4. Avoid Circularity: Must not define a term using itself, close grammatical derivatives, or a circular chain.
+   5. Affirmative over Negative: State what a term IS rather than what it is NOT (unless defining inherently negative terms like "darkness" or "bald").
+   6. Avoid Figurative, Obscure, Vague, or Ambiguous Language: Avoid metaphors and confusing jargon.
+   7. Avoid Affective Terminology: Refrain from biased, sarcastic, or emotionally manipulative phrasing.
+   8. Indicate Context: Specify specialized field/discipline when a term carries multiple technical senses.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Vagueness means borderline cases exist where application is uncertain; Ambiguity means a term has two or more completely distinct meanings in context.
-• A definition by Genus and Difference consists of Genus (larger category) + Specific Difference (unique feature that sets it apart).
+• Vagueness = blurred boundaries / borderline cases ("poor", "tall"). Ambiguity = multiple distinct meanings ("bank", "light").
+• Intension determines extension, but not vice versa! Two terms can have identical (or empty) extensions but completely different intensions (e.g., "unicorn" and "centaur" both have empty extension, but distinct connotations).
+• Lexical definitions can be judged TRUE or FALSE based on actual linguistic usage; Stipulative definitions can NEVER be true or false because they are arbitrary proposals.
         """.trimIndent(),
         colorHex = 0xFFD97706,
-        initialLikes = 80
+        initialLikes = 88
     ),
     ShortNote(
         id = "logic-u4",
         subjectId = "c4",
         subject = "Logic and Critical Thinking",
         unit = "Unit 4",
-        title = "Informal Fallacies (Relevance, Weak Induction & Presumption)",
+        title = "Basic Concepts of Critical Thinking: Standards, Principles, Traits & Barriers",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-A fallacy is a defect in an argument that arises from faulty reasoning rather than mere factual falsehood. Informal fallacies occur due to defects in content, meaning, or context.
+Critical thinking is a disciplined cognitive process of thinking clearly, rationally, fairly, and independently. It integrates intellectual standards, codes of conduct for good argumentation, metacognition, and emotional self-regulation while actively dismantling psychological barriers such as egocentrism, sociocentrism, and relativistic thinking.
 
 🔍 DETAILED BREAKDOWN
-1. Fallacies of Relevance (Premises are logically irrelevant to conclusion):
-   • Appeal to Force (Argumentum ad Baculum): Threatening harm or coercion to force acceptance of a conclusion.
-   • Appeal to Pity (Argumentum ad Misericordiam): Evoking sympathy or pity to secure agreement instead of presenting evidence.
-   • Appeal to the People (Argumentum ad Populum): Appealing to popular desires, bandwagon effect, vanity, or elitism ("Everyone uses it, so you should too").
-   • Argument Against the Person (Argumentum ad Hominem): Attacking the opponent's personal traits rather than addressing their argument:
-     - Ad Hominem Abusive: Direct personal verbal insult.
-     - Ad Hominem Circumstantial: Attacking opponent's personal circumstances, interests, or employment.
-     - Tu Quoque ("You too"): Accusing the opponent of hypocrisy to discredit their claim.
-   • Accident: Erroneously applying a general rule to an atypical specific case where it does not fit.
-   • Straw Man: Distorting, exaggerating, or misrepresenting an opponent's argument to knock it down easily.
-   • Missing the Point (Ignoratio Elenchi): Presenting premises that support one specific conclusion, but drawing a completely different, unjustified conclusion.
-   • Red Herring: Diverting attention away from the original issue by introducing an exciting, irrelevant side topic.
+1. Meaning and Foundations of Critical Thinking:
+   • Etymology & Essence: Derived from the concept of exercising skilled judgment and keen observation.
+   • Beyond Raw Intelligence: High IQ or being "smart" does not guarantee critical thinking or impartiality.
+   • Core Aim: Arriving at well-reasoned, justifiable conclusions free from the distortions of irrelevant emotions and personal biases.
+   • Major Philosophical Definitions:
+     - John Dewey: "Active, persistent, and careful consideration of a belief or supposed form of knowledge in the light of the grounds which support it and the further conclusions to which it tends" (emphasizes self-directed questioning, thorough reflection, and evaluating grounds/implications).
+     - Edward Glaser: Three core components: (1) an attitude/disposition of thoughtful consideration, (2) knowledge of logical inquiry methods, and (3) skill in applying them. Combines cognitive ability with enduring habit.
+     - Robert Ennis: "Reasonable, reflective thinking that is focused on deciding what to believe or do" (adds practical decision-making and action to theoretical evaluation).
+     - Richard Paul: Thinking about one's thinking (metacognition) while taking charge of the structures of thought and imposing intellectual standards upon them.
+     - Michael Scriven: Skilled, active interpretation and evaluation of observations and communications; a foundational academic literacy.
+   • "Criticocreative" Thinking: Critical thinking is NOT purely negative or destructive. It harmonizes critical evaluation (detecting flaws, assessing arguments) with creative thinking (generating alternative hypotheses, imagining alternative scenarios, diverse perspectives, and novel solutions).
 
-2. Fallacies of Weak Induction (Premises provide insufficient probabilistic evidence):
-   • Appeal to Unqualified Authority (Ad Verecundiam): Citing a source that lacks expertise in the field under discussion.
-   • Appeal to Ignorance (Ad Ignorantiam): Claiming a statement is true because nobody has proven it false (or vice-versa).
-   • Hasty Generalization: Drawing a broad conclusion about an entire group based on an unrepresentative or too small sample.
-   • False Cause: Improperly concluding causal link:
-     - Post hoc ergo propter hoc ("After this, therefore because of this"): Assuming temporal succession implies causation.
-     - Non causa pro causa: Mistaking what is not the cause for the cause.
-     - Oversimplified Cause: Selecting one factor when multiple causes exist.
-   • Slippery Slope: Asserting without evidence that an initial harmless step will inevitably lead to an uncontrolled chain reaction of catastrophe.
-   • Weak Analogy: Comparing two things that share superficial similarities while ignoring critical relevant differences.
+2. Universal Standards of Critical Thinking (8 Core Standards):
+   1. Clarity: The "gateway" standard—if an expression is unclear, one cannot determine whether it is accurate or relevant. Demands language free from obscurity, muddiness, and vagueness.
+   2. Precision: Insisting on exactness, specific details, and precise questions/answers to cut through overgeneralizations.
+   3. Accuracy: Ensuring statements reflect genuine factual truth ("Garbage in, garbage out"—flawed facts produce flawed conclusions regardless of logical validity).
+   4. Relevance: Confining evidence and considerations strictly to those with genuine logical connection to the issue at hand.
+   5. Consistency: Avoiding self-contradiction:
+      - Logical Consistency: Not holding mutually contradictory propositions simultaneously.
+      - Practical Consistency: Aligning deeds and behavior with stated beliefs (avoiding hypocrisy and self-deception).
+   6. Logical Correctness: Drawing conclusions that follow with strict necessity (deductive) or high probability (inductive) from well-founded premises.
+   7. Completeness: Preferring deep, thorough, comprehensive analysis over shallow, narrow examinations.
+   8. Fairness: Maintaining an open, impartial mindset that treats all relevant viewpoints alike, free from personal bias, self-interest, and preconceptions.
 
-3. Fallacies of Presumption, Ambiguity & Grammatical Analogy:
-   • Begging the Question (Petitio Principii): Assuming the truth of the conclusion within the premises (circular reasoning).
-   • False Dichotomy: Presenting two alternatives as exhaustive when other reasonable possibilities exist ("Either you are with us or you are against us").
-   • Equivocation: Shifting the meaning of a key ambiguous word or phrase across the argument.
-   • Amphiboly: Ambiguity caused by faulty sentence grammar or punctuation.
-   • Composition: Erroneously transferring an attribute of individual parts to the whole system.
-   • Division: Erroneously transferring an attribute of the whole system to its individual parts.
+3. Codes of Intellectual Conduct for Effective Discussion:
+   • 3.1 Principles of a Good Argument:
+     - Structural Principle: Premises must not contradict each other or the conclusion, must avoid invalid forms, and must not assume the conclusion (avoiding circularity / begging the question).
+     - Relevance Principle: Reasons must provide genuine evidence counting toward the truth of the conclusion.
+     - Acceptability Principle: Premises must be claims that a mature, rational person would accept in light of all available evidence (preferred over elusive "absolute truth").
+     - Sufficiency Principle: Reasons provided must be sufficient in weight, number, and kind to justify the conclusion.
+     - Rebuttal Principle: Must anticipate, address, and effectively refute or blunt the strongest criticisms and counterarguments.
+   • 3.2 Principles of Critical Thinking in Dialogue:
+     - Fallibility Principle: Openly acknowledging that one's initial beliefs may be incomplete, flawed, or incorrect.
+     - Truth-Seeking Principle: A serious, lifelong commitment to discovering the most defensible truth, requiring active engagement with opposing views.
+     - Clarity Principle: Formulating all positions and counter-claims in unambiguous, clear language.
+     - Burden of Proof Principle: The obligation to defend a position rests on the person asserting it; shifting the burden of proof is fallacious.
+     - Principle of Charity: Reconstructing an opponent's argument in its strongest, most defensible form consistent with their intent before evaluating it.
+     - Suspension of Judgment Principle: If evidence is insufficient or equally balanced on both sides, suspend judgment until further evidence emerges.
+     - Resolution Principle: An issue is considered resolved when one stance is supported by a structurally sound, relevant, acceptable, and sufficient argument with an effective rebuttal; participants are rationally obligated to accept it unless new evidence appears.
+
+4. Critical Thinkers vs. Uncritical Thinkers:
+   • Intellectual Honesty: Acknowledge what they do not know and admit cognitive limitations VS. Pretend to know, ignore blind spots.
+   • Response to Complexity: View controversial issues and complexities as exciting challenges VS. Regard complexity as a nuisance or threat to ego.
+   • Curiosity & Perseverance: Patient with complexity, willing to do intellectual work VS. Impatient, prefer remaining confused.
+   • Basis of Judgment: Base judgments on verifiable evidence, defer when lacking, revise upon new data VS. Rely on first impressions, gut reactions, and self-serving bias.
+   • Open-Mindedness: Listen attentively to opposing views VS. Preoccupied with own opinions, rush to refute without listening.
+   • Intellectual Independence: Think independently with courage to disagree VS. Succumb to groupthink and uncritical conformity.
+   • Emotional Self-Regulation: Practice emotional restraint, think before acting VS. Ruled by immediate feelings and impulsive reactions.
+
+5. Barriers to Critical Thinking (5 Major Obstacles):
+   1. Egocentrism (Self-Centered Thinking):
+      - Self-Interested Thinking: Accepting/defending beliefs solely because they harmonize with personal advantage or benefit.
+      - Superiority Bias (Better-Than-Average Effect): Overrating oneself; viewing one's own intelligence, morality, or competence as superior to what it actually is.
+   2. Sociocentrism (Group-Centered Thinking):
+      - Group Bias ("Mine-is-better" thinking): Viewing one's own group (ethnic, national, religious, peer) as inherently superior while distrusting outsiders.
+      - Conformism: The unthinking tendency to follow the crowd, yield to peer pressure, and surrender judgment to authority.
+   3. Unwarranted Assumptions and Stereotypes:
+      - Unwarranted Assumption: Taking something for granted without supporting evidence or justification.
+      - Stereotype: Generalizing that all members of a group share identical characteristics based on hasty generalizations from small samples or media depictions.
+   4. Relativistic Thinking:
+      - Subjectivism: Claiming truth is purely a personal matter of opinion ("True for me, but not for you").
+      - Cultural Relativism: Claiming truth is determined by whatever a particular society/culture accepts.
+      - Moral Relativism: Claiming there are no objective moral truths. (Disagreement does not prove lack of objective truth, nor does relativism ensure genuine tolerance).
+   5. Wishful Thinking:
+      - Believing something is true merely because one desires or wishes it to be true, inventing comforting illusions to avoid facing harsh realities.
+
+6. Benefits of Critical Thinking:
+   • In the Classroom: Promotes higher-order cognitive analysis over rote memorization; provides transferable skills across sciences and humanities.
+   • In Personal Life: Prevents irrational, impulsive personal, financial, career, and healthcare decisions.
+   • In Democratic & Civic Life: Equips citizens to see through political propaganda and emotional manipulation, vote responsibly, and reduce sectarian prejudice.
+   • For Personal Liberation: Frees the mind from unexamined cultural dogmas, enabling individuals to lead a truly "examined life" directed by independent reason.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Straw Man vs Red Herring: Straw Man distorts the OPPONENT'S argument; Red Herring changes the TOPIC entirely.
-• Composition: "Each atom is invisible, therefore the elephant is invisible." Division: "The university is 100 years old, therefore each professor is 100 years old."
+• The "Gateway" Standard is CLARITY: without clarity, questions of accuracy, precision, and relevance cannot even be evaluated.
+• Principle of Charity: Always evaluate an opponent's argument in its STRONGEST possible version, rather than setting up an easy-to-defeat caricature.
+• Distinguish Egocentrism (individual self-interest & superiority bias) from Sociocentrism (group bias & conformism).
+• Relativistic Thinking is a major cognitive barrier: the fact that people or cultures disagree on a topic does NOT mean there is no objective truth.
         """.trimIndent(),
         colorHex = 0xFFD97706,
-        initialLikes = 98
+        initialLikes = 92
     ),
     ShortNote(
         id = "logic-u5",
         subjectId = "c4",
         subject = "Logic and Critical Thinking",
         unit = "Unit 5",
-        title = "Categorical Propositions, Square of Opposition & Syllogisms",
+        title = "Informal Fallacies: Relevance, Weak Induction, Presumption & Ambiguity",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Categorical propositions assert or deny that all or some members of one category (Subject term) belong to another category (Predicate term). They form the backbone of Aristotelian deductive logic.
+A fallacy is a defect in reasoning that creates an illusion of logical plausibility while violating the standards of a good argument (relevance, acceptability, sufficiency, rebuttal). While formal fallacies involve structural arrangements in deductive arguments, informal fallacies arise from defects in content, meaning, and linguistic context across both deductive and inductive reasoning.
 
 🔍 DETAILED BREAKDOWN
-1. Four Standard-Form Categorical Propositions:
-   • A (Universal Affirmative): "All S are P"
-     - Quantity: Universal | Quality: Affirmative | Distributed term: Subject (S) only.
-   • E (Universal Negative): "No S are P"
-     - Quantity: Universal | Quality: Negative | Distributed terms: BOTH Subject (S) and Predicate (P).
-   • I (Particular Affirmative): "Some S are P"
-     - Quantity: Particular | Quality: Affirmative | Distributed terms: NEITHER.
-   • O (Particular Negative): "Some S are not P"
-     - Quantity: Particular | Quality: Negative | Distributed term: Predicate (P) only.
-   • Mnemonic for Distribution: "Unconditionally Distribute Subject in Universals, Predicate in Negatives" (Any Student Is Puzzled).
+1. Fallacies in General:
+   • Definition: A flaw, defect, or error in reasoning other than merely possessing false premises.
+   • Illusion of Goodness: Makes a defective argument psychologically persuasive or deceptively acceptable.
+   • Impact on Soundness and Cogency:
+     - Deductive argument containing a fallacy = Automatically UNSOUND.
+     - Inductive argument containing a fallacy = Automatically UNCOGENT.
+   • Violation of Argument Standards:
+     - Relevance: Premises must bear a genuine logical connection to the conclusion.
+     - Acceptability: Premises must be reasonable to a mature, rational person.
+     - Sufficiency: Premises must provide adequate weight, number, and kind of reasons.
+     - Rebuttal: Argument must anticipate and effectively blunt counterarguments.
+   • Formal vs. Informal Fallacies:
+     - Formal Fallacies: Result strictly from structural defects in the form of deductive arguments; identifiable by mere inspection of form (e.g., Affirming the Consequent, Denying the Antecedent).
+     - Informal Fallacies: Result from defects in content, language, meaning, or context; cannot be identified by form alone and occur in both deductive and inductive arguments.
 
-2. Traditional (Aristotelian) Square of Opposition:
-   • Contradictories (A & O, E & I): Opposite truth values. If one is true, the other MUST be false; they cannot both be true and cannot both be false.
-   • Contraries (A & E): Cannot both be true simultaneously (at least one is false). If one is true, the other is false; but if one is false, the other is undetermined.
-   • Subcontraries (I & O): Cannot both be false simultaneously (at least one is true). If one is false, the other is true; but if one is true, the other is undetermined.
-   • Subalternation (A to I, E to O): Truth flows downward (if A is true, I is true); Falsity flows upward (if I is false, A is false).
+2. Fallacies of Relevance (Premises are logically irrelevant to conclusion; Non Sequitur):
+   • 1. Appeal to Force (Argumentum ad Baculum / Appeal to the "Stick"):
+     - Threatening physical or psychological harm/coercion to force acceptance of a conclusion.
+     - Threat is logically irrelevant to whether the conclusion is actually true.
+   • 2. Appeal to Pity (Argumentum ad Misericordiam):
+     - Evoking compassion, sympathy, or pity to secure agreement instead of presenting evidence.
+     - Exception: Legitimate in humanitarian appeals where victims bear no fault for their situation.
+   • 3. Appeal to the People (Argumentum ad Populum):
+     - Exploiting desires to belong, feel admired, fit in, or avoid social exclusion.
+     - Direct Approach: Exciting mob mentality, mass enthusiasm, or collective hysteria in a crowd.
+     - Indirect Approach:
+       * Bandwagon: Pressuring conformity because "everyone else" does it ("Majority accepts X, so you must").
+       * Appeal to Vanity: Associating a claim/product with an admired celebrity or glamorous icon.
+       * Appeal to Snobbery: Appealing to desire to feel elite, distinguished, or superior to common crowds.
+   • 4. Argument Against the Person (Argumentum ad Hominem):
+     - Two-party dialogue where the respondent attacks the opponent's person rather than their argument:
+       * Ad Hominem Abusive: Direct personal insults and character assassination.
+       * Ad Hominem Circumstantial: Attacking personal circumstances, employment, or vested interests.
+       * Tu Quoque ("You Too"): Accusing opponent of hypocrisy or inconsistency ("You smoke, so why tell me to quit?").
+     - Non-Fallacious Exception: Legitimate during courtroom cross-examination when assessing witness credibility and veracity.
+   • 5. Accident:
+     - Misapplying a general rule to an atypical specific case that it was never intended to govern (e.g., applying freedom of speech to inciting riots).
+   • 6. Straw Man:
+     - Distorting, exaggerating, or caricaturing an opponent's position to easily demolish it, then claiming their original position is refuted.
+   • 7. Missing the Point (Ignoratio Elenchi):
+     - Premises logically support one clear conclusion, but arguer instead draws a completely different, unwarranted, non-sequitur conclusion.
+   • 8. Red Herring:
+     - Subtly shifting the topic to an exciting, unrelated, or sensational issue (scandal, gossip) to divert attention and claiming victory.
+   • Crucial Trio Distinction:
+     - Straw Man: Distorts opponent's real argument (requires 2 arguers).
+     - Red Herring: Changes the topic entirely to a new issue.
+     - Missing the Point: Uses original premises but draws an illegitimate conclusion.
 
-3. Categorical Syllogisms:
-   • Standard Form: Deductive argument consisting of exactly 3 categorical propositions containing exactly 3 distinct terms:
-     - Major Term: The predicate of the conclusion.
-     - Minor Term: The subject of the conclusion.
-     - Middle Term: Appears in both premises but NEVER in the conclusion.
-     - Major Premise contains the Major Term; Minor Premise contains the Minor Term.
-   • Mood and Figure:
-     - Mood: 3-letter sequence of proposition types (e.g., AAA, EIO, EAE).
-     - Figure: Position of middle term M (Figure 1: M-P, S-M; Figure 2: P-M, S-M; Figure 3: M-P, M-S; Figure 4: P-M, M-S).
+3. Fallacies of Weak Induction (Premises provide inadequate probabilistic evidence):
+   • 1. Appeal to Unqualified Authority (Argumentum ad Verecundiam):
+     - Citing a source lacking legitimate training/expertise in the subject under dispute, or one having a conflict of interest.
+   • 2. Appeal to Ignorance (Argumentum ad Ignorantiam):
+     - Concluding a proposition is true because nobody has proven it false, or false because nobody has proven it true ("Absence of evidence is not evidence of absence").
+     - Legal Exception: Presumption of innocence in criminal law is a protected human right, not a fallacy.
+   • 3. Hasty Generalization (Converse Accident):
+     - Generalizing about an entire population from an unrepresentative, biased, or tiny sample.
+   • 4. False Cause:
+     - Post Hoc Ergo Propter Hoc: Assuming temporal sequence implies causation ("After this, therefore because of this").
+     - Non Causa Pro Causa: Mistaking coincidental correlation for genuine causation.
+     - Oversimplified Cause: Portraying one minor factor as the sole cause of a complex phenomenon.
+   • 5. Slippery Slope:
+     - Claiming without justification that an innocent first step will trigger an inevitable, catastrophic chain reaction.
+   • 6. Weak Analogy:
+     - Drawing an inductive conclusion based on superficial, trivial similarities while overlooking crucial differences.
 
-4. Rules of Syllogistic Validity:
-   1. The middle term must be distributed in at least one premise (avoids Undistributed Middle).
-   2. Any term distributed in the conclusion must be distributed in its premise (avoids Illicit Major / Illicit Minor).
-   3. Two negative premises are not allowed (avoids Exclusive Premises).
-   4. A negative premise requires a negative conclusion, and vice versa.
-   5. Two universal premises cannot yield a particular conclusion from Boolean standpoint (Existential Fallacy).
+4. Fallacies of Presumption (Premises presume the very claim to be proved):
+   • 1. Begging the Question (Petitio Principii):
+     - Assuming the truth of the conclusion from the start; circular reasoning or leaving out a questionable key premise.
+   • 2. Complex Question:
+     - Asking a loaded question that embeds an unproven presupposition, such that either "yes" or "no" forces an admission of guilt ("Have you stopped cheating?").
+   • 3. False Dichotomy (Either/Or Fallacy):
+     - Presenting two alternatives as mutually exhaustive when other reasonable possibilities exist, eliminating one to force the other.
+   • 4. Suppressed Evidence:
+     - Deliberately concealing or omitting vital countervailing evidence that contradicts the conclusion.
+
+5. Fallacies of Ambiguity and Grammatical Analogy:
+   • Fallacies of Ambiguity:
+     - Equivocation: Shifting the meaning of a key term across premises and conclusion ("A feather is light; what is light is not dark...").
+     - Amphiboly: Ambiguity caused by faulty sentence grammar, loose syntax, or misplaced modifiers.
+   • Fallacies of Grammatical Analogy:
+     - Composition: Erroneously transferring an attribute of individual parts to the whole entity ("Each component is light, so machine is light").
+     - Division: Erroneously transferring an attribute of the whole entity to individual parts ("The corporation is wealthy, so each janitor is wealthy").
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Contradictory relationship is the most reliable: whenever A is true, O is immediately false, regardless of standpoint.
-• Always verify the position of the Middle term when determining the syllogism's figure.
+• Accident vs Hasty Generalization: Accident goes from General rule -> Specific exceptional case (misapplication). Hasty Generalization goes from Specific atypical case -> General sweeping rule (overgeneralization).
+• Composition vs Division: Parts -> Whole = Composition; Whole -> Parts = Division.
+• Red Herring vs Straw Man: Straw Man distorts the opponent's argument (must involve two arguers); Red Herring changes the topic entirely.
         """.trimIndent(),
         colorHex = 0xFFD97706,
-        initialLikes = 86
+        initialLikes = 95
     ),
     ShortNote(
         id = "logic-u6",
         subjectId = "c4",
         subject = "Logic and Critical Thinking",
         unit = "Unit 6",
-        title = "Propositional Logic, Truth Tables & Validity Testing",
+        title = "Categorical Propositions: Components, Distribution, Squares & Operations",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Propositional (symbolic) logic replaces natural language statements with proposition letters and logical connectives to evaluate the structural validity of arguments without linguistic ambiguity.
+A categorical proposition is an assertive statement that relates two classes—the Subject class (S) and the Predicate class (P)—by asserting total or partial inclusion or exclusion. Classical Aristotelian and modern Boolean logic analyze these propositions through quality, quantity, distribution, Venn diagrams, squares of opposition, and immediate logical inferences.
 
 🔍 DETAILED BREAKDOWN
-1. The Five Truth-Functional Operators:
-   • Negation (Tilde `~` or `¬`): Expresses "not", "it is false that". Inverts truth value: ~T = F, ~F = T.
-   • Conjunction (Dot `·` or `∧`): Expresses "and", "but", "however", "moreover".
-     - Rule: A conjunction is TRUE if and only if BOTH conjuncts are true; otherwise it is false.
-   • Disjunction (Wedge `v` or `∨`): Expresses "or", "either... or", "unless".
-     - Rule: An inclusive disjunction is FALSE if and only if BOTH disjuncts are false; otherwise true.
-   • Conditional (Arrow `→` or horseshoe `⊃`): Expresses "if... then", "implies", "provided that".
-     - Components: Antecedent (if-clause p) and Consequent (then-clause q).
-     - Rule: A conditional is FALSE in exactly one scenario: when the Antecedent is TRUE and Consequent is FALSE (T → F = F); otherwise it is true.
-   • Biconditional (Triple Bar `≡` or `↔`): Expresses "if and only if" (iff).
-     - Rule: A biconditional is TRUE when both component statements have the SAME truth value (both true or both false); otherwise false.
+1. General Introduction & Standard Forms:
+   • Proposition: Informational meaning of a declarative sentence possessing a truth value (true or false).
+   • Categorical Proposition: Asserts that all or part of the class denoted by the Subject term (S) is included in or excluded from the class denoted by the Predicate term (P).
+   • Four Standard Forms (A, E, I, O from Latin "AffIrmo" [I affirm] and "nEgO" [I deny]):
+     - A (Universal Affirmative): "All S are P" (Total inclusion of S in P).
+     - E (Universal Negative): "No S are P" (Total exclusion of S from P).
+     - I (Particular Affirmative): "Some S are P" (Partial inclusion of S in P).
+     - O (Particular Negative): "Some S are not P" (Partial exclusion of S from P).
+   • Four Constituent Components (in strict order):
+     1. Quantifier: Specifies scope ("All", "No", "Some").
+     2. Subject Term (S): Designates the primary class.
+     3. Copula: Linking verb ("are" or "are not").
+     4. Predicate Term (P): Designates the second class.
+     - Example: [Quantifier: All] [Subject: philosophers] [Copula: are] [Predicate: critical thinkers].
 
-2. Truth Table Construction & Statement Classifications:
-   • Row Count Formula: For a compound statement with n distinct proposition variables, the truth table requires 2ⁿ rows (e.g., 2 variables = 4 rows; 3 variables = 8 rows).
-   • Statement Classifications:
-     - Tautology (Logically True): The column under the main connective has ONLY True (T) values across every row.
-     - Contradiction (Logically False): The column under the main connective has ONLY False (F) values across every row.
-     - Contingent: The column contains at least one True and at least one False value (truth depends on facts).
+2. Attributes: Quality, Quantity, and Distribution:
+   • 1. Quality (Class Inclusion vs Exclusion):
+     - Affirmative: Asserts class inclusion (A and I).
+     - Negative: Asserts class exclusion (E and O).
+   • 2. Quantity (Scope of Subject Class):
+     - Universal: Encompasses every member of S without exception (A and E: "All S", "No S").
+     - Particular: Encompasses at least one member of S (I and O: "Some S", where "some" means at least one).
+   • 3. Distribution of Terms:
+     - Definition: A term is distributed if the proposition makes an assertion about EVERY member of the class denoted by that term; otherwise it is undistributed.
+     - A ("All S are P"): Subject (S) is DISTRIBUTED; Predicate (P) is UNDISTRIBUTED.
+     - E ("No S are P"): BOTH Subject (S) and Predicate (P) are DISTRIBUTED.
+     - I ("Some S are P"): NEITHER Subject (S) nor Predicate (P) is distributed.
+     - O ("Some S are not P"): Subject (S) is UNDISTRIBUTED; Predicate (P) is DISTRIBUTED.
+     - Mnemonic: "Universals distribute Subjects (A, E); Negatives distribute Predicates (E, O)" (Any Student Is Puzzled).
 
-3. Testing Argument Validity via Truth Tables:
-   • Definition of Deductive Validity: An argument is valid if it is structurally impossible for all premises to be true and the conclusion false.
-   • Invalidating Row Test:
-     - Inspect the truth table for any row where EVERY premise is TRUE, but the conclusion is FALSE.
-     - If even ONE such row exists, the argument is INVALID (fallacious).
-     - If NO row contains all true premises with a false conclusion, the argument is structurally VALID.
-   • Indirect (Shorthand) Truth Table Method:
-     - Attempt to force the conclusion to be False while assigning True to all premises. If doing so produces an inescapable logical contradiction, the argument is valid.
+3. Venn Diagrams & Squares of Opposition:
+   • 3.1 Two-Circle Venn Diagrams (Left = S, Right = P):
+     - Shading: Region is EMPTY (contains zero members).
+     - "X": Region is NON-EMPTY (contains at least one member).
+     - A (All S are P): Shade S outside P (only S region is empty).
+     - E (No S are P): Shade the middle overlap (S ∩ P is empty).
+     - I (Some S are P): Place an "X" in the middle overlap (S ∩ P).
+     - O (Some S are not P): Place an "X" in the S region outside P.
+   • 3.2 Existential Import:
+     - Boolean (Modern) Standpoint: Universal statements (A and E) have NO existential import; they are hypothetical ("If anything is an S, it is a P"). Operates without assuming actual real-world existence (works for null classes like unicorns).
+     - Aristotelian (Traditional) Standpoint: Assumes universal propositions denote actually existing entities.
+   • 3.3 Modern Square of Opposition (Boolean):
+     - Only CONTRADICTION survives: A ↔ O and E ↔ I have opposite truth values.
+     - All other relationships (contrary, subcontrary, subalternation) are invalid without separate proof of existence.
+   • 3.4 Traditional Square of Opposition (Aristotelian):
+     - Contradictories (A & O; E & I): Opposite truth values (cannot both be true, cannot both be false).
+     - Contraries (A & E): Cannot both be true simultaneously (at least one is false). If one is True, the other is False; but if one is False, the other is logically UNDETERMINED.
+     - Subcontraries (I & O): Cannot both be false simultaneously (at least one is true). If one is False, the other is True; but if one is True, the other is logically UNDETERMINED.
+     - Subalternation (A -> I; E -> O):
+       * Truth flows DOWNWARD: If universal (A/E) is True, particular (I/O) is necessarily True.
+       * Falsity flows UPWARD: If particular (I/O) is False, universal (A/E) is necessarily False.
+       * If universal is False, particular is Undetermined; if particular is True, universal is Undetermined.
 
-4. Logical Equivalences & De Morgan's Laws:
-   • De Morgan's Laws:
-     - ~(p ∧ q) ≡ (~p ∨ ~q)   ["Not both" is equivalent to "At least one is not"]
-     - ~(p ∨ q) ≡ (~p ∧ ~q)   ["Neither" is equivalent to "Both are not"]
-   • Material Implication: (p → q) ≡ (~p ∨ q).
-   • Contraposition: (p → q) ≡ (~q → ~p) (A conditional is logically equivalent to its contrapositive, but NOT to its converse or inverse!).
+4. Evaluating Immediate Inferences and Logical Operations:
+   • Definition: Immediate inference moves directly from a single categorical premise to a conclusion.
+   • 1. Conversion:
+     - Procedure: Switch positions of Subject and Predicate terms (S ↔ P).
+     - Valid for: E ("No S are P" ⟹ "No P are S") and I ("Some S are P" ⟹ "Some P are S").
+     - Invalid for: A and O (Results in Fallacy of Illicit Conversion).
+   • 2. Obversion:
+     - Procedure: Change the quality (Affirmative ↔ Negative) and replace the Predicate term with its term complement (non-P).
+     - Valid for: ALL FOUR standard forms (A, E, I, O), preserving identical truth values:
+       * A ("All S are P") ⟹ E ("No S are non-P")
+       * E ("No S are P") ⟹ A ("All S are non-P")
+       * I ("Some S are P") ⟹ O ("Some S are not non-P")
+       * O ("Some S are not P") ⟹ I ("Some S are non-P")
+   • 3. Contraposition:
+     - Procedure: Switch positions of S and P AND replace both with their term complements (non-P and non-S).
+     - Valid for: A ("All S are P" ⟹ "All non-P are non-S") and O ("Some S are not P" ⟹ "Some non-P are not non-S").
+     - Invalid for: E and I (Results in Fallacy of Illicit Contraposition).
+   • Summary of Operations:
+     - Conversion: Valid for E & I only.
+     - Obversion: Valid for ALL (A, E, I, O).
+     - Contraposition: Valid for A & O only.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• The conditional p → q is ONLY false when p is True and q is False. If antecedent p is False, the conditional is AUTOMATICALLY True regardless of q!
-• In De Morgan's laws: Distributing the negation flips a conjunction (∧) to a disjunction (∨), and vice versa.
+• Distribution Rule: "Universals distribute Subject; Negatives distribute Predicate." E distributes BOTH; I distributes NEITHER.
+• Traditional Square: In Contraries (A & E), both cannot be TRUE; in Subcontraries (I & O), both cannot be FALSE.
+• Subalternation Direction: TRUTH flows DOWN (Universal -> Particular); FALSITY flows UP (Particular -> Universal).
+• Operations to Remember: Obversion is universally valid for all four forms; Conversion works only on E & I; Contraposition works only on A & O.
         """.trimIndent(),
         colorHex = 0xFFD97706,
-        initialLikes = 91
+        initialLikes = 93
     ),
     ShortNote(
         id = "logic-u7",
@@ -1491,239 +2598,486 @@ Natural deduction validates arguments step-by-step using elementary rules of inf
         subjectId = "c5",
         subject = "Communicative English",
         unit = "Unit 1",
-        title = "Study Skills, Listening Strategies & Academic Note-Taking",
+        title = "Study Skills: Lecture Note-Taking, Reading Strategies & Grammar",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Effective study habits and active listening strategies are crucial for university academic success. Listening is an active interpretive cognitive process, distinct from mere physiological hearing.
+Unit 1 (FLEn 1011) establishes the foundational study competencies essential for university academic success. It integrates systematic lecture listening and selective note-taking habits, purposeful academic reading (skimming, scanning, intensive study), advice grammar structures (imperatives, should, ought to, had better), and the functional mastery of the Present Perfect tense versus the Simple Past.
 
 🔍 DETAILED BREAKDOWN
-1. Active vs Passive Listening:
-   • Hearing is an involuntary physiological reception of acoustic vibrations.
-   • Listening is an active, voluntary cognitive process involving attention, interpretation, evaluation, and responding.
-   • Stages of Listening: Receiving (hearing auditory input), Understanding (decoding meaning), Evaluating (judging credibility and bias), Remembering (storing for recall), Responding (providing verbal/nonverbal feedback).
+1. Listening: What is a Lecture & Effective Study Habits:
+   • The Role of Lecture Listening & Note-Taking:
+     - University students receive vast amounts of disciplinary knowledge through reading assignments and live lectures.
+     - Because human working memory cannot retain all spoken or read details, systematic note-taking is indispensable for exam revision and academic performance.
+   • Seven Core Habits of Successful University Students (Survey Insights):
+     1. Distribute learning over time; avoid cramming all material into a single marathon session.
+     2. Schedule dedicated study blocks in advance and adhere to consistent study routines.
+     3. Establish clear, specific, achievable goals for every study session.
+     4. Avoid procrastinating on scheduled study times.
+     5. Tackle the most challenging or difficult subject first when mental energy and focus are at their peak.
+     6. Review lecture notes before starting assignments, and revisit class notes over weekends.
+     7. Eliminate environmental distractions (phone, noise) and participate actively in productive peer study groups.
+   • Key Strategies for Taking Lecture Notes:
+     - Pre-Lecture Preparation: Read assigned textbook sections prior to class to build a conceptual reference framework.
+     - Physical Positioning: Sit near the front of the lecture hall to maximize visual/auditory concentration and minimize distractions.
+     - Focus on Introductions: Pay close attention to introductory remarks to discern the structural outline and theme of the lecture.
+     - Identify Lecturer Cues: Watch for verbal markers, vocal inflection/emphasis, and physical gestures that signal core concepts vs. incidental details.
+     - Selective Recording: Never attempt word-for-word (verbatim) transcription—it causes students to fall behind. Record main concepts and supporting evidence using concise phrases, abbreviations, and symbols.
+     - Immediate Post-Lecture Review: Review and edit notes as soon as possible after the lecture to fill in gaps and consolidate memory traces.
 
-2. Listening Strategies for Academic Lectures:
-   • Listening for Gist (Main Idea): Capturing overall core message without getting distracted by supporting details.
-   • Listening for Specific Information: Focusing specifically on dates, names, numerical data, or defined terms.
-   • Listening for Inferences & Tone: Detecting underlying attitudes, implied conclusions, and rhetorical shifts signaled by vocal intonation and stress.
-   • Signpost Words (Lecture Transitions): Indicators signaling structure ("First", "In contrast", "Crucially", "To summarize").
+2. Grammar Focus: Modals and Infinitives for Giving Advice:
+   • Structures for Recommendations and Advice:
+     - Bare Infinitive (Imperative): Base verb form used for direct instructions and practical guidelines (e.g., "Sit near the front of the hall").
+     - Should / Ought to: [should / ought to + base verb] used for standard advice indicating what is desirable or recommended (e.g., "You should review your notes daily").
+     - Had better: [had better + base verb] expresses stronger, urgent advice indicating significant importance or negative consequences if ignored (e.g., "You had better read before the lecture, or you will fall behind").
+   • Negative Forms & Structural Constraints:
+     - should not + base verb ("You should not transcribe verbatim").
+     - ought not to + base verb.
+     - had better not + base verb ("You had better not pack too much"; beware: avoid incorrect forms like "had not better" or "had better to").
+   • Infinitive Suggestions: Using introductory verbs like "try to" + infinitive ("Try to prepare your mind in advance").
 
-3. Academic Note-Taking Systems:
-   • The Cornell Method:
-     - Page divided into 3 zones: Cue Column on left (2.5 inches for keywords/questions), Notes Area on right (6 inches for lecture bullets), Summary Area at bottom (2 inches for 2-3 sentence overview).
-   • Mind Mapping:
-     - Visual diagram placing main central concept in center with thematic sub-branches radiating outward; effective for visual learners.
-   • Outline Method:
-     - Indented hierarchical structure: Roman numerals (main topics) -> Capital letters (sub-topics) -> Arabic numbers (supporting details).
+3. Reading: Reading for Study:
+   • Nature & Purpose of Academic Reading:
+     - The primary medium for acquiring disciplinary knowledge across engineering, medicine, humanities, and sciences.
+     - Primary Goal: To extract ideas and evidence, assimilate them into an existing cognitive framework, and articulate that understanding in seminars and exams.
+   • Reading According to Specific Purpose:
+     - Reading for Practical Application: Following technical manuals or procedural guides to operate equipment or resolve practical tasks.
+     - Reading for Escapism / Pleasure: Fast reading of narrative fiction without the demand of memorizing analytical details.
+     - Skimming: Rapidly glancing across texts, headings, and topic sentences to capture the general overview, core gist, or main developments without pausing for details.
+     - Scanning: Swiftly searching through a text (indexes, data tables, headlines) to locate a specific datum, name, or term while ignoring irrelevant material.
+     - Detailed Academic Study: Close, slow, analytical reading of textbooks and research articles to evaluate arguments, inspect assumptions, and master complex theories.
+   • Avoiding the "Beginning-to-End" Trap:
+     - Mistake: Treating academic textbooks like novels by opening chapter one and reading linearly until cognitive fatigue sets in.
+     - Remedy: Active, strategic reading—previewing headings, formulating questions, scanning for key concepts, and taking structured notes. Reading is an active cognitive process of interpreting and evaluating meaning!
+
+4. Grammar Focus: Present Perfect Tense:
+   • Syntactic Form: Subject + have / has + Past Participle (V3).
+     - Regular verbs take -ed (developed, identified, cleaned); irregular verbs take unique forms (done, built, seen, written).
+   • Five Core Functions of Present Perfect:
+     1. Unspecified Past Time: Action occurred at an indefinite, unstated time before now ("Researchers have identified multiple study strategies").
+     2. Present Result of a Past Action: Action completed in the past has a direct, observable consequence in the present ("I have lost my notes [so I cannot study now]").
+     3. Continuing State: Action or condition that began in the past and persists into the present ("Classes have already started").
+     4. Life Experience: Actions that have occurred once, multiple times, or never up to the present moment ("I have never visited Moyale").
+     5. Recent Completion: Actions completed immediately prior to speaking ("The instructor has just finished the lecture").
+   • Present Perfect vs. Simple Past (High-Yield Exam Contrast):
+     - Time Orientation: Present Perfect links the past to the present (indefinite/unspecified time); Simple Past is confined strictly to a completed past disconnected from the present.
+     - Time Adverbials:
+       * Present Perfect: Used with indefinite markers (already, yet, ever, never, just, so far, up to now, since).
+       * Simple Past: Demands definite, specific past time markers (yesterday, last year, two months ago, in 1992, at 3 PM).
+     - Cardinal Error: NEVER combine the Present Perfect with specific past time adverbs!
+       * Incorrect: "I have read this book last year."
+       * Correct: "I read this book last year."
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• In Cornell notes, the Cue Column is completed AFTER the lecture during review, not during live listening.
-• Signpost transition markers (e.g., "however", "consequently") signal shifts in arguments that are frequently tested in comprehension exams.
+• Advice Grammar Traps: The negative of "had better" is strictly "had better not" (NEVER "had not better" or "had better not to").
+• Skimming = Reading for GIST / general idea; Scanning = Searching for SPECIFIC target information (dates, names, figures).
+• Present Perfect Trap: If a sentence includes a specific past time marker ("yesterday", "in 2020", "last semester"), you MUST use Simple Past, NOT Present Perfect!
         """.trimIndent(),
         colorHex = 0xFF059669,
-        initialLikes = 72
+        initialLikes = 86
     ),
     ShortNote(
         id = "eng-u2",
         subjectId = "c5",
         subject = "Communicative English",
         unit = "Unit 2",
-        title = "Reading Strategies (Skimming, Scanning & Intensive Reading)",
+        title = "Health & Fitness: Athlete Biographies, Conditionals & Context Clues",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-University academics require handling high volumes of research and textbook materials. Employing targeted reading strategies tailored to the reading objective maximizes efficiency and comprehension.
+Unit 2 (FLEn 1011) focuses on the communicative theme of Health and Fitness. It develops listening competence through athlete biographical profiles, masters the syntax of Conditionals (Types I, II, III and alternative conjunctions), analyzes expository reading on team sports and classification of athletic disciplines, and applies contextual inferencing to deduce lexical meanings.
 
 🔍 DETAILED BREAKDOWN
-1. Core Reading Techniques:
-   • Skimming: Rapid reading to grasp the overall gist or central message of a text.
-     - Technique: Read the title, introduction, first sentence of every paragraph (topic sentences), headings, subheadings, and concluding paragraph.
-   • Scanning: Rapid eye movement across a page to locate a specific piece of information without reading the surrounding text.
-     - Used for: Looking up names, dates, statistical figures, specific formulas, or glossary terms.
-   • Intensive Reading: Slow, focused, in-depth analytical reading for complete comprehension, evaluation of arguments, and vocabulary acquisition.
-   • Extensive Reading: Broad, pleasurable reading of longer texts (novels, articles) to develop general reading fluency, speed, and language intuition.
+1. Listening: Sports Stars & Professional Biographies:
+   • Profile Focus: Engaging with career narratives, achievements, and biographies of world-renowned athletes (e.g., Zinedine Zidane, Derartu Tulu).
+   • Four Key Dimensions for Describing Sports Figures:
+     1. Physical Characteristics: Observable physical traits (height, build, stamina, endurance).
+     2. Personal Attributes: Psychological and interpersonal qualities (discipline, sportsmanship, humility, sociability, mental grit).
+     3. Career Milestones: Playing positions, clubs/national teams represented, historic transfers, and major tournament appearances.
+     4. Achievements & Honors: Broken world records, Olympic gold medals, championship titles, and lifetime athletic honors.
+   • Note-Taking Application: Formulating and extracting specific factual data using targeted WH-questions (When, Where, What for, How long).
 
-2. Context Clues for Vocabulary Acquisition:
-   • Definition / Restatement Clues: The unfamiliar word is explicitly defined using words like "is defined as", "means", "or", commas, or dashes.
-   • Synonym Clues: Nearby words with similar meanings provide context.
-   • Antonym / Contrast Clues: Signaling contrast using words like "unlike", "whereas", "however", "on the contrary".
-   • Example Clues: Illustrations following "for instance", "such as", "namely" clarify meaning.
+2. Grammar Focus: Conditionals (Types I, II, III & Alternatives):
+   • Sentence Architecture: Subordinate condition clause (if-clause) + Result clause (main clause).
+   • The Three Core Conditional Types:
+     1. Type I (Real / Likely Condition):
+        - Form: If + Simple Present, ... will / can / may + base verb.
+        - Meaning: Real, probable, and possible future situations.
+        - Example: "If I meet the coach tomorrow, I will ask for training advice."
+     2. Type II (Unreal / Hypothetical Condition):
+        - Form: If + Simple Past, ... would / could / might + base verb.
+        - Meaning: Unreal, imaginary, or contrary-to-fact present or future situations.
+        - Example: "If I had more leisure time, I would join the university football club."
+        - Formal Subjunctive "Were": Formal English employs "were" for all persons (including I/he/she/it):
+          * "If I were you, I would consult a physician before running a marathon."
+     3. Type III (Past Counterfactual / Impossible Condition):
+        - Form: If + Past Perfect (had + V3), ... would / could / might have + Past Participle (V3).
+        - Meaning: Past counterfactual conditions that did not happen; expressing regret, excuses, or alternative outcomes in retrospect.
+        - Example: "If Derartu had trained harder on hills, she would have won the race earlier."
+   • Alternative Conditional Conjunctions (Beyond "If"):
+     - Provided / Provided that: Sets an explicit prerequisite ("I could pass the fitness test provided that I maintain cardiovascular training").
+     - As long as: Emphasizes a continuous, unbroken condition ("Nobody suffers from obesity as long as they eat balanced diets and exercise regularly").
+     - On condition that: Formal legalistic stipulation of terms ("He joined the team on condition that he maintained a 3.0 GPA").
 
-3. Textual Organizational Patterns:
-   • Chronological / Sequential: Events ordered by time.
-   • Cause and Effect: Examines reasons (causes) and results (effects) using words like "because", "due to", "as a result".
-   • Compare and Contrast: Examines similarities and differences using "similarly", "conversely", "in contrast".
-   • Problem and Solution: Explores a difficulty and offers remedial solutions.
+3. Reading: Health and Fitness (The Case for Team Sports):
+   • Core Psychological & Physical Benefits of Team Sports:
+     - Consistency & Accountability: Scheduled practices and league matches create social accountability that sustains regular exercise habits far better than solitary routines.
+     - Healthy Competition & Sportsmanship: Striving for victory while learning to accept defeat with emotional maturity, humility, and resilience.
+     - Social & Emotional Fulfillment: Cultivates camaraderie, mutual trust, effective communication, and lasting interpersonal bonds.
+   • Six-Category Classification of Sports Disciplines:
+     1. Action / Combat Sports: Football, rugby, karate, boxing, hockey, Taekwondo.
+     2. Ball & Hand-Eye Coordination Sports: Basketball, volleyball, tennis, baseball, cricket, lacrosse.
+     3. Precision & Target Sports: Archery, bowling, billiards/pool, target shooting, ping pong.
+     4. Balance & Rhythm Sports: Gymnastics, figure skating, competitive dancing, cheerleading.
+     5. Aquatic Sports: Swimming, water polo, synchronized diving.
+     6. Speed & Velocity Sports: Track sprints, distance running, alpine skiing, snowboarding, sailing, motor racing.
+
+4. Vocabulary: Guessing Meaning from Context:
+   • Contextual Inferencing: Using syntactic structures, neighboring modifier words, and thematic clues to deduce word definitions without reaching for a dictionary.
+   • Target Textual Deductions:
+     - "Regular" -> Scheduled, recurring at fixed, dependable intervals (e.g., regular physical drills).
+     - "Sportsmanship" -> Fair play, respect for opponents, and demonstrating grace in both victory and defeat.
+     - "A bunch of" -> An informal collection or diverse group of items/activities.
+   • Three Dimensions of Word Knowledge:
+     1. Orthography (accurate spelling).
+     2. Grammatical Inflections (e.g., jog -> jogged -> jogging).
+     3. Syntactic Usage (placing words in natural, grammatically sound sentence positions).
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Remember the difference: Skimming is for general main idea (gist); Scanning is searching for a pre-known specific fact (keyword).
-• Always pay attention to transitional adverbs (moreover, nonetheless, therefore) as they indicate relationships between ideas.
+• Subjunctive "Were" Rule: In Type II conditionals, always prefer "were" over "was" in standard exams ("If I were you...", NOT "If I was you...").
+• Type III Match: If the if-clause uses "had + V3", the main clause MUST use "would have + V3" (NEVER mix with Type II "would + base verb").
+• Alternative conjunctions ("provided that", "as long as", "on condition that") obey the EXACT same tense rules as standard "if" clauses!
         """.trimIndent(),
         colorHex = 0xFF059669,
-        initialLikes = 77
+        initialLikes = 89
     ),
     ShortNote(
         id = "eng-u3",
         subjectId = "c5",
         subject = "Communicative English",
         unit = "Unit 3",
-        title = "Academic Vocabulary, Word Formation & Grammar Concord",
+        title = "Cultural Values: Cultural Tourism, Tense Contrasts & The Awramba Community",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Academic English demands precision, formal register, syntactic accuracy, and grammatical agreement (concord). Understanding morphology empowers students to decipher complex terminology.
+Unit 3 (FLEn 1011) explores Cultural Values through the dual lenses of cultural tourism and the social experiment of the Awramba utopian community in Ethiopia. It integrates listening on cultural tourism economics and risks, systematic contrasts of four fundamental verb tenses (Present Simple, Past Simple, Present Perfect, Past Perfect), grammar acquisition strategies, and contextual academic vocabulary.
 
 🔍 DETAILED BREAKDOWN
-1. Word Formation Processes:
-   • Affixation:
-     - Prefixation: Added to beginning of root, altering meaning but rarely part of speech (e.g., un-, dis-, re-, anti-, mis-, hyper-).
-     - Suffixation: Added to end of root, usually changing grammatical class (e.g., -ment, -tion, -ness form nouns; -ify, -ize form verbs; -able, -al form adjectives).
-   • Compounding: Joining two independent words to form a new compound noun/adjective (e.g., blackboard, database, widespread).
-   • Conversion (Zero Derivation): Changing word class without adding an affix (e.g., to email, a run).
-   • Blending: Merging parts of two words (e.g., smog = smoke + fog).
-   • Acronyms & Initialisms: Pronounced as single words (e.g., UNESCO, AIDS) vs letters sounded individually (e.g., UN, HIV).
+1. Listening: Cultural Tourism & Conceptual Foundations:
+   • Culture & Cultural Values Defined:
+     - Culture: The shared beliefs, social customs, institutions, artifacts, and behavioral norms that define a community and shape how members interpret reality.
+     - Cultural Values: The fundamental ideals, ethical principles, and moral standards upon which a community exists and guides human conduct.
+   • Cultural Tourism:
+     - A major travel sector where domestic and international visitors travel to historic towns, heritage sites, religious monuments, and indigenous communities to experience unique living cultures.
+   • Dual Dimensions of Cultural Tourism:
+     - Economic & Social Benefits: Generates substantial revenue, creates local employment, promotes heritage conservation, encourages intercultural exchange, and enriches visitors' personal identity.
+     - Risks & Criticisms: Danger of commodifying or diluting sacred ancestral traditions for commercial display; cultural tourists function as "advance guards" for mass tourism that can disrupt and destabilize vulnerable local communities.
 
-2. Subject-Verb Agreement (Concord) Rules:
-   • Singular subjects take singular verbs; plural subjects take plural verbs.
-   • Intervening Prepositional Phrases: The subject is NOT affected by modifying phrases (e.g., "The list of freshman students *is* complete", NOT *are*).
-   • Indefinite Pronouns: Words like each, everyone, someone, anybody, neither, either are strictly SINGULAR and take singular verbs.
-   • Correlative Conjunctions (Either...or / Neither...nor / Not only...but also): The verb agrees with the NEAREST subject (e.g., "Neither the teacher nor the students *were* present").
-   • Collective Nouns: Singular when acting as unified single entity (e.g., "The committee *has* reached its decision"); plural when acting individually.
-   • Plural in form, singular in meaning: Physics, mathematics, news, economics take SINGULAR verbs.
+2. Grammar Focus: Verb Tenses in Contrast:
+   • Contrasting the Four Primary Narrative & Academic Tenses:
+     1. Present Simple (Base verb / -s / -es):
+        - Universal truths and scientific facts ("Water boils at 100°C").
+        - Habitual actions and recurring routines ("They weave textiles daily").
+        - Permanent or long-lasting situations ("The Awramba community lives in Fogera").
+     2. Past Simple (V2 / -ed or irregular):
+        - Actions completed at a definite, specific point in the past ("Zumra Nuru founded the community in 1980").
+        - Past historical events or completed historical states of affairs.
+     3. Present Perfect (have / has + V3):
+        - Past actions producing an observable, direct present result ("They have built modern weaving workshops").
+        - Cumulative life experiences at unspecified times ("Scholars have praised their gender equality").
+        - Actions starting in the past and continuing into the present moment ("They have lived in Fogera since 1980").
+     4. Past Perfect (had + V3):
+        - An action that occurred and was completed BEFORE another specified event in the past ("Earlier past").
+        - Chronological order marker: Essential for precise academic narration (e.g., "The villagers were skeptical because they had not witnessed gender parity before").
 
-3. Active vs Passive Voice in Academic Register:
-   • Active Voice: Subject performs the action (e.g., "The researchers conducted the experiment").
-   • Passive Voice: Subject receives the action (e.g., "The experiment *was conducted* by the researchers").
-   • Passive voice is favored in scientific and empirical writing to highlight the object/outcome objectively rather than the personal agent.
+3. Strategies for Enhancing English Grammar Mastery:
+   • Extensive Reading: Reading authentic English literature, academic articles, and quality journalism to internalize syntactic patterns naturally.
+   • Noticing in Context: Paying conscious attention to grammar choices while reading and listening.
+   • Personalized Rule Application: Writing original model sentences illustrating specific grammatical rules.
+   • Systematic Error Analysis: Diagnosing recurring grammatical mistakes through self-editing and paragraph revision.
+   • Targeted Practice: Utilizing grammar handbooks and completing focused drills on diagnosed weaknesses.
+
+4. Reading: The Awramba Community and Its Quest for Utopia:
+   • Establishment & Location:
+     - Founded in 1980 by Zumra Nuru and 19 visionary followers in Fogera woreda, South Gondar Zone (Amhara Region), ~73 km east of Bahir Dar.
+     - Etymology: "Awramba" translates to "Top of the Hill" in Amharic.
+   • Core Philosophy: An intentional cooperative community committed to eliminating poverty, ignorance, and gender oppression through diligence, mutual solidarity, and strict egalitarianism.
+   • Five Distinctive Cultural & Institutional Practices:
+     1. Radical Gender Equality: Total equality between men and women; complete abolition of gender-based division of labor (men cook, wash, and care for children; women weave, farm, and lead).
+     2. Ethical Code (Absence of Institutional Religion): Members belong to no organized religion (neither Christian nor Islamic); their moral code is founded on hard work, mutual benevolence, absolute honesty, and treating theft as an intolerable vice.
+     3. Comprehensive Social Security: Democratic committees manage healthcare, elder support, patient care, early childhood nurseries, and adult literacy programs.
+     4. Marriage & Family Reform: Outlaws regional early child marriage; girls marry only at or above 18, and boys at or above 22.
+     5. Economic Resilience: Initially ostracized and denied fertile arable land by neighbors due to nonconformist ideology; settled on malaria-prone terrain and successfully diversified into modern textile weaving, spinning, and grain milling.
+
+5. Contextual Academic Vocabulary:
+   • Norms: Accepted social rules, standards, and behavioral expectations within a group.
+   • Egalitarianism: The philosophical belief in the fundamental equality of all people in status, rights, and opportunities.
+   • Alleviate: To make pain, poverty, or suffering less severe or more bearable.
+   • Lauded: Highly praised, acclaimed, or publicly commended.
+   • Obscene: Repugnant, morally offensive, or deeply unacceptable.
+   • Diligent: Exhibiting persistent, attentive, and thorough effort in work.
+   • Ostracized: Excluded, banished, or cast out from social participation by a community.
+   • Initiative: An innovative strategy or plan devised to resolve a pressing social problem.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Watch out for "one of the [plural nouns] who/that": "He is one of the students who *are* working hard" (who refers to students, so verb is plural).
-• When using passive voice, always match the auxiliary "to be" with the appropriate tense and subject number.
+• Past Perfect vs. Simple Past: Use Past Perfect (had + V3) for the EARLIER of two past actions, and Simple Past (V2) for the SUBSEQUENT past action.
+• Awramba Exam Points: Founded by Zumra Nuru in 1980 in Fogera; key features are absolute gender equality, no institutional religion, marriage reform (18 for females, 22 for males), and textile weaving.
+• Context Clues: Match vocabulary precisely (e.g., "lauded" = praised; "alleviate" = lessen/mitigate; "ostracized" = socially excluded).
         """.trimIndent(),
         colorHex = 0xFF059669,
-        initialLikes = 84
+        initialLikes = 88
     ),
     ShortNote(
         id = "eng-u4",
         subjectId = "c5",
         subject = "Communicative English",
         unit = "Unit 4",
-        title = "Paragraph Development (Unity, Coherence & Transitions)",
+        title = "Wildlife: Human-Animal Coexistence, Denotation/Connotation & Parks",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-A paragraph is a unified group of related sentences developing a single controlling idea. Academic paragraphs require clear structure, logical progression, and cohesion.
+Unit 4 (FLEn 1011) explores Wildlife through human-wildlife interactions, African ecological biodiversity, lexical semantics (denotative vs. connotative meanings), and the application of conditional sentences (Types I, II, III) contextualized within Ethiopian national parks and endemic wildlife preservation.
 
 🔍 DETAILED BREAKDOWN
-1. Anatomy of an Academic Paragraph:
-   • Topic Sentence: Usually the opening sentence; contains the Topic and the Controlling Idea (limiting scope of discussion).
-   • Supporting Sentences: Provide concrete evidence, statistics, examples, authoritative citations, and logical explanations developing the topic sentence.
-   • Concluding Sentence: Reasserts the main point in fresh words or provides a logical transition to the succeeding paragraph.
+1. Listening: Human-Wildlife Interaction & Coexistence:
+   • Spectrum of Interaction: Ranges from positive ecological harmony (ecotourism, biodiversity maintenance) to acute Human-Wildlife Conflict (HWC).
+   • Drivers of Conflict: Rapid human population expansion causing direct competition with wild animals over shared resources (agricultural land, water, grazing territory, habitat space).
+   • Destructive Consequences: Severe crop destruction, livestock predation, habitat fragmentation, risks to human life, and retaliatory poaching or extinction of endangered species.
+   • Meaning of Coexistence:
+     - Etymology: The prefix "co-" denotes "together" or "jointly".
+     - Coexistence signifies living together in sustainable peace, mutual tolerance, and ecological balance without conflict.
 
-2. Essential Qualities of an Effective Paragraph:
-   • Unity: Every single sentence in the paragraph directly relates to and supports the single controlling idea. Any off-topic sentence must be deleted.
-   • Coherence: Ideas are arranged logically so the reader follows the reasoning effortlessly.
-     - Logical Orders: Chronological (time order), Spatial (physical layout), Emphatic (least to most important, or vice-versa).
-   • Cohesion: Mechanical linguistic ties holding sentences together:
-     - Pronoun Reference: Using pronouns (it, they, this) to refer back to antecedents without ambiguity.
-     - Repetition of Key Terms: Maintaining focus on central concepts.
-     - Transitional Words / Cohesive Devices: Addition (furthermore, moreover), Contrast (however, on the other hand), Cause/Result (consequently, therefore, thus), Exemplification (for example, specifically).
+2. Reading: Africa's Wild Animals & Ecosystems:
+   • Profile of Four Prominent African Wildlife Species:
+     1. Lemur:
+        - Habitat: Madagascar (strictly endemic; world's 4th largest island).
+        - Diet: Herbivorous/Vegetarian (wild figs, bananas, canopy fruits).
+        - Traits: Monkey-like, large nocturnal round eyes, pointed muzzle, long tail, woolly coat; spans from the indri (~95 cm) to tiny mouse lemur (~15 cm); all 25 species are currently endangered.
+     2. Mountain Gorilla:
+        - Habitat: Dense volcanic slopes of Rwanda, DR Congo, and Uganda.
+        - Diet: Herbivorous (forest fruits, foliage, berries).
+        - Traits: Largest of all great apes; organized in small troops led by a dominant silverback male; too heavy to climb trees; peaceful, gentle, highly intelligent, and social.
+     3. Forest Elephant:
+        - Habitat: Congo Basin tropical rainforests.
+        - Diet: Herbivorous forest vegetation.
+        - Traits: Distinct from the savanna/bush elephant; reaches up to 250 cm in shoulder height; tusks are visibly thinner, shorter, and yellowish.
+     4. Chimpanzees & Baboons:
+        - Habitat: Tropical rainforest canopy and woodlands.
+        - Diet: Omnivorous/Frugivorous (fruits, tender leaves, nuts, insects).
+        - Traits: Highly sophisticated tool users (twigs to extract termites, stone/branch anvils to crack hard nuts); travel in cohesive troops (~20 members); sleep in tree nests at night.
+   • Endemism Concept: An endemic species is an organism whose natural distribution is strictly confined to a specific geographic region and found nowhere else on Earth.
+   • Rainforest Geography: Over 80% of Africa's rainforests are located within the Congo Basin, spanning from the Atlantic west coast to the highlands of Kenya and Tanzania.
 
-3. Common Methods of Paragraph Development:
-   • Exemplification / Illustration: Using relevant real-world examples.
-   • Cause and Effect: Detailing reasons and subsequent results.
-   • Comparison and Contrast: Highlighting similarities and differences (Point-by-Point or Block method).
-   • Classification & Division: Grouping concepts into categories.
-   • Process Analysis: Step-by-step sequential instructions.
+3. Vocabulary: Denotative and Connotative Meanings:
+   • Denotative Meaning (Denotation):
+     - The literal, objective, dictionary definition of a word, devoid of emotional coloring or subjective bias.
+     - Example: "Monkey" denotes a specific primate mammal; "group", "club", and "clique" share the same literal denotation ("a gathering of more than one individual").
+   • Connotative Meaning (Connotation):
+     - The secondary emotional overtones, cultural associations, and social values evoked by a word.
+     - Categorization of Connotations:
+       * Positive Connotations: "Unique" (admired for distinctiveness), "economical" (prudent with resources), "mother" (nurturing care, warmth).
+       * Negative Connotations: "Childish" (immature), "skinny" (unhealthily thin), "clique" (exclusionary, snobbish social circle), "snake" (treacherous/deceitful person).
+       * Neutral Connotations: "Group" (general collection), "adolescent" (biological age phase).
+   • Communicative Importance: Choosing words based solely on denotation while ignoring negative connotations produces unintentional offense or semantic ambiguity in academic discourse.
+
+4. Grammar Focus: Conditionals Applied to Ethiopian National Parks:
+   • Ethiopian National Parks & Associated Wildlife:
+     - Semien Mountains National Park: Walia ibex, Gelada baboon, Caracal.
+     - Bale Mountains National Park: Mountain Nyala, Ethiopian wolf, Spotted hyena.
+     - Kafta Sheraro National Park: African elephant, Ground squirrel, Crested porcupine.
+     - Nechisar National Park: Plains zebra, Greater kudu, Dik-dik.
+     - Yangudi Rassa National Park: Beisa oryx, Grevy's zebra, Abyssinian mohr.
+   • Conditional Sentence Constructions in Park Contexts:
+     - Type I (Real Future Possibility):
+       "If tourists visit the Semien Mountains, they will see the endemic Walia ibex."
+     - Type II (Unreal / Hypothetical Present):
+       "If I lived near the Bale Mountains, I would photograph the rare Ethiopian wolf."
+     - Type III (Counterfactual / Impossible Past):
+       "If park rangers had not protected the habitat, the endemic species would have disappeared."
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• A topic sentence must NOT be a simple announcement ("This paragraph is about...") nor a narrow factual statement ("Addis Ababa is in Ethiopia"). It must make a defensible controlling claim.
-• Test questions frequently ask you to spot the "irrelevant sentence" that destroys the unity of a given paragraph.
+• Endemic Species Definition: Organisms naturally restricted to one specific geographical location (e.g., Walia ibex to Ethiopia; Lemurs to Madagascar).
+• Denotation vs. Connotation: Denotation is the dictionary definition; Connotation is the emotional/cultural aura (e.g., "economical" = positive; "stingy" = negative; both denote spending little money).
+• National Park Wildlife Matching: Walia ibex -> Semien Mountains; Mountain Nyala & Ethiopian wolf -> Bale Mountains; Elephants -> Kafta Sheraro.
         """.trimIndent(),
         colorHex = 0xFF059669,
-        initialLikes = 81
+        initialLikes = 87
     ),
     ShortNote(
         id = "eng-u5",
         subjectId = "c5",
         subject = "Communicative English",
         unit = "Unit 5",
-        title = "Academic Essay Writing, Synthesizing & APA/MLA Referencing",
+        title = "Population: Demographics, Pyramids, Collocations & Passive Voice",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-An essay is a formal piece of academic writing composed of multiple paragraphs examining, interpreting, or arguing a specific topic. Academic integrity requires avoiding plagiarism through proper synthesis and citation.
+Unit 5 (FLEn 1011) examines Population studies and demographics. It covers the geographic mechanics of population density, the interpretation of age-sex population pyramids across demographic transition stages, lexical collocations, and the syntactic mastery and academic utility of Active versus Passive voice constructions.
 
 🔍 DETAILED BREAKDOWN
-1. Three-Part Structure of an Academic Essay:
-   • Introductory Paragraph:
-     - Hook / Attention Grabber: Interesting fact, thought-provoking question, or relevant quotation.
-     - Background Context: General orientation to the subject matter.
-     - Thesis Statement: The central, arguable claim of the entire essay; typically placed as the final sentence of the introduction.
-   • Body Paragraphs (PEEL Framework):
-     - Point: Clear topic sentence stating sub-argument.
-     - Evidence: Supporting empirical data, quotations, statistics, or case studies.
-     - Explanation: In-depth analysis explaining HOW the evidence proves the point.
-     - Link: Connecting back to the overarching thesis or transitioning to next paragraph.
-   • Concluding Paragraph:
-     - Restatement of Thesis in fresh phrasing.
-     - Synthesis: Summarizing major arguments without introducing brand new evidence.
-     - Final Thought: Broader implication, recommendation, or call to reflection.
+1. Listening: Population Density & Spatial Demographics:
+   • Core Demographic Definitions:
+     - Population: The total count of human individuals or inhabitants residing within a defined geographical territory or administrative boundary.
+     - Dense / Crowded: Characterized by people or structural objects packed closely together.
+     - Population Density: The fundamental geographic ratio calculated as:
+       Population Density = Total Population / Total Land Area (expressed as persons per km² or mile²).
+   • Multi-Level Spatial Scales: Density can be analyzed across a city, district, province/region, sovereign country, or the entire planet.
+   • Global Habitability: More than 50% of the Earth's continental landmass is classified as inhospitable (unfavorable or hostile to human permanent settlement due to hyper-arid deserts, rugged mountain ranges, sub-polar ice caps, or dense swamps).
 
-2. Essay Genres:
-   • Expository: Explains and informs objectively.
-   • Argumentative / Persuasive: Defends a debatable stance using logical evidence while acknowledging and refuting counterarguments.
-   • Narrative: Recounts a meaningful sequence of events.
-   • Descriptive: Vivid sensory depictions of people, places, or phenomena.
+2. Reading: Population Pyramids & Age-Sex Structure:
+   • Socio-Economic Significance of Age Structure:
+     - Determines the active labor force supply relative to dependent age groups.
+     - A disproportionate ratio of children (0–14) or elderly (65+) creates a high Dependency Ratio, causing labor shortages in agriculture and manufacturing, necessitating food imports, and increasing demands on public schools, teachers, and geriatric healthcare.
+   • Anatomy of a Population Pyramid (Age-Sex Graph):
+     - Specialized bilateral horizontal bar chart displaying demographic distribution.
+     - Vertical Y-Axis: Represents five-year age cohorts (e.g., 0–4 at the base, progressing upward to 80+ at the apex).
+     - Horizontal X-Axis / Central Divider: The center represents 0% or zero population.
+       * Males are plotted from the center outward to the LEFT.
+       * Females are plotted from the center outward to the RIGHT.
+     - Historical Origin: Termed a "pyramid" because in the 19th century, nearly all nations had expansive broad bases (high birth rates) tapering to narrow apexes (high death rates).
+   • Four Typologies of Population Pyramids across Demographic Transition:
+     1. Stage 1 (Expansive / Traditional):
+        - Shape: Wide base with steep, rapidly sloping triangular sides.
+        - Dynamics: High birth rates combined with high infant mortality and death rates.
+        - Context: Pre-industrial societies, historic populations, and fragile developing regions.
+     2. Stage 2 (Expansive / Rapid Growth):
+        - Shape: Very broad base, narrow apex, but with outward-curving sides.
+        - Dynamics: Persistently high birth rates with rapidly falling/declining death rates due to sanitation and basic healthcare.
+        - Context: Rapidly growing developing nations in sub-Saharan Africa.
+     3. Stage 3 (Stationary / Beehive Shape):
+        - Shape: Upright cylindrical or "beehive" shape with rounded apex.
+        - Dynamics: Low birth rates balanced with low death rates; high proportion of middle-aged and elderly individuals.
+        - Context: Developed nations (e.g., England, Wales, France).
+     4. Stage 4 (Constrictive / Inverted):
+        - Shape: Tapered, narrow base that is narrower than the middle and upper tiers.
+        - Dynamics: Rapidly falling birth rates below replacement level (sub-replacement fertility) and low mortality; shrinking workforce.
+        - Context: Highly aging, shrinking societies (e.g., Japan, Italy, Germany).
 
-3. Academic Integrity & Avoiding Plagiarism:
-   • Plagiarism: Presenting another author's words, ideas, or data as one's own without appropriate attribution.
-   • Paraphrasing: Restating source ideas in one's own words and sentence structure while preserving original meaning (requires citation).
-   • Summarizing: Condensing a lengthy source passage to its bare essentials (requires citation).
-   • Direct Quotation: Copying exact words enclosed within quotation marks (used sparingly, requires page number).
-   • Standard Citation Styles:
-     - APA (American Psychological Association - Author, Date): (Alemu, 2023, p. 45).
-     - MLA (Modern Language Association - Author, Page): (Alemu 45).
+3. Vocabulary: Collocations in Academic English:
+   • Definition: A conventional, fixed, or highly predictable pairing of two or more words that naturally co-occur through customary linguistic usage.
+   • Key Collocations with "Population":
+     - Population density, population pyramid, population growth, aging population, urban population, sparse population.
+   • High-Frequency Verb + Noun Collocations:
+     - Have: Have a bath, have a break, have an operation, have an impact.
+     - Do: Do business, do homework, do research, do an exercise, do a favor.
+     - Make: Make an effort, make a noise, make a decision, make a mistake, make a promise.
+     - Take: Take notes, take time, take a break, take a risk, take medicine.
+     - Break: Break a habit, break a record, break a promise, break the law.
+     - Catch: Catch a disease, catch a cold, catch a bus, catch sight of.
+     - Pay: Pay attention, pay a visit, pay a compliment, pay a fine.
+     - Keep: Keep a promise, keep calm, keep a routine, keep a secret.
+
+4. Grammar Focus: Active vs. Passive Voice:
+   • Conceptual Mechanics:
+     - Active Voice: The grammatical subject (agent) actively performs the verb's action:
+       Subject (Agent) + Transitive Verb + Object (Patient).
+       * Example: "Demographers have developed a special bar graph."
+     - Passive Voice: The grammatical subject (patient) receives the action:
+       Subject (Patient) + Appropriate form of 'to be' + Past Participle (V3) + [by Agent].
+       * Example: "A special bar graph has been developed by demographers."
+   • Formation Across Core Tenses:
+     - Simple Present: am / is / are + V3 (e.g., "Census data is collected every decade").
+     - Simple Past: was / were + V3 (e.g., "The pyramid was drafted yesterday").
+     - Present Perfect: have / has been + V3 (e.g., "New population policies have been enacted").
+   • When to Use the Passive Voice in Academic Discourse:
+     1. When the agent is unknown, obvious, or irrelevant (e.g., "The survey was conducted across 500 households").
+     2. To maintain an objective, formal academic register that highlights findings, procedures, and empirical results rather than the personal identity of the researcher.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• The thesis statement is the most critical sentence in the essay; it must state a specific, arguable claim, not a plain uncontested fact.
-• Paraphrasing requires changing BOTH the vocabulary AND the grammatical sentence structure of the original passage.
+• Population Pyramid Rules: Males are ALWAYS plotted to the LEFT; Females to the RIGHT.
+• Four Pyramid Shapes: Wide triangle = Stage 1 (high birth/death); Inward curve = Stage 2 (high birth, falling death); Beehive = Stage 3 (low birth/death); Narrow base = Stage 4 (declining, aging).
+• Collocation Traps: We say "DO homework" and "DO business" (NEVER "make homework"); but "MAKE an effort" and "MAKE a decision" (NEVER "do an effort").
+• Passive Formula: Always requires a form of 'to be' + Past Participle (V3).
         """.trimIndent(),
         colorHex = 0xFF059669,
-        initialLikes = 88
+        initialLikes = 90
     ),
-
-    // =========================================================================
-    // 6. GEOGRAPHY OF ETHIOPIA & THE HORN (c6, Units 1 - 5)
-    // =========================================================================
     ShortNote(
         id = "geo-u1",
         subjectId = "c6",
         subject = "Geography of Ethiopia and the Horn",
         unit = "Unit 1",
-        title = "Location, Size, Shape & Geopolitical Significance",
+        title = "Introduction to Geography of Ethiopia and the Horn",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Ethiopia is an ancient country located in the Horn of Africa. Its geographical location, substantial landmass, compact shape, and geopolitical positioning relative to the Red Sea and Nile Basin shape its climate, history, and foreign policy.
+Geography is the scientific study of the spatial and temporal variations of physical, biological, and human phenomena across the Earth's surface. This unit introduces geographic scopes, approaches, and fundamental themes, the astronomical and relative location of Ethiopia and the Horn, the advantages/disadvantages of national territorial size, mathematical indices of compactness, and cartographic map-reading skills.
 
 🔍 DETAILED BREAKDOWN
-1. Astronomical & Relative Location:
-   • Astronomical (Absolute) Location: Lies between 3°N to 15°N latitudes and 33°E to 48°E longitudes.
-     - North-South extent: ~12° (approx. 1,339 km).
-     - East-West extent: ~15° (approx. 1,639 km).
-     - Implication: Being entirely within tropical latitudes, solar angles are high year-round; however, tropical temperatures are modified by elevation.
-   • Relative Location: Located in the Horn of Africa; bordered by 6 sovereign states: Eritrea (North), Djibouti (Northeast), Somalia (East & Southeast), Kenya (South), South Sudan (West), and Sudan (Northwest).
+1. Meaning, Scope, Approaches & Themes of Geography:
+   • Definition: Scientific analysis of spatial and temporal distributions of natural and cultural phenomena, their causal relationships, and dynamism over Earth's surface.
+   • Scope: The Earth's surface—the habitable interface where Atmosphere (air), Lithosphere (rock/crust), Hydrosphere (water bodies), and Biosphere (living organisms) interact.
+   • Major Approaches:
+     - Human–Physical Continuum: Physical Geography (natural processes) vs. Human Geography (cultural, socioeconomic, and demographic patterns).
+     - Topical (Systematic) vs. Regional: Topical studies individual phenomena globally (e.g., climatology, geomorphology); Regional examines all intersecting phenomena within a specific bounded geographical unit.
+   • The 5 Fundamental Themes of Geography:
+     1. Location: Absolute (mathematical coordinates: latitudes & longitudes) vs. Relative (position with respect to adjacent landmasses, water bodies, or neighboring states).
+     2. Place: Physical and human character; toponym (name), site (internal physical attributes: terrain, soils, drainage), and situation (regional/socioeconomic context).
+     3. Human-Environment Interaction: Dependency (relying on natural resources), Adaptation (modifying lifestyles/clothing/housing to fit environment), and Modification (altering nature via dams, agriculture, urbanization).
+     4. Movement: Spatial mobility of people (migration), goods/commodities (trade), and ideas/innovations (diffusion).
+     5. Region: Distinctive spatial units; Formal Region (homogeneous by physical or cultural traits like climate or language) vs. Functional/Nodal Region (organized around focal hubs and transport/communication networks).
 
-2. Size and Compact Shape:
-   • Total Area: Approx. 1,106,000 km² (10th largest in Africa, 27th largest globally).
-   • Compact Shape: Ethiopia has a compact, circular-like shape.
-     - Indices of compactness (e.g., Compactness Ratio, Circularity Ratio).
-     - Advantages: Shorter perimeter boundary relative to area, lower defense and border patrolling costs, efficient central administration from centrally located capital (Addis Ababa), shorter transport radials.
+2. Location of Ethiopia and the Horn of Africa:
+   • The Horn of Africa: Easternmost projection of Africa separating the Gulf of Aden from the Indian Ocean. Comprises 4 member states: Djibouti, Eritrea, Ethiopia, and Somalia.
+     - Ethiopia is the LARGEST country in the Horn; Djibouti is the SMALLEST.
+   • Astronomical (Absolute) Location of Ethiopia:
+     - Latitudinal Extent: 3°N (Moyale) to 15°N (Bademe in Tigray) => 12° North-South span (~1,577 km).
+     - Longitudinal Extent: 33°E (Akobo in west) to 48°E (tip of Ogaden in east) => 15° East-West span (~1,639 km).
+     - East-West span (15°) exceeds North-South span (12°).
+     - 15° longitudinal span creates a 1-hour solar time difference between western and eastern borders (a single UTC+3 / GMT+3 time zone is observed nationwide).
+   • Relative (Vicinal) Location:
+     - Bordering Countries: Eritrea (North & NE), Sudan (West & NW), South Sudan (SW), Kenya (South), Djibouti (East), Somalia (East & SE).
+     - Broader Context: Southwest of the Arabian Peninsula, south of Europe, upper catchment of the Nile Basin, and adjacent to the Red Sea maritime corridor.
+   • Implications of Ethiopia's Location:
+     - Climatic: Wholly within the tropics (3°N - 15°N); high solar angles year-round, but tropical heat is strongly modified and cooled by altitudinal elevation.
+     - Socio-Cultural: Proximity to Middle East enabled early introduction of Judaism, Christianity, and Islam; shared cultural/linguistic ties across the Horn.
+     - Geopolitical: Overlooks the critical Red Sea & Bab-el-Mandeb trade chokepoint connecting the Indian Ocean to the Mediterranean; historically exposed to external invasions while fiercely preserving sovereignty.
 
-3. Geopolitical Implications & Strategic Significance:
-   • Proximity to Global Trade Corridors: Located adjacent to the Bab-el-Mandeb strait and Red Sea shipping route connecting the Indian Ocean with Mediterranean Europe.
-   • Landlocked Status: Landlocked since Eritrea's separation in 1993. Relies heavily on the Port of Djibouti (~95% of foreign maritime trade), alongside transit agreements with Berbera (Somaliland) and Lamu (Kenya).
-   • Water Tower of Northeast Africa: Upper riparian state supplying over 85% of Nile river waters, carrying immense diplomatic leverage and regional hydro-political responsibility.
+3. Size of Ethiopia (Advantages & Disadvantages):
+   • Total Area: Approx. 1,106,000 km² (8th largest in Africa, 25th in the world). Inland waters account for ~0.7% of surface area.
+   • Advantages of Large Territorial Size:
+     - Encompasses diverse agro-ecological zones and varied climates.
+     - Abundantly endowed with diverse natural, mineral, and water resources.
+     - Extensive arable land capable of sustaining a large population.
+     - Provides deep strategic territorial depth against external military invasions.
+   • Disadvantages of Large Territorial Size:
+     - Demands massive capital expenditure for road, railway, and utility infrastructure.
+     - Requires large military and security expenditures to patrol 5,260 km of borders.
+     - Poses administrative, governance, and public service delivery challenges in peripheral areas.
+     - Hampers quick national socioeconomic integration; cross-border illicit trade is difficult to monitor.
+
+4. Shape of Countries & Indices of Compactness:
+   • The 5 Basic Country Shapes:
+     - Compact: Center-to-boundary distance is relatively uniform; geometrically ideal for defense, communication, and internal cohesion.
+     - Fragmented: Discontinuous pieces separated by water or foreign territory (e.g., archipelagos).
+     - Elongated: Long and narrow (e.g., Chile, Norway).
+     - Perforated: Territory completely encloses another sovereign state (e.g., South Africa enclosing Lesotho).
+     - Protruded: Possesses a prominent panhandle or corridor extending outward (e.g., Eritrea, Caprivi Strip).
+   • Mathematical Indices of Compactness (Measuring deviation from a circle):
+     - Area–Boundary (A/B) Ratio = Area / Boundary Length. Higher values indicate greater compactness.
+     - Boundary–Circumference (B/C) Ratio = Actual boundary perimeter / Circumference of a circle with the same area. Closer to 1.0 indicates higher compactness.
+     - Area–Circumference (A/C) Ratio = Actual area / Circumference of the smallest circumscribing circle. Higher values indicate higher compactness.
+     - Area–Area (A/A') Ratio = Actual country area / Area of the smallest circumscribing circle. Values closer to 1.0 denote maximum compactness.
+   • Horn of Africa Compactness Values (Bekure's Measurements):
+     - Ethiopia: Area = 1,106,000 km² | Boundary = 5,260 km | A/B = 210.27 | B/C = 1.41 | A/C = 296.61 (Relatively compact shape).
+     - Kenya: Area = 582,644 km² | Boundary = 3,600 km | A/B = 161.85 | B/C = 1.33 | A/C = 215.28.
+     - Somalia: Area = 637,657 km² | Boundary = 5,100 km | A/B = 125.03 | B/C = 1.80 | A/C = 225.22.
+     - Eritrea: Area = 117,400 km² | Boundary = 2,420 km | A/B = 48.51 | B/C = 1.99 | A/C = 96.83.
+     - Djibouti: Area = 22,000 km² | Boundary = 820 km | A/B = 26.83 | B/C = 1.56 | A/C = 41.83.
+
+5. Basic Skills of Map Reading:
+   • Map Definition: A two-dimensional, scaled, conventional representation of part or all of the Earth's surface onto a flat plane.
+   • Map Classifications:
+     - Topographical Maps: General-purpose maps depicting both natural physical relief (contours, rivers) and cultural human-made features (roads, settlements).
+     - Thematic (Statistical) Maps: Specialized maps displaying the spatial distribution of single phenomena (e.g., rainfall, temperature, population density, soil types).
+   • Essential Marginal Elements (Map Anatomy):
+     - Title (subject and region), Key/Legend (symbols and color codes), North Arrow/Orientation (cardinal directions), Margin/Border (framing limits), Date of Compilation (data currency).
+     - Scale Formats: Representative Fraction (e.g., 1:50,000), Verbal/Statement Scale (1 cm to 500 m), and Graphic/Linear Scale.
+   • Principles of Map Reading:
+     - Symbol Visualization (translating 2D symbols into landscape topography).
+     - Orientation & Cardinal Direction (finding geographic North).
+     - Alphanumeric Grid References (pinpointing coordinates on Easting and Northing grids).
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Ethiopia's shape is classified as COMPACT (not elongated, fragmented, or perforated).
-• Despite lying in the tropics (3°N - 15°N), Ethiopia's high altitude significantly cools its climate, overriding purely latitudinal expectations.
+• Longitude vs. Latitude Dimensions: Ethiopia's East-West longitudinal span (15°, from 33°E to 48°E) is wider than its North-South latitudinal span (12°, from 3°N to 15°N).
+• Time Difference: The 15° longitudinal span generates an exact 1-hour solar time difference between the westernmost point (Akobo) and easternmost point (Ogaden border).
+• Country Shape Classification: Ethiopia has a COMPACT shape (not elongated, fragmented, or perforated). Its A/B ratio (210.27) is the highest in the Horn.
+• Boundary-Circumference Index: In B/C ratio, the closer the value is to 1.0, the closer the country's shape is to a perfect circle (Ethiopia = 1.41, Kenya = 1.33).
+• Map Scales: A Representative Fraction (RF) of 1:25,000 is a LARGER scale than 1:250,000 because its fraction (1/25,000) is mathematically larger and displays greater local detail over a smaller area.
         """.trimIndent(),
         colorHex = 0xFF2563EB,
         initialLikes = 83
@@ -1733,42 +3087,89 @@ Ethiopia is an ancient country located in the Horn of Africa. Its geographical l
         subjectId = "c6",
         subject = "Geography of Ethiopia and the Horn",
         unit = "Unit 2",
-        title = "Geology, Geomorphology & Physiographic Divisions",
+        title = "The Geology of Ethiopia and the Horn",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Ethiopia's complex physical relief is the product of millions of years of geological activity, including ancient crystalline basement formation, Mesozoic sedimentary transgressions, and Cenozoic tectonic uplift, volcanism, and rifting.
+Geology investigates the Earth's origin, structural composition, and internal/external dynamic processes. Ethiopia's diverse topography and mineral distribution are shaped by four major geological eras: Precambrian crystalline basement formation, Paleozoic peneplanation, Mesozoic marine transgression/regression cycles, and Cenozoic epeirogenic uplift, rift valley formation, and fissure volcanism.
 
 🔍 DETAILED BREAKDOWN
-1. Geological Eras in Ethiopia:
-   • Precambrian Era (4.5 billion - 600 million years ago):
-     - Oldest era; formed the crystalline basement complex (granites, gneisses, schists).
-     - Contains primary metallic minerals (gold, platinum, iron, tantalum).
-   • Paleozoic Era (600 - 250 million years ago):
-     - Era of prolonged denudation and peneplanation. Rocks were eroded down to flat plains; no major rock formation except glacial deposits in Northern Tigray.
-   • Mesozoic Era (250 - 66 million years ago):
-     - Marine Transgression & Regression of the Indian Ocean:
-       1. Transgression (land subsided): Deposited Adigrat Sandstone first, followed by fossil-rich Antalo Limestone.
-       2. Regression (land uplifted): Deposited Upper Sandstone.
-       - Sedimentary rocks are thickest in the southeast (Ogaden basin) and central highlands.
-   • Cenozoic Era (66 million years ago - Present):
-     - Tertiary Period: Massive epeirogenic uplift of the Arabo-Ethiopian swell, followed by immense Trap Series basaltic fissure volcanism (Simien and Bale mountains).
-     - Formation of the Great East African Rift Valley due to tensional tectonic faulting dividing the plateau.
-     - Quaternary Period: Recent rifting, Afar depression volcanism (Erta Ale active shield volcano), and alluvial deposition.
+1. Continental Drift & Geological Forces:
+   • Continental Drift Theory (Alfred Wegener): Suggests all continents formed a single supercontinent (Pangaea), which split into Gondwanaland (including Africa) and Laurasia before breaking into modern continents.
+   • Wegener's Supporting Evidence:
+     - Matching continental coastlines (e.g., South America and Africa jigsaw fit).
+     - Continuous geological structures and mountain belts across ocean basins.
+     - Identical fossil belts across widely separated landmasses (e.g., Glossopteris flora, Mesosaurus).
+     - Paleoclimatic evidence (200-million-year-old glacial striations in modern tropical landmasses).
+   • Geomorphic Processes:
+     - Endogenic (Internal) Forces: Powered by Earth's thermal energy; volcanism and tectonic processes (folding, faulting, orogenesis, epeirogenesis) that construct primary landforms (plateaus, volcanic massifs, rift grabens).
+     - Exogenic (External) Forces: Surface processes (weathering, mass wasting, erosion, deposition) driven by solar energy and gravity that continuously carve, erode, and lower structural landforms.
 
-2. Major Physiographic Divisions of Ethiopia:
-   • 1. Western Highlands and Lowlands:
-     - Western Highlands: Includes Tigray Plateau, North-Central Massifs (Ras Dejen, 4,550m in Simien), Shewan Plateau, and Southwestern Highlands.
-     - Western Lowlands: Tekeze, Abay-Dinder, and Baro-Akobo plains along Sudan border.
-   • 2. Southeastern Highlands and Lowlands:
-     - Southeastern Highlands: Hararghe Plateau, Arsi-Bale Massif (Mount Batu / Tullu Dimtu, 4,377m), and Sidama Highlands.
-     - Southeastern Lowlands: Ogaden, Wabi Shebelle, and Genale plains.
-   • 3. The Rift Valley:
-     - Divides highlands diagonally into NW and SE blocks.
-     - Three subdivisions: Afar Triangle (Danakil Depression, Dallol at -125m bsl), Main Ethiopian Rift (central lakes area), and Chew Bahir Rift.
+2. Geological Time Scale & Age-Dating Techniques:
+   • Hierarchy of Time Units: Eon > Era > Period > Epoch.
+   • The Four Major Eras:
+     - Precambrian (4.5 billion – 600 mya): Spans 5/6th of Earth's history; emergence of earliest rocks and primitive marine life.
+     - Paleozoic (600 – 225 mya): Invertebrates, earliest fish, terrestrial vegetation, and coal-forming swamps; concludes with the Permian mass extinction.
+     - Mesozoic (225 – 70 mya): Era of reptiles (dinosaurs), breakup of Pangaea, marine sedimentation.
+     - Cenozoic (70 mya – Present): Era of mammals; Alpine-Himalayan orogeny, modern mountain/rift systems, hominid evolution.
+   • Age-Dating Methods:
+     - Relative Dating: Comparative age determination using geological principles:
+       * Law of Superposition: In undisturbed sedimentary sequences, bottom strata are oldest and top layers are youngest.
+       * Fossil Correlation: Uses unique index fossils to synchronize strata across geographic regions.
+     - Absolute (Radiometric) Dating: Calculates exact calendar ages based on constant half-lives of radioactive parent isotopes:
+       * Carbon-14 Dating (¹⁴C): Half-life = 5,730 years; dates organic matter up to ~50,000–60,000 years.
+       * Potassium-Argon (⁴⁰K–⁴⁰Ar): Dates igneous minerals (feldspar, mica, hornblende); reheating above 125°C causes argon gas escape, resetting the radiometric clock.
+
+3. Geological Evolution and Landform Genesis in Ethiopia:
+   • Precambrian Era (4.5 billion – 600 mya):
+     - Events: Orogenesis, intense folding, intrusive magmatism, and high-grade metamorphism forming the crystalline Basement Complex (schists, gneisses, granites).
+     - Subsequent prolonged denudation eroded mountains into a flat peneplain.
+     - Surface Outcrops (covers ~25% of Ethiopia): Western lowlands (Gambella, Benishangul-Gumuz, western Wellega/Gojjam), northern Tigray, southern lowlands (Guji, Borena, southern Omo), and deep river gorge cuts (Abay Gorge).
+   • Paleozoic Era (600 – 225 mya):
+     - Dominated by continuous denudation and erosion; land leveled to an undulating peneplain punctuated by isolated inselbergs.
+     - Sediments were transported out of Ethiopia into foreign marine basins.
+     - Result: Rocks from the Paleozoic Era are virtually ABSENT in Ethiopia due to the absence of marine deposition.
+   • Mesozoic Era (225 – 70 mya):
+     - Alternating crustal subsidence and uplift (epeirogenesis) and southeastward tilting produced marine transgression and regression:
+       1. Marine Transgression (Late Triassic – Jurassic): Indian Ocean flooded landmass from Southeast (Somalia/Ogaden) toward Northwest.
+          * Adigrat Sandstone: Basal shallow-water sandstone deposited directly over Precambrian basement.
+          * Hintalo Limestone: Formed as sea deepened; rich in calcareous marine deposits and gypsum (hydrocarbon source rock).
+       2. Marine Regression (Upper Jurassic – Cretaceous): Crustal uplift forced the sea to retreat southeastward.
+          * Upper Sandstone: Coastal silts, sands, and clays laid down atop limestone during regression.
+     - Spatial Thickness & Age Variations:
+       * Adigrat Sandstone is older and thicker in the Southeast (early flood) and younger and thinner toward the Northwest.
+       * Upper Sandstone is older and thinner in the Northwest and younger and thicker in the Southeast (last marine retreat).
+     - Mesozoic rocks cover ~25% of Ethiopia (dominant in Ogaden, central Tigray, and Abay/Wabe Shebelle gorges).
+   • Cenozoic Era (70 mya – Present):
+     - Most dynamic era; covers ~50% of the Ethiopian landmass. Governed by 3 major structural events:
+       1. Arabo-Ethiopian Swell Uplift & Trap Series Volcanism (Tertiary): Massive dome uplift (>2,000 m) accompanied by extensive crustal fracturing and fissure flood basalts (Trap Series) up to 1,000 m thick, capping Mesozoic sediments and creating high plateaus and shield volcanoes (Simien, Bale).
+       2. Great Rift Valley Formation: Tensional forces caused normal faulting and graben subsidence, separating African and Arabian plates, dividing plateaus into Western and Southeastern Highlands, and forming the 1,700-km-long Ethiopian Rift system (widest at the Afar Depression triple junction, down to -125 m at Kobar Sink/Dallol).
+       3. Quaternary Volcanism & Deposition (Aden Series): Recent volcanic cones (Erta Ale, Fantale, Dubi), crater lakes, hot springs, and Pleistocene pluvial lacustrine/fluvial sediment deposits.
+
+4. Rock and Mineral Resources & Greenstone Belts:
+   • Stratigraphic Mineral Associations:
+     - Precambrian: Primary metallic ores (Gold, Platinum, Tantalum, Iron) and industrial marble.
+     - Mesozoic: Limestone, gypsum, anhydrite, and prospective oil/natural gas reservoirs.
+     - Cenozoic: Coal (lignite), geothermal steam, salts/potash, soda ash, pumice, scoria, and basalt building stone.
+   • Notable Mineral Deposits & Localities:
+     - Gold (Au): Primary lode veins (Lega-dembi, Sakaro in Adola); alluvial/placer deposits (Benishangul-Gumuz, Akobo in Gambella, western Wellega).
+     - Platinum (Pt): Yubdo in western Wellega (Ethiopia's primary commercial platinum mine).
+     - Tantalum (Ta): Kenticha open-pit pegmatite mine in Adola (>17,000 metric tons of tantalite-columbite ore).
+     - Coal (Lignite): Interbedded in Tertiary volcano-sedimentary units at Chilga (Gondar), Nedjo (Wellega), and Ankober.
+     - Potash & Halite: Vast evaporite salt deposits in the Danakil (Dallol) Depression.
+     - Gemstones: Precious Opal (Wadla & Dalanta in North Wollo), emeralds, peridots, and sapphires.
+     - Construction Stones: Mesozoic limestone used for cement factories (Muger, Messebo, Dire Dawa, Dejen).
+   • The 3 Major Precambrian Greenstone Belts:
+     1. Western & South-Western Greenstone Belt: Gold (Dul, Tulu-Kape, Akobo), Yubdo platinum, base metals, and Bikilal iron ore.
+     2. Southern (Adola) Greenstone Belt: Primary lode gold (Lega-dembi), world-class tantalum (Kenticha), and nickel.
+     3. Northern (Tigray) Greenstone Belt: Primary gold (Terakemti, Adi-Zeresenay) and copper-lead base metals.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Geological sequence of Mesozoic rocks from oldest to youngest: Adigrat Sandstone (bottom) -> Antalo Limestone (middle) -> Upper Sandstone (top).
-• Ras Dejen (4,550m) is the highest peak in Ethiopia (Western Highlands), while Dallol (-125m) is the lowest point (Afar Depression).
+• Mesozoic Stratigraphic Sandwich: Base = Adigrat Sandstone, Middle = Hintalo Limestone, Top = Upper Sandstone.
+• Spatial Thickness Inversion: Adigrat Sandstone is THICKEST in the SE (Ogaden) and THINNEST in the NW; Upper Sandstone is THICKEST in the SE and THINNEST in the NW (due to regression direction).
+• Absence of Paleozoic Rocks: Paleozoic rocks are virtually nonexistent in Ethiopia because the land was an elevated peneplain experiencing denudation, with zero marine deposition.
+• Era Landmass Coverage: Cenozoic covers 50%, Precambrian covers 25%, and Mesozoic covers 25% of Ethiopia.
+• Radiometric Reset Hazard: In ⁴⁰K–⁴⁰Ar dating, if volcanic rocks are reheated above 125°C, radiogenic argon gas leaks out, resetting the clock to the thermal event rather than the initial rock crystallization.
+• Tantalum Capital: The Kenticha mine in the Adola greenstone belt holds world-class reserves of high-grade tantalite.
         """.trimIndent(),
         colorHex = 0xFF2563EB,
         initialLikes = 89
@@ -1778,45 +3179,74 @@ Ethiopia's complex physical relief is the product of millions of years of geolog
         subjectId = "c6",
         subject = "Geography of Ethiopia and the Horn",
         unit = "Unit 3",
-        title = "Drainage Systems, Water Resources & Lake Basins",
+        title = "The Topography of Ethiopia and the Horn",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Ethiopia is renowned as the "Water Tower of East Africa" due to its elevated topography, abundant orographic precipitation, and dense network of 12 major river basins discharging over 122 billion cubic meters of water annually.
+Ethiopia's contemporary topography is the product of Cenozoic tectonic events: epeirogenic uplift of the Arabo-Ethiopian swell, massive Trappean flood basalt volcanism, tectonic rifting, and profound river gorge incision. Renowned as the "Roof of Africa" and "Water Tower of East Africa," the country displays extreme physiographic contrast between high volcanic plateaus and extensive peripheral lowlands.
 
 🔍 DETAILED BREAKDOWN
-1. The Three Major Drainage Systems:
-   • 1. Western (Mediterranean) Drainage System:
-     - Major rivers: Abay (Blue Nile), Tekeze, Baro-Akobo, Mereb.
-     - Accounts for approx. 60% of Ethiopia's total annual runoff.
-     - Flow direction: Westward into the Nile River, terminating in the Mediterranean Sea.
-     - Abay originates from Lake Tana springs (Gish Abay), joined by major tributaries (Didessa, Dabus, Fincha, Guder).
-     - Baro River is the ONLY navigable river in Ethiopia during high-water seasons.
-   • 2. Southeastern (Indian Ocean) Drainage System:
-     - Major rivers: Wabe Shebelle and Genale-Dawa.
-     - Accounts for approx. 32% of total annual runoff.
-     - Flow direction: Southeast across Somali region toward the Indian Ocean.
-     - Genale and Dawa join at the Somali border to form the Juba River; Wabe Shebelle dries up in the sands of coastal Somalia before reaching the sea.
-   • 3. Inland (Rift Valley) Drainage System:
-     - Major rivers: Awash River, Omo-Gibe, Bilate.
-     - Accounts for approx. 8% of runoff; rivers do not reach the ocean (endorheic basins).
-     - Awash River originates in Shewan plateau, irrigates large commercial farms (Wonji, Metehara), and terminates in Lake Abbe.
-     - Omo River flows south into Lake Turkana in Kenya.
+1. General Characteristics of Ethiopian Physiography:
+   • Altitudinal Extremes:
+     - Lowest Point: Kobar Sink (Dallol / Danakil Depression) at 125 meters below sea level (-125 m).
+     - Highest Point: Mount Ras Dashen at 4,620 meters above sea level (4th highest peak in Africa).
+   • The "Roof of East Africa": Ethiopia possesses the largest expanse of continuous elevated land in Africa:
+     - >50% of national territory lies above 1,000 meters.
+     - ~44% lies above 1,500 meters (comfort zone).
+     - >22% exceeds 2,000 meters.
+   • Highlands vs. Lowlands Contrast (Demarcated at the 1,000-Meter Contour):
+     - Highlands (>1,000 m; ~56% of area): Moderate-to-high rainfall (>600 mm/year), cool mean annual temperatures (<20°C), absence of tropical disease vectors (malaria-free), high population densities, sedentary mixed agriculture (crops and livestock).
+     - Lowlands (<1,000 m; ~44% of area): Low, erratic rainfall (<500 mm/year), high temperatures, high disease prevalence (malaria, trypanosomiasis), sparse pastoral and nomadic populations, livestock herding and river valley irrigation.
 
-2. Lakes of Ethiopia:
-   • Highland Lakes (Natural/Volcanic/Tectonic):
-     - Lake Tana: Largest freshwater lake in Ethiopia (~3,600 km²), source of Blue Nile.
-     - Crater Lakes: Wonchi, Bishoftu lakes, Ziquala (formed by volcanic caldera explosions).
-   • Rift Valley Lakes:
-     - Northern group: Ziway, Langano (brown, bilharzia-free), Abijatta (soda lake), Shalla (deepest lake, ~266m).
-     - Southern group: Awassa, Abaya (largest Rift lake), Chamo (crocodile market).
+2. The Western Highlands and Lowlands (44% of Ethiopia):
+   • Subdivided into Western Highlands (76.3%) and Western Lowlands (23.7%).
+   • A. The Western Highlands:
+     - Tigray Plateau (13% of unit; 1,000–2,000 m): Rugged, denuded granite hills, flat-topped ambas (Debre Damo). High peaks: Mt. Tsibet (3,988 m), Mt. Ambalage (3,291 m), Mt. Assimba (3,248 m).
+     - North Central Massifs: Largest and second highest subdivision (58% >2,000 m), bounded by deep Abay and Tekeze canyons; contains Lake Tana basin and 19 of Ethiopia's 26 peaks above 4,000 m:
+       * Simen Mountains: Mt. Ras Dashen (4,620 m), Mt. Weynobar (4,462 m), Mt. Kidis Yared (4,453 m), Mt. Bwahit (4,437 m).
+       * Other systems: Mt. Guna (4,231 m in Debre Tabor), Abune Yoseph (4,260 m in Lasta), Mt. Birhan (4,154 m in Choke).
+       * Yeju-Wadla Delanta Land Bridge: Narrow strategic high-altitude ridge connecting northern massifs.
+     - Shewa Plateau (Central Highlands): 11% of unit, but nearly 75% exceeds 2,000 m. Central drainage divide feeding Abay, Awash, and Omo basins. Highest peaks: Mt. Abuye-Meda (4,000 m in North Shewa), Mt. Guraghe (3,721 m).
+     - Southwestern Highlands (22.7% of unit): Wettest region of Ethiopia; deeply dissected by perennial rivers (Baro, Akobo, Didessa, Omo); cradle of Arabica coffee and rich linguistic diversity. Highest peak: Mt. Guge (4,200 m in Gamo-Gofa).
+   • B. The Western Lowlands (11% of unit; 500–1,000 m):
+     - Along Sudan and South Sudan borders: Tekeze Lowland, Abay-Dinder Lowland, Baro Lowland (wettest lowland with fertile alluvial plains for commercial mechanized farming), and Ghibe/Omo Lowland.
+     - Major agricultural/border towns: Humera, Metema, Kurmuk, Gambella.
 
-3. Economic Significance & Hydroelectric Potential:
-   • High elevation drops generate enormous hydropower potential (over 45,000 MW). Key projects: GERD (Grand Ethiopian Renaissance Dam, ~5,150 MW), Gilgel Gibe series, Tekeze dam.
-   • Irrigation opportunities vs transboundary hydro-political tensions (e.g., Nile Basin Initiative, GERD diplomacy).
+3. The Southeastern Highlands and Lowlands (37% of Ethiopia):
+   • Highlands account for 46%, Lowlands account for 54%. Escarpment drops sharply into the Rift Valley, while terrain slopes gently southeast toward the Indian Ocean.
+   • A. The Southeastern Highlands:
+     - Arsi-Bale-Sidama Highlands (62% of SE Highlands):
+       * Arsi Highlands: Dissected basaltic volcanic cones: Mt. Kaka (4,180 m), Mt. Bada (4,139 m), Mt. Chilalo (4,036 m).
+       * Bale Highlands: Afro-alpine Sanetti Plateau and glaciated peaks: Tulu-Demtu (4,377 m, highest in SE Ethiopia) and Mt. Batu (4,307 m).
+       * Sidama Highlands: High, fertile Jemjem plateau (vital for coffee and enset cultivation).
+       * Sof Omar Cave: Spectacular subterranean limestone cave carved by the Weyb River (Ghenale tributary) through Mesozoic sediments.
+     - Hararghe Plateau (38% of SE Highlands): Narrow horst rising sharply from the Rift floor and extending to Jigjiga; basalt cap largely stripped away exposing Mesozoic limestone/sandstone. Highest peak: Mt. Gara-Muleta (3,381 m).
+   • B. The Southeastern Lowlands (~20% of Ethiopia):
+     - Slopes gently toward Somalia and Indian Ocean; incorporates Wabishebelle Plain (60%) and Ghenale Plain (40%) across Ogaden, Elkere, and Borena.
+     - Characterized by dry thorn-bush steppe, inselbergs, shallow valleys, pastoral livestock rearing, and hydrocarbon (natural gas) potential.
+
+4. The Rift Valley Physiographic Division (18% of Ethiopia):
+   • A 1,700-km structural depression from Afar southwest to Chew Bahir; funnel-shaped trough opening wide in the north and narrowing southward.
+   • Highly unstable tectonic zone with active volcanoes, fumaroles, crater lakes, and seismic tremors.
+   • Three Distinct Physiographic Sections:
+     1. Afar Triangle (Northern Rift, 54% of Rift area): Lowest and widest (200–300 km) section; includes Kobar Sink (-125 m bsl) and Dallol. Triple junction of Red Sea, Gulf of Aden, and African rifts. Hostile arid climate (>50°C), active shield volcanoes (Erta Ale), salt lakes (Lake Asale, Afrera), and Awash River termination in Lake Abe.
+     2. Main Ethiopian Rift (Central Rift): Elevated trench (50–80 km wide, 1,000–2,000 m elevation) between Awash basin and Lake Chamo. Features young cinder cones (Mt. Fentale, Boseti-guda) and scenic Rift Valley lakes (Ziway, Langano, Abijata, Shalla, Hawassa, Abaya, Chamo).
+     3. Chew Bahir Rift (Southern Rift): Smallest, marshy tectonic depression fed by Woito and Segen rivers, separated from the Central Rift by the Konso crystalline basement horst.
+
+5. Impacts of Relief on Biophysical & Human Environments:
+   • Agriculture: Rugged slopes dictate fragmented small farm plots and hinder mechanization; altitude determines crop belts (barley/wheat/pulses in highlands vs. sorghum/maize/cotton in lowlands) and livestock adaptation (sheep/cattle vs. camels/goats).
+   • Settlement: Highlands (>1,500 m) house dense sedentary farming communities; lowlands feature sparse, mobile pastoralism.
+   • Transport: Deep river canyons and steep escarpments severely hinder road/rail networks, elevating construction costs and isolating communities.
+   • Hydroelectric Power (HEP): Exceptional hydropower potential due to steep elevation drops, narrow river gorges, and waterfalls.
+   • Socio-Cultural Diversity: Mountain barriers fostered regional linguistic diversity and cultural identities (Degegnas vs. Kollelgas).
+   • Climate & Ecology: Orographic rain and adiabatic lapse rates create moist, temperate highland "climatic islands" amidst hot arid lowlands.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• The Western drainage system carries the LARGEST volume of runoff (>60%), dominated by the Abay basin.
-• Shalla is the DEEPEST lake in Ethiopia (~266m); Tana is the LARGEST by surface area; Langano is the ONLY bilharzia-free Rift lake.
+• Highest vs. Lowest Elevation: Ras Dashen (4,620 m) in Simen Mountains is the highest point; Kobar Sink (-125 m) in Afar is the lowest point.
+• Highest Peaks by Sub-Unit: Western Highlands = Ras Dashen (4,620 m); Southeastern Highlands = Tulu-Demtu (4,377 m) in Bale; Hararghe Plateau = Gara-Muleta (3,381 m); Gamo Highlands = Mt. Guge (4,200 m).
+• Highland-Lowland Demarcation Line: The 1,000-meter contour line divides Ethiopia into Highlands (56%) and Lowlands (44%).
+• Shewa Plateau Altitude Distinction: Although only 11% of Western Highlands by area, nearly three-fourths (75%) of the Shewa Plateau lies above 2,000 m.
+• Sof Omar Cave Formation: Natural subterranean cavern formed by the Weyb River dissolving Mesozoic marine limestone near the Bale Mountains.
+• Afar Triple Junction: Tectonic junction where the Red Sea Rift, Gulf of Aden Rift, and East African Rift meet.
         """.trimIndent(),
         colorHex = 0xFF2563EB,
         initialLikes = 94
@@ -1826,47 +3256,63 @@ Ethiopia is renowned as the "Water Tower of East Africa" due to its elevated top
         subjectId = "c6",
         subject = "Geography of Ethiopia and the Horn",
         unit = "Unit 4",
-        title = "Climate, Seasons & Traditional Agro-Ecological Zones",
+        title = "Drainage Systems and Water Resources of Ethiopia and the Horn",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Although Ethiopia lies wholly within the tropical zone, its climate exhibits extreme diversity ranging from alpine cold to blistering desert heat. Altitude is the overriding factor that modifies temperature and rainfall regimes.
+Ethiopia is renowned as the "Water Tower of Eastern Africa" owing to its elevated topography, high orographic rainfall, and radiating outward-tilted plateaus. The country produces an estimated 124.4 billion cubic meters (BCM) of surface runoff annually, distributed across three major drainage systems (Western, Southeastern, and Rift Valley), numerous tectonic and volcanic lakes, and significant groundwater and hydroelectric potential.
 
 🔍 DETAILED BREAKDOWN
-1. Factors Controlling Ethiopian Climate:
-   • Altitude (Elevation): The most decisive factor. Normal Environmental Lapse Rate: Temperature decreases by ~6.5°C for every 1,000m rise in altitude.
-   • Latitude: Dictates tropical solar radiation and angle of incidence.
-   • Pressure Systems & Monsoon Winds:
-     - Inter-Tropical Convergence Zone (ITCZ): Seasonal oscillation of the ITCZ drives wet and dry seasons.
-     - Equatorial Maritime (Southwesterly winds from Atlantic/Congo) bring heavy summer rains.
-     - Tropical Maritime (Southeasterly winds from Indian Ocean) bring spring rains.
-     - Northeast Trade Winds (dry continental from Asian high) bring winter dry season.
+1. Global Hydrology & Structural Controls:
+   • Global Water Context: ~71% of Earth's surface is water; 97.5% is ocean saline water, only 2.5% is freshwater (68.7% locked in glaciers/ice, 30.1% groundwater, 0.8% permafrost, and 0.4% in lakes, rivers, and atmosphere).
+   • Ethiopian Water Wealth: Inland water bodies cover ~0.7% of national surface area; annual surface runoff exceeds 124.4 BCM.
+   • Structural Controls of Drainage:
+     - Outward tilt of Western plateau slopes drainage westward toward the Nile.
+     - Outward tilt of Southeastern plateau slopes drainage southeastward toward the Indian Ocean.
+     - Inward-facing fault escarpments of the Great Rift Valley trap inland drainage (endorheic basins).
+     - Faults, joints, and tectonic grabens direct specific river courses.
 
-2. Ethiopian Seasons:
-   • Kiremt (Summer: June, July, August): Main rainy season for most of the country, driven by southwesterlies following ITCZ migration northward.
-   • Bega (Winter: December, January, February): Dry, sunny season with cold nights and frost in highlands, dominated by dry Northeast continental trades.
-   • Belg (Autumn/Spring: March, April, May): Minor rainy season, especially crucial for south and southeastern highlands.
-   • Meher (Harvest season: September, October, November).
+2. The Three Principal Drainage Systems:
+   • 1. The Western Drainage System:
+     - Largest system: Drains 40% of national land area and discharges 60% of total annual runoff (~54+ BCM).
+     - Major rivers flow westward into the Nile and Mediterranean Sea (except Ghibe/Omo which flows south).
+     - Abay River Basin: Largest volumetric discharge and coverage (199,812 km² across Amhara, Oromia, and Benishangul-Gumuz); carries 65% of the western system flow. Originates from Lake Tana (ultimate source at Gilgel Abay / Sekela in Choke Mountains) and flows 1,450 km to join the White Nile in Khartoum. Major tributaries: Dabus, Dedessa, Fincha, Guder, Muger, Jema, Beshilo.
+     - Tekeze River Basin: Catchment of 87,733 km²; annual runoff of 8.2 BCM (12% of western flow). Tributaries: Goang and Angereb; known as the Atbara River in Sudan.
+     - Baro-Akobo River Basin: Catchment of 75,912 km²; drains wet southwestern highlands, discharging 23.23 BCM (17% of western flow). Joins Akobo to form the Sobat River in South Sudan. Lower reach is the ONLY navigable river stretch in Ethiopia.
+     - Ghibe/Omo River Basin: Catchment of 79,000 km²; annual runoff of 16.6 BCM. Fed by the Gojeb tributary. Endorheic system emptying into Lake Turkana.
+   • 2. The Southeastern Drainage System:
+     - Drains 25% of Ethiopia's total annual runoff across Arsi, Bale, Sidama, and Hararghe toward the Indian Ocean.
+     - Wabishebelle River Basin: Largest catchment area in Ethiopia (202,697 km²) and longest river, but discharges only ~3.4 BCM annually. Tributaries: Ramis, Erer, Daketa, Fafan. Disappears in coastal sands of southern Somalia before reaching the sea.
+     - Ghenale-Dawa River Basin: Catchment of 171,042 km²; discharges 5.8–6.0 BCM. Tributaries: Dawa, Weyb, Welmel, Mena. Joins at Somali border to form the Juba River and successfully discharges into the Indian Ocean.
+   • 3. The Rift Valley (Inland) Drainage System:
+     - Closed endorheic drainage with no ocean outlet, high evaporation, and low rainfall.
+     - Awash River Basin: Only major river basin in the Rift Valley (114,123 km², 1,250 km long, 4.9 BCM). Rises in Shewan plateau, flows northeast, fed by Akaki, Kesem, Borkena, Mile. Most economically utilized river (Wonji, Metehara, Tendaho irrigation and Koka HEP). Terminates in Lake Abe inland saline delta.
+     - Southern Lakes Basin: Chains of interconnected lakes: Meki & Katar => Lake Ziway => Bulbula River => Lake Abijata; Lake Langano => Horocolo River => Lake Abijata; Bilate River => Lake Abaya; Segen River => Chew Bahir.
 
-3. Traditional Agro-Ecological Zones (Altitude-Based):
-   • 1. Wurch / Kur (Alpine / Cold High Altitude):
-     - Altitude: Above 3,200 meters. Mean annual temp: < 10°C.
-     - Found on Simien (Ras Dejen) and Bale peaks. Frost-prone, sparse afro-alpine vegetation, limited barley cultivation, sheep rearing.
-   • 2. Dega (Cool Highland):
-     - Altitude: 2,300 to 3,200 meters. Mean annual temp: 10°C - 15°C.
-     - Reliable rainfall; barley, wheat, pulses, temperate fruits; dense human settlement.
-   • 3. Woina Dega (Temperate / Sub-Tropical Midland):
-     - Altitude: 1,500 to 2,300 meters. Mean annual temp: 15°C - 20°C.
-     - The ideal "comfort zone" supporting the highest population density; staple crops include Teff, maize, wheat, sorghum, coffee.
-   • 4. Kolla (Warm Semi-Arid Lowland):
-     - Altitude: 500 to 1,500 meters. Mean annual temp: 20°C - 27°C.
-     - High temperatures, erratic rainfall; drought-resistant sorghum, millet, livestock pastoralism.
-   • 5. Bereha (Hot Arid Desert):
-     - Altitude: Below 500 meters. Mean annual temp: > 27°C.
-     - Extreme heat, rainfall < 200 mm/year (Danakil Depression, lower Ogaden); nomadic pastoralism.
+3. General Characteristics of Ethiopian Rivers:
+   • Highland Headwaters: Originate in high plateaus (>1,500 m) with steep gradients.
+   • Trans-boundary Flow: Major rivers flow across international borders into Sudan, South Sudan, Somalia, and Kenya.
+   • Extreme Seasonal Fluctuations: Runoff mirrors rainfall (raging torrents/floods in Kiremt, trickles in dry Bega).
+   • Youthful River Profiles: Marked by rapids, cataracts, and waterfalls (e.g., Tis Issat Falls).
+   • Deep Gorges & Canyons: Profound vertical incision forms natural physical barriers and administrative boundaries.
+
+4. Ethiopian Lakes (Morphometry & Origin):
+   • Lake Classifications (All Quaternary Cenozoic Origin):
+     - Highland Lava-Dammed / Tectonic: Lake Tana (largest in Ethiopia: 3,600 km², max depth 9 m; source of Blue Nile); Lake Ashenge (Tigray tectonic basin, 20 km², 25 m deep).
+     - Rift Valley Tectonic Lakes: Lake Abaya (largest Rift lake: 1,162 km², 13.1 m deep); Lake Chamo (551 km², 13 m deep); Lake Ziway (shallow freshwater: 442 km², 8.95 m deep); Lake Shalla (caldera sink: 409 km², 266 m deep — DEEPEST lake in Ethiopia); Lake Abijata (alkaline soda lake, 205 km²).
+     - Volcanic Explosion Crater Lakes: Bishoftu lakes, Wonchi (near Ambo), Hayk (near Dessie, 5 km², 23 m deep), Mt. Zikwala summit crater.
+     - Artificial Reservoirs: Koka (205 km²), Fincha, Melka Wakena, Gilgel Gibe, Tekeze.
+
+5. Water Resource Potential & Economic Development:
+   • Hydroelectric Power (HEP): 45,000 MW exploitable potential. First plant built in 1932 (Aba Samuel on Akaki). Major plants include Gibe III (1,870 MW), Tekeze, Tana Beles, Fincha. Grand Ethiopian Renaissance Dam (GERD) on Abay is designed for 6,400 (or 5,150) MW. Challenges: seasonal flow variability, reservoir siltation from highland soil erosion.
+   • Irrigation & Inland Navigation: 5.3 million hectares irrigable land. Over 60% of modern irrigation is concentrated in Awash basin (sugar cane, cotton). Baro River is the ONLY navigable river during high water; Lakes Tana and Abaya support commercial water transport.
+   • Fisheries & Environmental Threats: National fish potential ~30,000–45,000 tons/year. Lake Tana (8,000–10,000 t/yr) and Lake Chamo (4,500 t/yr) lead production. Threats: deforestation, siltation, agrochemical runoff, and invasive water hyacinth (Emboch) on Lake Tana.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Woina Dega (1,500 - 2,300m) is considered the most favorable zone for human habitation in Ethiopia due to moderate temperatures, fertile soils, and absence of malaria.
-• The ITCZ moves north of the equator in July, bringing Kiremt rains, and south of the equator in January, causing Bega dry conditions.
+• Largest vs. Longest River Basins: Wabishebelle has the LARGEST catchment area (202,697 km²) and is the longest river in Ethiopia; Abay has the LARGEST volumetric discharge (>54 BCM).
+• River Destination Traps: Wabishebelle does NOT reach the Indian Ocean (disappears in Somali desert sands); Ghenale-Dawa reaches the Indian Ocean as the Juba River; Awash ends in Lake Abe.
+• Deepest vs. Largest Lakes: Lake Tana is the LARGEST lake by surface area (3,600 km²); Lake Shalla is the DEEPEST lake (266 m); Lake Abaya is the LARGEST Rift Valley lake (1,162 km²).
+• Sole Navigable River: The Baro River is the ONLY navigable river in Ethiopia (during rainy season on Gambella floodplains).
+• Interconnected Rift Lakes: Both Lake Ziway (via Bulbula River) and Lake Langano (via Horocolo River) drain into terminal, alkaline Lake Abijata.
         """.trimIndent(),
         colorHex = 0xFF2563EB,
         initialLikes = 86
@@ -1876,39 +3322,66 @@ Although Ethiopia lies wholly within the tropical zone, its climate exhibits ext
         subjectId = "c6",
         subject = "Geography of Ethiopia and the Horn",
         unit = "Unit 5",
-        title = "Population Dynamics, Settlement Patterns & Urbanization",
+        title = "The Climate of Ethiopia and the Horn",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Ethiopia is the second most populous nation in Africa (surpassing 125 million people). Its demographic structure features high natural growth, a youthful age distribution, and an overwhelmingly highland-concentrated rural population.
+Despite lying wholly within the tropical latitudes (3°N – 15°N), Ethiopia possesses remarkably diverse microclimates ranging from hot arid deserts to frigid alpine peaks. This diversity is driven by the interaction between the seasonal oscillation of the Intertropical Convergence Zone (ITCZ), planetary wind systems, and complex altitudinal relief.
 
 🔍 DETAILED BREAKDOWN
-1. Demographic Characteristics:
-   • High Population Growth: Rapid growth driven by high Crude Birth Rate (CBR) and declining Crude Death Rate (CDR), with an annual growth rate ~2.6%.
-   • Age Structure: Pyramidal structure with a broad base; over 40% of the population is under 15 years old.
-   • Dependency Ratio: High young-age dependency ratio puts immense pressure on educational, health, and economic infrastructure.
-   • Fertility: Total Fertility Rate (TFR) remains elevated (~4.2 children per woman), though declining in urban centers.
+1. Elements & Controls of Weather and Climate:
+   • Weather vs. Climate: Weather represents the instantaneous state of the troposphere; Climate is the statistical composite of day-to-day weather conditions over decades.
+   • Elements: Temperature, Precipitation, Humidity, Winds, Atmospheric Pressure.
+   • Controls: Latitude, Altitude, Land/Water distribution, Pressure systems/Winds, Ocean currents.
+   • Key Climatic Controls in Ethiopia:
+     - Latitude: Dictates high insolation and solar angles year-round; high diurnal (daily) temperature range, small annual temperature range, and nearly equal day/night hours.
+     - Earth's Axial Tilt & Seasons: Rotational axis tilted at 66½° to orbital plane (23½° from perpendicular). Equinoxes (March 21 & September 23: equal day/night); Solstices (Summer: June 21, sun over Tropic of Cancer; Winter: December 22, sun over Tropic of Capricorn).
+     - Altitude & Lapse Rates: Most decisive local control.
+       * Normal Environmental Lapse Rate: Temperature decreases by ~6.5°C per 1,000 m (1 km) rise in elevation.
+       * Dry Adiabatic Lapse Rate (DALR): Unsaturated rising air cools at ~10°C per 1,000 m.
+       * Wet/Moist Adiabatic Lapse Rate (WALR): Saturated rising air cools at ~5°C per 1,000 m (lower because condensation releases latent heat).
 
-2. Spatial Population Distribution:
-   • High Altitudinal Concentration: Over 80% of Ethiopia's population resides in the highlands (> 1,500m elevation), despite highlands occupying only ~43% of total land area.
-   • Explanatory Factors:
-     - Reliable rainfall and cooler, comfortable climate.
-     - Fertile volcanic agricultural soils.
-     - Historical freedom from vector-borne tropical diseases, particularly malaria and trypanosomiasis (tsetse fly).
-   • Lowland Areas: Characterized by sparse pastoralist populations due to aridity, extreme heat, and tropical disease prevalence.
+2. Spatiotemporal Distribution of Temperature & Rainfall:
+   • Temperature Patterns: Mean annual temperatures range from >30°C in the Afar (Danakil) Depression to <10°C on high massifs (Simen, Bale). Maximum temperatures occur between March and June; minimums between November and February.
+   • ITCZ Mechanism: Rainfall is governed by the seasonal latitudinal shift of the Intertropical Convergence Zone (ITCZ), where the dry Northeast Trade Winds converge with moist Equatorial Westerlies (Guinea Monsoons) and Indian Ocean easterlies.
+     - In July: ITCZ shifts north of the Equator, drawing rain-bearing moist winds from the Atlantic and Indian Oceans over the Ethiopian highlands.
+     - In January: ITCZ shifts south to the Tropic of Capricorn, allowing dry continental Northeast Trade Winds from Eurasia to dominate.
+   • The Four Seasons:
+     - Kiremt (Summer: June, July, August): Main rainy season for most of the country, fed by Equatorial Westerlies (Guinea Monsoon).
+     - Tsedey (Autumn: September, October, November): ITCZ retreats southward; Indian Ocean southeasterlies bring rains to southeastern lowlands.
+     - Bega (Winter: December, January, February): Dominant dry season; dry northeasterlies produce frost in highlands, but pick up Red Sea moisture to rain on Afar escarpments.
+     - Belg (Spring: March, April, May): ITCZ migrates northward; moist Indian Ocean southeasterlies bring Belg rains to central and southeastern highlands.
+   • Rainfall Regions:
+     - Summer Rainfall Region: Northern, central, and western Ethiopia (>1,000 mm/yr in wet highlands).
+     - All Year-Round Rainfall Region: Confined to southwestern highlands (humid Guinea monsoons: 1,400 to >2,200 mm/year; no dry season).
+     - Autumn & Spring Rainfall Region: Southeastern lowlands (Ogaden, Borena; 60% autumn, 40% spring; <500 to 1,000 mm/year).
+     - Winter Rainfall Region: Red Sea coastal plains and eastern Afar escarpment.
 
-3. Migration Trends:
-   • Internal Migration:
-     - Rural-to-Urban Migration: Driven by rural push factors (land scarcity, soil degradation, underemployment) and urban pull factors (higher education, modern employment, amenities).
-     - Rural-to-Rural Migration: Seasonal agricultural labor migration (e.g., sesame picking in Humera, coffee harvesting in Oromia/Sidama).
-   • External Migration: Outflows to Middle Eastern Gulf states, North America, Europe, and Southern Africa.
+3. Traditional Agro-Ecological Zones of Ethiopia:
+   • 1. Wurch (Cold to Moist / Alpine): Altitude >3,200 m; Mean Temp <10°C; Rainfall 900–2,200 mm; Area: 0.98%. Frost-prone high summits (Ras Dashen, Bale); afro-alpine moorland, light grazing, barley.
+   • 2. Dega (Cool to Humid): Altitude 2,300–3,200 m; Mean Temp 10–15°C; Rainfall 900–1,200 mm; Area: 9.94%. Dense population, malaria-free; barley, wheat, pulses, sheep, cattle.
+   • 3. Weyna Dega (Cool Sub-Humid / Temperate): Altitude 1,500–2,300 m; Mean Temp 15–20°C; Rainfall 800–1,200 mm; Area: 26.75%. Agricultural heartland; supports teff, maize, wheat, coffee, enset; two growing seasons.
+   • 4. Kolla (Warm Semi-Arid): Altitude 500–1,500 m; Mean Temp 20–27.5°C; Rainfall 200–800 mm; Area: 52.94% (LARGEST zone by area). Peripheral lowlands, drought-prone; sorghum, millet, livestock pastoralism.
+   • 5. Bereha (Hot Arid Desert): Altitude <500 m; Mean Temp >27.5°C; Rainfall <200 mm; Area: 9.39%. Danakil depression and deep lowlands; extreme heat, strong winds, sparse nomadic pastoralism.
 
-4. Urbanization in Ethiopia:
-   • Paradox of Urbanization: Ethiopia has one of the LOWEST levels of urbanization in the world (~22% urban population), but one of the HIGHEST rates of urban growth (~4.5% annually).
-   • Urban Primacy: Addis Ababa is a classic primate city, dwarfing the next largest cities (Dire Dawa, Hawassa, Adama, Bahir Dar, Mekelle) in population size, infrastructure, and economic power.
+4. Climate Change & Global Warming (Trends, Causes & Responses):
+   • Observed Trends in Ethiopia:
+     - Drought Vulnerability: Ranks 5th out of 184 nations; 12 major droughts between 1900 and 2010 (7 occurred after 1980).
+     - Temperature Rise: Mean annual temperature increased by 1.3°C between 1960 and 2006 (0.20–0.28°C/decade); minimum temperatures rose even faster (0.37–0.40°C/decade).
+     - Rainfall Variability: Seasonal rainfall in southern/southwestern/southeastern regions declined 15–20% (1975–2010), alongside intensified flash floods and lowland desertification.
+   • Causes of Climate Change:
+     - Natural: Milankovitch orbital cycles (eccentricity, axial tilt), solar variability, and volcanic aerosols altering planetary albedo.
+     - Anthropogenic: Escalating greenhouse gases (CO₂ surged from pre-industrial 280 ppm to >400 ppm; CH₄ is less abundant but far more potent; N₂O, CFCs).
+   • Impacts: Malaria transmission expanding to higher altitudes; crop failures and reduced growing days; diminished river runoff and groundwater recharge.
+   • Response Strategies:
+     - Mitigation (reducing emissions/enhancing sinks): Hydropower/solar/wind renewables, energy efficiency, reforestation and biological carbon sequestration.
+     - Adaptation (adjusting to impacts): Flood diversion structures, rainwater harvesting, drought-tolerant crops, early warning systems, terracing and watershed restoration.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• The single most important factor explaining the spatial distribution of Ethiopia's population is ALTITUDE (and its influence on climate, agriculture, and disease ecology).
-• High youth dependency ratio means: (Population 0-14 + Population 65+) / (Working age population 15-64) × 100.
+• Largest Agro-Ecological Zone: Kolla is the LARGEST zone by surface area (52.94% of Ethiopia), while Wurch is the smallest (0.98%).
+• Agricultural Heartland: Weyna Dega (1,500–2,300 m) is the primary agricultural zone due to moderate temperatures, fertile soils, and reliable rainfall.
+• Lapse Rate Comparison: The Wet Adiabatic Lapse Rate (~5°C/km) is lower than the Dry Adiabatic Lapse Rate (~10°C/km) because latent heat of condensation warms the rising air parcel.
+• All-Year-Round Rain: The southwestern highlands (e.g., Kaffa, Illubabor) are the only region in Ethiopia receiving rainfall in all 12 months (fed by equatorial Guinea monsoons).
+• Winter Rain Exception: Red Sea coastal plains and eastern Afar escarpments receive winter (Bega) rainfall from marine-modified northeast trade winds.
         """.trimIndent(),
         colorHex = 0xFF2563EB,
         initialLikes = 83
@@ -1918,41 +3391,75 @@ Ethiopia is the second most populous nation in Africa (surpassing 125 million pe
         subjectId = "c6",
         subject = "Geography of Ethiopia and the Horn",
         unit = "Unit 6",
-        title = "Economic Activities in Ethiopia (Agriculture, Industry, Trade & Tourism)",
+        title = "Soils, Natural Vegetation and Wildlife Resources of Ethiopia and the Horn",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Ethiopia's economy is structurally transitioning from subsistence agriculture to agro-industrial manufacturing and modern services. Agriculture remains the backbone, while industrial parks, trade logistics, and tourism drive national modernization.
+Ethiopia's intricate relief, geological diversity, and altitudinal climatic variations support a rich ecological mosaic. This unit covers the physical/chemical genesis and classification of Ethiopian soils, the vertical altitudinal zonation of natural vegetation, and exceptional wildlife diversity characterized by high endemicity and comprehensive protected national park networks.
 
 🔍 DETAILED BREAKDOWN
-1. The Agricultural Sector & Farming Systems:
-   • Socio-Economic Stature: Employs approx. 68% of the national labor force, contributes ~33% of GDP, and generates over 75% of total foreign exchange earnings.
-   • Major Agricultural Farming Systems:
-     - 1. Highland Mixed Farming: Integrates crop cultivation with livestock husbandry in Dega and Woina Dega zones (>1,500m). Divided into:
-       * Seed-Farming Complex: Grain crops (Teff, Wheat, Barley, Maize, Sorghum) predominantly in northern and central highlands.
-       * Enset-Planting (Root Crop) Complex: Enset (false banana), root crops, and coffee in southern and southwestern highlands (highly drought-resilient food security system).
-     - 2. Lowland Pastoralism & Nomadism: In arid Afar, Somali, and Borena lowlands (<1,500m); transhumance migration in search of water and pasture; reliance on camels, cattle, sheep, and goats.
-     - 3. Commercial Plantation Agriculture: Large-scale irrigated farming along river valleys producing sugar cane (Wonji, Metehara, Kuraz), cotton (Awash, Omo), and floriculture/horticulture around Bishoftu and Rift lakes.
-   • Livestock Population: Ethiopia possesses Africa's LARGEST livestock herd (over 65 million cattle, 50 million shoats, 8 million equines), crucial for draught power, milk, meat, and leather exports.
+1. Ethiopian Soils (Composition, Formation & Major Types):
+   • Soil Composition (Typical Volumetric Ratio): Mineral matter (45%), Organic matter / Humus (5%), Soil air (20–30%), Soil water (20–30%).
+   • Soil-Forming Factors: Parent rock material, Climate, Topography (relief), Living organisms, and Time.
+   • Weathering Processes:
+     - Mechanical (Physical): Thermal expansion/contraction, frost wedging (freezing water splitting rock), and wind/water abrasion.
+     - Chemical: Hydrolysis, oxidation/reduction, hydration, carbonation, and mineral solution.
+     - Biological: Root wedge splitting and organic secretions by burrowing fauna and microbes.
+   • The 6 Major Soil Groups of Ethiopia:
+     1. Nitosols & Acrisols:
+        - Nitosols: Deep, well-drained, reddish-brown tropical soils on gently sloping volcanic plateaus (Wellega, Kaffa, Illubabor, Shewa). Heavily leached of calcium and potassium, but rich in iron and aluminum oxides; among the most fertile and cultivated highland soils.
+        - Acrisols: Highly weathered, acidic soils in high-rainfall pockets of the southwest; low base saturation and poor natural fertility.
+     2. Vertisols (Black Cotton Soils): Heavy, dark clay soils rich in montmorillonite swelling clays. Swell and become sticky/waterlogged when wet; shrink and crack deeply during dry periods. High chemical fertility, but physically difficult to plow and drain (Gojjam, Shewa, Arsi, Bale).
+     3. Lithosols, Cambisols & Regosols: Shallow, stony, immature soils on steep slopes, Rift escarpments, and Chercher hills. Poor water retention; low agricultural utility; used for livestock grazing.
+     4. Xerosols, Yermosols & Solonchaks: Arid, dry-steppe, and desert soils of the Ogaden and Danakil/Afar depressions. Low humus/nitrogen, but rich in soluble mineral salts; highly productive under irrigation. Solonchaks develop white saline surface crusts.
+     5. Fluvisols (Alluvial Soils): Young, azonal sediments deposited by rivers on floodplains and deltas (lower Omo, Awash, Baro-Akobo, Rift lake plains). Highly fertile, replenished by annual floods, ideal for mechanized irrigation.
+     6. Luvisols: Soils with distinct subsoil clay accumulation, moderate leaching, and high base saturation; excellent agricultural productivity (Lake Tana basin, central/eastern highlands).
+   • Soil Degradation & Conservation:
+     - Forms: Physical (compaction, water/wind erosion — estimated at 42 tons/hectare/year), Chemical (nutrient exhaustion, acidification, salinization), Biological (humus loss).
+     - Conservation Measures: Biological (afforestation, reforestation, vegetative buffer strips, crop rotation) and Mechanical (contour terracing, check dams, gabions, stone bunds).
 
-2. Manufacturing & Secondary Economic Activities:
-   • Structure: Dominated by consumer light industries (food processing, beverages, textiles, apparel, leather, and cement).
-   • Industrial Parks: Modern specialized zones (Hawassa Industrial Park, Bole Lemi, Kilinto, Kombolcha, Adama) established to attract Foreign Direct Investment (FDI) and boost manufactured exports.
-   • Mineral Resources: Gold (Lega Dembi, Shakiso), Tantalum (Kenticha), Potash (Danakil Depression), Opal (Wollo), and Natural Gas (Calub and Hilala in Ogaden).
+2. Natural Vegetation of Ethiopia:
+   • Floral Diversity: ~6,000 species of higher plants, with ~10% endemism.
+   • Major Vegetation Belts (Altitudinal Zonation):
+     - 1. Afro-Alpine & Sub-Afro-Alpine (1.3% of country; highest in Africa):
+       * Afro-Alpine (4,000–4,620 m): Sub-zero temperatures, thin rocky soils (Simen and Bale summits). Giant Lobelia (Lobelia rhynchopetalum / Giberra), tussock grasses, lichens.
+       * Sub-Afro-Alpine (3,300–4,000 m): Erica arborea (Asta) woodland, heath scrub, and wet montane grasslands.
+     - 2. Forest Region (450–3,500 m): Multi-layered canopies.
+       * Highland Moist Forests: Hagenia abyssinica (Kosso), Juniperus procera (Tid), Podocarpus falcatus (Zigba), Arundinaria alpina (bamboo / Kerkha), Aningeria adolfi-friedericii (Keraro), Olea africana (Weyra).
+       * Gallery (Riverine) Forests: Linear strips along arid lowland rivers (Awash, Wabishebelle); Ficus sur (Sholla) and riverine acacias.
+     - 3. Woodland Savannah Region (250–2,300 m): Drought-resilient deciduous species. Juniperus woodlands (1,350–2,200 m), Acacia woodlands (Acacia etbaica / Grar, Acacia mellifera / Konter), and mixed deciduous woodlands.
+     - 4. Steppe & Semi-Desert Regions: Arid lowlands. Steppe (100–1,400 m; 100–550 mm rain; perennial tussock grasses and dwarf acacias); Semi-Desert (-130 to 600 m; 50–300 mm rain; xerophytic thorny scrub and succulents).
+   • Deforestation Drivers: Fuel-wood collection, charcoal production, agricultural encroachment, timber logging, and uncontrolled bushfires.
 
-3. Trade, Infrastructure & Transport Logistics:
-   • Internal & External Trade Balance:
-     - Ethiopia experiences a persistent, severe Trade Deficit (merchandise imports far exceed merchandise exports).
-     - Top Merchandise Exports: Coffee (largest foreign exchange earner, >30% of exports), Gold, Oilseeds (Sesame), Pulses, Cut Flowers, Chat, Leather products.
-     - Major Merchandise Imports: Petroleum/fuel, machinery, capital equipment, industrial chemicals, fertilizers, metal products.
-   • Transportation Network: Roads handle >95% of passenger and freight traffic. The electrified Ethio-Djibouti Railway (756 km) provides a vital trade corridor linking landlocked Ethiopia to maritime ports on the Red Sea/Gulf of Aden.
-
-4. Tourism & National Heritage:
-   • UNESCO World Heritage Cultural Sites: Rock-Hewn Churches of Lalibela, Obelisks of Axum, Fasil Ghebbi (Gondar Castles), Harar Jugol (Fortified Historic Town), Tiya Megalithic Stelae, Konso Cultural Landscape.
-   • Natural Heritage Sites: Simien Mountains National Park, Bale Mountains National Park (inscribed 2023).
+3. Wildlife Resources & Protected Areas:
+   • Faunal Diversity & Endemism:
+     - Birds: ~860 species (16 endemic species, 2 endemic genera).
+     - Mammals: 279 species (31 endemic species, 6 endemic genera).
+     - Amphibians: 23 species (23 endemic species — 100% ENDEMISM!).
+     - Reptiles: 201 species (14 endemic); Freshwater Fish: 150 species (6 endemic).
+   • Flagship Endemic Mammals:
+     - Walia Ibex (Capra walie): Confined exclusively to the rocky crags of the Simen Mountains.
+     - Mountain Nyala (Tragelaphus buxtoni): Native to Arsi and Bale montane massifs.
+     - Ethiopian Wolf / Simen Fox (Canis simensis): Rare Afro-alpine predator in Bale (Sanetti) and Simen.
+     - Gelada Baboon (Theropithecus gelada): Grass-eating highland primate with a distinctive red chest patch.
+     - Starck’s Hare (Lepus starcki).
+   • Selected Major National Parks:
+     - Semien Mountains (1959, Amhara, 412 km²): Walia Ibex, Ethiopian Wolf, Gelada Baboon, Ras Dashen.
+     - Bale Mountains (1962, Oromia, 2,200 km²): Mountain Nyala, Ethiopian Wolf, Sanetti Afro-alpine plateau.
+     - Awash National Park (1958, Afar/Oromia, 756 km²): Beisa Oryx, gazelles, ostriches, Awash gorge falls.
+     - Abijata-Shalla (1963, Oromia, 887 km²): Bird sanctuary; flamingo and pelican colonies.
+     - Omo & Mago (1959/1974, SNNPR): Elephants, buffaloes, giraffes, hippos along Omo River.
+     - Gambella (1966, Gambella, 4,650 km²): Nile lechwe, white-eared kob, wetland habitats.
+     - Yangudi-Rassa (1969, Afar, 4,731 km²): Refuge for the endangered African wild ass.
+     - Nechsar (1966, SNNPR, 514 km²): Plains zebras, Swayne’s hartebeest, Lake Abaya and Chamo views.
+     - Kafta Shiraro (1999, Tigray, 5,000 km²): Trans-boundary elephant sanctuary.
+   • Wildlife Conservation Challenges: Settlement/farming encroachment, illegal poaching, livestock competition for grazing, habitat fragmentation, and wildfires.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Coffee is Ethiopia's top foreign exchange earner, while Teff is the primary domestic cereal crop by cultivated area.
-• Ethiopia's balance of merchandise trade is characterized by a STRUCTURAL DEFICIT due to high capital import bills and low-value primary commodity exports.
+• Endemism World Record: Ethiopian amphibians exhibit 100% endemism (all 23 documented species are found only in Ethiopia).
+• Soil Swell-Shrink Trap: Vertisols (Black Cotton Soils) are chemically fertile but physically troublesome because they crack widely when dry and become unmanageably sticky and waterlogged when wet.
+• Fertile Red Highland Soil: Nitosols are deep, well-drained, reddish-brown soils rich in iron and aluminum oxides; dominant in western/southwestern agricultural plateaus.
+• Indicator Afro-Alpine Species: Giant Lobelia (Lobelia rhynchopetalum) characterizes Afro-alpine summits (>4,000 m), while Erica arborea (Asta) dominates the Sub-Afro-alpine zone (3,300–4,000 m).
+• Flagship Mammal Habitats: Walia Ibex is restricted ONLY to the Simen Mountains; Mountain Nyala is endemic to the Bale-Arsi massifs.
         """.trimIndent(),
         colorHex = 0xFF2563EB,
         initialLikes = 92
@@ -1962,49 +3469,168 @@ Ethiopia's economy is structurally transitioning from subsistence agriculture to
         subjectId = "c6",
         subject = "Geography of Ethiopia and the Horn",
         unit = "Unit 7",
-        title = "Natural Resources, Environmental Hazards & Sustainable Conservation",
+        title = "Population of Ethiopia and the Horn",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Ethiopia is endowed with rich natural resources including diverse soil types, unique biodiversity, and water basins. However, severe environmental hazards like soil erosion, deforestation, and climate extremes necessitate comprehensive conservation strategies.
+Human population represents both the creators and consumers of socioeconomic wealth. Ranking as the second most populous nation in Africa (surpassing 112–125 million), Ethiopia's demographic landscape is defined by rapid natural growth, an overwhelmingly young age structure, extreme altitudinal concentration in the highlands, and rapid urbanization despite a predominantly rural base.
 
 🔍 DETAILED BREAKDOWN
-1. Soil Types & Land Degradation:
-   • Major Soil Orders in Ethiopia:
-     - Nitisols: Deep, well-drained, reddish-brown tropical soils found on highland plateaus. High agricultural fertility; widely cultivated.
-     - Vertisols (Black Cotton Soils): Heavy clay soils with high shrink-swell properties. Highly fertile but prone to severe waterlogging during Kiremt rainy season; crack extensively during dry Bega.
-     - Fluvisols & Cambisols: Young alluvial soils deposited in river floodplains; highly suitable for commercial irrigation (Awash, Baro).
-     - Lithosols & Regosols: Thin, shallow, stony soils found on steep eroded slopes; poor agricultural utility.
-   • Soil Erosion Dynamics: Over 1.5 billion tons of topsoil eroded annually from the Ethiopian highlands due to steep topography, torrential rains, and vegetation clearance.
-   • Soil Conservation Practices: Physical bunds, stone terraces, check dams, contour plowing, agroforestry, and biological grass strip planting.
+1. Demographic Data Sources & National Census History:
+   • Demographic Data Sources:
+     - Census: Complete, simultaneous enumeration of all individuals in a territory at a fixed time; periodic (every 5–10 years) and government-sponsored.
+       * De Jure Approach: Counts individuals at their permanent, usual place of residence (preferred for socioeconomic planning).
+       * De Facto Approach: Counts individuals wherever they physically spend the census night (inflates holiday/transit locations).
+     - Sample Surveys: Collects data from a representative subset; cheaper and faster, but prone to sampling errors.
+     - Vital Registration: Continuous, legal, compulsory recording of vital events (births, deaths, marriages, divorces).
+   • National Census History:
+     - 1st Census (1984): 42.2 million (growth rate: 2.9% per year).
+     - 2nd Census (1994): 53.5 million.
+     - 3rd Census (2007): 73.8 million.
+     - Recent Demographics: >112 million, predominantly rural (~80%), and highly youthful (~65% below 24 years).
 
-2. Natural Vegetation & Deforestation:
-   • Altitudinal Zonation of Vegetation:
-     - Afro-Alpine & Sub-Afro-Alpine (>3,000m): Giant Lobelia (Lobelia rhynchopetalum), Erica arborea, tussock grasses.
-     - Highland Coniferous Forest (2,200 - 3,000m): Tid (Juniperus procera), Zigba (Podocarpus falcatus).
-     - Broadleaf Rainforest (1,500 - 2,500m): Moist montane forest of southwest (Kafa, Illubabor); wild Coffea arabica gene pool.
-     - Acacia Woodland & Savanna (1,000 - 1,800m): Dominates Rift Valley and semi-arid mid-altitudes.
-     - Steppe and Desert Scrub (<1,000m): Drought-resistant thorny shrubs and succulents in Afar and Somali lowlands.
-   • Deforestation: Historical high-forest canopy declined dramatically; mitigated today by the nationwide Green Legacy Initiative.
+2. Demographic Measurements & Vital Rates:
+   • Core Demographic Formulas:
+     - Crude Birth Rate (CBR): (Total Annual Live Births / Total Mid-Year Population) × 1,000.
+     - General Fertility Rate (GFR): (Total Annual Live Births / Women aged 15–49) × 1,000.
+     - Total Fertility Rate (TFR): Average number of children a woman bears over her reproductive lifespan.
+     - Crude Death Rate (CDR): (Total Annual Deaths / Total Mid-Year Population) × 1,000.
+     - Infant Mortality Rate (IMR): (Deaths of infants <1 year / Live Births) × 1,000.
+     - Maternal Mortality Rate (MMR): (Pregnancy/childbirth maternal deaths / Live Births) × 100,000.
+     - Natural Rate of Increase (NRI): (CBR - CDR) / 10 [%].
+   • Demographic Trends in Ethiopia:
+     - TFR dropped from 7.52 (1984) to 6.74 (1994) and 4.6 (2016). Large rural-urban divide: Urban TFR = 2.3 vs. Rural TFR = 5.2. Lowest in Addis Ababa (1.8); highest in Somali (7.2) and Afar (5.5).
+     - Mortality Declines: IMR dropped from 97 per 1,000 live births (2000) to 54 (2016). Life expectancy rose from 36.7 years (1960s) to 62.6 years (65.4 females vs. 61.2 males).
+     - Factors Sustaining High Fertility: Early marriage, low educational/economic status of women, cultural valuation of children as family labor/security assets, and low contraceptive prevalence.
 
-3. Wildlife Conservation & Endemic Species:
-   • Ethiopia's Globally Endemic Mammals:
-     - Walia Ibex (Capra walie): Confined exclusively to cliff precipices of Simien Mountains.
-     - Ethiopian Wolf (Canis simensis): World's rarest canid, primarily in Bale Mountains Afro-alpine plateau.
-     - Mountain Nyala (Tragelaphus buxtoni): High-altitude woodland antelope of Arsi-Bale massifs.
-     - Gelada Baboon (Theropithecus gelada): Grass-eating highland primate.
-     - Swayne's Hartebeest: Protected in Senkelle Swayne's Hartebeest Sanctuary and Nechisar.
-   • Protected Area Network: 27+ National Parks, Wildlife Sanctuaries (Babille Elephant Sanctuary), and UNESCO Biosphere Reserves (Kafa, Yayu, Lake Tana).
+3. Migration Dynamics & Irregular Migration Routes:
+   • Internal Migration: Driven by highland landlessness, soil degradation, and rural underemployment.
+     - Derg Era (1974–1991): Rural-urban migration suppressed by 1975 rural land proclamation, kebele associations, and conscription.
+     - Post-1991: Regional administrative decentralization; ~16.6% of population classified as internal migrants (2007).
+   • International Migration & Major Irregular Outflow Routes:
+     - 1. Eastern Route (60–70% of irregular migrants): From Wollo, Arsi-Bale, Tigray through Djibouti/Somalia across the Red Sea/Gulf of Aden and Yemen into the Middle East.
+     - 2. Northern / Western Route: Through Sudan, Egypt, and Libya across the Mediterranean Sea to Europe.
+     - 3. Southern Route: Overland through Kenya and Tanzania toward South Africa.
+   • Refugee Hosting: Ethiopia hosts nearly 1 million refugees and asylum seekers (2nd largest in Africa), primarily from South Sudan, Somalia, Eritrea, and Sudan.
 
-4. Environmental Hazards & Climate Resilience:
-   • Recurrent Hazards: Lowland droughts causing famine and livestock death; seasonal flash floods in Awash basin, Gambella, and Dire Dawa.
-   • Climate Resilience & Green Economy (CRGE) Strategy: National development policy targeting carbon-neutral middle-income status through renewable hydropower, solar, wind, and large-scale afforestation.
+4. Age-Sex Structure & Spatial Population Distribution:
+   • Age Structure & Dependency Ratios:
+     - Broad Cohorts: Young Age (0–14) = ~45.0%; Working Age (15–64) = ~51.9%; Old Age (65+) = ~3.2%.
+     - Median Age: ~17 years (broad-based, rapidly tapering pyramid indicating high fertility and high dependency).
+     - Total Age Dependency Ratio (ADR) = [(P_0-14 + P_65+) / P_15-64] × 100 (~82–93 dependents per 100 workers).
+   • Sex Structure: Sex ratio = (Males / Females) × 100 (National ratio near balance ~99.96–101.3). Rural sex ratio is higher than urban because of heavy female rural-to-urban domestic labor migration.
+   • Measures of Density:
+     - Crude (Arithmetic) Density = Population / Land Area (increased from 40.7/km² in 1990 to >100/km²; SNNPR = 173.3 vs. Gambella = 13.7, Somali = 19.5).
+     - Physiological Density = Population / Arable Land (61.8/km² in 1998).
+     - Agricultural Density = Agricultural Population / Cultivated Land (highest in SNNPR and pastoral regions).
+   • Altitudinal Concentration:
+     - 77.5% of the population lives above 1,800 m (occupying only 37.6% of national land area).
+     - 89.0% lives above 1,400 m (65.7% of land area).
+     - Lowlands (<1,000 m) cover 21.5% of Ethiopia but house ONLY 2.8% of the population due to extreme heat, aridity, and malaria.
+
+5. Socio-Cultural Diversity & Urbanization:
+   • Languages & Super Families (~80 spoken languages):
+     - 1. Afro-Asiatic Super Family:
+       * Cushitic (largest speaker base): Afan Oromo (33.8%), Somaligna (6.2%), Sidamigna (4.0%), Afarigna (1.7%), Hadiyigna, Kembatigna, Gedeogna.
+       * Semitic: Amharic (29.3%), Tigrigna (5.9%), Guragigna (2%), Siltigna, Harari (Aderigna), Argobba.
+       * Omotic: Wolaytigna (2.2%), Gamogna (1.5%), Gofigna, Keffigna.
+     - 2. Nilo-Saharan Super Family: Spoken along western borderlands (Nuer, Anuak, Gumuz, Berta, Kunama, Komo, Mao).
+   • Urbanization Characteristics:
+     - Criteria: Minimum 2,000 population, 2/3 engaged in non-agricultural pursuits, and chartered municipality status.
+     - Low Level vs. Rapid Growth: Only ~20% of the population is urban (one of the least urbanized globally), but urban growth rates are among the highest (~5% annually).
+     - Urban Primacy: Addis Ababa is a classic primate city housing ~29% of the urban population. Secondary clusters include Lake Tana, South Rift Valley (Hawassa-Shashemene-Dilla), Eastern (Dire Dawa-Harar-Jigjiga), Mekelle, and Jimma clusters.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Nitisols are the deep red fertile highland soils; Vertisols are the black clay soils prone to waterlogging.
-• The Ethiopian Wolf and Walia Ibex are flagship endemic species found in the Afro-alpine zones of Bale and Simien mountains respectively.
+• De Jure vs. De Facto Census: De Jure counts people at their permanent residence (best for planning); De Facto counts people where they are found on census night.
+• Dominant Outflow Route: The Eastern Route (via Djibouti/Somalia to Yemen and Saudi Arabia) accounts for 60–70% of all irregular Ethiopian migration.
+• Extreme Altitudinal Concentration: 77.5% of Ethiopia's population lives above 1,800 meters, while lowlands (<1,000 m) contain only 2.8% of the population!
+• Language Demographics: Cushitic is the largest linguistic family; Afan Oromo is the most widely spoken language (33.8%), followed by Amharic (29.3%).
+• Urbanization Paradox: Low urbanization level (~20%) coupled with an exceptionally high urban growth rate (~5% per year).
+• Sex Ratio Contrast: Urban sex ratios are LOWER than rural sex ratios because more rural females migrate to urban centers for domestic employment.
         """.trimIndent(),
         colorHex = 0xFF2563EB,
         initialLikes = 88
+    ),
+    ShortNote(
+        id = "geo-u8",
+        subjectId = "c6",
+        subject = "Geography of Ethiopia and the Horn",
+        unit = "Unit 8",
+        title = "Economic Activities in Ethiopia and the Horn",
+        summary = """
+📌 KEY CONCEPTS & OVERVIEW
+Economic activities are human actions undertaken to satisfy material and spiritual needs, spanning primary extraction, secondary manufacturing, and tertiary services. Agriculture remains the foundational backbone of Ethiopia's economy, supported by strategic mining, inland fisheries, rapidly expanding industrial mega-parks, and modernized trade and transport infrastructure.
+
+🔍 DETAILED BREAKDOWN
+1. Economic Classification & Mining Activity:
+   • Sector Continuum: Primary (direct natural extraction: farming, mining, forestry, fishing), Secondary (industrial transformation into manufactured goods), Tertiary (service provision: trade, transport, tourism, banking), Quaternary & Quinary (information, research, governance).
+   • Mining Sector in Ethiopia: Contributes ~1.5% to GDP (up to 6% potential); generates ~$135 million USD annually in foreign exchange (7–10% of visible exports).
+     - Gold (Au): Primary lode deposits at Lege-dembi (82-ton reserve, ~3.6 tons/year) and Sakaro; over 1,000 kg/year of placer/alluvial gold purchased by National Bank of Ethiopia from Adola, Benishangul-Gumuz (Sherkole, Asosa), Akobo (Gambella), and Wellega.
+     - Tantalum / Niobium: Kenticha open-pit pegmatite mine in Adola holds world-class reserves (>2,400 tons Ta₂O₅, >2,300 tons Nb₂O₅), supplying ~10% of global tantalum for electronics (smartphones, capacitors).
+     - Platinum (Pt): Yubdo area in western Wellega (weathered laterites).
+     - Soda Ash (Na₂CO₃): Lake Abijata brines (>460 million tons reserve) for soap and detergent industries.
+     - Potash & Halite: Vast evaporites in the Danakil (Dallol) Depression of Afar.
+     - Natural Gas: 4.6 Trillion Cubic Feet (TCF) proven reserves in the Ogaden Basin (Calub, Hilala, Genale).
+     - Coal (Lignite): Interbedded in Tertiary sediments at Nedjo (Wellega), Chilga (Gondar), and Muger/Didessa valleys.
+     - Gemstones & Construction Materials: Precious Opal (Wadla & Dalanta in North Wollo), amethyst, emerald; limestone, marble, basalt, and scoria for cement and construction.
+     - Environmental Regulations: 1993 Mining Legislation mandates Environmental Impact Assessments (EIAs) and rehabilitation sinking funds.
+
+2. Forestry and Fishery Resources:
+   • Forestry Sector: Contributes ~2.5% of GDP; primarily harvested for household fuel-wood, charcoal, building poles, and timber. Constrained by severe historical deforestation and remote high-forest locations.
+   • Fishery Potential & Fishing Grounds:
+     - Fish Diversity: >100 freshwater species (25 commercial, 4 endemics); catch dominated by Tilapia (~50%), Catfish/Clarias (~22%), Nile Perch (~9%), and Barbus.
+     - Fishing Grounds: Inland lakes cover ~7,000 km² and account for 79% of catch (Lake Tana: 15,000 tons/yr potential; Lake Abaya: 7,000 t; Ziway: 3,000 t; Chamo: 3,000 t). Rivers provide 7,000–10,000 t/yr potential (Baro River alone supplies ~2,500 t/yr).
+     - Underutilization: Estimated national sustainable yield is 30,000–51,481 tons/year, while actual annual harvest is only 10,000–15,389 tons.
+     - Low Consumption Trap: Per capita consumption is only 0.3 kg/year (vs. East African average of 2.6 kg) due to non-fish dietary habits, religious fasting cycles, high prices, and lack of cold-chain refrigerated transport.
+
+3. Agriculture in Ethiopia (Backbone of the Economy):
+   • National Stature: Generates 30–42% of GDP, >90% of merchandise exports, and employs >80% of the labor force.
+   • Agricultural Resource Base: Vast grazing land (55–58% of national area) supporting Africa's largest livestock herd (30–35 million TLU, 10th in the world); 3.5–5.3 million hectares irrigable land (only ~4.6% currently developed).
+   • Cropping Seasons & Production:
+     - Meher (Main Season: Sep–Feb): Fed by Kiremt rains; produces 90–95% of national cereal output.
+     - Belg (Secondary Season: Mar–Aug): Produces 5–10% of cereal output.
+     - Major Crops: Cereals (teff, wheat, maize, barley, sorghum) dominate >10.2 million hectares (>267 million quintals), followed by pulses and oilseeds.
+     - Livestock: 75% of cattle and sheep are concentrated in the highlands; 70% of goats and 100% of camels inhabit peripheral lowlands. Hides and skins contribute >95% of livestock export value.
+   • The 5 Major Farming Systems:
+     1. Highland Mixed Farming (>1,500 m):
+        * Grain-Plough Complex: Ox-drawn plough, cereals (teff, wheat, barley), northern and central plateaus.
+        * Horticulture-Hoe Complex: Human hoe cultivation, perennial enset (false banana), coffee, chat, southern/southwestern highlands.
+     2. Lowland Mixed Agriculture (<1,500 m): Drought-tolerant crops (sorghum, millet) combined with livestock grazing.
+     3. Pastoral System (<500 mm rain): Nomadic/transhumant herding of camels, cattle, and shoats in Afar, Somali, and Borena; supplies >90% of live animal exports.
+     4. Shifting Cultivation: Traditional slash-and-burn farming along western lowland fringes (Benishangul-Gumuz, Gambella).
+     5. Commercial Agriculture: Modern, mechanized, capital-intensive plantations (Awash valley, Humera-Metema, Rift lakes: sugar, cotton, floriculture).
+   • Structural Constraints: Subsistence orientation (smallholders retain up to 80% of output), severe plot fragmentation (0.28–1.0 ha per household), low external inputs, and extreme rain-fed vulnerability (>98%).
+
+4. Manufacturing Industry & Industrial Parks Strategy:
+   • Economic Position: Industry contributes ~11.7% of GDP (manufacturing is 4.0–4.9%), employing >329,000 formal workers. Dominated by light consumer industries (food and beverages represent the largest share, followed by leather, textiles, and cement).
+   • Spatial Concentration: Heavy agglomeration in the Addis Ababa Metropolitan Cluster (37–40% of enterprises, ~46% of employment), followed by Oromia (27%), Tigray (14%), Dire Dawa, Hawassa, and Bahir Dar.
+   • Industrial Parks (IPs) & Mega-Projects:
+     - Export-Oriented Federal Parks (Proclamation 886/2015): Hawassa, Bole Lemi I & II, Kilinto, Kombolcha, Adama, Dire Dawa, Bahir Dar.
+     - Integrated Agro-Industrial Parks (IAIPs): Bure (Amhara), Bulbula (Oromia), Yirgalem (Sidama), Baeker (Tigray).
+     - Sugar Sector Mega-Projects: 10 large-scale sugarcane plantations and factories (Tendaho, Kessem, Omo-Kuraz, Arjo-Didessa, Finchaa, Beles).
+
+5. The Service Sector (Transportation, Trade & Tourism):
+   • Transport Systems:
+     - Road Transport: Dominant mode (>95% passenger and freight); network expanded from 37,018 km (2005) to 126,773 km (2018); road density reached 115.2 km/1,000 km².
+     - Railways: Electrified standard-gauge Addis Ababa–Djibouti Railway (750 km opened 2018 to Port Doraleh, handling >95% of Ethiopia's external trade); Addis Ababa Light Rail Transit (AALRT, 31.6 km, 60k passengers/day).
+     - Waterways & Aviation: Lower Baro River and Lakes Tana/Abaya; Ethiopian Airlines (EAL) connects 45 domestic airports and operates Africa's largest international aviation network.
+   • Foreign Merchandise Trade:
+     - Structural Trade Deficit: Merchandise imports heavily exceed exports.
+     - Exports: Highly concentrated in agricultural primary commodities: Coffee (29.5–30.4%), Oilseeds (14.9%), Pulses (9.5%), Chat (9.3–9.5%), Cut flowers (~8.0%), Gold (3.5–10%), Leather (4.7%).
+     - Destination/Origin: Exports go to Asia (39.8%), Europe (28.7%), Africa (20.9%); Imports come from Asia (64.2%), Europe (19.3%), USA (9.4%) (dominated by China, USA, Japan, India: machinery, petroleum, industrial chemicals).
+   • Tourism Industry: Contributes ~2.7% to GDP and supports ~604,000 jobs.
+     - Cultural Sites (UNESCO): Rock-Hewn Churches of Lalibela, Axum Obelisks, Gondar Castles (Fasil Ghebbi), Harar Jugol walls.
+     - Natural Attractions: Simien Mountains (Ras Dashen, Walia Ibex), Bale Mountains (Sanetti, Mountain Nyala), Tisissat (Blue Nile) Falls, and Rift Valley bird sanctuaries.
+
+💡 EXAM TIPS & HIGH-YIELD FOCUS
+• Top Export Commodity: Coffee is by far the leading foreign exchange earner (~30% of exports), followed by oilseeds and pulses.
+• Strategic Global Mineral: Kenticha mine in Adola holds world-class reserves of tantalite-columbite, supplying nearly 10% of global tantalum for microelectronics.
+• Seasonal Cereal Output: The Meher season produces 90–95% of national cereals, whereas the Belg season yields only 5–10%.
+• Maritime Trade Corridor: Over 95% of landlocked Ethiopia's external trade flows through the Port of Djibouti via the 750-km electrified Addis Ababa–Djibouti railway.
+• Fishery Consumption Paradox: Despite water bodies holding a sustainable capacity >50,000 tons/yr, annual per capita intake is only 0.3 kg due to cultural food habits and religious fasting cycles.
+• Industrial Agglomeration: Addis Ababa and surrounding Oromia special zones account for over 40% of manufacturing enterprises and industrial jobs.
+        """.trimIndent(),
+        colorHex = 0xFF2563EB,
+        initialLikes = 95
     ),
 
     // =========================================================================
@@ -2834,346 +4460,501 @@ Contracts are the foundation of civil and commercial interaction. Ethiopian Civi
         subjectId = "c11",
         subject = "Introduction to Economics",
         unit = "Unit 1",
-        title = "Nature of Economics, Scarcity & Production Possibility Frontier",
+        title = "Nature of Economics, Scarcity, PPF & Economic Systems",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Economics is the social science studying how individuals and societies allocate scarce productive resources among competing unlimited human wants. It evaluates efficiency, opportunity cost, and decision-making under resource constraints.
+Economics is the social science studying how individuals and societies allocate scarce productive resources among competing unlimited human wants to maximize societal welfare. It examines resource scarcity, opportunity costs, production possibilities, methodological divisions, and contrasting institutional economic systems.
 
 🔍 DETAILED BREAKDOWN
-1. The Fundamental Economic Problem:
-   • Scarcity: Human material desires are virtually unlimited, whereas productive resources are finite.
-   • Factors of Production (Inputs):
-     - Land (natural resources, mineral wealth; earns Rent).
-     - Labor (human mental and physical effort; earns Wages).
-     - Capital (man-made tools, machinery, buildings; earns Interest).
-     - Entrepreneurship (managerial initiative and risk-taking; earns Profit).
-   • Choice & Opportunity Cost: Scarcity forces choices. Opportunity Cost is the value of the next best alternative forgone when making a decision.
+1. Definition & Nature of Economics:
+   • Etymology: Derived from ancient Greek "oikonomia" ("oikos" = household, "nemein" = manage), meaning household management.
+   • Formal Definition: The study of how scarce productive resources are allocated to satisfy unlimited human material wants.
+   • The Fundamental Economic Problem (Scarcity):
+     - Scarcity: Human material desires are virtually infinite and boundless, whereas productive resources are finite and scarce.
+     - Scarcity is universal (affects both rich and poor nations), relative (wants exceed means), and persistent.
+   • Four Factors of Production (Productive Inputs):
+     1. Land: Natural resources, agricultural soil, water bodies, minerals, forests (Reward: Rent).
+     2. Labor: Physical and mental human exertion used in production (Reward: Wages).
+     3. Capital: Man-made physical tools, machinery, equipment, buildings, infrastructure used to produce other goods (Reward: Interest). Note: Money is financial capital, NOT an economic factor of production!
+     4. Entrepreneurship: Managerial initiative, risk-taking, coordination, and technological innovation (Reward: Profit).
+   • Choice & Opportunity Cost:
+     - Scarcity forces choice; choice inevitably involves sacrifice.
+     - Opportunity Cost: The value of the next best alternative sacrificed or forgone when making a decision.
 
-2. Divisions & Methodologies of Economics:
-   • Microeconomics: Analyzes individual decision-makers (consumers, households, firms, single markets).
-   • Macroeconomics: Analyzes the economy as an aggregate whole (GDP, inflation, unemployment, fiscal and monetary policies).
-   • Positive Economics: Objective, fact-based statements describing "what is" (empirically testable).
-   • Normative Economics: Value-laden, subjective judgments prescribing "what ought to be" (not empirically testable).
+2. Scope & Methodologies of Economics:
+   • Microeconomics vs. Macroeconomics:
+     - Microeconomics: Studies individual decision-making agents (households, individual consumers, workers, firms, single product markets) and determination of relative prices.
+     - Macroeconomics: Studies the aggregate performance of the economy as a whole (Gross Domestic Product, inflation, national unemployment, fiscal and monetary policies, balance of payments).
+   • Positive Economics vs. Normative Economics:
+     - Positive Economics: Objective, fact-based analysis of "what is", "what was", or "what will be". Deals with testable and verifiable statements free of personal value judgments.
+     - Normative Economics: Subjective, value-laden prescriptions of "what ought to be" or "what should be". Cannot be empirically verified or refuted by data.
+   • The Ceteris Paribus Assumption: "Other things being equal" — isolating the relationship between two specific variables while holding all other external factors constant.
+   • Common Pitfalls in Economic Reasoning:
+     - Fallacy of Composition: Erroneous assumption that what is true for an individual part is automatically true for the whole (e.g., paradox of thrift).
+     - Post Hoc Fallacy (Post hoc ergo propter hoc): Confusing mere temporal sequence or correlation with genuine causation.
 
-3. Production Possibility Frontier (PPF):
-   • A curve showing the maximum possible combinations of two goods an economy can produce given fixed technology and fully utilized resources.
-   • Points on the Curve: Productively efficient (full employment of resources).
-   • Points Inside the Curve: Inefficient (unemployment or underutilization of resources).
-   • Points Outside the Curve: Unattainable with current resources and technology.
-   • Shape of PPF: Concave to the origin (bowed outward) due to the Law of Increasing Opportunity Costs (resources are not equally adaptable to producing all goods).
-   • Shifts in PPF: Technological advancements or growth in labor/capital shift PPF outward.
+3. The Production Possibility Frontier (PPF):
+   • Definition: A graphical model illustrating the maximum combinations of two goods or services an economy can produce under conditions of full employment of resources and fixed technology.
+   • Core Assumptions: Only two goods produced, resources are fixed in quantity and quality, technology is constant, resources are utilized with full productive efficiency.
+   • Points on the PPF Graph:
+     - Points ON the curve: Productively efficient (full employment of productive resources).
+     - Points INSIDE the curve: Inefficient (unemployment, underutilization, or misallocation of resources).
+     - Points OUTSIDE the curve: Currently unattainable given current resources and technology (attainable only through economic growth).
+   • Shape & Slope of the PPF:
+     - Concave to the origin (bowed outward) due to the Law of Increasing Opportunity Cost: Resources are specialized and not equally adaptable across different production lines.
+     - Slope of PPF = Marginal Rate of Transformation (MRT = -ΔY / ΔX), which mathematically measures the Opportunity Cost of good X.
+     - Straight-line linear PPF occurs ONLY when opportunity cost is constant.
+   • Shifts of the PPF (Economic Growth):
+     - Parallel outward shift: General technological improvement, increase in total labor force, or capital accumulation.
+     - Asymmetrical / Biased shift: Technological advance affecting only one specific sector.
 
-4. Major Economic Systems:
-   • Traditional Economy: Decisions guided by custom, habit, and barter.
-   • Command (Socialist) Economy: Central government planning authority dictates what, how, and for whom to produce (e.g., historical USSR, Derg Ethiopia).
-   • Pure Market (Capitalist) Economy: Private ownership; resource allocation guided entirely by the price mechanism and invisible hand (Adam Smith).
-   • Mixed Economy: Blends market mechanisms with state intervention/regulation (the model adopted in modern Ethiopia).
+4. Basic Economic Questions & Economic Systems:
+   • The Three Fundamental Economic Questions:
+     1. What to produce? (Determining the composition and quantity of goods).
+     2. How to produce? (Selecting combination of resources: labor-intensive vs. capital-intensive technology).
+     3. For whom to produce? (Distributing generated national output and income).
+   • Four Major Economic Systems:
+     - Traditional Economy: Economic choices determined by custom, tribal heritage, religion, and barter trade.
+     - Command (Socialist/Planned) Economy: Productive resources owned by the state; central planning authority dictates what, how, and for whom to produce (e.g., historical USSR, Derg regime in Ethiopia). Lacks price mechanism and consumer sovereignty.
+     - Free Market (Capitalist) Economy: Private resource ownership; resource allocation guided entirely by the price mechanism and the "invisible hand" (Adam Smith); motivated by private profit; consumer sovereignty and laissez-faire.
+     - Mixed Economy: Combines private market forces with public state ownership, regulation, and welfare intervention (the model practiced in modern Ethiopia).
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• The slope of the PPF represents the Marginal Rate of Transformation (MRT), which measures Opportunity Cost.
-• Positive statements can be proven or disproven by data; Normative statements express value judgments ("should" or "ought").
+• The slope of the PPF measures Opportunity Cost (Marginal Rate of Transformation - MRT). A concave PPF reflects INCREASING opportunity cost.
+• Positive statements are verifiable facts ("Inflation in Ethiopia is 25%"); Normative statements are value judgments ("The government SHOULD reduce fuel prices").
+• Money is NOT an economic factor of production; only physical capital (machinery, tools, factories) counts as capital.
         """.trimIndent(),
         colorHex = 0xFF16A34A,
-        initialLikes = 87
+        initialLikes = 88
     ),
     ShortNote(
         id = "econ-u2",
         subjectId = "c11",
         subject = "Introduction to Economics",
         unit = "Unit 2",
-        title = "Theory of Demand, Supply & Market Equilibrium",
+        title = "Demand, Supply, Market Equilibrium & Elasticity Analysis",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Markets function through the interaction of buyers (Demand) and sellers (Supply). Market equilibrium determines the market price and quantity exchanged in competitive markets.
+Markets determine prices and output through the interaction of buyers (Demand) and sellers (Supply). Understanding market equilibrium, disequilibrium corrections, government price interventions (ceilings and floors), and elasticity metrics is essential for microeconomic analysis.
 
 🔍 DETAILED BREAKDOWN
 1. Theory of Demand:
-   • Law of Demand: Other things being equal (ceteris paribus), as the price of a good rises, the quantity demanded falls; as price falls, quantity demanded rises (inverse relationship).
-   • Reasons for Downward Slope: Substitution Effect (consumers switch to cheaper alternatives) and Income Effect (price decrease increases real purchasing power).
-   • Demand Shifters (Change in Demand vs Change in Quantity Demanded):
-     - Price change of the good causes MOVEMENT along the existing demand curve.
-     - Non-price determinants SHIFT the entire curve: Consumer income (Normal goods shift right with income; Inferior goods shift left), Prices of related goods (Substitutes vs Complements), Tastes and preferences, Future price expectations, Number of buyers.
+   • Definition: The willingness and ability of consumers to purchase various quantities of a good at alternative prices during a given time period.
+   • Law of Demand: Other things held constant (ceteris paribus), as price rises, quantity demanded falls; as price falls, quantity demanded rises (inverse relationship).
+   • Three Reasons for the Downward-Sloping Demand Curve:
+     1. Income Effect: A lower price increases consumers' real purchasing power, enabling them to buy more.
+     2. Substitution Effect: When the price of a good falls, it becomes relatively cheaper compared to alternatives, encouraging substitution.
+     3. Law of Diminishing Marginal Utility: Additional satisfaction declines with each successive unit consumed, so buyers purchase more only at lower prices.
+   • Demand Function: Qd = a - bP (where -b is the slope coefficient).
+   • Change in Quantity Demanded vs. Change in Demand:
+     - Change in Quantity Demanded: Movement ALONG the existing demand curve caused EXCLUSIVELY by a change in the good's own price.
+     - Change in Demand: SHIFT of the entire demand curve caused by non-price determinants:
+       * Consumer Income: Normal goods (income rises -> demand shifts right); Inferior goods (income rises -> demand shifts left).
+       * Prices of Related Goods: Substitutes (price of coffee rises -> tea demand shifts right); Complements (price of fuel rises -> car demand shifts left).
+       * Tastes, preferences, consumer expectations of future prices, and number of buyers.
 
 2. Theory of Supply:
-   • Law of Supply: Other things being equal, as the price of a good rises, the quantity supplied increases; as price falls, quantity supplied decreases (direct relationship).
-   • Supply Shifters: Input/resource prices, technological advancements, taxes and subsidies, expectations of producers, weather/natural conditions, number of sellers.
+   • Definition: The willingness and ability of producers to offer quantities of a good for sale at various prices.
+   • Law of Supply: Other things being equal, as price rises, quantity supplied increases; as price falls, quantity supplied decreases (direct relationship).
+   • Supply Function: Qs = c + dP.
+   • Non-Price Supply Determinants (Shifts of Supply Curve):
+     - Input/resource prices (wages, raw materials), technology level, taxes and subsidies, producer expectations, natural/weather conditions, number of competing firms.
 
 3. Market Equilibrium & Price Dynamics:
-   • Equilibrium occurs where Quantity Demanded equals Quantity Supplied: Q_d = Q_s.
+   • Equilibrium Condition: Quantity Demanded equals Quantity Supplied: Qd = Qs. Market-clearing price (P*) and equilibrium quantity (Q*).
    • Market Disequilibrium:
-     - Excess Supply (Surplus): Current price is ABOVE equilibrium. Sellers cut prices to clear unsold inventory.
-     - Excess Demand (Shortage): Current price is BELOW equilibrium. Buyers bid prices up until balance is restored.
-   • Simultaneous Shifts:
-     - If both demand and supply increase simultaneously: Equilibrium quantity DEFINITELY increases, but equilibrium price is indeterminate (depends on relative magnitude of shifts).
+     - Surplus (Excess Supply): Market price is ABOVE P* (Qs > Qd). Unsold inventory forces sellers to reduce prices until equilibrium is restored.
+     - Shortage (Excess Demand): Market price is BELOW P* (Qd > Qs). Frustrated buyers bid prices upward until balance is regained.
+   • Government Market Interventions:
+     - Price Ceiling: Maximum legal price set BELOW equilibrium to protect consumers (e.g., rent control). Leads to chronic shortages, black markets, queuing, and deadweight loss.
+     - Price Floor: Minimum legal price set ABOVE equilibrium to protect suppliers (e.g., minimum wage, agricultural price supports). Leads to chronic surpluses and government buy-back burdens.
 
-4. Government Price Controls:
-   • Price Ceiling: Maximum legal price set BELOW market equilibrium to protect consumers (e.g., rent control). Leads to permanent Market Shortage, black markets, and rationing.
-   • Price Floor: Minimum legal price set ABOVE market equilibrium to protect producers (e.g., agricultural minimum prices, minimum wage). Leads to permanent Market Surplus.
+4. Elasticity of Demand and Supply:
+   • Price Elasticity of Demand (PED / ed):
+     - Measures responsiveness of quantity demanded to a change in price: ed = (%ΔQd) / (%ΔP).
+     - Midpoint (Arc) Formula: ed = [(Q2 - Q1) / ((Q1 + Q2)/2)] ÷ [(P2 - P1) / ((P1 + P2)/2)].
+     - Point Elasticity: ed = (dQ/dP) × (P / Q).
+     - Five Categories of Elasticity (|ed|):
+       * Perfectly Inelastic (|ed| = 0): Vertical demand curve (e.g., essential insulin).
+       * Inelastic (0 < |ed| < 1): %ΔQd < %ΔP (e.g., basic food, fuel, salt).
+       * Unitary Elastic (|ed| = 1): %ΔQd = %ΔP.
+       * Elastic (|ed| > 1): %ΔQd > %ΔP (e.g., luxury goods, goods with close substitutes).
+       * Perfectly Elastic (|ed| = ∞): Horizontal demand curve (perfect competition).
+   • Total Revenue (TR = P × Q) Test:
+     - Inelastic Demand (|ed| < 1): Price and TR move in the SAME direction (raising price increases TR).
+     - Elastic Demand (|ed| > 1): Price and TR move in OPPOSITE directions (cutting price increases TR).
+     - Unitary Elastic (|ed| = 1): TR is maximized and unaffected by small price changes.
+   • Cross-Price Elasticity of Demand (XED):
+     - XED = (%ΔQd of X) / (%ΔP of Y).
+     - XED > 0 (Positive): Substitute goods (e.g., tea & coffee).
+     - XED < 0 (Negative): Complementary goods (e.g., cars & petrol).
+     - XED = 0: Independent / unrelated goods.
+   • Income Elasticity of Demand (YED):
+     - YED = (%ΔQd) / (%ΔIncome).
+     - YED > 0: Normal goods (YED > 1: Luxury; 0 < YED <= 1: Necessity).
+     - YED < 0: Inferior goods (e.g., second-hand clothes, low-grade staples).
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• A change in PRICE causes a movement ALONG the curve. Non-price factors SHIFT the entire curve!
-• Effective Price Ceiling is set BELOW equilibrium; Effective Price Floor is set ABOVE equilibrium.
+• The sign is diagnostic! Cross-price elasticity: Positive = Substitutes, Negative = Complements. Income elasticity: Positive = Normal, Negative = Inferior.
+• Price Ceiling is only effective/binding when set BELOW equilibrium (causes Shortage); Price Floor is only binding when set ABOVE equilibrium (causes Surplus).
+• Total Revenue Test: If a producer faces elastic demand, they should LOWER price to increase revenue; if inelastic, they should RAISE price.
         """.trimIndent(),
         colorHex = 0xFF16A34A,
-        initialLikes = 93
+        initialLikes = 94
     ),
     ShortNote(
         id = "econ-u3",
         subjectId = "c11",
         subject = "Introduction to Economics",
         unit = "Unit 3",
-        title = "Elasticity of Demand & Supply (Price, Income & Cross-Price)",
+        title = "Theory of Consumer Behavior: Cardinal & Ordinal Utility Analysis",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Elasticity measures the responsiveness or sensitivity of buyers and sellers to changes in price or income. It quantifies how much quantity demanded or supplied shifts in response to economic incentives.
+Consumer behavior explains how rational individuals allocate limited money income among diverse goods and services to achieve maximum satisfaction (utility). Economics models this behavior through two major paradigms: the Cardinal Utility Approach (Marshallian) and the Ordinal Utility Approach (Indifference Curve analysis).
 
 🔍 DETAILED BREAKDOWN
-1. Price Elasticity of Demand (PED):
-   • Formula (Midpoint Method):
-     PED = (%ΔQ_d) / (%ΔP) = [(Q₂ - Q₁) / ((Q₁ + Q₂)/2)] ÷ [(P₂ - P₁) / ((P₁ + P₂)/2)].
-   • Classifications (using absolute value |e|):
-     - Perfectly Inelastic (|e| = 0): Vertical demand curve (e.g., life-saving insulin).
-     - Inelastic (0 < |e| < 1): Quantity changes proportionally less than price (e.g., basic necessities, salt).
-     - Unit Elastic (|e| = 1): % change in Q equals % change in P.
-     - Elastic (|e| > 1): Quantity changes proportionally more than price (e.g., luxuries, goods with close substitutes).
-     - Perfectly Elastic (|e| = ∞): Horizontal demand curve.
-   • Total Revenue (TR = P × Q) Test:
-     - Inelastic Demand (|e| < 1): Price and TR move in the SAME direction (raise price => TR rises).
-     - Elastic Demand (|e| > 1): Price and TR move in OPPOSITE directions (cut price => TR rises).
-     - Unit Elastic (|e| = 1): Total Revenue is maximized and unchanged by small price shifts.
+1. Cardinal Utility Approach (Marshallian):
+   • Core Assumptions: Utility is quantitatively measurable in monetary or psychological units ("utils"), consumer is rational, constant marginal utility of money, diminishing marginal utility.
+   • Total Utility (TU): The cumulative total satisfaction derived from consuming a specific quantity of a commodity.
+   • Marginal Utility (MU): The additional satisfaction gained from consuming one additional unit of a commodity: MU = ΔTU / ΔQ = dTU / dQ.
+   • Law of Diminishing Marginal Utility (Gossen's First Law):
+     - As a consumer consumes more units of a good within a given period, the satisfaction derived from each successive unit decreases.
+   • Relationships Between Total Utility (TU) and Marginal Utility (MU):
+     - When MU > 0, Total Utility (TU) is increasing at a decreasing rate.
+     - When MU = 0, Total Utility (TU) reaches its ABSOLUTE MAXIMUM (the saturation / satiety point).
+     - When MU < 0, Total Utility (TU) begins to decline (disutility).
+     - Graphically, the downward-sloping portion of the positive MU curve constitutes the individual's demand curve.
+   • Consumer Equilibrium under Cardinal Theory (Equi-Marginal Principle / Gossen's Second Law):
+     - Single commodity: MUx = Px.
+     - Multiple commodities: The consumer maximizes satisfaction when the marginal utility per dollar spent is equal across all goods:
+       MUx / Px = MUy / Py = ... = MUn / Pn = MUm (Marginal utility of money)
+       Subject to the budget constraint: (Px × X) + (Py × Y) = M.
 
-2. Cross-Price Elasticity of Demand (XED):
-   • Formula: XED = (%ΔQ_d of Good X) / (%ΔP of Good Y).
-   • Interpretation of Sign:
-     - XED > 0 (Positive): Substitute Goods (e.g., tea & coffee; if coffee price rises, tea demand rises).
-     - XED < 0 (Negative): Complementary Goods (e.g., cars & fuel; if fuel price rises, car demand falls).
-     - XED = 0: Independent/unrelated goods.
+2. Ordinal Utility Approach (Hicks-Allen / Indifference Curve Analysis):
+   • Core Axioms: Utility cannot be measured quantitatively; consumers can only rank bundles in order of preference (1st, 2nd, 3rd). Axioms of Completeness, Transitivity, and Non-Satiation ("more is preferred to less").
+   • Indifference Curve (IC):
+     - A curve connecting all combinations of two goods (X and Y) that yield the exact same level of total satisfaction to the consumer.
+   • Four Fundamental Properties of Indifference Curves:
+     1. Downward Sloping to the Right (Negative Slope): To obtain more of Good X while maintaining constant utility, the consumer must sacrifice some of Good Y.
+     2. Convex to the Origin: Reflects the Law of Diminishing Marginal Rate of Substitution (MRS).
+     3. Two Indifference Curves Cannot Intersect: Proved by the transitivity of preferences (intersection implies logical contradiction).
+     4. Higher Indifference Curves Represent Higher Satisfaction: Due to the non-satiation axiom (higher curves contain more of both goods).
+   • Marginal Rate of Substitution (MRSx,y):
+     - The quantity of Good Y a consumer is willing to give up to acquire one additional unit of Good X while remaining on the same indifference curve:
+     - MRSx,y = -ΔY / ΔX = MUx / MUy.
+     - Diminishing MRS: As the consumer obtains more X, they value Y relatively more, willing to surrender fewer units of Y for additional X.
+   • Special Indifference Curve Shapes:
+     - Perfect Substitutes: Straight downward-sloping lines with constant MRS (linear IC).
+     - Perfect Complements: L-shaped (right-angled) indifference curves (Leontief utility; e.g., left shoes and right shoes).
 
-3. Income Elasticity of Demand (YED):
-   • Formula: YED = (%ΔQ_d) / (%ΔIncome).
-   • Interpretation of Sign:
-     - YED > 0: Normal Goods (demand increases as consumer income rises).
-       * YED > 1: Luxury good.
-       * 0 < YED < 1: Necessity good.
-     - YED < 0: Inferior Goods (demand decreases as consumer income rises; e.g., low-grade grains).
+3. The Budget Line:
+   • Represents all combinations of Good X and Good Y that a consumer can purchase by exhausting their entire money income (M).
+   • Budget Equation: (Px × X) + (Py × Y) = M  ==>  Y = (M / Py) - (Px / Py) × X.
+   • Geometric Features:
+     - Vertical intercept = M / Py; Horizontal intercept = M / Px.
+     - Slope of Budget Line = -Px / Py (the relative price ratio or economic exchange rate).
+   • Shifts vs. Rotations of Budget Line:
+     - Income change shifts budget line parallel outward (income increases) or inward (income decreases).
+     - Price change of one good rotates the budget line around the axis of the unchanged good.
 
-4. Price Elasticity of Supply (PES):
-   • Formula: PES = (%ΔQ_s) / (%ΔP). Always non-negative.
-   • Primary determinant is TIME: Supply is highly inelastic in momentary/short run, and becomes increasingly elastic in long run as factories expand.
+4. Consumer Equilibrium (Optimum) in Ordinal Theory:
+   • Consumer maximizes satisfaction at the point of TANGENCY between the budget line and the highest attainable indifference curve.
+   • Equilibrium Condition: Slope of Indifference Curve = Slope of Budget Line:
+     MRSx,y = Px / Py  <==>  MUx / MUy = Px / Py  <==>  MUx / Px = MUy / Py.
+   • Income Consumption Curve (ICC) & Engel Curve: Traces equilibrium points as income varies; derives Engel curve.
+   • Price Consumption Curve (PCC) & Individual Demand Curve: Traces equilibrium points as the price of a good varies; derives the downward-sloping demand curve.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• The sign matters! For Cross-Price Elasticity: Positive = Substitutes, Negative = Complements. For Income Elasticity: Positive = Normal, Negative = Inferior.
-• For Price Elasticity of Demand, use the Total Revenue test: if a firm wants to increase revenue on an inelastic good, it MUST raise prices.
+• Satiety Point: Total Utility is MAXIMIZED when Marginal Utility equals ZERO (MU = 0).
+• Consumer Optimum Tangency Rule: MRSx,y = Px / Py (or MUx / Px = MUy / Py).
+• Indifference curve properties: Downward sloping, convex to origin, never cross, higher curve = higher satisfaction.
         """.trimIndent(),
         colorHex = 0xFF16A34A,
-        initialLikes = 89
+        initialLikes = 92
     ),
     ShortNote(
         id = "econ-u4",
         subjectId = "c11",
         subject = "Introduction to Economics",
         unit = "Unit 4",
-        title = "Theory of Production, Diminishing Returns & Cost Structures",
+        title = "Theory of Production, Returns to Scale & Cost Dynamics",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Firms combine productive inputs to generate outputs with the goal of profit maximization. Production theory explores input-output relationships in the short run and long run and their underlying cost dynamics.
+Firms transform productive inputs into marketable outputs to maximize profit. Production theory explores input-output engineering relationships in the short run and long run, while cost theory translates physical production into monetary expenditures.
 
 🔍 DETAILED BREAKDOWN
-1. Production Horizons & The Law of Diminishing Returns:
-   • Short Run: Time period where at least one factor of production is FIXED (typically capital/plant size), while others are variable (labor).
-   • Long Run: Time period long enough that ALL factors of production become VARIABLE.
+1. Theory of Production in the Short Run:
+   • Production Function: Q = f(L, K) — technical relationship showing maximum output achievable from given inputs.
+   • Time Horizons:
+     - Short Run: Period in which at least one input is FIXED (typically capital K or plant size), while others are variable (labor L).
+     - Long Run: Period long enough that ALL factors of production become VARIABLE.
    • Production Metrics:
-     - Total Product (TP): Total volume of output produced.
-     - Marginal Product (MP): Additional output produced by adding one more unit of variable labor: MP = ΔTP / ΔL.
-     - Average Product (AP): Output produced per unit of labor: AP = TP / L.
-   • Law of Diminishing Marginal Returns:
-     - As successive units of a variable input (labor) are added to a fixed input (land/capital), a point is reached beyond which the additional output (MP) begins to decline.
-   • Three Stages of Production:
-     - Stage I (Increasing returns): MP > AP, and AP is rising. Inefficient to stop here.
-     - Stage II (Diminishing returns): MP is declining but positive; AP is falling. RATIONAL operating zone for profit maximization.
-     - Stage III (Negative returns): MP < 0 (total output drops). Irrational zone.
+     - Total Product (TP or Q): Total physical output produced.
+     - Marginal Product of Labor (MPL): Additional output produced by employing one more unit of labor: MPL = ΔTP / ΔL = dTP / dL.
+     - Average Product of Labor (APL): Output generated per unit of labor: APL = TP / L.
+   • The Law of Diminishing Marginal Returns:
+     - As successive units of a variable input (labor) are added to a fixed quantity of capital, a point is reached beyond which the marginal product of the variable input begins to decline.
+   • The Three Stages of Production:
+     - Stage I (Increasing Returns): From origin to where APL reaches its maximum (where MPL = APL). MPL > APL. Inefficient to stop here (fixed capital is underutilized).
+     - Stage II (Diminishing Returns): From maximum APL to where MPL = 0 (where TP reaches its peak). Both APL and MPL are declining, but MPL > 0. RATIONAL OPERATING ZONE for profit-maximizing producers!
+     - Stage III (Negative Returns): Beyond MPL = 0; MPL becomes negative (MPL < 0) and TP declines. Irrational zone (labor overcrowding).
+   • Geometric Mathematical Relationships:
+     - When MPL > APL, Average Product (APL) is rising.
+     - When MPL = APL, Average Product (APL) is at its ABSOLUTE MAXIMUM.
+     - When MPL < APL, Average Product (APL) is falling.
+     - When MPL = 0, Total Product (TP) reaches its ABSOLUTE MAXIMUM.
 
-2. Short-Run Cost Structures:
-   • Total Costs:
-     - Total Fixed Cost (TFC): Overhead costs that do NOT vary with output (rent, insurance). Graph is horizontal line.
-     - Total Variable Cost (TVC): Costs that vary directly with output volume (raw materials, hourly wages).
-     - Total Cost: TC = TFC + TVC.
-   • Average Costs:
-     - Average Fixed Cost: AFC = TFC / Q (continually declines as output expands; spreads overhead).
-     - Average Variable Cost: AVC = TVC / Q.
-     - Average Total Cost: ATC = TC / Q = AFC + AVC.
-   • Marginal Cost (MC):
-     - Additional cost of producing one more unit of output: MC = ΔTC / ΔQ = ΔTVC / ΔQ.
-   • Essential Geometric Property:
+2. Theory of Production in the Long Run:
+   • Isoquant: A curve showing all combinations of labor (L) and capital (K) that produce the exact same level of output. Properties: Downward sloping, convex to origin, cannot intersect.
+   • Marginal Rate of Technical Substitution (MRTS L,K): Slope of Isoquant = -ΔK / ΔL = MPL / MPK.
+   • Isocost Line: Represents all input combinations that cost the firm the same total outlay: C = wL + rK; Slope = -w / r.
+   • Producer Equilibrium (Cost Minimization / Output Maximization): Tangency between Isoquant and Isocost line:
+     MRTS L,K = w / r  <==>  MPL / w = MPK / r.
+   • Returns to Scale (Long Run with all inputs varying):
+     - Increasing Returns to Scale (IRS): Output expands by a greater percentage than input expansion (e.g., doubling inputs triples output).
+     - Constant Returns to Scale (CRS): Output expands by the exact same proportion as inputs.
+     - Decreasing Returns to Scale (DRS): Output expands by a smaller proportion than inputs.
+
+3. Theory of Costs:
+   • Economic Costs = Explicit Costs (monetary payments for outsourced inputs) + Implicit Costs (opportunity costs of owner-supplied resources, including normal profit).
+   • Economic Profit = Total Revenue - Economic Costs (Total Revenue - Explicit - Implicit).
+   • Accounting Profit = Total Revenue - Explicit Costs (Accounting Profit is always greater than Economic Profit).
+   • Short-Run Cost Structures:
+     - Total Fixed Cost (TFC): Costs that do NOT vary with output (rent, insurance, plant depreciation). Graph is a horizontal line.
+     - Total Variable Cost (TVC): Costs that vary directly with output volume (raw materials, wages). S-shaped due to diminishing returns.
+     - Total Cost (TC): TC = TFC + TVC.
+     - Average Fixed Cost (AFC): AFC = TFC / Q. Continually declines toward zero (rectangular hyperbola).
+     - Average Variable Cost (AVC): AVC = TVC / Q. U-shaped.
+     - Average Total Cost (ATC): ATC = TC / Q = AFC + AVC. U-shaped.
+     - Marginal Cost (MC): Additional cost of producing one more unit of output: MC = ΔTC / ΔQ = ΔTVC / ΔQ = w / MPL.
+   • Critical Geometric Relationships:
      - The Marginal Cost (MC) curve intersects BOTH the AVC and ATC curves at their ABSOLUTE MINIMUM points!
+     - When MC < ATC, ATC is falling; when MC > ATC, ATC is rising.
+     - The vertical distance between ATC and AVC equals AFC, which narrows as output expands.
 
-3. Long-Run Costs & Economies of Scale:
-   • Long-Run Average Cost (LRAC) Envelope Curve:
-     - Economies of Scale (Increasing Returns to Scale): As plant scale expands, LRAC declines (due to labor specialization, bulk purchasing discounts, efficient machinery).
-     - Constant Returns to Scale: LRAC remains flat across output expansion.
-     - Diseconomies of Scale (Decreasing Returns to Scale): As firm becomes overly large, LRAC rises (due to bureaucratic management bottlenecks, communication breakdowns).
+4. Long-Run Costs & Economies of Scale:
+   • Long-Run Average Cost (LRAC): The "envelope curve" encompassing all short-run ATC curves.
+   • Economies of Scale: Declining LRAC as plant scale expands (due to labor specialization, bulk purchasing discounts, efficient machinery).
+   • Diseconomies of Scale: Rising LRAC as plant size becomes overly gigantic (due to bureaucratic red tape, communication bottlenecks, management coordination loss).
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• The rational producer ALWAYS operates in STAGE II of production, where MP is decreasing but still positive.
-• When MC < ATC, Average Total Cost is falling; when MC > ATC, Average Total Cost is rising; hence MC intersects ATC at its minimum!
+• The rational producer ALWAYS operates in STAGE II of production (where MPL is decreasing but still positive).
+• Total Product is MAXIMIZED when Marginal Product equals zero (MP = 0).
+• Marginal Cost intersects Average Variable Cost and Average Total Cost at their MINIMUM points!
         """.trimIndent(),
         colorHex = 0xFF16A34A,
-        initialLikes = 95
+        initialLikes = 96
     ),
     ShortNote(
         id = "econ-u5",
         subjectId = "c11",
         subject = "Introduction to Economics",
         unit = "Unit 5",
-        title = "Market Structures (Competition to Monopoly) & Macroeconomic Overview",
+        title = "Market Structures: Perfect Competition, Monopoly & Oligopoly",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Market structures define the competitive environment in which firms operate. Macroeconomics analyzes aggregate economic performance, focusing on national output (GDP), general price levels (inflation), and employment.
+Market structures define the organizational environment in which firms compete. Economics evaluates industries across a continuum: from Perfect Competition (price-taking, efficiency) to Pure Monopoly (price-making, deadweight loss), along with intermediate structures: Monopolistic Competition and Oligopoly.
 
 🔍 DETAILED BREAKDOWN
-1. Spectrum of Four Market Structures:
-   • Perfect Competition:
-     - Huge number of buyers and sellers, homogeneous/identical product, free entry and exit, perfect market information.
-     - Firm is a Price Taker: Faces perfectly horizontal elastic demand curve (P = MR = AR).
-     - Profit-maximizing rule: Produce where P = MR = MC. Long-run economic profit is zero.
-   • Monopoly:
-     - Single seller, unique product with no close substitutes, extremely high barriers to entry (patents, natural monopolies, state licenses).
-     - Firm is a Price Maker: Downward sloping demand curve. Marginal Revenue is less than Price (MR < P).
-     - Produces lower output and charges higher prices than competitive markets, creating deadweight welfare loss.
-   • Monopolistic Competition:
-     - Many sellers, differentiated products (branding, packaging, design), low entry barriers.
-     - Downward sloping demand curve; heavy non-price advertising competition. Long-run economic profit is zero.
-   • Oligopoly:
-     - Few dominant interdependent firms, significant entry barriers.
-     - Mutual Interdependence: Actions of one firm trigger immediate rival reactions (analyzed via Game Theory, prisoner's dilemma, cartel collusion, kinked demand curve).
+1. Perfect Competition:
+   • Core Characteristics:
+     - Infinite number of small buyers and sellers (no single actor influences price).
+     - Standardized, identical, homogeneous products.
+     - Free entry and exit of firms in the long run.
+     - Perfect information among all market participants.
+     - Perfect mobility of factors of production.
+   • Demand Curve Facing a Competitive Firm:
+     - The firm is a PRICE TAKER: Faces a perfectly horizontal, infinitely elastic demand curve at the market price: P = MR = AR = d.
+   • Short-Run Profit Maximization:
+     - Golden Profit Maximization Rule: Produce output where MR = MC (and MC is rising). Under perfect competition: P = MC.
+   • Short-Run Operating Scenarios:
+     - P > ATC: Supernormal / Economic Profit.
+     - P = ATC: Normal Profit (Break-even point).
+     - AVC <= P < ATC: Economic Loss, but CONTINUES operating in the short run (revenue covers all variable costs and contributes toward fixed costs).
+     - Shutdown Point: P = min(AVC). If P < AVC, the firm SHUTS DOWN operations immediately to minimize losses strictly to TFC.
+   • Short-Run Supply Curve of a Competitive Firm: The portion of its Marginal Cost (MC) curve that lies ABOVE the minimum point of AVC.
+   • Long-Run Equilibrium: Free entry eliminates profits, and free exit eliminates losses:
+     - Condition: P = MR = MC = min(ATC). Zero economic profit (earns normal profit).
+     - Achieves BOTH Allocative Efficiency (P = MC) and Productive Efficiency (P = min ATC).
 
-2. Core Macroeconomic Fundamentals:
-   • Gross Domestic Product (GDP):
-     - The total market value of all final goods and services produced within a country's geographical borders during a given year.
-     - Expenditure Approach Formula: GDP = C + I + G + (X - M).
-       * C = Household Consumption
-       * I = Gross Private Business Investment
-       * G = Government Purchases of goods & services
-       * (X - M) = Net Exports (Exports minus Imports).
-     - Nominal GDP (measured in current prices) vs Real GDP (adjusted for inflation using constant base-year prices).
-   • Inflation:
-     - A sustained, generalized increase in the overall price level across the economy, eroding purchasing power.
-     - Measured using Consumer Price Index (CPI) and GDP Deflator.
-     - Types: Demand-Pull Inflation (aggregate demand outpaces supply - "too much money chasing too few goods") vs Cost-Push Inflation (supply shocks or rising input costs push prices up).
-   • Unemployment:
-     - Frictional: Temporary unemployment of people transitioning between jobs.
-     - Structural: Mismatch between workers' skills and demands of modern employers.
-     - Cyclical: Caused by macroeconomic downturns and recessions in business cycle.
-     - Natural Rate of Unemployment = Frictional + Structural (excludes cyclical).
+2. Pure Monopoly:
+   • Core Characteristics: Single seller (firm is the entire industry), unique product with NO close substitutes, insurmountable barriers to entry (patents, natural monopolies, legal franchises, control of strategic raw inputs), firm is a PRICE MAKER.
+   • Demand and Marginal Revenue:
+     - Faces the downward-sloping market demand curve.
+     - To sell additional units, the monopolist must lower the price on ALL units sold; therefore, Marginal Revenue is strictly LESS than Price (MR < P).
+   • Profit Maximization: Produce quantity Qm where MR = MC; price Pm is determined by reading vertically up to the demand curve (Pm > MC).
+   • Social Welfare Loss: Monopolist produces less output and charges higher prices than competitive markets, causing Allocative Inefficiency and Deadweight Welfare Loss.
+   • Price Discrimination: Selling the identical good to different consumers at different prices for reasons unrelated to cost differences:
+     - First-Degree (Perfect): Charges each consumer their maximum willingness to pay; captures all consumer surplus.
+     - Second-Degree: Charges different prices based on quantity/volume purchased (block pricing, bulk discounts).
+     - Third-Degree: Segregates market by differing price elasticities (e.g., student discounts, peak vs. off-peak transit fares).
+
+3. Monopolistic Competition:
+   • Characteristics: Large number of sellers, PRODUCT DIFFERENTIATION (physical attributes, branding, packaging, service quality), free entry and exit, heavy advertising/non-price competition.
+   • Downward-sloping, highly elastic demand curve.
+   • Short Run: Can earn economic profit or incur loss (MR = MC).
+   • Long Run: Free entry shifts individual demand curve leftward until P = ATC (tangency point). Zero economic profit in long run.
+   • Excess Capacity Theorem: Produces at an output level below the minimum efficient scale (fails productive efficiency).
+
+4. Oligopoly:
+   • Characteristics: Small number of large dominant firms (e.g., telecom, airlines, cement), high barriers to entry, MUTUAL INTERDEPENDENCE (every firm's decisions on price and output directly impact rivals and trigger retaliation).
+   • Models of Oligopoly:
+     - Non-Collusive Oligopoly:
+       * Kinked Demand Curve Model (Paul Sweezy): Explains price rigidity. Assumes rivals match price cuts (inelastic) but ignore price hikes (elastic).
+       * Game Theory & Prisoner's Dilemma: Models strategic decision-making, dominant strategies, and Nash Equilibrium.
+     - Collusive Oligopoly:
+       * Cartel (e.g., OPEC): Formal explicit agreement among oligopolists to fix prices, restrict output, and divide markets to act as a shared monopoly.
+       * Price Leadership: Dominant firm sets price, which smaller firms follow.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Under Perfect Competition, P = MR; for all imperfect markets (Monopoly, Monopolistic, Oligopoly), MR < P.
-• In calculating GDP, only FINAL goods are counted to prevent double counting of intermediate goods.
+• Profit Maximization Rule for ALL firms: MR = MC.
+• Shutdown Rule: A firm shuts down in the short run if Price falls below minimum Average Variable Cost (P < min AVC).
+• Competitive firm: P = MR = MC. Monopoly / Imperfect competition: MR < P.
+• In the long run, both Perfect Competition and Monopolistic Competition earn ZERO economic profit (normal profit).
         """.trimIndent(),
         colorHex = 0xFF16A34A,
-        initialLikes = 103
+        initialLikes = 97
     ),
     ShortNote(
         id = "econ-u6",
         subjectId = "c11",
         subject = "Introduction to Economics",
         unit = "Unit 6",
-        title = "Macroeconomic Policy, Aggregate Demand/Supply & Fiscal Policy",
+        title = "Fundamentals of Macroeconomics, GDP, Inflation & Unemployment",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Macroeconomic stability is evaluated through the Aggregate Demand (AD) and Aggregate Supply (AS) framework. Governments utilize fiscal policy—adjusting public expenditure and taxation—to stabilize business cycles and eliminate output gaps.
+Macroeconomics analyzes national aggregate output, general price stability, employment, and economic growth. Central to macroeconomic evaluation are National Income Accounting (GDP and GNP), business cycle fluctuations, inflation measurement, and unemployment dynamics.
 
 🔍 DETAILED BREAKDOWN
-1. Aggregate Demand & Aggregate Supply (AD-AS Framework):
-   • Aggregate Demand (AD): Total quantity of final domestic goods and services demanded at various price levels. Downward sloping due to:
-     - Real Wealth Effect (Pigou Effect): Lower prices increase real purchasing power of accumulated wealth, increasing consumption.
-     - Interest Rate Effect (Keynes Effect): Lower prices reduce demand for money holdings, driving down interest rates and stimulating investment.
-     - Exchange Rate Effect (Mundell-Fleming): Lower interest rates lead to capital outflows, depreciating domestic currency and boosting net exports.
-   • Aggregate Supply (AS):
-     - Short-Run Aggregate Supply (SRAS): Upward sloping because input costs (especially nominal wages) are sticky in the short run.
-     - Long-Run Aggregate Supply (LRAS): Perfectly vertical at Potential / Natural GDP (Y_n), determined solely by labor, capital, natural resources, and technology (independent of general price level).
-   • Macroeconomic Equilibrium & Gaps:
-     - Recessionary Gap: Actual real GDP is BELOW potential output; characterized by cyclical unemployment.
-     - Inflationary Gap: Actual real GDP EXCEEDS potential output; creates upward pressure on general wages and price levels.
+1. National Income Accounting (GDP vs. GNP):
+   • Gross Domestic Product (GDP): The total market value of all FINAL goods and services produced within the geographic boundaries of a country during a given period (usually one year).
+   • What GDP Excludes: Intermediate goods (avoids double counting), transfer payments (pensions, student allowances), secondhand used goods, financial transactions (stocks/bonds), illegal/underground market activities, non-market household labor.
+   • GDP vs. Gross National Product (GNP):
+     - GNP = GDP + Net Factor Income from Abroad (NFIA).
+     - NFIA = Factor income earned by domestic citizens abroad - Factor income earned by foreign citizens domestically.
+     - GDP measures production within domestic territory; GNP measures production by domestic citizens regardless of location.
+   • Three Approaches to Measure GDP:
+     1. Expenditure Approach: GDP = C + I + G + (X - M)
+        - C = Personal Consumption expenditure.
+        - I = Gross Private Domestic Investment (I = Net Investment + Depreciation).
+        - G = Government Purchases of goods and services (excludes transfer payments).
+        - (X - M) = Net Exports (Exports X minus Imports M).
+     2. Income Approach: GDP = Wages + Rent + Interest + Corporate Profits + Proprietor's Income + Indirect Business Taxes + Depreciation - Subsidies.
+     3. Value-Added (Product) Approach: Sum of value added across all production stages (Value of Output - Value of Intermediate Inputs).
+   • Other National Income Measures:
+     - Net Domestic Product (NDP) = GDP - Depreciation (Capital Consumption Allowance).
+     - National Income (NI) = NDP - Indirect Business Taxes + Subsidies.
+     - Personal Income (PI) = NI - Undistributed Corporate Profits - Corporate Taxes - Social Security + Transfer Payments.
+     - Disposable Personal Income (DPI) = PI - Personal Income Taxes = Consumption (C) + Savings (S).
+   • Nominal GDP vs. Real GDP & The GDP Deflator:
+     - Nominal GDP: Valued at current-year prices (reflects both output changes and price inflation).
+     - Real GDP: Valued at constant base-year prices (measures true physical output growth).
+     - GDP Deflator: (Nominal GDP / Real GDP) × 100.
+     - Real GDP per Capita = Real GDP / Total Population.
 
-2. The Keynesian Multiplier Concept:
-   • Propensities:
-     - Marginal Propensity to Consume: MPC = ΔC / ΔY (fraction of additional income spent on consumption).
-     - Marginal Propensity to Save: MPS = ΔS / ΔY (fraction saved).
-     - Fundamental Identity: MPC + MPS = 1.
-   • Multiplier Formulas:
-     - Expenditure / Government Spending Multiplier: k = 1 / (1 - MPC) = 1 / MPS.
-     - Tax Multiplier: k_t = -MPC / (1 - MPC) = -MPC / MPS (always negative and smaller in magnitude than spending multiplier).
-     - Balanced Budget Multiplier: If government spending and taxes increase simultaneously by the identical amount (ΔG = ΔT), the multiplier equals exactly 1.
+2. The Business Cycle:
+   • Periodic recurrent fluctuations in aggregate economic activity around the long-run growth trend.
+   • Four Phases:
+     1. Peak (Boom): Output at maximum capacity, high employment, upward pressure on price levels.
+     2. Recession (Contraction): Two or more consecutive quarters of declining real GDP, rising unemployment.
+     3. Trough: Lowest turning point of economic activity and output.
+     4. Expansion (Recovery): Real GDP and employment rise back toward potential output.
 
-3. Discretionary Fiscal Policy & Automatic Stabilizers:
-   • Expansionary Fiscal Policy: Employed during recessions. Involves increasing government spending (G) or cutting taxes (T) to shift AD to the right, closing recessionary gaps.
-   • Contractionary Fiscal Policy: Employed during rapid inflation. Involves cutting government spending or increasing taxes to shift AD to the left, cooling economic overheating.
-   • Automatic Stabilizers: Built-in structural fiscal mechanisms that automatically cushion fluctuations without deliberate legislative action (e.g., progressive income tax brackets, unemployment compensation benefits).
+3. Unemployment:
+   • Labor Force: Non-institutionalized working-age individuals who are employed or actively seeking employment. Excludes full-time students, homemakers, retirees, and discouraged workers.
+   • Unemployment Rate: (Number of Unemployed / Total Labor Force) × 100.
+   • Four Major Types of Unemployment:
+     1. Frictional: Temporary unemployment of workers voluntarily transitioning between jobs or new graduates seeking employment.
+     2. Structural: Mismatch between workers' skills and demands of employers caused by technological innovation or geographic relocation.
+     3. Cyclical: Caused by macroeconomic downturns and deficiency of aggregate demand during recessions.
+     4. Seasonal: Caused by predictable seasonal shifts in agricultural, construction, or tourism labor demand.
+   • Natural Rate of Unemployment (NRU / Full Employment): Frictional + Structural Unemployment (occurs when cyclical unemployment is ZERO).
+   • Okun's Law: For every 1% real GDP falls below potential output, unemployment rises by roughly 0.5% (or 1% cyclical unemployment creates ~2% GDP gap).
 
-4. Crowding-Out Effect & Public Debt:
-   • Crowding-Out Mechanism:
-     - Deficit-financed government spending increases public borrowing in loanable funds markets.
-     - Increased demand for funds pushes real interest rates upward.
-     - Higher interest rates discourage ("crowd out") private business capital investment and consumer borrowing, partially neutralizing the initial fiscal stimulus.
+4. Inflation:
+   • Definition: A sustained, generalized increase in the overall price level across the economy over time.
+   • Consumer Price Index (CPI): Measures cost of a fixed market basket of goods bought by a typical urban consumer:
+     - CPI = (Cost of Basket in Current Year / Cost of Basket in Base Year) × 100.
+     - Inflation Rate = [(CPIt - CPIt-1) / CPIt-1] × 100.
+   • Types & Causes of Inflation:
+     - Demand-Pull Inflation: Aggregate demand exceeds aggregate supply at full employment ("too much money chasing too few goods").
+     - Cost-Push Inflation: Rising production costs (wages, raw materials, fuel import shocks) shift SRAS leftward, causing Stagflation (simultaneous high inflation and rising unemployment).
+   • Redistributive Effects: Hurts fixed-income earners, savers, and creditors; benefits debtors/borrowers.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• The Government Spending Multiplier is ALWAYS larger in magnitude than the Tax Multiplier because initial spending directly enters GDP, while part of a tax cut is saved (MPS).
-• Long-Run Aggregate Supply (LRAS) is VERTICAL at full-employment output.
+• Intermediate goods and transfer payments are EXCLUDED from GDP to prevent double counting!
+• GDP Deflator = (Nominal GDP / Real GDP) × 100.
+• Full Employment (Natural Rate of Unemployment) does NOT mean 0% unemployment; it means CYCLICAL unemployment is zero (NRU = Frictional + Structural).
         """.trimIndent(),
         colorHex = 0xFF16A34A,
-        initialLikes = 91
+        initialLikes = 93
     ),
     ShortNote(
         id = "econ-u7",
         subjectId = "c11",
         subject = "Introduction to Economics",
         unit = "Unit 7",
-        title = "Money, Banking, Monetary Policy & International Economics",
+        title = "Macroeconomic Policies, Financial Systems & International Trade",
         summary = """
 📌 KEY CONCEPTS & OVERVIEW
-Financial systems channel funds from savers to borrowers. Central banks conduct monetary policy to regulate money supply and interest rates, while international economics explores trade balance, comparative advantage, and foreign exchange regimes.
+Governments and central banks manage economic stability through fiscal and monetary policies. In an interconnected global economy, international trade governed by comparative advantage and foreign exchange mechanisms plays a vital role in national development.
 
 🔍 DETAILED BREAKDOWN
-1. Nature, Evolution & Functions of Money:
-   • Definition: Any financial asset universally accepted as a medium of exchange for goods, services, and repayment of debt.
-   • Three Primary Functions of Money:
-     1. Medium of Exchange: Eliminates the cumbersome "double coincidence of wants" inherent in barter trade.
-     2. Unit of Account: Standard numerical monetary unit used to measure and compare the market value of disparate goods.
-     3. Store of Value: Allows individuals to transfer purchasing power from present income to future consumption.
+1. Aggregate Demand - Aggregate Supply (AD-AS) Framework:
+   • Aggregate Demand (AD): Total quantity of final domestic goods demanded at various price levels. Downward sloping due to:
+     - Real Wealth Effect (Pigou Effect): Lower prices increase real value of wealth, boosting consumption.
+     - Interest Rate Effect (Keynes Effect): Lower prices reduce money demand, lowering interest rates and increasing investment.
+     - Exchange Rate Effect (Mundell-Fleming): Lower domestic interest rates cause capital outflow, depreciating currency and boosting net exports.
+   • Aggregate Supply (AS):
+     - Short-Run Aggregate Supply (SRAS): Upward sloping due to sticky wages and input price rigidities.
+     - Long-Run Aggregate Supply (LRAS): Perfectly vertical at Potential / Full-Employment Output (Yp), determined by labor, capital, and technology.
+   • Gaps: Recessionary Gap (Actual GDP < Yp) vs. Inflationary Gap (Actual GDP > Yp).
+
+2. Fiscal Policy & Multipliers:
+   • Definition: Government manipulation of taxation (T) and public expenditure (G) to influence aggregate demand and economic activity.
+   • Types:
+     - Expansionary Fiscal Policy: Increasing government spending (G) or cutting taxes (T) to fight recessions (shifts AD right).
+     - Contractionary Fiscal Policy: Decreasing government spending (G) or raising taxes (T) to cool inflation (shifts AD left).
+   • Keynesian Multipliers:
+     - Marginal Propensity to Consume: MPC = ΔC / ΔY; Marginal Propensity to Save: MPS = ΔS / ΔY; MPC + MPS = 1.
+     - Government Spending Multiplier: kg = 1 / (1 - MPC) = 1 / MPS.
+     - Tax Multiplier: kt = -MPC / (1 - MPC) = -MPC / MPS (always negative and smaller in absolute value than kg).
+     - Balanced Budget Multiplier: If ΔG = ΔT, the balanced budget multiplier equals exactly 1.
+   • Automatic Stabilizers: Built-in tax/spending mechanisms that automatically cushion fluctuations without new legislation (e.g., progressive income tax, welfare payments).
+   • The Crowding-Out Effect: Government deficit borrowing drives up real interest rates, reducing private domestic investment.
+
+3. Money, Banking & Monetary Policy:
+   • Functions of Money: Medium of exchange (eliminates barter double coincidence of wants), Unit of account (standard measure of value), Store of value (transfers purchasing power across time).
    • Money Supply Aggregates:
-     - M1 (Narrow Money): Currency in circulation (banknotes + coins) + checkable / demand bank deposits.
-     - M2 (Broad Money): M1 + savings deposits + small-denomination time deposits (quasi-money).
-
-2. Fractional Reserve Banking & Money Creation:
-   • Fractional Reserve System: Commercial banks are legally obligated to hold only a fraction of customer deposits in reserve, lending out the surplus (excess reserves).
-   • Required Reserve Ratio (rr): Statutory percentage of deposits banks must keep as vault cash or deposits with the Central Bank.
-   • Simple Money Multiplier:
-     m = 1 / rr.
-   • Maximum Potential Expansion of Money Supply:
-     ΔMoney Supply = Initial Excess Reserves × (1 / rr).
-
-3. Central Banking & Monetary Policy Instruments:
-   • Central Bank (National Bank of Ethiopia - NBE): Sole issuer of national legal tender, banker and fiscal agent to the government, lender of last resort to commercial banks, manager of foreign exchange reserves.
-   • Core Monetary Policy Instruments:
-     1. Open Market Operations (OMO): Buying or selling government treasury securities. Purchasing bonds injects reserves into the banking system, expanding credit; selling bonds drains reserves.
-     2. Required Reserve Ratio: Lowering rr expands commercial lending capacity (expansionary); raising rr restricts lending (contractionary).
-     3. Discount / Policy Lending Rate: Interest rate central bank charges commercial banks for short-term emergency borrowing. Lower rates incentivize bank borrowing and credit expansion.
-     4. Direct Credit Controls: Ceilings on commercial bank credit growth and targeted sector lending quotas.
+     - M1 (Narrow Money): Currency in circulation + Demand/checkable deposits.
+     - M2 (Broad Money): M1 + Savings deposits + Short-term time deposits.
+   • Fractional Reserve Banking & Money Creation:
+     - Banks keep a required reserve fraction (rr) and lend out excess reserves.
+     - Simple Money Multiplier: m = 1 / rr.
+     - Maximum Potential Money Expansion: ΔM = Initial Excess Deposit × (1 / rr).
+   • Central Bank (National Bank of Ethiopia - NBE) Monetary Policy Tools:
+     1. Open Market Operations (OMO): Buying treasury bills injects reserves (expansionary); selling bills absorbs reserves (contractionary).
+     2. Required Reserve Ratio (rr): Lowering rr increases lending (expansionary); raising rr restricts credit (contractionary).
+     3. Discount Rate / Policy Lending Rate: Interest rate charged to commercial banks on emergency loans.
+     4. Direct Credit Controls and Moral Suasion.
 
 4. International Economics, Trade & Exchange Rates:
-   • Law of Comparative Advantage (David Ricardo): Nations gain from trade by specializing in goods they can produce at the LOWEST OPPORTUNITY COST, exchanging them for other goods.
-   • Balance of Payments (BOP): Systematic accounting record of all economic transactions between domestic residents and the rest of the world over a year:
-     - Current Account: Balance of trade in merchandise goods, services, net primary investment income, and unilateral secondary transfers (diaspora remittances).
-     - Capital and Financial Account: Cross-border foreign direct investment (FDI), portfolio equity flows, and official external debt loans.
-   • Foreign Exchange Systems:
-     - Fixed (Pegged) Exchange Rate: Currency value pegged to major currency (e.g., USD) by central bank intervention.
-     - Floating (Flexible) Exchange Rate: Currency value determined strictly by foreign exchange market supply and demand.
-     - Currency Depreciation / Devaluation: Lowers foreign price of domestic exports, stimulating export competitiveness while making imports more expensive.
+   • Classical Trade Theories:
+     - Absolute Advantage (Adam Smith): A country should specialize in producing goods it can manufacture using fewer inputs than other nations.
+     - Comparative Advantage (David Ricardo): A country should specialize in and export goods in which it has the LOWEST OPPORTUNITY COST. Mutual gains from trade occur whenever countries trade based on comparative advantage!
+   • Balance of Payments (BOP): Complete accounting record of all economic transactions between domestic residents and the rest of the world over a year:
+     - Current Account: Trade balance in merchandise goods, services, net primary factor income from abroad, and unilateral secondary transfers (diaspora remittances).
+     - Capital and Financial Account: Foreign Direct Investment (FDI), portfolio equity investments, official external debt and borrowing.
+     - Official Reserves Account: Central bank foreign exchange reserve adjustments.
+   • Exchange Rate Systems:
+     - Fixed (Pegged) Exchange Rate: Set and maintained by central bank intervention.
+     - Floating (Flexible) Exchange Rate: Determined entirely by foreign exchange supply and demand.
+     - Devaluation / Depreciation: Lowers foreign price of domestic exports, enhancing export competitiveness while making imports more expensive.
 
 💡 EXAM TIPS & HIGH-YIELD FOCUS
-• The simple money multiplier is the reciprocal of the reserve requirement ratio: m = 1 / rr.
-• A country has a Comparative Advantage in producing a good if its OPPORTUNITY COST is lower than that of its trading partners, even if another nation has an Absolute Advantage in everything.
+• Comparative Advantage is based on OPPORTUNITY COST, not absolute productivity!
+• Spending Multiplier (1 / MPS) is ALWAYS greater in magnitude than the Tax Multiplier (-MPC / MPS).
+• Money Multiplier = 1 / rr. If the reserve requirement is 10% (0.10), the money multiplier is 10.
         """.trimIndent(),
         colorHex = 0xFF16A34A,
         initialLikes = 95

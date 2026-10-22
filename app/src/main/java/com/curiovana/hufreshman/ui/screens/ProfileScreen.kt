@@ -556,7 +556,12 @@ fun ProfileScreen(
                     )
 
                     Text("Academic Stream:", fontWeight = FontWeight.Bold, fontSize = 12.sp)
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .horizontalScroll(rememberScrollState())
+                    ) {
                         listOf("Natural Science", "Social Science").forEach { stream ->
                             FilterChip(
                                 selected = tempStream == stream,
