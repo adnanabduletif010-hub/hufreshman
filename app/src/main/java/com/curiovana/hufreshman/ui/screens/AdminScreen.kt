@@ -54,6 +54,7 @@ import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
 import com.curiovana.hufreshman.data.MemberRegistration
 import com.curiovana.hufreshman.data.PaymentAccount
+import com.curiovana.hufreshman.data.PaymentConfig
 import com.curiovana.hufreshman.data.UniversityGuide
 import com.curiovana.hufreshman.ui.theme.*
 import com.curiovana.hufreshman.viewmodel.MainViewModel
@@ -67,93 +68,12 @@ fun AdminScreen(viewModel: MainViewModel) {
     val posts by viewModel.communityPosts.collectAsState()
     val reports by viewModel.reports.collectAsState()
 
-    var showAdminLoginDialog by remember { mutableStateOf(false) }
-
     if (!userProfile.isAdmin) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    Brush.linearGradient(listOf(RoyalBlueDark.copy(alpha = 0.05f), Color.Transparent))
-                )
-                .padding(24.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Card(
-                shape = RoundedCornerShape(24.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Column(
-                    modifier = Modifier.padding(28.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(72.dp)
-                            .background(RoseRed.copy(alpha = 0.12f), CircleShape),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            Icons.Default.Lock,
-                            contentDescription = null,
-                            tint = RoseRed,
-                            modifier = Modifier.size(36.dp)
-                        )
-                    }
+        // Non-admins must NEVER see any restricted page or admin access message
+        return
+    }
 
-                    Spacer(modifier = Modifier.height(18.dp))
-
-                    Text(
-                        text = "Administrator Access Required",
-                        fontWeight = FontWeight.ExtraBold,
-                        fontSize = 18.sp,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        textAlign = TextAlign.Center
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Text(
-                        text = "This area is strictly restricted to verified HU Freshman administrators. To access the control center, please log in with your authorized administrator mobile number.",
-                        fontSize = 13.sp,
-                        color = Slate700,
-                        textAlign = TextAlign.Center,
-                        lineHeight = 18.sp
-                    )
-
-                    Spacer(modifier = Modifier.height(24.dp))
-
-                    Button(
-                        onClick = { showAdminLoginDialog = true },
-                        colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue),
-                        shape = RoundedCornerShape(14.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp)
-                    ) {
-                        Icon(Icons.Default.Login, contentDescription = null)
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text("Log In with Admin Account", fontWeight = FontWeight.Bold, fontSize = 14.sp)
-                    }
-                }
-            }
-        }
-
-        if (showAdminLoginDialog) {
-            LoginDialog(
-                onDismiss = { showAdminLoginDialog = false },
-                onLoginSubmit = { phone, secretOrKey ->
-                    viewModel.login(phone, secretOrKey)
-                },
-                onNavigateToRegister = {
-                    showAdminLoginDialog = false
-                }
-            )
-        }
-    } else {
-        // Authenticated Admin Dashboard
+    // Authenticated Admin Dashboard
         val context = LocalContext.current
         val registrations by viewModel.memberRegistrations.collectAsState()
         val isSyncing by viewModel.isSyncing.collectAsState()
@@ -318,7 +238,8 @@ fun AdminScreen(viewModel: MainViewModel) {
                         }
                     },
                     onApprove = { viewModel.approveMemberRegistration(it) },
-                    onReject = { id, reason -> viewModel.rejectMemberRegistration(id, reason) }
+                    onReject = { id, reason -> viewModel.rejectMemberRegistration(id, reason) },
+                    onDeleteProof = { viewModel.deleteMemberRegistration(it) }
                 )
                 1 -> AllUsersTab(registrations = registrations)
                 2 -> AddQuestionTab(viewModel = viewModel)
@@ -344,7 +265,6 @@ fun AdminScreen(viewModel: MainViewModel) {
             )
         }
     }
-}
 
 @Composable
 fun StatCard(modifier: Modifier, title: String, value: String, highlight: Boolean = false) {
@@ -750,14 +670,17 @@ fun CreateOfficialPostTab(viewModel: MainViewModel) {
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(160.dp)
                                 .clip(RoundedCornerShape(10.dp))
+                                .background(Color(0xFFF8FAFC)),
+                            contentAlignment = Alignment.Center
                         ) {
                             AsyncImage(
                                 model = imageUrl,
                                 contentDescription = "Preview",
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier.fillMaxSize()
+                                contentScale = ContentScale.FillWidth,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentHeight()
                             )
                         }
                     }
@@ -1202,7 +1125,8 @@ fun MemberApprovalsTab(
     isSyncing: Boolean = false,
     onRefresh: () -> Unit = {},
     onApprove: (String) -> Unit,
-    onReject: (String, String) -> Unit
+    onReject: (String, String) -> Unit,
+    onDeleteProof: (String) -> Unit = {}
 ) {
     val context = LocalContext.current
     var selectedFilter by remember { mutableStateOf("Pending") }
@@ -1464,7 +1388,24 @@ fun MemberApprovalsTab(
                                         Text("Approve & Unlock", fontSize = 11.sp, fontWeight = FontWeight.Bold)
                                     }
                                 } else {
-                                    Text("✓ Membership active", fontSize = 11.sp, color = EmeraldGreen, fontWeight = FontWeight.Medium)
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Text("✓ Membership active", fontSize = 11.sp, color = EmeraldGreen, fontWeight = FontWeight.Medium)
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        OutlinedButton(
+                                            onClick = {
+                                                onDeleteProof(reg.id)
+                                                Toast.makeText(context, "Deleted proof for " + reg.fullName, Toast.LENGTH_SHORT).show()
+                                            },
+                                            colors = ButtonDefaults.outlinedButtonColors(contentColor = RoseRed),
+                                            shape = RoundedCornerShape(8.dp),
+                                            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
+                                            modifier = Modifier.height(30.dp)
+                                        ) {
+                                            Icon(Icons.Default.Delete, contentDescription = null, tint = RoseRed, modifier = Modifier.size(13.dp))
+                                            Spacer(modifier = Modifier.width(4.dp))
+                                            Text("Delete Proof", fontSize = 10.5.sp, color = RoseRed)
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -1659,6 +1600,266 @@ fun AdminSettingsTab(viewModel: MainViewModel) {
             }
         }
 
+        PaymentSettingsCard(viewModel = viewModel)
+    }
+}
+
+@Composable
+fun PaymentSettingsCard(viewModel: MainViewModel) {
+    val context = LocalContext.current
+    val paymentConfig by viewModel.paymentConfig.collectAsState()
+
+    var amount by remember(paymentConfig.amount) { mutableStateOf(paymentConfig.amount) }
+    var instructions by remember(paymentConfig.instructions) { mutableStateOf(paymentConfig.instructions) }
+    var supportTelegram by remember(paymentConfig.supportTelegram) { mutableStateOf(paymentConfig.supportTelegram) }
+    var supportPhone by remember(paymentConfig.supportPhone) { mutableStateOf(paymentConfig.supportPhone) }
+    var accounts by remember(paymentConfig.accounts) { mutableStateOf(paymentConfig.accounts) }
+
+    var isSaving by remember { mutableStateOf(false) }
+    var saveMessage by remember { mutableStateOf<Pair<Boolean, String>?>(null) }
+    var showAddAccountDialog by remember { mutableStateOf(false) }
+
+    Card(
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .background(EmeraldGreen.copy(alpha = 0.12f), RoundedCornerShape(10.dp)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(Icons.Default.Payment, contentDescription = null, tint = EmeraldGreen, modifier = Modifier.size(22.dp))
+                }
+                Spacer(modifier = Modifier.width(12.dp))
+                Column {
+                    Text("Payment Configuration (Firebase)", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                    Text(
+                        "Manage dynamic payment amount & accounts stored on Firebase.",
+                        fontSize = 11.sp, color = Slate700, lineHeight = 15.sp
+                    )
+                }
+            }
+
+            HorizontalDivider(color = Slate700.copy(alpha = 0.1f))
+
+            OutlinedTextField(
+                value = amount,
+                onValueChange = { amount = it; saveMessage = null },
+                label = { Text("Membership Price / Amount") },
+                placeholder = { Text("e.g. 250 ETB (ብር)") },
+                leadingIcon = { Icon(Icons.Default.MonetizationOn, contentDescription = null, tint = EmeraldGreen) },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true
+            )
+
+            OutlinedTextField(
+                value = instructions,
+                onValueChange = { instructions = it; saveMessage = null },
+                label = { Text("Payment Instructions") },
+                placeholder = { Text("Instructions shown on the payment screen") },
+                leadingIcon = { Icon(Icons.Default.Description, contentDescription = null, tint = RoyalBlue) },
+                modifier = Modifier.fillMaxWidth(),
+                maxLines = 3
+            )
+
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(
+                    value = supportTelegram,
+                    onValueChange = { supportTelegram = it; saveMessage = null },
+                    label = { Text("Support Telegram") },
+                    placeholder = { Text("@username") },
+                    modifier = Modifier.weight(1f),
+                    singleLine = true
+                )
+                OutlinedTextField(
+                    value = supportPhone,
+                    onValueChange = { supportPhone = it; saveMessage = null },
+                    label = { Text("Support Phone") },
+                    placeholder = { Text("09...") },
+                    modifier = Modifier.weight(1f),
+                    singleLine = true
+                )
+            }
+
+            Spacer(modifier = Modifier.height(4.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text("Payment Accounts (${accounts.size})", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                TextButton(onClick = { showAddAccountDialog = true }) {
+                    Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(16.dp))
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text("Add Account", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                }
+            }
+
+            if (accounts.isEmpty()) {
+                Surface(
+                    shape = RoundedCornerShape(8.dp),
+                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        "No payment accounts added yet. Tap 'Add Account' to add bank or mobile money.",
+                        fontSize = 11.sp,
+                        color = Slate700,
+                        modifier = Modifier.padding(12.dp)
+                    )
+                }
+            } else {
+                accounts.forEachIndexed { index, account ->
+                    Surface(
+                        shape = RoundedCornerShape(10.dp),
+                        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
+                        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFE2E8F0)),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(12.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(account.method, fontWeight = FontWeight.Bold, fontSize = 13.sp, color = RoyalBlue)
+                                Text("A/C: ${account.accountNumber}", fontSize = 12.sp, fontWeight = FontWeight.Medium)
+                                if (account.accountName.isNotBlank()) {
+                                    Text("Name: ${account.accountName}", fontSize = 11.sp, color = Slate700)
+                                }
+                            }
+                            IconButton(onClick = {
+                                accounts = accounts.filterIndexed { i, _ -> i != index }
+                                saveMessage = null
+                            }) {
+                                Icon(Icons.Default.Delete, contentDescription = "Delete", tint = RoseRed, modifier = Modifier.size(18.dp))
+                            }
+                        }
+                    }
+                }
+            }
+
+            saveMessage?.let { (success, msg) ->
+                Surface(
+                    color = if (success) EmeraldGreen.copy(alpha = 0.1f) else RoseRed.copy(alpha = 0.1f),
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Row(modifier = Modifier.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            if (success) Icons.Default.CheckCircle else Icons.Default.Error,
+                            contentDescription = null,
+                            tint = if (success) EmeraldGreen else RoseRed,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(msg, fontSize = 12.sp, color = if (success) EmeraldGreen else RoseRed, fontWeight = FontWeight.Medium)
+                    }
+                }
+            }
+
+            Button(
+                onClick = {
+                    isSaving = true
+                    val updated = paymentConfig.copy(
+                        amount = amount.trim(),
+                        instructions = instructions.trim(),
+                        supportTelegram = supportTelegram.trim(),
+                        supportPhone = supportPhone.trim(),
+                        accounts = accounts
+                    )
+                    viewModel.updatePaymentConfig(updated) { success, msg ->
+                        isSaving = false
+                        saveMessage = success to msg
+                        if (success) {
+                            Toast.makeText(context, "Payment configuration saved to Firebase!", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                },
+                enabled = !isSaving,
+                colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreen),
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier.fillMaxWidth().height(48.dp)
+            ) {
+                if (isSaving) {
+                    CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Color.White, strokeWidth = 2.dp)
+                    Spacer(modifier = Modifier.width(8.dp))
+                } else {
+                    Icon(Icons.Default.CloudUpload, contentDescription = null)
+                    Spacer(modifier = Modifier.width(8.dp))
+                }
+                Text(if (isSaving) "Saving to Firebase..." else "Save Payment Settings to Firebase", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+            }
+        }
+    }
+
+    if (showAddAccountDialog) {
+        var method by remember { mutableStateOf("") }
+        var accountNumber by remember { mutableStateOf("") }
+        var accountName by remember { mutableStateOf("") }
+
+        AlertDialog(
+            onDismissRequest = { showAddAccountDialog = false },
+            title = { Text("Add Payment Account") },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedTextField(
+                        value = method,
+                        onValueChange = { method = it },
+                        label = { Text("Payment Method (e.g. CBE, Telebirr)") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    OutlinedTextField(
+                        value = accountNumber,
+                        onValueChange = { accountNumber = it },
+                        label = { Text("Account / Phone Number") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    OutlinedTextField(
+                        value = accountName,
+                        onValueChange = { accountName = it },
+                        label = { Text("Account Holder Name") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        if (method.isNotBlank() && accountNumber.isNotBlank()) {
+                            val newAcc = PaymentAccount(
+                                id = "acc_${System.currentTimeMillis()}",
+                                method = method.trim(),
+                                accountNumber = accountNumber.trim(),
+                                accountName = accountName.trim(),
+                                shortCode = method.take(1).uppercase(),
+                                colorHex = "#0072CE",
+                                note = method.trim()
+                            )
+                            accounts = accounts + newAcc
+                            showAddAccountDialog = false
+                            saveMessage = null
+                        }
+                    },
+                    enabled = method.isNotBlank() && accountNumber.isNotBlank()
+                ) {
+                    Text("Add")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showAddAccountDialog = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
     }
 }
 

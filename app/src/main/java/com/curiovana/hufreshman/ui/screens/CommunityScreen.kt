@@ -37,12 +37,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import android.net.Uri
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
+import com.curiovana.hufreshman.data.Comment
 import com.curiovana.hufreshman.data.CommunityPost
 import com.curiovana.hufreshman.ui.theme.*
 import com.curiovana.hufreshman.viewmodel.MainViewModel
@@ -56,33 +58,60 @@ fun CommunityScreen(
     val posts by viewModel.communityPosts.collectAsState()
     val userProfile by viewModel.userProfile.collectAsState()
     val isSyncing by viewModel.isCommunitySyncing.collectAsState()
+    val paymentConfig by viewModel.paymentConfig.collectAsState()
     val context = LocalContext.current
     var selectedTag by remember { mutableStateOf("All") }
     var showCreatePostDialog by remember { mutableStateOf(false) }
     var postToEdit by remember { mutableStateOf<CommunityPost?>(null) }
     var postToDelete by remember { mutableStateOf<CommunityPost?>(null) }
+    var commentToEdit by remember { mutableStateOf<Pair<String, Comment>?>(null) }
+
+    val isApprovedUser = userProfile.isAdmin || userProfile.isApproved
+    var communityReadCount by remember(userProfile.isApproved, userProfile.isAdmin) {
+        mutableIntStateOf(viewModel.getCommunityReadCount())
+    }
+
+    LaunchedEffect(isApprovedUser) {
+        if (!isApprovedUser && communityReadCount < 1) {
+            viewModel.recordCommunityRead()
+            communityReadCount = viewModel.getCommunityReadCount()
+        }
+    }
+
+    val isReadingBlocked = !isApprovedUser && communityReadCount >= 1
+    var showPaymentDialog by remember { mutableStateOf(false) }
+
+    if (showPaymentDialog) {
+        if (userProfile.isGuest) {
+            LaunchedEffect(Unit) {
+                onPostGate()
+                showPaymentDialog = false
+            }
+        } else {
+            val submissionCount = viewModel.getScreenshotSubmissionCount()
+            PaymentVerificationDialog(
+                phoneNumber = userProfile.phoneNumber,
+                paymentConfig = paymentConfig,
+                submissionCount = submissionCount,
+                hasSubmitted = userProfile.hasSubmittedRegistration,
+                rejectionReason = userProfile.rejectionReason,
+                onDismiss = { showPaymentDialog = false },
+                onPaymentSubmitted = { method, url ->
+                    viewModel.submitPaymentVerification(method, url)
+                }
+            )
+        }
+    }
 
     val tags = listOf("All", "Academic", "Ask Anyone", "Tips", "Campus Life", "Exams", "Official")
 
     val filteredPosts = remember(posts, selectedTag) {
         val list = if (selectedTag == "All") posts
         else posts.filter { it.tag.equals(selectedTag, ignoreCase = true) }
-        val now = System.currentTimeMillis()
-        val oneDayMillis = 24 * 60 * 60 * 1000L
-        list.sortedWith(
-            compareByDescending<CommunityPost> { post ->
-                val isOfficial = post.tag.equals("Official", ignoreCase = true) ||
-                        post.role.contains("Freshman", ignoreCase = true) ||
-                        post.author.contains("Freshman", ignoreCase = true)
-                val postTime = if (post.timestamp > 0L) post.timestamp
-                else post.id.removePrefix("post_").toLongOrNull() ?: 0L
-                val isWithinOneDay = isOfficial && (now - postTime) in 0..oneDayMillis
-                if (isWithinOneDay) 1 else 0
-            }.thenByDescending { post ->
-                if (post.timestamp > 0L) post.timestamp
-                else post.id.removePrefix("post_").toLongOrNull() ?: 0L
-            }
-        )
+        list.sortedByDescending { post ->
+            if (post.timestamp > 0L) post.timestamp
+            else post.id.removePrefix("post_").toLongOrNull() ?: 0L
+        }
     }
 
     BackHandler(enabled = selectedTag != "All") {
@@ -92,10 +121,16 @@ fun CommunityScreen(
     Scaffold(
         floatingActionButton = {
             // Show FAB for admin and approved regular users (guests = no phoneNumber)
-            val canPost = userProfile.isAdmin || userProfile.phoneNumber.isNotBlank()
+            val canPost = isApprovedUser || userProfile.phoneNumber.isNotBlank()
             if (canPost) {
                 ExtendedFloatingActionButton(
-                    onClick = { showCreatePostDialog = true },
+                    onClick = {
+                        if (isReadingBlocked) {
+                            showPaymentDialog = true
+                        } else {
+                            showCreatePostDialog = true
+                        }
+                    },
                     containerColor = RoyalBlue,
                     contentColor = Color.White,
                     icon = { Icon(Icons.Default.Add, contentDescription = "Create Post") },
@@ -141,8 +176,12 @@ fun CommunityScreen(
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             IconButton(
                                 onClick = {
-                                    viewModel.refreshCommunityPosts { success, msg ->
-                                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                                    if (isReadingBlocked) {
+                                        showPaymentDialog = true
+                                    } else {
+                                        viewModel.refreshCommunityPosts { success, msg ->
+                                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                                        }
                                     }
                                 },
                                 modifier = Modifier
@@ -207,63 +246,136 @@ fun CommunityScreen(
                 }
             }
 
-            // Posts List — Announcements are gone; all posts including official ones live here
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(horizontal = 14.dp, vertical = 12.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                if (filteredPosts.isEmpty()) {
-                    item {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 60.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(Icons.Default.Forum, contentDescription = null, tint = Slate700, modifier = Modifier.size(52.dp))
-                                Spacer(modifier = Modifier.height(12.dp))
-                                Text("No posts yet", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Slate900)
-                                Text("Be the first to share a post in this category.", fontSize = 13.sp, color = Slate700)
+                // Posts List — Cached posts always remain readable for users
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(horizontal = 14.dp, vertical = 12.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    if (!isApprovedUser) {
+                        item {
+                            Surface(
+                                shape = RoundedCornerShape(12.dp),
+                                color = RoyalBlue.copy(alpha = 0.08f),
+                                border = androidx.compose.foundation.BorderStroke(
+                                    1.dp,
+                                    RoyalBlue.copy(alpha = 0.25f)
+                                ),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        if (isReadingBlocked) {
+                                            showPaymentDialog = true
+                                        } else {
+                                            viewModel.refreshCommunityPosts { success, msg ->
+                                                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                                            }
+                                        }
+                                    }
+                            ) {
+                                Row(
+                                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    if (isSyncing) {
+                                        CircularProgressIndicator(
+                                            modifier = Modifier.size(20.dp),
+                                            color = RoyalBlue,
+                                            strokeWidth = 2.dp
+                                        )
+                                    } else {
+                                        Icon(
+                                            imageVector = Icons.Default.Refresh,
+                                            contentDescription = "New Posts",
+                                            tint = RoyalBlue,
+                                            modifier = Modifier.size(20.dp)
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.width(10.dp))
+                                    Column(modifier = Modifier.weight(1f)) {
+                                        Text(
+                                            text = "New Posts",
+                                            fontSize = 13.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            color = RoyalBlue
+                                        )
+                                        Text(
+                                            text = if (isReadingBlocked) "Tap to load new posts" else "Tap to check for new posts (${communityReadCount}/1 used)",
+                                            fontSize = 11.sp,
+                                            color = Slate700
+                                        )
+                                    }
+                                    Icon(
+                                        Icons.Default.ChevronRight,
+                                        contentDescription = null,
+                                        tint = RoyalBlue,
+                                        modifier = Modifier.size(18.dp)
+                                    )
+                                }
                             }
                         }
                     }
-                }
 
-                itemsIndexed(filteredPosts, key = { _, post -> post.id }) { index, post ->
-                    var visible by remember { mutableStateOf(false) }
-                    LaunchedEffect(Unit) {
-                        kotlinx.coroutines.delay((index * 60L).coerceAtMost(400L))
-                        visible = true
+                    if (filteredPosts.isEmpty()) {
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 60.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                    Icon(Icons.Default.Forum, contentDescription = null, tint = Slate700, modifier = Modifier.size(52.dp))
+                                    Spacer(modifier = Modifier.height(12.dp))
+                                    Text("No posts yet", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Slate900)
+                                    Text("Be the first to share a post in this category.", fontSize = 13.sp, color = Slate700)
+                                }
+                            }
+                        }
                     }
-                    AnimatedVisibility(
-                        visible = visible,
-                        enter = fadeIn(tween(300)) + slideInVertically(
-                            animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
-                            initialOffsetY = { it / 3 }
-                        )
-                    ) {
-                        CommunityPostCard(
-                            post = post,
-                            isAdmin = userProfile.isAdmin,
-                            isAuthor = userProfile.name.isNotBlank() && userProfile.name.equals(post.author, ignoreCase = true),
-                            onToggleLike = { viewModel.toggleLike(post.id) },
-                            onAddComment = { commentText -> viewModel.addComment(post.id, commentText) },
-                            onEditClick = { postToEdit = post },
-                            onDeleteClick = { postToDelete = post }
-                        )
+
+                    itemsIndexed(filteredPosts, key = { _, post -> post.id }) { index, post ->
+                        var visible by remember { mutableStateOf(false) }
+                        LaunchedEffect(Unit) {
+                            kotlinx.coroutines.delay((index * 60L).coerceAtMost(400L))
+                            visible = true
+                        }
+                        AnimatedVisibility(
+                            visible = visible,
+                            enter = fadeIn(tween(300)) + slideInVertically(
+                                animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
+                                initialOffsetY = { it / 3 }
+                            )
+                        ) {
+                            CommunityPostCard(
+                                post = post,
+                                isAdmin = userProfile.isAdmin,
+                                isAuthor = userProfile.name.isNotBlank() && userProfile.name.trim().equals(post.author.trim(), ignoreCase = true),
+                                currentUserName = userProfile.name,
+                                onToggleLike = { viewModel.toggleLike(post.id) },
+                                onAddComment = { commentText ->
+                                    if (isReadingBlocked) {
+                                        showPaymentDialog = true
+                                    } else {
+                                        viewModel.addComment(post.id, commentText)
+                                    }
+                                },
+                                onEditClick = { postToEdit = post },
+                                onDeleteClick = { postToDelete = post },
+                                onEditComment = { comment -> commentToEdit = Pair(post.id, comment) }
+                            )
+                        }
                     }
                 }
             }
         }
-    }
 
     // Create Post Dialog — admin gets image/video fields; users get text-only
     if (showCreatePostDialog) {
         CreatePostDialog(
             isAdmin = userProfile.isAdmin,
             userName = userProfile.name,
+            cooldownRemaining = viewModel.getPostCooldownRemainingSeconds(),
             onDismiss = { showCreatePostDialog = false },
             onSubmit = { content, tag, imageUrl, videoUrl, author ->
                 viewModel.createPost(
@@ -281,14 +393,27 @@ fun CommunityScreen(
     // Edit Post Dialog for Admin or Post Author
     val isCurrentUserAuthorOfEdit = postToEdit != null &&
         userProfile.name.isNotBlank() &&
-        userProfile.name.equals(postToEdit!!.author, ignoreCase = true)
+        userProfile.name.trim().equals(postToEdit!!.author.trim(), ignoreCase = true)
     if (postToEdit != null && (userProfile.isAdmin || isCurrentUserAuthorOfEdit)) {
         EditPostDialog(
             post = postToEdit!!,
+            isAdmin = userProfile.isAdmin,
             onDismiss = { postToEdit = null },
             onSubmit = { newContent, newTag, newImageUrl, newVideoUrl ->
                 viewModel.editPost(postToEdit!!.id, newContent, newTag, newImageUrl, newVideoUrl)
                 postToEdit = null
+            }
+        )
+    }
+
+    // Edit Comment Dialog for Comment Author or Admin
+    if (commentToEdit != null) {
+        EditCommentDialog(
+            comment = commentToEdit!!.second,
+            onDismiss = { commentToEdit = null },
+            onSubmit = { newContent ->
+                viewModel.editComment(commentToEdit!!.first, commentToEdit!!.second.id, newContent)
+                commentToEdit = null
             }
         )
     }
@@ -370,13 +495,53 @@ fun CommunityPostCard(
     post: CommunityPost,
     isAdmin: Boolean = false,
     isAuthor: Boolean = false,
+    currentUserName: String = "",
     onToggleLike: () -> Unit,
     onAddComment: (String) -> Unit,
     onEditClick: (() -> Unit)? = null,
-    onDeleteClick: (() -> Unit)? = null
+    onDeleteClick: (() -> Unit)? = null,
+    onEditComment: ((Comment) -> Unit)? = null
 ) {
     var showComments by remember { mutableStateOf(false) }
     var commentInput by remember { mutableStateOf("") }
+    var showFullScreenImage by remember { mutableStateOf(false) }
+
+    if (showFullScreenImage && !post.imageUrl.isNullOrBlank()) {
+        Dialog(
+            onDismissRequest = { showFullScreenImage = false },
+            properties = DialogProperties(usePlatformDefaultWidth = false)
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.95f))
+                    .clickable { showFullScreenImage = false },
+                contentAlignment = Alignment.Center
+            ) {
+                AsyncImage(
+                    model = post.imageUrl,
+                    contentDescription = "Full Screen Image",
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
+                )
+                IconButton(
+                    onClick = { showFullScreenImage = false },
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(24.dp)
+                        .background(Color.White.copy(alpha = 0.2f), CircleShape)
+                ) {
+                    Icon(
+                        Icons.Default.Close,
+                        contentDescription = "Close",
+                        tint = Color.White
+                    )
+                }
+            }
+        }
+    }
 
     val isOfficial = post.tag.equals("Official", ignoreCase = true) ||
                      post.role.contains("Freshman", ignoreCase = true) ||
@@ -520,18 +685,26 @@ fun CommunityPostCard(
                 Card(
                     shape = RoundedCornerShape(12.dp),
                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFFF8FAFC)),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFE2E8F0)),
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(12.dp))
+                        .clickable { showFullScreenImage = true }
                 ) {
-                    AsyncImage(
-                        model = post.imageUrl,
-                        contentDescription = "Post image",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .heightIn(min = 140.dp, max = 280.dp)
-                    )
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        AsyncImage(
+                            model = post.imageUrl,
+                            contentDescription = "Post image (Tap to expand)",
+                            contentScale = ContentScale.FillWidth,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                        )
+                    }
                 }
             }
 
@@ -714,6 +887,7 @@ fun CommunityPostCard(
                 ) {
                     if (post.comments.isNotEmpty()) {
                         post.comments.forEach { comment ->
+                            val isCommentAuthor = (currentUserName.isNotBlank() && currentUserName.trim().equals(comment.author.trim(), ignoreCase = true)) || isAdmin
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -739,11 +913,41 @@ fun CommunityPostCard(
                                 Column(modifier = Modifier.weight(1f)) {
                                     Row(
                                         modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.SpaceBetween
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically
                                     ) {
-                                        Text(comment.author, fontWeight = FontWeight.Bold, fontSize = 11.sp, color = RoyalBlue)
-                                        Text(comment.date, fontSize = 10.sp, color = Slate700)
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                            Text(comment.author, fontWeight = FontWeight.Bold, fontSize = 11.sp, color = RoyalBlue)
+                                            if (comment.author.contains("Freshman", ignoreCase = true)) {
+                                                Spacer(modifier = Modifier.width(4.dp))
+                                                Box(
+                                                    modifier = Modifier
+                                                        .background(RoyalBlue, RoundedCornerShape(3.dp))
+                                                        .padding(horizontal = 4.dp, vertical = 1.dp)
+                                                ) {
+                                                    Text("Admin", color = Color.White, fontSize = 7.5.sp, fontWeight = FontWeight.Bold)
+                                                }
+                                            }
+                                        }
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                            Text(comment.date, fontSize = 10.sp, color = Slate700)
+                                            if (isCommentAuthor) {
+                                                Spacer(modifier = Modifier.width(6.dp))
+                                                IconButton(
+                                                    onClick = { onEditComment?.invoke(comment) },
+                                                    modifier = Modifier.size(22.dp)
+                                                ) {
+                                                    Icon(
+                                                        Icons.Default.Edit,
+                                                        contentDescription = "Edit comment",
+                                                        tint = Slate700,
+                                                        modifier = Modifier.size(13.dp)
+                                                    )
+                                                }
+                                            }
+                                        }
                                     }
+                                    Spacer(modifier = Modifier.height(2.dp))
                                     Text(comment.content, fontSize = 12.sp, color = Slate900, lineHeight = 17.sp)
                                 }
                             }
@@ -751,6 +955,16 @@ fun CommunityPostCard(
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
+
+                    var isSendingComment by remember { mutableStateOf(false) }
+                    LaunchedEffect(isSendingComment) {
+                        if (isSendingComment) {
+                            kotlinx.coroutines.delay(1200L)
+                            isSendingComment = false
+                        }
+                    }
+
+                    val canSendComment = commentInput.isNotBlank() && !isSendingComment
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -762,21 +976,38 @@ fun CommunityPostCard(
                             placeholder = { Text("Write a comment...", fontSize = 12.sp) },
                             modifier = Modifier.weight(1f),
                             singleLine = true,
+                            enabled = !isSendingComment,
                             shape = RoundedCornerShape(12.dp)
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         IconButton(
                             onClick = {
-                                if (commentInput.isNotBlank()) {
-                                    onAddComment(commentInput)
+                                if (canSendComment) {
+                                    val text = commentInput.trim()
                                     commentInput = ""
+                                    isSendingComment = true
+                                    onAddComment(text)
                                 }
                             },
+                            enabled = canSendComment,
                             modifier = Modifier
                                 .size(44.dp)
-                                .background(RoyalBlue, CircleShape)
+                                .background(if (canSendComment) RoyalBlue else Slate100, CircleShape)
                         ) {
-                            Icon(Icons.Default.Send, contentDescription = "Send", tint = Color.White, modifier = Modifier.size(18.dp))
+                            if (isSendingComment) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(16.dp),
+                                    color = RoyalBlue,
+                                    strokeWidth = 2.dp
+                                )
+                            } else {
+                                Icon(
+                                    Icons.AutoMirrored.Filled.Send,
+                                    contentDescription = "Send",
+                                    tint = if (canSendComment) Color.White else Slate700.copy(alpha = 0.4f),
+                                    modifier = Modifier.size(18.dp)
+                                )
+                            }
                         }
                     }
                 }
@@ -789,6 +1020,7 @@ fun CommunityPostCard(
 fun CreatePostDialog(
     isAdmin: Boolean = false,
     userName: String = "Student",
+    cooldownRemaining: Int = 0,
     onDismiss: () -> Unit,
     onSubmit: (content: String, tag: String, imageUrl: String?, videoUrl: String?, author: String) -> Unit
 ) {
@@ -796,6 +1028,7 @@ fun CreatePostDialog(
     var selectedTag by remember { mutableStateOf(if (isAdmin) "Official" else "Academic") }
     var imageUrlText by remember { mutableStateOf("") }
     var videoUrlText by remember { mutableStateOf("") }
+    var isSubmitting by remember { mutableStateOf(false) }
     val author = if (isAdmin) "HU Freshman" else userName.ifBlank { "Student" }
     val tags = if (isAdmin) {
         listOf("Official", "Academic", "Ask Anyone", "Tips", "Campus Life", "Exams")
@@ -1096,6 +1329,28 @@ fun CreatePostDialog(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
+                    if (cooldownRemaining > 0 && !isAdmin) {
+                        Surface(
+                            color = AmberWarning.copy(alpha = 0.12f),
+                            shape = RoundedCornerShape(10.dp),
+                            modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(Icons.Default.HourglassTop, contentDescription = null, tint = AmberWarning, modifier = Modifier.size(16.dp))
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = "እባክዎ የሚቀጥለውን ፖስት ለመለጠፍ ${cooldownRemaining} ሰከንድ ይጠብቁ",
+                                    fontSize = 11.5.sp,
+                                    color = Slate900,
+                                    fontWeight = FontWeight.Medium
+                                )
+                            }
+                        }
+                    }
+
                     // ── Bottom Action Row ───────────────────────────────
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -1109,10 +1364,11 @@ fun CreatePostDialog(
                             Text("Cancel", fontWeight = FontWeight.SemiBold, fontSize = 14.sp)
                         }
 
-                        val canSubmit = content.isNotBlank()
+                        val canSubmit = content.isNotBlank() && !isSubmitting && (isAdmin || cooldownRemaining == 0)
                         Button(
                             onClick = {
                                 if (canSubmit) {
+                                    isSubmitting = true
                                     onSubmit(
                                         content,
                                         selectedTag,
@@ -1131,15 +1387,24 @@ fun CreatePostDialog(
                             contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp),
                             elevation = ButtonDefaults.buttonElevation(defaultElevation = if (canSubmit) 3.dp else 0.dp)
                         ) {
-                            Icon(
-                                imageVector = if (isAdmin) Icons.Default.Campaign else Icons.AutoMirrored.Filled.Send,
-                                contentDescription = null,
-                                tint = if (canSubmit) Color.White else Slate700.copy(alpha = 0.4f),
-                                modifier = Modifier.size(16.dp)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
+                            if (isSubmitting) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(16.dp),
+                                    color = Color.White,
+                                    strokeWidth = 2.dp
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                            } else {
+                                Icon(
+                                    imageVector = if (isAdmin) Icons.Default.Campaign else Icons.AutoMirrored.Filled.Send,
+                                    contentDescription = null,
+                                    tint = if (canSubmit) Color.White else Slate700.copy(alpha = 0.4f),
+                                    modifier = Modifier.size(16.dp)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                            }
                             Text(
-                                text = "Publish Post",
+                                text = if (isSubmitting) "Publishing..." else if (cooldownRemaining > 0 && !isAdmin) "Wait (${cooldownRemaining}s)" else "Publish Post",
                                 color = if (canSubmit) Color.White else Slate700.copy(alpha = 0.4f),
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 14.sp
@@ -1156,6 +1421,7 @@ fun CreatePostDialog(
 @Composable
 fun EditPostDialog(
     post: CommunityPost,
+    isAdmin: Boolean = false,
     onDismiss: () -> Unit,
     onSubmit: (content: String, tag: String, imageUrl: String?, videoUrl: String?) -> Unit
 ) {
@@ -1163,7 +1429,11 @@ fun EditPostDialog(
     var selectedTag by remember { mutableStateOf(post.tag) }
     var imageUrlText by remember { mutableStateOf(post.imageUrl ?: "") }
     var videoUrlText by remember { mutableStateOf(post.videoUrl ?: "") }
-    val tags = listOf("Official", "Academic", "Ask Anyone", "Tips", "Campus Life", "Exams")
+    val tags = if (isAdmin) {
+        listOf("Official", "Academic", "Ask Anyone", "Tips", "Campus Life", "Exams")
+    } else {
+        listOf("Academic", "Ask Anyone", "Tips", "Campus Life", "Exams")
+    }
     val scrollState = rememberScrollState()
 
     Dialog(
@@ -1346,76 +1616,78 @@ fun EditPostDialog(
                             }
                         }
 
-                        // Media Section
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clip(RoundedCornerShape(16.dp))
-                                .background(Color(0xFFF1F5F9))
-                                .padding(12.dp),
-                            verticalArrangement = Arrangement.spacedBy(10.dp)
-                        ) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(
-                                    Icons.Default.Attachment,
-                                    contentDescription = null,
-                                    tint = RoyalBlue,
-                                    modifier = Modifier.size(16.dp)
-                                )
-                                Spacer(modifier = Modifier.width(6.dp))
-                                Text(
-                                    text = "MEDIA ATTACHMENTS (OPTIONAL)",
-                                    fontSize = 10.5.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = RoyalBlue,
-                                    letterSpacing = 0.5.sp
-                                )
-                            }
-
-                            // Image Upload & URL
-                            PostImageUploadZone(
-                                imageUrl = imageUrlText,
-                                onImageUrlChange = { imageUrlText = it },
-                                uploaderTag = "admin_post_edit"
-                            )
-
-                            // Video URL
-                            OutlinedTextField(
-                                value = videoUrlText,
-                                onValueChange = { videoUrlText = it },
-                                label = { Text("Video URL", fontSize = 12.sp) },
-                                placeholder = { Text("https://youtube.com/watch?v=...", fontSize = 12.sp) },
-                                leadingIcon = {
-                                    Icon(Icons.Default.PlayCircle, contentDescription = null, tint = RoyalBlue, modifier = Modifier.size(18.dp))
-                                },
-                                modifier = Modifier.fillMaxWidth(),
-                                singleLine = true,
-                                shape = RoundedCornerShape(12.dp),
-                                colors = OutlinedTextFieldDefaults.colors(
-                                    focusedContainerColor = Color.White,
-                                    unfocusedContainerColor = Color.White,
-                                    focusedBorderColor = RoyalBlue,
-                                    unfocusedBorderColor = Color(0xFFCBD5E1)
-                                )
-                            )
-
-                            if (videoUrlText.isNotBlank()) {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .clip(RoundedCornerShape(10.dp))
-                                        .background(RoyalBlue.copy(alpha = 0.1f))
-                                        .padding(10.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                                ) {
-                                    Icon(Icons.Default.PlayCircle, contentDescription = null, tint = RoyalBlue, modifier = Modifier.size(20.dp))
-                                    Text(
-                                        text = "Video preview will be playable on post",
-                                        fontSize = 12.sp,
-                                        color = RoyalBlue,
-                                        fontWeight = FontWeight.SemiBold
+                        // Media Section (Admin only)
+                        if (isAdmin) {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clip(RoundedCornerShape(16.dp))
+                                    .background(Color(0xFFF1F5F9))
+                                    .padding(12.dp),
+                                verticalArrangement = Arrangement.spacedBy(10.dp)
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(
+                                        Icons.Default.Attachment,
+                                        contentDescription = null,
+                                        tint = RoyalBlue,
+                                        modifier = Modifier.size(16.dp)
                                     )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Text(
+                                        text = "MEDIA ATTACHMENTS (OPTIONAL)",
+                                        fontSize = 10.5.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = RoyalBlue,
+                                        letterSpacing = 0.5.sp
+                                    )
+                                }
+
+                                // Image Upload & URL
+                                PostImageUploadZone(
+                                    imageUrl = imageUrlText,
+                                    onImageUrlChange = { imageUrlText = it },
+                                    uploaderTag = "admin_post_edit"
+                                )
+
+                                // Video URL
+                                OutlinedTextField(
+                                    value = videoUrlText,
+                                    onValueChange = { videoUrlText = it },
+                                    label = { Text("Video URL", fontSize = 12.sp) },
+                                    placeholder = { Text("https://youtube.com/watch?v=...", fontSize = 12.sp) },
+                                    leadingIcon = {
+                                        Icon(Icons.Default.PlayCircle, contentDescription = null, tint = RoyalBlue, modifier = Modifier.size(18.dp))
+                                    },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    singleLine = true,
+                                    shape = RoundedCornerShape(12.dp),
+                                    colors = OutlinedTextFieldDefaults.colors(
+                                        focusedContainerColor = Color.White,
+                                        unfocusedContainerColor = Color.White,
+                                        focusedBorderColor = RoyalBlue,
+                                        unfocusedBorderColor = Color(0xFFCBD5E1)
+                                    )
+                                )
+
+                                if (videoUrlText.isNotBlank()) {
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .clip(RoundedCornerShape(10.dp))
+                                            .background(RoyalBlue.copy(alpha = 0.1f))
+                                            .padding(10.dp),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                    ) {
+                                        Icon(Icons.Default.PlayCircle, contentDescription = null, tint = RoyalBlue, modifier = Modifier.size(20.dp))
+                                        Text(
+                                            text = "Video preview will be playable on post",
+                                            fontSize = 12.sp,
+                                            color = RoyalBlue,
+                                            fontWeight = FontWeight.SemiBold
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -1466,6 +1738,199 @@ fun EditPostDialog(
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 text = "Save Changes",
+                                color = if (canSubmit) Color.White else Slate700.copy(alpha = 0.4f),
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 14.sp
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun EditCommentDialog(
+    comment: Comment,
+    onDismiss: () -> Unit,
+    onSubmit: (newContent: String) -> Unit
+) {
+    var content by remember { mutableStateOf(comment.content) }
+
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(
+            usePlatformDefaultWidth = false,
+            decorFitsSystemWindows = false
+        )
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black.copy(alpha = 0.55f))
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                    onClick = onDismiss
+                )
+                .padding(horizontal = 16.dp, vertical = 20.dp)
+                .imePadding(),
+            contentAlignment = Alignment.Center
+        ) {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .widthIn(max = 480.dp)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null
+                    ) {}
+                    .clip(RoundedCornerShape(24.dp)),
+                shape = RoundedCornerShape(24.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp)
+                ) {
+                    // Header
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(40.dp)
+                                .clip(CircleShape)
+                                .background(Brush.linearGradient(listOf(RoyalBlue, ElectricIndigo))),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                Icons.Default.Edit,
+                                contentDescription = null,
+                                tint = Color.White,
+                                modifier = Modifier.size(18.dp)
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.width(12.dp))
+
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "Edit Comment",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Text(
+                                text = "By ${comment.author}",
+                                fontSize = 11.5.sp,
+                                color = Slate700
+                            )
+                        }
+
+                        IconButton(
+                            onClick = onDismiss,
+                            modifier = Modifier
+                                .size(32.dp)
+                                .clip(CircleShape)
+                                .background(Slate100)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "Close",
+                                tint = Slate700,
+                                modifier = Modifier.size(18.dp)
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Text Field Container
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(Color(0xFFF8FAFC))
+                            .border(1.dp, Color(0xFFE2E8F0), RoundedCornerShape(16.dp))
+                            .padding(12.dp)
+                    ) {
+                        Column {
+                            OutlinedTextField(
+                                value = content,
+                                onValueChange = { content = it },
+                                placeholder = {
+                                    Text("Edit your comment...", fontSize = 14.sp, color = Color(0xFF94A3B8))
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .defaultMinSize(minHeight = 100.dp),
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    focusedBorderColor = Color.Transparent,
+                                    unfocusedBorderColor = Color.Transparent,
+                                    focusedContainerColor = Color.Transparent,
+                                    unfocusedContainerColor = Color.Transparent
+                                ),
+                                maxLines = 6
+                            )
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.End
+                            ) {
+                                Text(
+                                    text = "${content.trim().length} chars",
+                                    fontSize = 10.5.sp,
+                                    color = Color(0xFF94A3B8),
+                                    fontWeight = FontWeight.Medium
+                                )
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Action Buttons
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        TextButton(
+                            onClick = onDismiss,
+                            colors = ButtonDefaults.textButtonColors(contentColor = Slate700)
+                        ) {
+                            Text("Cancel", fontWeight = FontWeight.SemiBold, fontSize = 14.sp)
+                        }
+
+                        val canSubmit = content.isNotBlank()
+                        Button(
+                            onClick = {
+                                if (canSubmit) {
+                                    onSubmit(content.trim())
+                                }
+                            },
+                            enabled = canSubmit,
+                            shape = RoundedCornerShape(50),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = RoyalBlue,
+                                disabledContainerColor = Slate100
+                            ),
+                            contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp)
+                        ) {
+                            Icon(
+                                Icons.Default.Check,
+                                contentDescription = null,
+                                tint = if (canSubmit) Color.White else Slate700.copy(alpha = 0.4f),
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Save",
                                 color = if (canSubmit) Color.White else Slate700.copy(alpha = 0.4f),
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 14.sp

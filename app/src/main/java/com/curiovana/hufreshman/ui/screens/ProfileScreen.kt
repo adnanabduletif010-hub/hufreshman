@@ -44,6 +44,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.curiovana.hufreshman.data.EthiopianPhoneUtils
 import com.curiovana.hufreshman.data.ExamPracticeMode
+import com.curiovana.hufreshman.data.PaymentAccount
 import com.curiovana.hufreshman.data.PaymentConfig
 import com.curiovana.hufreshman.ui.theme.*
 import com.curiovana.hufreshman.viewmodel.MainViewModel
@@ -455,13 +456,16 @@ fun ProfileScreen(
 
     // Payment Verification Dialog
     if (showPaymentDialog) {
+        val submissionCount = viewModel.getScreenshotSubmissionCount()
         PaymentVerificationDialog(
             phoneNumber = userProfile.phoneNumber,
             paymentConfig = paymentConfig,
+            submissionCount = submissionCount,
+            hasSubmitted = userProfile.hasSubmittedRegistration,
+            rejectionReason = userProfile.rejectionReason,
             onDismiss = { showPaymentDialog = false },
             onPaymentSubmitted = { method, url ->
                 viewModel.submitPaymentVerification(method, url)
-                showPaymentDialog = false
             }
         )
     }
@@ -610,7 +614,11 @@ fun ProfileScreen(
                                 index = 1,
                                 question = q,
                                 selectedAnswer = viewModel.userAnswers[q.id],
-                                showSolution = viewModel.showExplanation[q.id] ?: false,
+                                showSolution = if (viewModel.userAnswers[q.id] != null) {
+                                    viewModel.showExplanation[q.id] ?: true
+                                } else {
+                                    viewModel.showExplanation[q.id] ?: false
+                                },
                                 isBookmarked = true,
                                 practiceMode = ExamPracticeMode.PRACTICE,
                                 isSubmitted = false,
@@ -886,6 +894,9 @@ fun MemberRegistrationDialog(
 fun PaymentVerificationDialog(
     phoneNumber: String,
     paymentConfig: PaymentConfig = PaymentConfig(),
+    submissionCount: Int = 0,
+    hasSubmitted: Boolean = false,
+    rejectionReason: String? = null,
     onDismiss: () -> Unit,
     onPaymentSubmitted: (paymentMethod: String, screenshotUrl: String) -> Unit
 ) {
@@ -897,6 +908,7 @@ fun PaymentVerificationDialog(
     var screenshotUrl by remember { mutableStateOf("") }
     var isUploading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
+    var showWaitingView by remember(hasSubmitted) { mutableStateOf(hasSubmitted) }
 
     Dialog(
         onDismissRequest = onDismiss,
@@ -910,18 +922,191 @@ fun PaymentVerificationDialog(
                 .wrapContentHeight()
                 .imePadding()
         ) {
-            Column(
-                modifier = Modifier
-                    .padding(22.dp)
-                    .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                // Dynamic Header
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+            if (showWaitingView) {
+                // WAITING SCREEN: Verification in Progress with Resubmit option
+                Column(
+                    modifier = Modifier
+                        .padding(22.dp)
+                        .verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    // Header
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .background(AmberWarning.copy(alpha = 0.15f), CircleShape),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(Icons.Default.Schedule, contentDescription = null, tint = AmberWarning, modifier = Modifier.size(22.dp))
+                            }
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Column {
+                                Text(
+                                    text = "Payment Verification In Progress",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 16.sp,
+                                    color = Slate900
+                                )
+                                Text(
+                                    text = "ክፍያዎ እየተረጋገጠ ነው • Approval Pending",
+                                    fontSize = 11.sp,
+                                    color = AmberWarning,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                            }
+                        }
+                        IconButton(onClick = onDismiss) {
+                            Icon(Icons.Default.Close, contentDescription = "Close", tint = Slate700)
+                        }
+                    }
+
+                    // Main Info Card
+                    Surface(
+                        shape = RoundedCornerShape(16.dp),
+                        color = Color(0xFFEFF6FF),
+                        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFBFDBFE)),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(Icons.Default.CheckCircle, contentDescription = null, tint = EmeraldGreen, modifier = Modifier.size(20.dp))
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = "Screenshot Received ✓",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 14.sp,
+                                    color = Slate900
+                                )
+                            }
+                            Text(
+                                text = paymentConfig.waitingMessage.ifBlank {
+                                    "Your payment screenshot has been submitted successfully. Our admin will review and approve your account shortly. Once approved, all exam questions and study materials will be unlocked for you.\n\n(ስክሪንሾቱ ደርሶናል፤ ቶሎ እናረጋግጥልዎታለን)"
+                                },
+                                fontSize = 12.sp,
+                                lineHeight = 18.sp,
+                                color = Slate800
+                            )
+                        }
+                    }
+
+                    if (!rejectionReason.isNullOrBlank()) {
+                        Surface(
+                            shape = RoundedCornerShape(14.dp),
+                            color = RoseRed.copy(alpha = 0.08f),
+                            border = androidx.compose.foundation.BorderStroke(1.dp, RoseRed.copy(alpha = 0.3f)),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Column(modifier = Modifier.padding(14.dp)) {
+                                Text("Admin Feedback / የአድሚን ማስታወሻ:", fontWeight = FontWeight.Bold, fontSize = 12.sp, color = RoseRed)
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(rejectionReason, fontSize = 12.sp, color = Slate900)
+                            }
+                        }
+                    }
+
+                    // Resubmit Button (in case they made a mistake)
+                    OutlinedButton(
+                        onClick = { showWaitingView = false },
+                        shape = RoundedCornerShape(14.dp),
+                        border = androidx.compose.foundation.BorderStroke(1.5.dp, RoyalBlue),
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = RoyalBlue),
+                        modifier = Modifier.fillMaxWidth().height(50.dp)
+                    ) {
+                        Icon(Icons.Default.Refresh, contentDescription = null, tint = RoyalBlue, modifier = Modifier.size(18.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "Resubmit Screenshot (ስህተት ካለ)",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 13.5.sp
+                        )
+                    }
+
+                    Text(
+                        text = "If you sent the wrong screenshot by mistake, tap the button above to resubmit the correct one.",
+                        fontSize = 11.sp,
+                        color = Slate700,
+                        lineHeight = 15.sp,
+                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                    )
+
+                    // Dynamic Support from Firebase
+                    if (paymentConfig.supportTelegram.isNotBlank() || paymentConfig.supportPhone.isNotBlank()) {
+                        Surface(
+                            shape = RoundedCornerShape(12.dp),
+                            color = Color(0xFFF1F5F9),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(12.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Icon(Icons.Default.Phone, contentDescription = null, tint = RoyalBlue, modifier = Modifier.size(16.dp))
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text("Need help? / እርዳታ: ", fontSize = 11.5.sp, color = Slate700)
+                                if (paymentConfig.supportTelegram.isNotBlank()) {
+                                    val handle = paymentConfig.supportTelegram.removePrefix("@")
+                                    Text(
+                                        "@$handle",
+                                        fontSize = 11.5.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = RoyalBlue,
+                                        modifier = Modifier.clickable {
+                                            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/$handle")))
+                                        }
+                                    )
+                                }
+                                if (paymentConfig.supportTelegram.isNotBlank() && paymentConfig.supportPhone.isNotBlank()) {
+                                    Text(" • ", fontSize = 11.5.sp, color = Slate700)
+                                }
+                                if (paymentConfig.supportPhone.isNotBlank()) {
+                                    Text(
+                                        paymentConfig.supportPhone,
+                                        fontSize = 11.5.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = RoyalBlue,
+                                        modifier = Modifier.clickable {
+                                            context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:${paymentConfig.supportPhone}")))
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    // Close Button
+                    Button(
+                        onClick = onDismiss,
+                        shape = RoundedCornerShape(14.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Slate800),
+                        modifier = Modifier.fillMaxWidth().height(48.dp)
+                    ) {
+                        Text("Close / ዝጋ", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                    }
+                }
+            } else {
+                Column(
+                    modifier = Modifier
+                        .padding(22.dp)
+                        .verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    // Dynamic Header
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Box(
                             modifier = Modifier
@@ -1015,17 +1200,19 @@ fun PaymentVerificationDialog(
                                         color = Slate900
                                     )
                                 }
-                                Surface(
-                                    shape = RoundedCornerShape(8.dp),
-                                    color = EmeraldGreen.copy(alpha = 0.12f)
-                                ) {
-                                    Text(
-                                        text = paymentConfig.amount.ifBlank { "250 ETB (ብር)" },
-                                        fontSize = 13.5.sp,
-                                        fontWeight = FontWeight.ExtraBold,
-                                        color = EmeraldGreen,
-                                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
-                                    )
+                                if (paymentConfig.amount.isNotBlank()) {
+                                    Surface(
+                                        shape = RoundedCornerShape(8.dp),
+                                        color = EmeraldGreen.copy(alpha = 0.12f)
+                                    ) {
+                                        Text(
+                                            text = paymentConfig.amount,
+                                            fontSize = 13.5.sp,
+                                            fontWeight = FontWeight.ExtraBold,
+                                            color = EmeraldGreen,
+                                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -1220,33 +1407,56 @@ fun PaymentVerificationDialog(
                     }
                 }
 
-                // Screenshot upload
+                val isLimitReached = submissionCount >= 5
+
+                // Screenshot upload section
                 Text(
-                    text = "የተላከበትን ስክሪንሾት ከታች ያስገቡ (Send Screenshot):",
+                    text = "የተላከበትን ስክሪንሾት ያስገቡ:",
                     fontSize = 13.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Slate900
                 )
 
-                ScreenshotUploadZone(
-                    screenshotUri = screenshotUri,
-                    screenshotUrl = screenshotUrl,
-                    isUploading = isUploading,
-                    phoneNumber = phoneNumber,
-                    onUploadStarted = {
-                        isUploading = true
-                        errorMessage = ""
-                    },
-                    onUploadSuccess = { url, uri ->
-                        screenshotUrl = url
-                        screenshotUri = uri
-                        isUploading = false
-                    },
-                    onUploadError = { err ->
-                        isUploading = false
-                        errorMessage = err
+                if (isLimitReached) {
+                    Surface(
+                        color = RoseRed.copy(alpha = 0.08f),
+                        shape = RoundedCornerShape(12.dp),
+                        border = androidx.compose.foundation.BorderStroke(1.dp, RoseRed.copy(alpha = 0.3f)),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(14.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(Icons.Default.Info, contentDescription = null, tint = RoseRed, modifier = Modifier.size(24.dp))
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Column {
+                                Text("የስክሪንሾት መላኪያ ገደብ ደርሷል", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = RoseRed)
+                                Text("ስክሪንሾት መላክ የሚቻለው ቢበዛ 5 ጊዜ ብቻ ነው። እባክዎ ከታች ባለው ስልክ ወይም ቴሌግራም አድሚኑን በቀጥታ ያግኙ።", fontSize = 11.5.sp, color = Slate700)
+                            }
+                        }
                     }
-                )
+                } else {
+                    ScreenshotUploadZone(
+                        screenshotUri = screenshotUri,
+                        screenshotUrl = screenshotUrl,
+                        isUploading = isUploading,
+                        phoneNumber = phoneNumber,
+                        onUploadStarted = {
+                            isUploading = true
+                            errorMessage = ""
+                        },
+                        onUploadSuccess = { url, uri ->
+                            screenshotUrl = url
+                            screenshotUri = uri
+                            isUploading = false
+                        },
+                        onUploadError = { err ->
+                            isUploading = false
+                            errorMessage = err
+                        }
+                    )
+                }
 
                 // Dynamic Support Row
                 if (paymentConfig.supportTelegram.isNotBlank() || paymentConfig.supportPhone.isNotBlank()) {
@@ -1290,29 +1500,35 @@ fun PaymentVerificationDialog(
                     }
                 }
 
-                // Submit button
-                Button(
-                    onClick = {
-                        when {
-                            isUploading -> errorMessage = "Please wait for the screenshot to finish uploading."
-                            selectedPaymentMethod.isBlank() -> errorMessage = "Please select a payment method above."
-                            screenshotUrl.isBlank() -> errorMessage = "Please upload your payment screenshot first."
-                            else -> onPaymentSubmitted(selectedPaymentMethod, screenshotUrl)
-                        }
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = if (screenshotUrl.isNotEmpty()) EmeraldGreen else RoyalBlue
-                    ),
-                    shape = RoundedCornerShape(14.dp),
-                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 3.dp),
-                    modifier = Modifier.fillMaxWidth().height(50.dp),
-                    enabled = !isUploading
-                ) {
-                    Icon(Icons.Default.CheckCircle, contentDescription = null, modifier = Modifier.size(18.dp))
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Submit Payment", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                if (!isLimitReached) {
+                    // Submit button
+                    Button(
+                        onClick = {
+                            when {
+                                isUploading -> errorMessage = "Please wait for the screenshot to finish uploading."
+                                selectedPaymentMethod.isBlank() -> errorMessage = "Please select a payment method above."
+                                screenshotUrl.isBlank() -> errorMessage = "Please upload your payment screenshot first."
+                                else -> {
+                                    onPaymentSubmitted(selectedPaymentMethod, screenshotUrl)
+                                    showWaitingView = true
+                                }
+                            }
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = if (screenshotUrl.isNotEmpty()) EmeraldGreen else RoyalBlue
+                        ),
+                        shape = RoundedCornerShape(14.dp),
+                        elevation = ButtonDefaults.buttonElevation(defaultElevation = 3.dp),
+                        modifier = Modifier.fillMaxWidth().height(50.dp),
+                        enabled = !isUploading
+                    ) {
+                        Icon(Icons.Default.CheckCircle, contentDescription = null, modifier = Modifier.size(18.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Submit Payment", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                    }
                 }
             }
+        }
         }
     }
 }

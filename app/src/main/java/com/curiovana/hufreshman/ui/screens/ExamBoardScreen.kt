@@ -46,7 +46,7 @@ import com.curiovana.hufreshman.viewmodel.MainViewModel
 @Composable
 fun ExamBoardScreen(
     viewModel: MainViewModel,
-    onNavigateToAdmin: () -> Unit,
+    onNavigateToAdmin: () -> Unit = {},
     // Returns true if action is allowed; isFirstItem=true means it's the free preview item
     onYearSelectedGate: (isFirstItem: Boolean) -> Boolean = { true }
 ) {
@@ -1087,7 +1087,11 @@ fun ExamQuestionsListView(
                         index = index + 1,
                         question = question,
                         selectedAnswer = viewModel.userAnswers[question.id],
-                        showSolution = viewModel.showExplanation[question.id] ?: false,
+                        showSolution = if (practiceMode == ExamPracticeMode.PRACTICE && viewModel.userAnswers[question.id] != null) {
+                            viewModel.showExplanation[question.id] ?: true
+                        } else {
+                            viewModel.showExplanation[question.id] ?: false
+                        },
                         isBookmarked = bookmarks.contains(question.id),
                         practiceMode = practiceMode,
                         isSubmitted = examSubmitted,
@@ -1387,11 +1391,12 @@ fun QuestionCard(
                         .padding(horizontal = 12.dp, vertical = 10.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    val showFilledCircle = isSelected || ((practiceMode == ExamPracticeMode.PRACTICE || isSubmitted) && isCorrectOption && selectedAnswer != null)
                     Box(
                         modifier = Modifier
                             .size(26.dp)
                             .background(
-                                if (isSelected) optBorderColor else Color(0xFFF1F5F9),
+                                if (showFilledCircle) optBorderColor else Color(0xFFF1F5F9),
                                 CircleShape
                             ),
                         contentAlignment = Alignment.Center
@@ -1400,7 +1405,7 @@ fun QuestionCard(
                             text = optionLetters.getOrElse(optIdx) { "?" },
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
-                            color = if (isSelected) Color.White else Slate700
+                            color = if (showFilledCircle) Color.White else Slate700
                         )
                     }
 

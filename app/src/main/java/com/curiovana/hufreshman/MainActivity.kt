@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.curiovana.hufreshman.data.RemoteConfigManager
 import com.curiovana.hufreshman.ui.screens.*
 import com.curiovana.hufreshman.ui.theme.HuFreshmanTheme
 import com.curiovana.hufreshman.ui.theme.rememberScreenDimensions
@@ -52,9 +53,12 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         // Subscribe to admin-post notifications on every launch (idempotent & offline-safe)
         HuFreshmanMessagingService.subscribeToAdminTopic()
+        // Initialize Firebase Remote Config to check for mandatory force updates
+        RemoteConfigManager.init(this)
         setContent {
             HuFreshmanTheme(darkTheme = false, dynamicColor = false) {
                 val screenDimensions = rememberScreenDimensions()
+                val updateInfo by RemoteConfigManager.updateInfo.collectAsState()
                 val isLoading by viewModel.isLoading.collectAsState()
                 val userProfile by viewModel.userProfile.collectAsState()
                 val paymentConfig by viewModel.paymentConfig.collectAsState()
@@ -63,7 +67,9 @@ class MainActivity : ComponentActivity() {
                 val tabHistory = remember { mutableStateListOf(NavigationTab.EXAMS) }
 
                 val navigateToTab: (NavigationTab) -> Unit = { tab ->
-                    if (currentTab != tab) {
+                    if (tab == NavigationTab.ADMIN && !userProfile.isAdmin) {
+                        // Strictly block non-admins from opening Admin tab
+                    } else if (currentTab != tab) {
                         tabHistory.remove(tab)
                         tabHistory.add(tab)
                         currentTab = tab
@@ -75,10 +81,13 @@ class MainActivity : ComponentActivity() {
                     HuFreshmanMessagingService.syncAdminSubscription(userProfile.isAdmin)
                 }
 
-                // Handle push notification tap intent targeting Admin tab
-                LaunchedEffect(Unit) {
-                    if (intent?.getStringExtra("navigate_to") == "ADMIN" && userProfile.isAdmin) {
-                        navigateToTab(NavigationTab.ADMIN)
+                // Handle push notification tap intent targeting Admin tab (strictly for verified admins)
+                LaunchedEffect(userProfile.isAdmin) {
+                    if (intent?.getStringExtra("navigate_to") == "ADMIN") {
+                        if (userProfile.isAdmin) {
+                            navigateToTab(NavigationTab.ADMIN)
+                        }
+                        intent?.removeExtra("navigate_to")
                     }
                 }
 
@@ -315,7 +324,6 @@ class MainActivity : ComponentActivity() {
                                 when (tab) {
                                     NavigationTab.EXAMS -> ExamBoardScreen(
                                         viewModel = viewModel,
-                                        onNavigateToAdmin = { navigateToTab(NavigationTab.ADMIN) },
                                         // Gated when clicking an exam year Ã¢â‚¬â€ first year of first subject is free for everyone
                                         onYearSelectedGate = { isFirstItem ->
                                             when {
@@ -387,10 +395,20 @@ class MainActivity : ComponentActivity() {
                                             }
                                         }
                                     )
-                                    NavigationTab.ADMIN -> AdminScreen(viewModel = viewModel)
+                                    NavigationTab.ADMIN -> {
+                                        if (userProfile.isAdmin) {
+                                            AdminScreen(viewModel = viewModel)
+                                        } else {
+                                            LaunchedEffect(Unit) {
+                                                currentTab = NavigationTab.EXAMS
+                                            }
+                                        }
+                                    }
                                     NavigationTab.PROFILE -> ProfileScreen(
                                         viewModel = viewModel,
-                                        onNavigateToAdmin = { navigateToTab(NavigationTab.ADMIN) }
+                                        onNavigateToAdmin = {
+                                            if (userProfile.isAdmin) navigateToTab(NavigationTab.ADMIN)
+                                        }
                                     )
                                 }
                             }
@@ -417,13 +435,16 @@ class MainActivity : ComponentActivity() {
 
                         // Payment Verification Dialog (shown when unapproved user clicks premium content)
                         if (showPaymentDialog && !userProfile.isApproved && !userProfile.isGuest && !userProfile.isAdmin) {
+                            val submissionCount = viewModel.getScreenshotSubmissionCount()
                             PaymentVerificationDialog(
                                 phoneNumber = userProfile.phoneNumber,
                                 paymentConfig = paymentConfig,
+                                submissionCount = submissionCount,
+                                hasSubmitted = userProfile.hasSubmittedRegistration,
+                                rejectionReason = userProfile.rejectionReason,
                                 onDismiss = { showPaymentDialog = false },
                                 onPaymentSubmitted = { method, url ->
                                     viewModel.submitPaymentVerification(method, url)
-                                    showPaymentDialog = false
                                 }
                             )
                         }
@@ -443,10 +464,20 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
+
+                        // Mandatory Force Update Overlay (controlled via Firebase Remote Config)
+                        if (updateInfo.isUpdateRequired) {
+                            ForceUpdateDialog(updateInfo = updateInfo)
+                        }
                     }
                 }
             }
         }
     }
 }
+
+    override fun onResume() {
+        super.onResume()
+        RemoteConfigManager.checkUpdate(this)
+    }
 }

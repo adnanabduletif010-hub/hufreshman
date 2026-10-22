@@ -114,7 +114,7 @@ fun PostImageUploadZone(
                 AsyncImage(
                     model = if (imageUrl.isNotBlank()) imageUrl else localUri,
                     contentDescription = "Post image preview",
-                    contentScale = ContentScale.Crop,
+                    contentScale = ContentScale.Fit,
                     modifier = Modifier.fillMaxSize()
                 )
 

@@ -149,44 +149,15 @@ data class PaymentAccount(
 )
 
 
-val DEFAULT_PAYMENT_ACCOUNTS = listOf(
-    PaymentAccount(
-        id = "telebirr_default",
-        method = "Telebirr",
-        accountNumber = "0955903175",
-        accountName = "Adinan",
-        shortCode = "T",
-        colorHex = "#0072CE",
-        note = "Telebirr"
-    ),
-    PaymentAccount(
-        id = "cbe_default",
-        method = "CBE Bank",
-        accountNumber = "1000650901731",
-        accountName = "Adinan",
-        shortCode = "C",
-        colorHex = "#800020",
-        note = "Commercial Bank of Ethiopia"
-    ),
-    PaymentAccount(
-        id = "ebirr_default",
-        method = "E-Birr",
-        accountNumber = "0955903175",
-        accountName = "Adinan",
-        shortCode = "E",
-        colorHex = "#FF6600",
-        note = "E-Birr"
-    )
-)
-
 data class PaymentConfig(
     val title: String = "የአባልነት ክፍያ (Membership)",
     val subtitle: String = "Haramaya University Freshman",
-    val instructions: String = "የአባልነት ክፍያ መጠን 250 ብር (ETB) ነው። ክፍያዎን ከፈጸሙ በኋላ የተላከበትን ስክሪንሾት ከታች ይላኩ፤ አድሚኑ እንዳረጋገጠ ሙሉ አገልግሎቱ ይከፈታል።",
-    val amount: String = "250 ETB (ብር)",
-    val accounts: List<PaymentAccount> = DEFAULT_PAYMENT_ACCOUNTS,
-    val supportTelegram: String = "@HUfreshman1",
-    val supportPhone: String = "0955903175",
+    val instructions: String = "",
+    val amount: String = "",
+    val accounts: List<PaymentAccount> = emptyList(),
+    val supportTelegram: String = "",
+    val supportPhone: String = "",
+    val waitingMessage: String = "",
     val isLoaded: Boolean = false
 )
 

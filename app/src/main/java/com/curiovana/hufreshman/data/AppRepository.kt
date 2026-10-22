@@ -31,6 +31,8 @@ class AppRepository(private val context: Context) {
     val paymentConfig: StateFlow<PaymentConfig> = _paymentConfig
 
     init {
+        // Use local SharedPreferences cache first, then listen to Firebase for live dynamic updates
+        _paymentConfig.value = loadCachedPaymentConfig()
         listenToPaymentConfig()
     }
 
@@ -52,7 +54,17 @@ class AppRepository(private val context: Context) {
         try {
             context.assets.open("data/exams.json").use { inputStream ->
                 val reader = InputStreamReader(inputStream, "UTF-8")
-                val jsonArray = gson.fromJson(reader, JsonArray::class.java)
+                val jsonElement = gson.fromJson(reader, JsonElement::class.java)
+                val jsonArray = when {
+                    jsonElement == null -> null
+                    jsonElement.isJsonArray -> jsonElement.asJsonArray
+                    jsonElement.isJsonObject -> {
+                        val arr = JsonArray()
+                        jsonElement.asJsonObject.entrySet().forEach { arr.add(it.value) }
+                        arr
+                    }
+                    else -> null
+                }
 
                 jsonArray?.forEachIndexed { index, element ->
                     if (element.isJsonObject) {
@@ -141,22 +153,31 @@ class AppRepository(private val context: Context) {
             } else {
                 val str = primitive.asString.uppercase().trim()
                 answerIdx = when (str) {
+                    "A", "0" -> 0
                     "B", "1" -> 1
                     "C", "2" -> 2
                     "D", "3" -> 3
-                    else -> 0
+                    else -> {
+                        val match = optionsList.indexOfFirst { opt ->
+                            opt.trim().equals(primitive.asString.trim(), ignoreCase = true)
+                        }
+                        if (match >= 0) match else 0
+                    }
                 }
             }
         } else if (obj.has("correctOption")) {
             answerIdx = when (obj.get("correctOption").asString.uppercase().trim()) {
-                "B" -> 1
-                "C" -> 2
-                "D" -> 3
+                "A", "0" -> 0
+                "B", "1" -> 1
+                "C", "2" -> 2
+                "D", "3" -> 3
                 else -> 0
             }
         }
 
-        val originalUniv = obj.get("originalUniversity")?.asString
+        val originalUniv = if (obj.has("originalUniversity") && !obj.get("originalUniversity").isJsonNull) {
+            obj.get("originalUniversity").asString
+        } else null
 
         return ExamQuestion(
             id = id,
@@ -443,22 +464,10 @@ class AppRepository(private val context: Context) {
     }
 
     private fun sortPostsDescending(posts: List<CommunityPost>): List<CommunityPost> {
-        val now = System.currentTimeMillis()
-        val oneDayMillis = 24 * 60 * 60 * 1000L
-        return posts.sortedWith(
-            compareByDescending<CommunityPost> { post ->
-                val isOfficial = post.tag.equals("Official", ignoreCase = true) ||
-                        post.role.contains("Freshman", ignoreCase = true) ||
-                        post.author.contains("Freshman", ignoreCase = true)
-                val postTime = if (post.timestamp > 0L) post.timestamp
-                else post.id.removePrefix("post_").toLongOrNull() ?: 0L
-                val isWithinOneDay = isOfficial && (now - postTime) in 0..oneDayMillis
-                if (isWithinOneDay) 1 else 0
-            }.thenByDescending { post ->
-                if (post.timestamp > 0L) post.timestamp
-                else post.id.removePrefix("post_").toLongOrNull() ?: 0L
-            }
-        )
+        return posts.sortedByDescending { post ->
+            if (post.timestamp > 0L) post.timestamp
+            else post.id.removePrefix("post_").toLongOrNull() ?: 0L
+        }
     }
 
     fun getCachedCommunityPosts(): List<CommunityPost> {
@@ -519,13 +528,104 @@ class AppRepository(private val context: Context) {
         // Count this as a Firebase read
         incrementFirebaseReadCount()
 
-        // Query Firebase Firestore — exact content from database
+        // 1. Single-document feed read from community_feed/latest (1 Document Read instead of 15!)
         try {
-            val snapshot = com.google.android.gms.tasks.Tasks.await(
-                firestore.collection("community_posts").get(),
-                10,
+            val feedDoc = com.google.android.gms.tasks.Tasks.await(
+                firestore.collection("community_feed").document("latest").get(),
+                8,
                 java.util.concurrent.TimeUnit.SECONDS
             )
+
+            if (feedDoc != null && feedDoc.exists()) {
+                val rawList = feedDoc.get("posts") as? List<*>
+                if (!rawList.isNullOrEmpty()) {
+                    val remotePosts = mutableListOf<CommunityPost>()
+                    for (obj in rawList) {
+                        val item = obj as? Map<*, *> ?: continue
+                        try {
+                            val id = item["id"] as? String ?: continue
+                            if (isDemoPost(id)) continue
+
+                            val author = item["author"] as? String ?: "HU Freshman"
+                            val role = item["role"] as? String ?: "Student"
+                            val date = item["date"] as? String ?: "Recently"
+                            val content = item["content"] as? String ?: ""
+                            val tag = item["tag"] as? String ?: "Academic"
+                            val imageUrl = item["imageUrl"] as? String
+                            val videoUrl = item["videoUrl"] as? String ?: item["youtubeUrl"] as? String
+                            val youtubeUrl = item["youtubeUrl"] as? String ?: videoUrl
+                            val likes = ((item["likes"] as? Number)?.toLong() ?: 0L).toInt()
+                            val timestamp = (item["timestamp"] as? Number)?.toLong() ?: System.currentTimeMillis()
+
+                            val commentsList = mutableListOf<Comment>()
+                            val rawComments = item["comments"] as? List<*>
+                            rawComments?.forEach { cObj ->
+                                val cMap = cObj as? Map<*, *> ?: return@forEach
+                                commentsList.add(
+                                    Comment(
+                                        id = cMap["id"] as? String ?: java.util.UUID.randomUUID().toString(),
+                                        author = cMap["author"] as? String ?: "Student",
+                                        content = cMap["content"] as? String ?: "",
+                                        date = cMap["date"] as? String ?: "Recently"
+                                    )
+                                )
+                            }
+
+                            if (content.isNotBlank()) {
+                                remotePosts.add(
+                                    CommunityPost(
+                                        id = id,
+                                        author = author,
+                                        role = role,
+                                        date = date,
+                                        content = content,
+                                        tag = tag,
+                                        imageUrl = imageUrl,
+                                        videoUrl = videoUrl,
+                                        youtubeUrl = youtubeUrl,
+                                        likes = likes,
+                                        isLiked = likedSet.contains(id),
+                                        comments = commentsList,
+                                        timestamp = timestamp
+                                    )
+                                )
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+
+                    if (remotePosts.isNotEmpty()) {
+                        cachedPosts = sortPostsDescending(remotePosts).take(15).toMutableList()
+                        savePostsToPrefs(cachedPosts)
+                        return@withContext getCachedCommunityPosts()
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        // 2. Fallback: Query community_posts collection if community_feed/latest does not exist yet
+        try {
+            val snapshot = try {
+                com.google.android.gms.tasks.Tasks.await(
+                    firestore.collection("community_posts")
+                        .orderBy("timestamp", com.google.firebase.firestore.Query.Direction.DESCENDING)
+                        .limit(15)
+                        .get(),
+                    10,
+                    java.util.concurrent.TimeUnit.SECONDS
+                )
+            } catch (e: Exception) {
+                com.google.android.gms.tasks.Tasks.await(
+                    firestore.collection("community_posts")
+                        .limit(15)
+                        .get(),
+                    10,
+                    java.util.concurrent.TimeUnit.SECONDS
+                )
+            }
 
             val remotePosts = mutableListOf<CommunityPost>()
             for (doc in snapshot.documents) {
@@ -553,8 +653,9 @@ class AppRepository(private val context: Context) {
                     val timestamp = doc.getLong("timestamp") ?: id.removePrefix("post_").toLongOrNull() ?: 0L
 
                     val commentsList = mutableListOf<Comment>()
-                    val rawComments = doc.get("comments") as? List<Map<String, Any>>
-                    rawComments?.forEach { cMap ->
+                    val rawComments = doc.get("comments") as? List<*>
+                    rawComments?.forEach { cObj ->
+                        val cMap = cObj as? Map<*, *> ?: return@forEach
                         commentsList.add(
                             Comment(
                                 id = cMap["id"] as? String ?: java.util.UUID.randomUUID().toString(),
@@ -590,8 +691,10 @@ class AppRepository(private val context: Context) {
             }
 
             // Exactly what is in database (mirrors database, sorted with newest at top)
-            cachedPosts = sortPostsDescending(remotePosts).toMutableList()
+            cachedPosts = sortPostsDescending(remotePosts).take(15).toMutableList()
             savePostsToPrefs(cachedPosts)
+            // Initialize single-document feed so future reads only cost 1 read
+            syncFeedDocument(cachedPosts)
             return@withContext getCachedCommunityPosts()
         } catch (e: Exception) {
             e.printStackTrace()
@@ -608,6 +711,45 @@ class AppRepository(private val context: Context) {
         getCachedCommunityPosts()
     }
 
+    private fun syncFeedDocument(posts: List<CommunityPost>) {
+        try {
+            val top15 = posts.take(15)
+            val postsList = top15.map { post ->
+                val pMap = hashMapOf<String, Any?>(
+                    "id" to post.id,
+                    "author" to post.author,
+                    "role" to post.role,
+                    "date" to post.date,
+                    "content" to post.content,
+                    "tag" to post.tag,
+                    "likes" to post.likes.toLong(),
+                    "comments" to post.comments.takeLast(25).map { c ->
+                        mapOf(
+                            "id" to c.id,
+                            "author" to c.author,
+                            "content" to c.content,
+                            "date" to c.date
+                        )
+                    },
+                    "timestamp" to post.timestamp
+                )
+                if (!post.imageUrl.isNullOrBlank()) pMap["imageUrl"] = post.imageUrl
+                if (!post.videoUrl.isNullOrBlank()) pMap["videoUrl"] = post.videoUrl
+                if (!post.youtubeUrl.isNullOrBlank()) pMap["youtubeUrl"] = post.youtubeUrl
+                pMap
+            }
+            firestore.collection("community_feed").document("latest").set(
+                mapOf(
+                    "posts" to postsList,
+                    "updatedAt" to System.currentTimeMillis()
+                ),
+                SetOptions.merge()
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     private fun savePostToFirestore(post: CommunityPost) {
         val postMap = hashMapOf(
             "id" to post.id,
@@ -617,7 +759,7 @@ class AppRepository(private val context: Context) {
             "content" to post.content,
             "tag" to post.tag,
             "likes" to post.likes.toLong(),
-            "comments" to post.comments.map { c ->
+            "comments" to post.comments.takeLast(50).map { c ->
                 mapOf(
                     "id" to c.id,
                     "author" to c.author,
@@ -643,8 +785,12 @@ class AppRepository(private val context: Context) {
         prefs.edit().putString("community_posts", gson.toJson(posts)).apply()
     }
 
-    // ── Daily Quota Helpers ──────────────────────────────────────────────────
-    // All quota tracking is local (SharedPreferences) — zero extra Firebase reads.
+    // ── Daily Quota & Anti-Spam Helpers ─────────────────────────────────────
+    // All quota & cooldown tracking is local (SharedPreferences/Memory) — zero extra Firebase reads.
+
+    private var lastPostCreationTimestamp: Long = 0L
+    private val likeDebounceJobs = java.util.concurrent.ConcurrentHashMap<String, kotlinx.coroutines.Job>()
+    private val repositoryScope = kotlinx.coroutines.CoroutineScope(Dispatchers.IO + kotlinx.coroutines.SupervisorJob())
 
     private fun todayKey(): String {
         val cal = java.util.Calendar.getInstance()
@@ -655,6 +801,17 @@ class AppRepository(private val context: Context) {
     fun canUserPost(): Boolean {
         val key = "user_post_count_${todayKey()}"
         return prefs.getInt(key, 0) < 2
+    }
+
+    /** Returns remaining cooldown in seconds between creating posts (15s anti-spam). Returns 0 if ready. */
+    fun getPostCooldownRemainingSeconds(): Int {
+        val elapsed = (System.currentTimeMillis() - lastPostCreationTimestamp) / 1000
+        val remaining = 15 - elapsed
+        return if (remaining > 0) remaining.toInt() else 0
+    }
+
+    fun canUserPostWithCooldown(): Boolean {
+        return getPostCooldownRemainingSeconds() == 0
     }
 
     /** Increments the user's daily post counter. Call after a successful post. */
@@ -686,6 +843,7 @@ class AppRepository(private val context: Context) {
         videoUrl: String? = null
     ): CommunityPost = withContext(Dispatchers.IO) {
         val now = System.currentTimeMillis()
+        lastPostCreationTimestamp = now
         val newPost = CommunityPost(
             id = "post_$now",
             author = author,
@@ -708,6 +866,7 @@ class AppRepository(private val context: Context) {
         // 2. Targeted Firestore write (1 write, 0 reads to protect Spark quota)
         try {
             savePostToFirestore(newPost)
+            syncFeedDocument(cachedPosts)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -748,6 +907,7 @@ class AppRepository(private val context: Context) {
                 updateMap["youtubeUrl"] = newVideoUrl
             }
             firestore.collection("community_posts").document(postId).update(updateMap)
+            syncFeedDocument(cachedPosts)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -764,6 +924,7 @@ class AppRepository(private val context: Context) {
         // Targeted Firestore delete (1 write, 0 reads)
         try {
             firestore.collection("community_posts").document(postId).delete()
+            syncFeedDocument(cachedPosts)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -781,17 +942,23 @@ class AppRepository(private val context: Context) {
         val updated = current.copy(isLiked = isLiked, likes = newLikes)
         cachedPosts[index] = updated
 
+        // 1. Instant local cache update (zero latency, offline-first)
         val likedSet = getLikedPostIds().toMutableSet()
         if (isLiked) likedSet.add(postId) else likedSet.remove(postId)
         prefs.edit().putStringSet("liked_posts", likedSet).apply()
-
         savePostsToPrefs(cachedPosts)
 
-        // Targeted Firestore update (1 write, 0 reads)
-        try {
-            firestore.collection("community_posts").document(postId).update("likes", newLikes.toLong())
-        } catch (e: Exception) {
-            e.printStackTrace()
+        // 2. Debounced Firestore write (1.2s delay to throttle rapid taps into a single write)
+        likeDebounceJobs[postId]?.cancel()
+        likeDebounceJobs[postId] = repositoryScope.launch {
+            kotlinx.coroutines.delay(1200L)
+            try {
+                val finalLikes = cachedPosts.find { it.id == postId }?.likes ?: newLikes
+                firestore.collection("community_posts").document(postId).update("likes", finalLikes.toLong())
+                syncFeedDocument(cachedPosts)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
 
         updated
@@ -823,11 +990,54 @@ class AppRepository(private val context: Context) {
             firestore.collection("community_posts").document(postId).update(
                 "comments", FieldValue.arrayUnion(commentMap)
             )
+            syncFeedDocument(cachedPosts)
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
         updated
+    }
+
+    suspend fun updateComment(
+        postId: String,
+        commentId: String,
+        newContent: String
+    ): CommunityPost? = withContext(Dispatchers.IO) {
+        val index = cachedPosts.indexOfFirst { it.id == postId }
+        if (index == -1) return@withContext null
+
+        val current = cachedPosts[index]
+        val cIndex = current.comments.indexOfFirst { it.id == commentId }
+        if (cIndex == -1) return@withContext null
+
+        val oldComment = current.comments[cIndex]
+        val updatedComment = oldComment.copy(content = newContent)
+        val updatedCommentsList = current.comments.toMutableList()
+        updatedCommentsList[cIndex] = updatedComment
+
+        val updatedPost = current.copy(comments = updatedCommentsList)
+        cachedPosts[index] = updatedPost
+        savePostsToPrefs(cachedPosts)
+
+        // Targeted Firestore update
+        try {
+            val commentsMaps = updatedCommentsList.map { c ->
+                mapOf(
+                    "id" to c.id,
+                    "author" to c.author,
+                    "content" to c.content,
+                    "date" to c.date
+                )
+            }
+            firestore.collection("community_posts").document(postId).update(
+                "comments", commentsMaps
+            )
+            syncFeedDocument(cachedPosts)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        updatedPost
     }
 
     private fun getLikedPostIds(): Set<String> {
@@ -932,6 +1142,10 @@ class AppRepository(private val context: Context) {
             .putString("user_rejection_reason", null)
             .apply()
 
+        if (reg.screenshotUrl.isNotBlank()) {
+            incrementScreenshotSubmissionCount(reg.phoneNumber)
+        }
+
         // Sync to Cloud Firestore in background so admin sees it immediately on any device
         try {
             val docId = cleanPhone(reg.phoneNumber).ifBlank { reg.id }
@@ -945,6 +1159,7 @@ class AppRepository(private val context: Context) {
                 "paymentMethod" to reg.paymentMethod,
                 "transactionId" to reg.transactionId,
                 "screenshotUrl" to reg.screenshotUrl,
+                "screenshotSubmissionCount" to getScreenshotSubmissionCount(reg.phoneNumber),
                 "date" to reg.date,
                 "isApproved" to false,
                 "rejectionReason" to null,
@@ -964,8 +1179,50 @@ class AppRepository(private val context: Context) {
         }
     }
 
-    fun updatePaymentVerification(paymentMethod: String, screenshotUrl: String) {
+    fun getScreenshotSubmissionCount(phone: String = ""): Int {
+        val targetPhone = phone.ifBlank { prefs.getString("user_phone", "") ?: "" }
+        val clean = cleanPhone(targetPhone)
+        val key = if (clean.isNotBlank()) "screenshot_submissions_$clean" else "screenshot_submissions_default"
+        return prefs.getInt(key, 0)
+    }
+
+    fun incrementScreenshotSubmissionCount(phone: String = ""): Int {
+        val targetPhone = phone.ifBlank { prefs.getString("user_phone", "") ?: "" }
+        val clean = cleanPhone(targetPhone)
+        val key = if (clean.isNotBlank()) "screenshot_submissions_$clean" else "screenshot_submissions_default"
+        val next = prefs.getInt(key, 0) + 1
+        prefs.edit().putInt(key, next).apply()
+        return next
+    }
+
+    fun canSubmitPaymentScreenshot(phone: String = ""): Boolean {
+        return getScreenshotSubmissionCount(phone) < 5
+    }
+
+    fun getCommunityReadCount(): Int {
+        val phone = prefs.getString("user_phone", "") ?: ""
+        val clean = cleanPhone(phone)
+        val key = if (clean.isNotBlank()) "community_read_count_$clean" else "community_read_count_guest"
+        return prefs.getInt(key, 0)
+    }
+
+    fun recordCommunityRead(): Int {
+        val phone = prefs.getString("user_phone", "") ?: ""
+        val clean = cleanPhone(phone)
+        val key = if (clean.isNotBlank()) "community_read_count_$clean" else "community_read_count_guest"
+        val next = prefs.getInt(key, 0) + 1
+        prefs.edit().putInt(key, next).apply()
+        return next
+    }
+
+    fun updatePaymentVerification(paymentMethod: String, screenshotUrl: String): Boolean {
         val currentPhone = prefs.getString("user_phone", "") ?: ""
+        if (!canSubmitPaymentScreenshot(currentPhone)) {
+            android.util.Log.w("AppRepository", "Screenshot submission limit reached (5 max)")
+            return false
+        }
+        val newSubmissionCount = incrementScreenshotSubmissionCount(currentPhone)
+
         val list = loadMemberRegistrations().toMutableList()
         val index = list.indexOfFirst { it.phoneNumber == currentPhone }
         if (index >= 0) {
@@ -992,6 +1249,7 @@ class AppRepository(private val context: Context) {
                     "screenshotUrl" to screenshotUrl,
                     "isApproved" to false,
                     "rejectionReason" to null,
+                    "screenshotSubmissionCount" to newSubmissionCount,
                     "paymentSubmittedAt" to System.currentTimeMillis()
                 )
                 firestore.collection("member_registrations")
@@ -1007,6 +1265,7 @@ class AppRepository(private val context: Context) {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+        return true
     }
 
     fun approveMemberRegistration(regId: String) {
@@ -1097,14 +1356,16 @@ class AppRepository(private val context: Context) {
 
     fun listenToMemberRegistrations(onUpdate: (List<MemberRegistration>) -> Unit): ListenerRegistration? {
         return try {
+            // Only listen to pending requests to save Spark plan reads (isApproved == false)
             firestore.collection("member_registrations")
+                .whereEqualTo("isApproved", false)
                 .addSnapshotListener { snapshot, error ->
                     if (error != null) {
                         android.util.Log.e("AppRepository", "Firestore listener error", error)
                         return@addSnapshotListener
                     }
                     if (snapshot != null) {
-                        val list = mutableListOf<MemberRegistration>()
+                        val pendingList = mutableListOf<MemberRegistration>()
                         for (doc in snapshot.documents) {
                             try {
                                 val id = doc.getString("id") ?: doc.id
@@ -1120,7 +1381,7 @@ class AppRepository(private val context: Context) {
                                 val isApproved = doc.getBoolean("isApproved") ?: false
                                 val rejectionReason = doc.getString("rejectionReason")
                                 if (fullName.isNotBlank() || transactionId.isNotBlank() || phoneNumber.isNotBlank()) {
-                                    list.add(
+                                    pendingList.add(
                                         MemberRegistration(
                                             id = id,
                                             fullName = fullName,
@@ -1141,15 +1402,41 @@ class AppRepository(private val context: Context) {
                                 e.printStackTrace()
                             }
                         }
-                        if (list.isNotEmpty()) {
-                            prefs.edit().putString("member_registrations", gson.toJson(list)).apply()
-                        }
-                        onUpdate(list)
+                        // Merge pending registrations with locally cached approved members
+                        val localList = loadMemberRegistrations().toMutableList()
+                        val approvedLocal = localList.filter { it.isApproved }
+                        val combined = (pendingList + approvedLocal).distinctBy { it.phoneNumber.ifBlank { it.id } }
+                        prefs.edit().putString("member_registrations", gson.toJson(combined)).apply()
+                        onUpdate(combined)
                     }
                 }
         } catch (e: Exception) {
             e.printStackTrace()
             null
+        }
+    }
+
+    suspend fun deleteMemberRegistration(regId: String): Boolean = withContext(Dispatchers.IO) {
+        val list = loadMemberRegistrations().toMutableList()
+        val index = list.indexOfFirst { it.id == regId || it.transactionId == regId || it.phoneNumber == regId }
+        val reg = if (index >= 0) list[index] else null
+        val targetPhone = reg?.phoneNumber ?: regId
+        val docId = cleanPhone(targetPhone).ifBlank { regId }
+
+        if (index >= 0) {
+            list.removeAt(index)
+            prefs.edit().putString("member_registrations", gson.toJson(list)).apply()
+        }
+
+        return@withContext try {
+            com.google.android.gms.tasks.Tasks.await(
+                firestore.collection("member_registrations").document(docId).delete()
+            )
+            android.util.Log.d("AppRepository", "Registration proof deleted from Firestore: $docId")
+            true
+        } catch (e: Exception) {
+            android.util.Log.e("AppRepository", "Failed to delete registration proof", e)
+            false
         }
     }
 
@@ -1205,6 +1492,15 @@ class AppRepository(private val context: Context) {
                 if (!txn.isNullOrBlank()) editor.putString("user_transaction_id", txn)
                 if (!method.isNullOrBlank()) editor.putString("user_payment_method", method)
                 if (!date.isNullOrBlank()) editor.putString("user_registration_date", date)
+
+                val submissionCount = (doc.getLong("screenshotSubmissionCount") ?: 0L).toInt()
+                if (submissionCount > 0) {
+                    val key = "screenshot_submissions_$docId"
+                    val local = prefs.getInt(key, 0)
+                    if (submissionCount > local) {
+                        editor.putInt(key, submissionCount)
+                    }
+                }
 
                 editor.apply()
                 true
@@ -1272,9 +1568,11 @@ class AppRepository(private val context: Context) {
     suspend fun fetchMemberRegistrationsFromFirestore(): Result<List<MemberRegistration>> = withContext(Dispatchers.IO) {
         return@withContext try {
             val snapshot = com.google.android.gms.tasks.Tasks.await(
-                firestore.collection("member_registrations").get()
+                firestore.collection("member_registrations")
+                    .whereEqualTo("isApproved", false)
+                    .get()
             )
-            val list = mutableListOf<MemberRegistration>()
+            val pendingList = mutableListOf<MemberRegistration>()
             for (doc in snapshot.documents) {
                 try {
                     val id = doc.getString("id") ?: doc.id
@@ -1290,7 +1588,7 @@ class AppRepository(private val context: Context) {
                     val isApproved = doc.getBoolean("isApproved") ?: false
                     val rejectionReason = doc.getString("rejectionReason")
                     if (fullName.isNotBlank() || transactionId.isNotBlank() || phoneNumber.isNotBlank()) {
-                        list.add(
+                        pendingList.add(
                             MemberRegistration(
                                 id = id,
                                 fullName = fullName,
@@ -1311,10 +1609,11 @@ class AppRepository(private val context: Context) {
                     e.printStackTrace()
                 }
             }
-            if (list.isNotEmpty()) {
-                prefs.edit().putString("member_registrations", gson.toJson(list)).apply()
-            }
-            Result.success(list)
+            val localList = loadMemberRegistrations().toMutableList()
+            val approvedLocal = localList.filter { it.isApproved }
+            val combined = (pendingList + approvedLocal).distinctBy { it.phoneNumber.ifBlank { it.id } }
+            prefs.edit().putString("member_registrations", gson.toJson(combined)).apply()
+            Result.success(combined)
         } catch (e: Exception) {
             e.printStackTrace()
             Result.failure(e)
@@ -1325,7 +1624,6 @@ class AppRepository(private val context: Context) {
         private const val OBF_KEY: Byte = 0x3F
         private val OBF_ADMIN_1 = byteArrayOf(15, 6, 10, 12, 10, 13, 13, 12, 14, 10)
         private val OBF_ADMIN_2 = byteArrayOf(15, 6, 10, 10, 6, 15, 12, 14, 8, 10)
-        private val OBF_PASSCODE = byteArrayOf(13, 15, 13, 9, 11, 13, 11, 12, 11, 12, 11, 13)
 
         private fun deobfuscate(bytes: ByteArray): String {
             return String(ByteArray(bytes.size) { i -> (bytes[i].toInt() xor OBF_KEY.toInt()).toByte() }, Charsets.UTF_8)
@@ -1333,8 +1631,6 @@ class AppRepository(private val context: Context) {
 
         val ADMIN_PHONE_NUMBERS: List<String>
             get() = listOf(deobfuscate(OBF_ADMIN_1), deobfuscate(OBF_ADMIN_2))
-
-        fun getDefaultPasscode(): String = deobfuscate(OBF_PASSCODE)
     }
 
     fun isAdminPhoneNumber(phone: String): Boolean {
@@ -1343,6 +1639,43 @@ class AppRepository(private val context: Context) {
             val cleanAdmin = adminPhone.replace(Regex("[^0-9]"), "")
             clean == cleanAdmin || (clean.length >= 9 && cleanAdmin.length >= 9 && clean.endsWith(cleanAdmin.takeLast(9)))
         }
+    }
+
+    private fun saveAdminProfile(phone: String, passcode: String) {
+        prefs.edit()
+            .putBoolean("user_has_submitted_registration", true)
+            .putBoolean("user_is_approved", true)
+            .putBoolean("user_is_registered_member", true)
+            .putString("user_name", "HU Administrator")
+            .putString("user_university", "Haramaya University")
+            .putString("user_stream", "")
+            .putString("user_academic_year", "2026/2027 Academic Year")
+            .putString("user_phone", phone)
+            .putString("user_password", passcode)
+            .putString("user_transaction_id", "")
+            .putString("user_payment_method", "")
+            .putString("user_registration_date", "")
+            .putString("user_rejection_reason", null)
+            .putBoolean("user_is_admin", true)
+            .apply()
+    }
+
+    private fun saveUserProfileFromRegistration(reg: MemberRegistration, fallbackPassword: String) {
+        prefs.edit()
+            .putBoolean("user_has_submitted_registration", true)
+            .putBoolean("user_is_approved", reg.isApproved)
+            .putBoolean("user_is_registered_member", reg.isApproved)
+            .putString("user_name", reg.fullName)
+            .putString("user_university", reg.universityName)
+            .putString("user_academic_year", reg.academicYear)
+            .putString("user_phone", reg.phoneNumber)
+            .putString("user_password", reg.password.ifBlank { fallbackPassword })
+            .putString("user_transaction_id", reg.transactionId)
+            .putString("user_payment_method", reg.paymentMethod)
+            .putString("user_registration_date", reg.date)
+            .putString("user_rejection_reason", reg.rejectionReason)
+            .putBoolean("user_is_admin", false)
+            .apply()
     }
 
     fun loginUser(phone: String, secretOrKey: String = ""): LoginResult {
@@ -1357,132 +1690,194 @@ class AppRepository(private val context: Context) {
             return LoginResult.Error("Please enter your account password.")
         }
 
-        // Validate Ethiopian phone number (must start with 09 or 07, exactly 10 digits)
-        if (!isAdminPhoneNumber(trimmedPhone) && !isAdminPhoneNumber(normalizedPhone)) {
+        val isAdmin = isAdminPhoneNumber(trimmedPhone) || isAdminPhoneNumber(normalizedPhone)
+
+        // Validate Ethiopian phone number for regular users
+        if (!isAdmin) {
             val phoneError = EthiopianPhoneUtils.getValidationError(normalizedPhone)
             if (phoneError != null) {
                 return LoginResult.Error(phoneError)
             }
         }
 
-        // Check if admin phone number
-        if (isAdminPhoneNumber(trimmedPhone) || isAdminPhoneNumber(normalizedPhone)) {
-            // Fetch passcode from Firebase Firestore; fallback to local SharedPrefs
-            var adminPasscode = prefs.getString("admin_passcode", null) ?: getDefaultPasscode()
-            try {
-                val configDoc = com.google.android.gms.tasks.Tasks.await(
-                    firestore.collection("app_config").document("admin").get()
-                )
-                val firebasePasscode = configDoc?.getString("passcode")
-                if (!firebasePasscode.isNullOrBlank()) {
-                    adminPasscode = firebasePasscode
-                    // Cache locally for offline use
-                    prefs.edit().putString("admin_passcode", adminPasscode).apply()
-                }
-            } catch (_: Exception) {
-                // Firestore unavailable; use cached/default passcode
-            }
-            if (secretOrKey.trim() != adminPasscode) {
-                return LoginResult.Error("Invalid administrator passcode. Access denied.")
+        // =====================================================================
+        // 1. ADMIN LOGIN FLOW
+        // =====================================================================
+        if (isAdmin) {
+            // STEP 1: Check local cache first
+            val cachedPasscode = prefs.getString("admin_passcode", null)
+            if (!cachedPasscode.isNullOrBlank() && secretOrKey.trim() == cachedPasscode.trim()) {
+                saveAdminProfile(trimmedPhone, secretOrKey.trim())
+                return LoginResult.Success(isAdmin = true)
             }
 
-            prefs.edit()
-                .putBoolean("user_has_submitted_registration", true)
-                .putBoolean("user_is_approved", true)
-                .putBoolean("user_is_registered_member", true)
-                .putString("user_name", "HU Administrator")
-                .putString("user_university", "Haramaya University")
-                .putString("user_stream", "")
-                .putString("user_academic_year", "2026/2027 Academic Year")
-                .putString("user_phone", trimmedPhone)
-                .putString("user_password", secretOrKey.trim())
-                .putString("user_transaction_id", "")
-                .putString("user_payment_method", "")
-                .putString("user_registration_date", "")
-                .putString("user_rejection_reason", null)
-                .putBoolean("user_is_admin", true)
-                .apply()
-            return LoginResult.Success(isAdmin = true)
+            // STEP 2: If not found in local cache (or mismatch), fetch from Firebase on background thread
+            var firestorePasscode: String? = null
+            try {
+                firestorePasscode = kotlinx.coroutines.runBlocking(Dispatchers.IO) {
+                    val configDoc = com.google.android.gms.tasks.Tasks.await(
+                        firestore.collection("app_config").document("admin").get(),
+                        8,
+                        java.util.concurrent.TimeUnit.SECONDS
+                    )
+                    configDoc?.getString("passcode")
+                }
+            } catch (e: Exception) {
+                android.util.Log.w("AppRepository", "Failed to fetch admin passcode from Firestore: ${e.localizedMessage}")
+            }
+
+            if (!firestorePasscode.isNullOrBlank()) {
+                // Cache it locally so subsequent logins are instant
+                prefs.edit().putString("admin_passcode", firestorePasscode).apply()
+                if (secretOrKey.trim() == firestorePasscode.trim()) {
+                    saveAdminProfile(trimmedPhone, secretOrKey.trim())
+                    return LoginResult.Success(isAdmin = true)
+                }
+            }
+
+            return LoginResult.Error("Invalid administrator passcode. Access denied.")
         }
 
-        // --- Firebase Firestore cross-device login ---
-        // Try to find the user in Firestore using their phone number as document ID
-        val docId = cleanInput.ifBlank { return LoginResult.Error("Invalid phone number.") }
+        // =====================================================================
+        // 2. REGULAR USER LOGIN FLOW
+        // =====================================================================
+
+        // STEP 1: Check Local Cache First
+        val localList = loadMemberRegistrations()
+        val localMatch = localList.firstOrNull { reg ->
+            val pClean = reg.phoneNumber.replace(Regex("[^0-9]"), "")
+            cleanInput.isNotBlank() && pClean.isNotBlank() && (
+                pClean == cleanInput ||
+                (pClean.length >= 9 && cleanInput.length >= 9 && pClean.takeLast(9) == cleanInput.takeLast(9))
+            )
+        }
+
+        if (localMatch != null) {
+            // Found in local cache! Check password
+            if (localMatch.password.isNotBlank() && localMatch.password.trim() != secretOrKey.trim()) {
+                return LoginResult.Error("Incorrect password. Please check your password and try again.")
+            }
+            saveUserProfileFromRegistration(localMatch, secretOrKey.trim())
+            return LoginResult.Success(isAdmin = false)
+        }
+
+        // STEP 2: If NOT found in local cache (fresh APK / new device), query Firebase Firestore on background thread
         var firestoreMatch: MemberRegistration? = null
         try {
-            val doc = com.google.android.gms.tasks.Tasks.await(
-                firestore.collection("member_registrations").document(docId).get()
-            )
-            if (doc != null && doc.exists()) {
-                val fullName = doc.getString("fullName") ?: ""
-                val universityName = doc.getString("universityName") ?: ""
-                val academicYear = doc.getString("academicYear") ?: ""
-                val phoneNumber = doc.getString("phoneNumber") ?: trimmedPhone
-                val password = doc.getString("password") ?: ""
-                val paymentMethod = doc.getString("paymentMethod") ?: ""
-                val transactionId = doc.getString("transactionId") ?: ""
-                val screenshotUrl = doc.getString("screenshotUrl") ?: ""
-                val date = doc.getString("date") ?: ""
-                val isApproved = doc.getBoolean("isApproved") ?: false
-                val rejectionReason = doc.getString("rejectionReason")
-                firestoreMatch = MemberRegistration(
-                    id = doc.getString("id") ?: doc.id,
-                    fullName = fullName,
-                    universityName = universityName,
-                    academicYear = academicYear,
-                    phoneNumber = phoneNumber,
-                    password = password,
-                    paymentMethod = paymentMethod,
-                    transactionId = transactionId,
-                    screenshotUrl = screenshotUrl,
-                    date = date,
-                    isApproved = isApproved,
-                    rejectionReason = rejectionReason
-                )
+            firestoreMatch = kotlinx.coroutines.runBlocking(Dispatchers.IO) {
+                // A. Direct doc lookup by cleanInput (e.g. 0912345678)
+                var doc = try {
+                    com.google.android.gms.tasks.Tasks.await(
+                        firestore.collection("member_registrations").document(cleanInput).get(),
+                        6,
+                        java.util.concurrent.TimeUnit.SECONDS
+                    )
+                } catch (_: Exception) { null }
+
+                // B. If not found and starts with 0, try 9-digit variant (e.g. 912345678)
+                if ((doc == null || !doc.exists()) && cleanInput.startsWith("0")) {
+                    val shortClean = cleanInput.substring(1)
+                    doc = try {
+                        com.google.android.gms.tasks.Tasks.await(
+                            firestore.collection("member_registrations").document(shortClean).get(),
+                            6,
+                            java.util.concurrent.TimeUnit.SECONDS
+                        )
+                    } catch (_: Exception) { null }
+                }
+
+                // C. If not found and doesn't start with 0, try with leading 0 (e.g. 0 + 912345678)
+                if ((doc == null || !doc.exists()) && !cleanInput.startsWith("0") && cleanInput.length == 9) {
+                    val zeroClean = "0$cleanInput"
+                    doc = try {
+                        com.google.android.gms.tasks.Tasks.await(
+                            firestore.collection("member_registrations").document(zeroClean).get(),
+                            6,
+                            java.util.concurrent.TimeUnit.SECONDS
+                        )
+                    } catch (_: Exception) { null }
+                }
+
+                // D. If still not found, query by phoneNumber field with normalizedPhone
+                if (doc == null || !doc.exists()) {
+                    val querySnapshot = try {
+                        com.google.android.gms.tasks.Tasks.await(
+                            firestore.collection("member_registrations")
+                                .whereEqualTo("phoneNumber", normalizedPhone)
+                                .limit(1)
+                                .get(),
+                            6,
+                            java.util.concurrent.TimeUnit.SECONDS
+                        )
+                    } catch (_: Exception) { null }
+
+                    if (querySnapshot != null && !querySnapshot.isEmpty) {
+                        doc = querySnapshot.documents.firstOrNull()
+                    }
+                }
+
+                // E. Try trimmed phone query if normalized differs
+                if ((doc == null || !doc.exists()) && trimmedPhone != normalizedPhone) {
+                    val querySnapshot = try {
+                        com.google.android.gms.tasks.Tasks.await(
+                            firestore.collection("member_registrations")
+                                .whereEqualTo("phoneNumber", trimmedPhone)
+                                .limit(1)
+                                .get(),
+                            6,
+                            java.util.concurrent.TimeUnit.SECONDS
+                        )
+                    } catch (_: Exception) { null }
+
+                    if (querySnapshot != null && !querySnapshot.isEmpty) {
+                        doc = querySnapshot.documents.firstOrNull()
+                    }
+                }
+
+                if (doc != null && doc.exists()) {
+                    MemberRegistration(
+                        id = doc.getString("id") ?: doc.id,
+                        fullName = doc.getString("fullName") ?: "",
+                        universityName = doc.getString("universityName") ?: "",
+                        academicYear = doc.getString("academicYear") ?: "",
+                        phoneNumber = doc.getString("phoneNumber") ?: trimmedPhone,
+                        password = doc.getString("password") ?: "",
+                        paymentMethod = doc.getString("paymentMethod") ?: "",
+                        transactionId = doc.getString("transactionId") ?: "",
+                        screenshotUrl = doc.getString("screenshotUrl") ?: "",
+                        date = doc.getString("date") ?: "",
+                        isApproved = doc.getBoolean("isApproved") ?: false,
+                        rejectionReason = doc.getString("rejectionReason")
+                    )
+                } else {
+                    null
+                }
             }
         } catch (e: Exception) {
-            // No internet – fall through to local cache
-            android.util.Log.w("AppRepository", "Firestore login fetch failed, using local cache: ${e.localizedMessage}")
+            android.util.Log.w("AppRepository", "Firestore login lookup error: ${e.localizedMessage}")
         }
 
-        // Also check local cache as fallback
-        val localList = loadMemberRegistrations()
-        val localMatch = localList.firstOrNull {
-            val pClean = it.phoneNumber.replace(Regex("[^0-9]"), "")
-            cleanInput.isNotBlank() && pClean.isNotBlank() && (pClean == cleanInput || pClean.endsWith(cleanInput) || cleanInput.endsWith(pClean))
-        }
-
-        val match = firestoreMatch ?: localMatch
-
-        if (match != null) {
-            // Strict password check
-            if (match.password.isNotBlank() && match.password.trim() != secretOrKey.trim()) {
+        if (firestoreMatch != null) {
+            // User exists in Firebase! Check password
+            if (firestoreMatch.password.isNotBlank() && firestoreMatch.password.trim() != secretOrKey.trim()) {
                 return LoginResult.Error("Incorrect password. Please check your password and try again.")
             }
 
-            prefs.edit()
-                .putBoolean("user_has_submitted_registration", true)
-                .putBoolean("user_is_approved", match.isApproved)
-                .putBoolean("user_is_registered_member", match.isApproved)
-                .putString("user_name", match.fullName)
-                .putString("user_university", match.universityName)
-                .putString("user_academic_year", match.academicYear)
-                .putString("user_phone", match.phoneNumber)
-                .putString("user_password", match.password.ifBlank { secretOrKey.trim() })
-                .putString("user_transaction_id", match.transactionId)
-                .putString("user_payment_method", match.paymentMethod)
-                .putString("user_registration_date", match.date)
-                .putString("user_rejection_reason", match.rejectionReason)
-                .putBoolean("user_is_admin", false)
-                .apply()
+            // Save user profile locally
+            saveUserProfileFromRegistration(firestoreMatch, secretOrKey.trim())
 
-            // Cache the registration locally for offline use
+            // Cache registration into fresh APK local storage so future logins & offline work immediately
             val updatedList = localList.toMutableList()
             val existingIdx = updatedList.indexOfFirst {
-                it.phoneNumber.replace(Regex("[^0-9]"), "") == cleanInput
+                val pClean = it.phoneNumber.replace(Regex("[^0-9]"), "")
+                pClean == cleanInput || (pClean.length >= 9 && cleanInput.length >= 9 && pClean.takeLast(9) == cleanInput.takeLast(9))
             }
-            if (existingIdx >= 0) updatedList[existingIdx] = match else updatedList.add(0, match)
-            prefs.edit().putString("member_registrations", com.google.gson.Gson().toJson(updatedList)).apply()
+            if (existingIdx >= 0) {
+                updatedList[existingIdx] = firestoreMatch
+            } else {
+                updatedList.add(0, firestoreMatch)
+            }
+            prefs.edit().putString("member_registrations", gson.toJson(updatedList)).apply()
 
             return LoginResult.Success(isAdmin = false)
         }
@@ -1582,13 +1977,12 @@ class AppRepository(private val context: Context) {
         return try {
             val json = prefs.getString("cached_payment_config", null)
             if (!json.isNullOrBlank()) {
-                val parsed = gson.fromJson(json, PaymentConfig::class.java).copy(isLoaded = true)
-                if (parsed.accounts.isEmpty()) parsed.copy(accounts = DEFAULT_PAYMENT_ACCOUNTS) else parsed
+                gson.fromJson(json, PaymentConfig::class.java).copy(isLoaded = true)
             } else {
-                PaymentConfig(accounts = DEFAULT_PAYMENT_ACCOUNTS, isLoaded = true)
+                PaymentConfig(isLoaded = false)
             }
-        } catch (e: Exception) {
-            PaymentConfig(accounts = DEFAULT_PAYMENT_ACCOUNTS, isLoaded = true)
+        } catch (_: Exception) {
+            PaymentConfig(isLoaded = false)
         }
     }
 
@@ -1601,13 +1995,12 @@ class AppRepository(private val context: Context) {
                     }
                     if (snapshot != null && snapshot.exists()) {
                         try {
-                            val title = snapshot.getString("title") ?: ""
-                            val subtitle = snapshot.getString("subtitle") ?: ""
-                            val instructions = snapshot.getString("instructions")
-                                ?: "የአባልነት ክፍያዎን ከፈጸሙ በኋላ የተላከበትን ስክሪንሾት ከታች ይላኩ፤ አድሚኑ እንዳረጋገጠ ሙሉ አገልግሎቱ ይከፈታል።"
+                            val title = snapshot.getString("title") ?: "የአባልነት ክፍያ (Membership)"
+                            val subtitle = snapshot.getString("subtitle") ?: "Haramaya University Freshman"
+                            val instructions = snapshot.getString("instructions") ?: ""
                             val supportTelegram = snapshot.getString("supportTelegram") ?: ""
                             val supportPhone = snapshot.getString("supportPhone") ?: ""
-                            val amount = snapshot.getString("amount") ?: "250 ETB (ብር)"
+                            val amount = snapshot.getString("amount") ?: ""
 
                             val rawAccounts = snapshot.get("accounts") as? List<*>
                             val accounts = mutableListOf<PaymentAccount>()
@@ -1626,15 +2019,16 @@ class AppRepository(private val context: Context) {
                                     )
                                 }
                             }
-                            val resolvedAccounts = if (accounts.isNotEmpty()) accounts else DEFAULT_PAYMENT_ACCOUNTS
+                            val waitingMessage = snapshot.getString("waitingMessage") ?: ""
                             val config = PaymentConfig(
-                                title = title.ifBlank { "የአባልነት ክፍያ (Membership)" },
-                                subtitle = subtitle.ifBlank { "Haramaya University Freshman" },
+                                title = title,
+                                subtitle = subtitle,
                                 instructions = instructions,
-                                amount = amount.ifBlank { "250 ETB (ብር)" },
-                                accounts = resolvedAccounts,
-                                supportTelegram = supportTelegram.ifBlank { "@HUfreshman1" },
-                                supportPhone = supportPhone.ifBlank { "0955903175" },
+                                amount = amount,
+                                accounts = accounts,
+                                supportTelegram = supportTelegram,
+                                supportPhone = supportPhone,
+                                waitingMessage = waitingMessage,
                                 isLoaded = true
                             )
                             _paymentConfig.value = config
@@ -1643,15 +2037,7 @@ class AppRepository(private val context: Context) {
                             e.printStackTrace()
                         }
                     } else if (snapshot != null && !snapshot.exists()) {
-                        val defaultCfg = PaymentConfig(accounts = DEFAULT_PAYMENT_ACCOUNTS, isLoaded = true)
-                        _paymentConfig.value = defaultCfg
-                        CoroutineScope(Dispatchers.IO).launch {
-                            try {
-                                updatePaymentConfigInFirebase(defaultCfg)
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-                        }
+                        _paymentConfig.value = PaymentConfig(isLoaded = true)
                     }
                 }
         } catch (e: Exception) {
@@ -1662,16 +2048,17 @@ class AppRepository(private val context: Context) {
     suspend fun fetchPaymentConfigOnce() = withContext(Dispatchers.IO) {
         try {
             val doc = com.google.android.gms.tasks.Tasks.await(
-                firestore.collection("app_config").document("payment").get()
+                firestore.collection("app_config").document("payment").get(),
+                8,
+                java.util.concurrent.TimeUnit.SECONDS
             )
             if (doc != null && doc.exists()) {
-                val title = doc.getString("title") ?: ""
-                val subtitle = doc.getString("subtitle") ?: ""
-                val instructions = doc.getString("instructions")
-                    ?: "የአባልነት ክፍያዎን ከፈጸሙ በኋላ የተላከበትን ስክሪንሾት ከታች ይላኩ፤ አድሚኑ እንዳረጋገጠ ሙሉ አገልግሎቱ ይከፈታል።"
+                val title = doc.getString("title") ?: "የአባልነት ክፍያ (Membership)"
+                val subtitle = doc.getString("subtitle") ?: "Haramaya University Freshman"
+                val instructions = doc.getString("instructions") ?: ""
                 val supportTelegram = doc.getString("supportTelegram") ?: ""
                 val supportPhone = doc.getString("supportPhone") ?: ""
-                val amount = doc.getString("amount") ?: "250 ETB (ብር)"
+                val amount = doc.getString("amount") ?: ""
 
                 val rawAccounts = doc.get("accounts") as? List<*>
                 val accounts = mutableListOf<PaymentAccount>()
@@ -1690,15 +2077,14 @@ class AppRepository(private val context: Context) {
                         )
                     }
                 }
-                val resolvedAccounts = if (accounts.isNotEmpty()) accounts else DEFAULT_PAYMENT_ACCOUNTS
                 val config = PaymentConfig(
-                    title = title.ifBlank { "የአባልነት ክፍያ (Membership)" },
-                    subtitle = subtitle.ifBlank { "Haramaya University Freshman" },
+                    title = title,
+                    subtitle = subtitle,
                     instructions = instructions,
-                    amount = amount.ifBlank { "250 ETB (ብር)" },
-                    accounts = resolvedAccounts,
-                    supportTelegram = supportTelegram.ifBlank { "@HUfreshman1" },
-                    supportPhone = supportPhone.ifBlank { "0955903175" },
+                    amount = amount,
+                    accounts = accounts,
+                    supportTelegram = supportTelegram,
+                    supportPhone = supportPhone,
                     isLoaded = true
                 )
                 _paymentConfig.value = config
@@ -1734,10 +2120,13 @@ class AppRepository(private val context: Context) {
                 )
                 com.google.android.gms.tasks.Tasks.await(
                     firestore.collection("app_config").document("payment")
-                        .set(data, SetOptions.merge())
+                        .set(data, SetOptions.merge()),
+                    8,
+                    java.util.concurrent.TimeUnit.SECONDS
                 )
-                _paymentConfig.value = config.copy(isLoaded = true)
-                prefs.edit().putString("cached_payment_config", gson.toJson(config)).apply()
+                val updated = config.copy(isLoaded = true)
+                _paymentConfig.value = updated
+                prefs.edit().putString("cached_payment_config", gson.toJson(updated)).apply()
                 true
             } catch (e: Exception) {
                 e.printStackTrace()

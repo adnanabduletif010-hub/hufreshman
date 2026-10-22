@@ -24,8 +24,8 @@ android {
         applicationId = "com.curiovana.hufreshman" 
         minSdk = 24
         targetSdk = 37
-        versionCode = 16
-        versionName = "3.5"
+        versionCode = 20
+        versionName = "3.9"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -74,12 +74,12 @@ android {
 }
 
 dependencies {
-    // Firebase BoM & SDKs
     implementation(platform("com.google.firebase:firebase-bom:34.19.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-messaging")
+    implementation("com.google.firebase:firebase-config")
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)

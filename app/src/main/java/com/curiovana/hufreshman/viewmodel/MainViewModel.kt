@@ -298,13 +298,32 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun getScreenshotSubmissionCount(): Int = repository.getScreenshotSubmissionCount()
+    fun canSubmitScreenshot(): Boolean = repository.canSubmitPaymentScreenshot()
+
+    fun getCommunityReadCount(): Int = repository.getCommunityReadCount()
+    fun isCommunityReadAllowed(): Boolean {
+        val profile = _userProfile.value
+        if (profile.isAdmin || profile.isApproved) return true
+        return repository.getCommunityReadCount() < 1
+    }
+    fun recordCommunityRead() {
+        val profile = _userProfile.value
+        if (profile.isAdmin || profile.isApproved) return
+        repository.recordCommunityRead()
+    }
+
     fun submitPaymentVerification(paymentMethod: String, screenshotUrl: String) {
         viewModelScope.launch {
+            if (!repository.canSubmitPaymentScreenshot()) {
+                android.util.Log.w("MainViewModel", "Screenshot submission limit reached (5/5)")
+                return@launch
+            }
             repository.updatePaymentVerification(paymentMethod, screenshotUrl)
             _userProfile.value = repository.getUserProfile()
             _memberRegistrations.value = repository.loadMemberRegistrations()
             val phone = _userProfile.value.phoneNumber
-            if (phone.isNotBlank()) {
+            if (phone.isNotBlank() && !_userProfile.value.isApproved) {
                 observeCurrentUserApproval(phone)
             }
             val student = _userProfile.value.name.ifBlank { "Student ($phone)" }
@@ -329,11 +348,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun deleteMemberRegistration(regId: String) {
+        viewModelScope.launch {
+            repository.deleteMemberRegistration(regId)
+            _userProfile.value = repository.getUserProfile()
+            _memberRegistrations.value = repository.loadMemberRegistrations()
+        }
+    }
+
     fun refreshUserProfile() {
         viewModelScope.launch {
-            val phone = repository.getUserProfile().phoneNumber
-            if (phone.isNotBlank()) {
-                repository.syncCurrentUserFromFirestore(phone)
+            val profile = repository.getUserProfile()
+            if (!profile.isApproved && profile.phoneNumber.isNotBlank()) {
+                repository.syncCurrentUserFromFirestore(profile.phoneNumber)
             }
             _userProfile.value = repository.getUserProfile()
             _memberRegistrations.value = repository.loadMemberRegistrations()
@@ -374,9 +401,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         if (result is LoginResult.Success) {
             _userProfile.value = repository.getUserProfile()
             _memberRegistrations.value = repository.loadMemberRegistrations()
-            val userPhone = repository.getUserProfile().phoneNumber
-            if (userPhone.isNotBlank()) {
-                observeCurrentUserApproval(userPhone)
+            val profile = repository.getUserProfile()
+            if (profile.phoneNumber.isNotBlank() && !profile.isApproved && !profile.isAdmin) {
+                observeCurrentUserApproval(profile.phoneNumber)
+            } else {
+                userApprovalListener?.remove()
+                userApprovalListener = null
             }
         }
         return result
@@ -403,29 +433,43 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun startRealtimeSync() {
-        registrationsListener?.remove()
-        registrationsListener = repository.listenToMemberRegistrations { updatedList ->
-            _memberRegistrations.value = updatedList
-            val currentPhone = repository.getUserProfile().phoneNumber
-            if (currentPhone.isNotBlank()) {
-                val clean = repository.cleanPhone(currentPhone)
-                val myMatch = updatedList.firstOrNull { repository.cleanPhone(it.phoneNumber) == clean }
-                if (myMatch != null && myMatch.isApproved != _userProfile.value.isApproved) {
-                    _userProfile.value = repository.getUserProfile()
-                }
+        val profile = repository.getUserProfile()
+        if (profile.isAdmin) {
+            registrationsListener?.remove()
+            registrationsListener = repository.listenToMemberRegistrations { updatedList ->
+                _memberRegistrations.value = updatedList
             }
+        } else {
+            registrationsListener?.remove()
+            registrationsListener = null
         }
 
-        val currentPhone = repository.getUserProfile().phoneNumber
-        if (currentPhone.isNotBlank()) {
-            observeCurrentUserApproval(currentPhone)
+        // Only listen for approval IF NOT APPROVED and NOT ADMIN
+        if (!profile.isApproved && !profile.isAdmin && profile.phoneNumber.isNotBlank()) {
+            observeCurrentUserApproval(profile.phoneNumber)
+        } else {
+            // Once approved: no listening done!
+            userApprovalListener?.remove()
+            userApprovalListener = null
         }
     }
 
     fun observeCurrentUserApproval(phone: String) {
+        val profile = repository.getUserProfile()
+        if (profile.isApproved || profile.isAdmin) {
+            // Once approved: no listening done!
+            userApprovalListener?.remove()
+            userApprovalListener = null
+            return
+        }
         userApprovalListener?.remove()
-        userApprovalListener = repository.listenToUserApproval(phone) { _, _ ->
+        userApprovalListener = repository.listenToUserApproval(phone) { isApproved, rejectionReason ->
             _userProfile.value = repository.getUserProfile()
+            if (isApproved) {
+                // Once approved: no listening done! Detach listener immediately
+                userApprovalListener?.remove()
+                userApprovalListener = null
+            }
         }
     }
 
@@ -457,6 +501,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun selectAnswer(questionId: String, optionIndex: Int) {
         userAnswers[questionId] = optionIndex
+        if (practiceMode.value == ExamPracticeMode.PRACTICE) {
+            showExplanation[questionId] = true
+        }
     }
 
     fun toggleExplanation(questionId: String) {
@@ -533,12 +580,25 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _isCommunitySyncing = MutableStateFlow(false)
     val isCommunitySyncing: StateFlow<Boolean> = _isCommunitySyncing.asStateFlow()
 
+    // Timestamp of the last actual Firebase community fetch (in-memory, resets on app restart)
+    private var lastCommunityRefreshMs: Long = 0L
+    private val COMMUNITY_REFRESH_COOLDOWN_MS = 5 * 60 * 1000L // 5 minutes
+
     fun refreshCommunityPosts(onResult: ((Boolean, String) -> Unit)? = null) {
+        val now = System.currentTimeMillis()
+        val elapsed = now - lastCommunityRefreshMs
+        if (lastCommunityRefreshMs > 0L && elapsed < COMMUNITY_REFRESH_COOLDOWN_MS) {
+            // Still within cooldown — serve from local cache, 0 Firebase reads
+            val remaining = ((COMMUNITY_REFRESH_COOLDOWN_MS - elapsed) / 60_000L) + 1
+            onResult?.invoke(true, "Posts are up to date (refresh again in ~${remaining}m)")
+            return
+        }
         viewModelScope.launch {
             _isCommunitySyncing.value = true
             try {
                 val updated = repository.loadCommunityPosts(forceRefresh = true)
                 _communityPosts.value = updated
+                lastCommunityRefreshMs = System.currentTimeMillis()
                 onResult?.invoke(true, "Synced ${updated.size} posts from database")
             } catch (e: Exception) {
                 onResult?.invoke(false, "Sync failed: ${e.localizedMessage ?: "Network error"}")
@@ -564,6 +624,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun editComment(postId: String, commentId: String, newContent: String) {
+        if (newContent.isBlank()) return
+        viewModelScope.launch {
+            repository.updateComment(postId, commentId, newContent)
+            _communityPosts.value = repository.getCachedCommunityPosts()
+        }
+    }
+
+    fun getPostCooldownRemainingSeconds(): Int = repository.getPostCooldownRemainingSeconds()
+    fun canUserPostWithCooldown(): Boolean = repository.canUserPostWithCooldown()
+
     fun createPost(
         content: String,
         tag: String,
@@ -574,9 +645,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         if (content.isBlank()) return
         val isAdmin = _userProfile.value.isAdmin
 
-        // Silent quota check for regular users — admin always bypasses
-        if (!isAdmin && !repository.canUserPost()) {
-            return  // silently do nothing — user hit the 2/day limit
+        // Silent quota & anti-spam cooldown check for regular users — admin always bypasses
+        if (!isAdmin && (!repository.canUserPost() || !repository.canUserPostWithCooldown())) {
+            return  // silently do nothing — user hit 2/day limit or is in 15s cooldown
         }
 
         viewModelScope.launch {

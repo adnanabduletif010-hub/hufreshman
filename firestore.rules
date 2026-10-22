@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // 1. Single feed document: Anyone can read, anyone can append/update with valid structure
+    match /community_feed/{docId} {
+      allow read: if true;
+      allow write: if request.resource.data.posts is list;
+    }
+
+    // 2. Individual posts: Anyone can read/create/update within size limits
+    match /community_posts/{postId} {
+      allow read: if true;
+      allow create: if request.resource.data.content.size() > 0 && request.resource.data.content.size() <= 2000;
+      allow update: if request.resource.data.content.size() <= 2000;
+      allow delete: if true;
+    }
+
+    // 3. Member registrations: 
+    match /member_registrations/{phoneDoc} {
+      allow read, write: if true;
+    }
+
+    // 4. App configuration (Admin, Payment, FCM)
+    match /app_config/{configId} {
+      allow read: if true;
+      allow write: if configId == "payment" || configId == "admin" || configId == "fcm";
+    }
+  }
+}
