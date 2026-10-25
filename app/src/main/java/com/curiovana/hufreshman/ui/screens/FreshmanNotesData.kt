@@ -2598,394 +2598,593 @@ Natural deduction validates arguments step-by-step using elementary rules of inf
         subjectId = "c5",
         subject = "Communicative English",
         unit = "Unit 1",
-        title = "Study Skills: Lecture Note-Taking, Reading Strategies & Grammar",
+        title = "Study Skills & Grammar: Modals of Advice, Present Perfect vs. Past & Stative Verbs",
         summary = """
-📌 KEY CONCEPTS & OVERVIEW
-Unit 1 (FLEn 1011) establishes the foundational study competencies essential for university academic success. It integrates systematic lecture listening and selective note-taking habits, purposeful academic reading (skimming, scanning, intensive study), advice grammar structures (imperatives, should, ought to, had better), and the functional mastery of the Present Perfect tense versus the Simple Past.
+📌 UNIT OVERVIEW & CURRICULAR CONTEXT
+Communicative English Language Skills I (FLEn 1011) Unit 1 equips university students with foundational academic study competencies while establishing an exhaustive command of English grammatical structures for giving advice, expressing recommendations, mastering the Present Perfect tense versus Simple Past, and navigating non-progressive (stative) verbs.
 
-🔍 DETAILED BREAKDOWN
-1. Listening: What is a Lecture & Effective Study Habits:
-   • The Role of Lecture Listening & Note-Taking:
-     - University students receive vast amounts of disciplinary knowledge through reading assignments and live lectures.
-     - Because human working memory cannot retain all spoken or read details, systematic note-taking is indispensable for exam revision and academic performance.
-   • Seven Core Habits of Successful University Students (Survey Insights):
-     1. Distribute learning over time; avoid cramming all material into a single marathon session.
-     2. Schedule dedicated study blocks in advance and adhere to consistent study routines.
-     3. Establish clear, specific, achievable goals for every study session.
-     4. Avoid procrastinating on scheduled study times.
-     5. Tackle the most challenging or difficult subject first when mental energy and focus are at their peak.
-     6. Review lecture notes before starting assignments, and revisit class notes over weekends.
-     7. Eliminate environmental distractions (phone, noise) and participate actively in productive peer study groups.
-   • Key Strategies for Taking Lecture Notes:
-     - Pre-Lecture Preparation: Read assigned textbook sections prior to class to build a conceptual reference framework.
-     - Physical Positioning: Sit near the front of the lecture hall to maximize visual/auditory concentration and minimize distractions.
-     - Focus on Introductions: Pay close attention to introductory remarks to discern the structural outline and theme of the lecture.
-     - Identify Lecturer Cues: Watch for verbal markers, vocal inflection/emphasis, and physical gestures that signal core concepts vs. incidental details.
-     - Selective Recording: Never attempt word-for-word (verbatim) transcription—it causes students to fall behind. Record main concepts and supporting evidence using concise phrases, abbreviations, and symbols.
-     - Immediate Post-Lecture Review: Review and edit notes as soon as possible after the lecture to fill in gaps and consolidate memory traces.
+🔍 EXTENSIVE GRAMMAR BREAKDOWN
 
-2. Grammar Focus: Modals and Infinitives for Giving Advice:
-   • Structures for Recommendations and Advice:
-     - Bare Infinitive (Imperative): Base verb form used for direct instructions and practical guidelines (e.g., "Sit near the front of the hall").
-     - Should / Ought to: [should / ought to + base verb] used for standard advice indicating what is desirable or recommended (e.g., "You should review your notes daily").
-     - Had better: [had better + base verb] expresses stronger, urgent advice indicating significant importance or negative consequences if ignored (e.g., "You had better read before the lecture, or you will fall behind").
-   • Negative Forms & Structural Constraints:
-     - should not + base verb ("You should not transcribe verbatim").
-     - ought not to + base verb.
-     - had better not + base verb ("You had better not pack too much"; beware: avoid incorrect forms like "had not better" or "had better to").
-   • Infinitive Suggestions: Using introductory verbs like "try to" + infinitive ("Try to prepare your mind in advance").
+1. GRAMMAR OF RECOMMENDATION & ADVICE (MODALS & STRUCTURES):
+   • Spectrum of Strength in Advice:
+     - Imperatives (Direct Instructions / Bare Infinitive): Base form of verb with implied subject 'you'.
+       * Positive: "Preview the lecture headings before class."
+       * Negative: "Do not transcribe every word verbatim."
+     - Should / Ought to (Desirable / General Moral Advice):
+       * Syntactic Form: Subject + should / ought to + Base Verb (V1).
+       * Example: "You should review your lecture notes within twenty-four hours."
+       * Negative: "You should not (shouldn't) leave revision until the final exam."
+       * Note on Ought to: "You ought to consult your course outline" / Negative: "You ought not to skip orientation."
+     - Had better (Urgent Advice with Warning / Negative Consequence):
+       * Meaning: Expresses strong, urgent advice where failure to act results in a specific negative outcome or penalty.
+       * Syntactic Form: Subject + had better + Base Verb (Bare Infinitive - without 'to').
+       * Example: "You had better complete the assignment tonight, or the portal will lock."
+       * Contraction: "You'd better study hard."
+       * Crucial Negative Form: Subject + had better not + Base Verb.
+         - Correct: "You had better not miss the laboratory session."
+         - Cardinal Error (Always tested!): NEVER say "had not better" or "had better not to"!
+     - Be supposed to (Expectations, Norms, Regulations):
+       * Form: Subject + am/is/are/was/were supposed to + Base Verb.
+       * Example: "Freshman students are supposed to attend 85% of all lectures."
+     - Verbs taking Full Infinitives (to + Base Verb):
+       * Advise someone to do: "The advisor advised him to drop one course."
+       * Recommend / Suggest:
+         - Note the subjunctive or gerund: "The instructor recommends that we read (subjunctive) chapter two" OR "recommends reading (gerund) chapter two." (NEVER "recommends us to read").
 
-3. Reading: Reading for Study:
-   • Nature & Purpose of Academic Reading:
-     - The primary medium for acquiring disciplinary knowledge across engineering, medicine, humanities, and sciences.
-     - Primary Goal: To extract ideas and evidence, assimilate them into an existing cognitive framework, and articulate that understanding in seminars and exams.
-   • Reading According to Specific Purpose:
-     - Reading for Practical Application: Following technical manuals or procedural guides to operate equipment or resolve practical tasks.
-     - Reading for Escapism / Pleasure: Fast reading of narrative fiction without the demand of memorizing analytical details.
-     - Skimming: Rapidly glancing across texts, headings, and topic sentences to capture the general overview, core gist, or main developments without pausing for details.
-     - Scanning: Swiftly searching through a text (indexes, data tables, headlines) to locate a specific datum, name, or term while ignoring irrelevant material.
-     - Detailed Academic Study: Close, slow, analytical reading of textbooks and research articles to evaluate arguments, inspect assumptions, and master complex theories.
-   • Avoiding the "Beginning-to-End" Trap:
-     - Mistake: Treating academic textbooks like novels by opening chapter one and reading linearly until cognitive fatigue sets in.
-     - Remedy: Active, strategic reading—previewing headings, formulating questions, scanning for key concepts, and taking structured notes. Reading is an active cognitive process of interpreting and evaluating meaning!
+2. THE PRESENT PERFECT TENSE (COMPLETE ARCHITECTURE):
+   • Syntactic Form:
+     - Affirmative: Subject + have / has + Past Participle (V3).
+     - Negative: Subject + have not (haven't) / has not (hasn't) + Past Participle (V3).
+     - Interrogative: Have / Has + Subject + Past Participle (V3)?
+   • The 5 Core Functions of Present Perfect:
+     1. Unspecified Past Action: Event completed at an indefinite time before now where the exact date is unimportant.
+        * Example: "Researchers have discovered new techniques for cognitive retention."
+     2. Present Result of a Past Action (Resultative Aspect):
+        * The action occurred in the past, but its consequence or direct evidence is visible right now.
+        * Example: "I have lost my student ID card." (Result: I cannot enter the library at this moment).
+     3. Continuing State / Duration (Continuative Aspect):
+        * Began in the past and continues unbroken into the present moment (requires 'since' or 'for').
+        * Example: "Dr. Kebede has taught linguistics at Haramaya University since 2012."
+     4. Life Experience / Unfinished Lifetime:
+        * Actions performed or not performed in an individual's lifetime up to now.
+        * Example: "She has travelled to five regional states in Ethiopia."
+     5. Recent Completion (Just / Already / Yet):
+        * Just = very short time ago: "The dean has just entered the auditorium."
+        * Already = sooner than expected: "I have already submitted my term paper."
+        * Yet = expected action in negatives and questions: "Has the grade list been posted yet?" / "We have not received our syllabus yet."
 
-4. Grammar Focus: Present Perfect Tense:
-   • Syntactic Form: Subject + have / has + Past Participle (V3).
-     - Regular verbs take -ed (developed, identified, cleaned); irregular verbs take unique forms (done, built, seen, written).
-   • Five Core Functions of Present Perfect:
-     1. Unspecified Past Time: Action occurred at an indefinite, unstated time before now ("Researchers have identified multiple study strategies").
-     2. Present Result of a Past Action: Action completed in the past has a direct, observable consequence in the present ("I have lost my notes [so I cannot study now]").
-     3. Continuing State: Action or condition that began in the past and persists into the present ("Classes have already started").
-     4. Life Experience: Actions that have occurred once, multiple times, or never up to the present moment ("I have never visited Moyale").
-     5. Recent Completion: Actions completed immediately prior to speaking ("The instructor has just finished the lecture").
-   • Present Perfect vs. Simple Past (High-Yield Exam Contrast):
-     - Time Orientation: Present Perfect links the past to the present (indefinite/unspecified time); Simple Past is confined strictly to a completed past disconnected from the present.
-     - Time Adverbials:
-       * Present Perfect: Used with indefinite markers (already, yet, ever, never, just, so far, up to now, since).
-       * Simple Past: Demands definite, specific past time markers (yesterday, last year, two months ago, in 1992, at 3 PM).
-     - Cardinal Error: NEVER combine the Present Perfect with specific past time adverbs!
-       * Incorrect: "I have read this book last year."
-       * Correct: "I read this book last year."
+3. PRESENT PERFECT VS. SIMPLE PAST (HIGH-YIELD CONTRAST):
+   • Time Horizon & Mental Connection:
+     - Simple Past (V2): Completed in the past, detached from the present. Must specify or imply a definite past time point.
+     - Present Perfect (have/has + V3): Connects the past to the present moment. Used with indefinite or open time frames.
+   • Time Adverbial Contrast Matrix:
+     - Simple Past Markers: yesterday, last night, two weeks ago, in 2018, when I was in high school, at 9:00 AM, then.
+     - Present Perfect Markers: since 2020, for six months, already, yet, ever, never, recently, so far, up to now, lately.
+   • The Cardinal Grammar Trap:
+     - Incorrect: "I have graduated from high school last year."
+     - Correct: "I graduated from high school last year."
+     - Incorrect: "Did you ever visit Lalibela?"
+     - Correct: "Have you ever visited Lalibela?"
 
-💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Advice Grammar Traps: The negative of "had better" is strictly "had better not" (NEVER "had not better" or "had better not to").
-• Skimming = Reading for GIST / general idea; Scanning = Searching for SPECIFIC target information (dates, names, figures).
-• Present Perfect Trap: If a sentence includes a specific past time marker ("yesterday", "in 2020", "last semester"), you MUST use Simple Past, NOT Present Perfect!
+4. PREPOSITIONS OF DURATION: 'SINCE' VS. 'FOR':
+   • 'Since' + Starting Point in Time:
+     - Used with a specific starting date, clock time, event, or past time clause.
+     - Examples: since Monday, since 8:00 AM, since 2015, since September, since I arrived on campus.
+     - Clause structure: Present Perfect + since + Simple Past clause!
+       * Example: "He has lived in Harar since he joined the university."
+   • 'For' + Length / Period of Duration:
+     - Used with a span or total quantity of elapsed time.
+     - Examples: for three hours, for ten years, for two semesters, for a long time, for centuries.
+
+5. STATIVE VS. DYNAMIC VERBS (NON-PROGRESSIVE VERBS):
+   • Dynamic Verbs: Involve physical actions, voluntary movements, or processes; can take both simple and progressive (-ing) tenses (e.g., run, write, read, discuss).
+   • Stative Verbs: Describe states, mental conditions, feelings, senses, or relations; CANNOT normally take continuous (-ing) forms!
+   • Five Categories of Stative Verbs:
+     1. Verbs of Cognition / Thought: know, understand, believe, think (opinion), remember, forget, recognize, realize, doubt.
+     2. Verbs of Emotion / Preference: love, like, hate, prefer, desire, want, wish, appreciate.
+     3. Verbs of Possession / Relationship: have (own), belong, possess, own, include, contain, consist of.
+     4. Verbs of Perception / Senses: see, hear, smell, taste, feel, notice.
+     5. Verbs of State / Appearance: seem, appear, look (resemble), weigh (have weight), cost, measure.
+   • Verbs with Dual Meanings (Stative vs. Dynamic):
+     - Think:
+       * Stative (Opinion): "I think the exam is comprehensive." (NEVER "I am thinking the exam is...")
+       * Dynamic (Mental process): "Hush! I am thinking about the geometry problem right now."
+     - Have:
+       * Stative (Possession): "She has three notebooks." (NEVER "She is having three notebooks.")
+       * Dynamic (Activity/Experience): "We are having lunch at the cafeteria."
+     - Taste / Smell:
+       * Stative: "The traditional coffee smells exquisite."
+       * Dynamic: "The barista is smelling the roasted beans."
+
+6. ACADEMIC STUDY SKILLS INTEGRATION:
+   • SQ3R Reading Framework: Survey, Question, Read, Recite, Review.
+   • Skimming: Reading rapidly (3–4 times normal speed) for the general gist, macro-structure, and main thesis.
+   • Scanning: Rapidly moving eyes over text to locate specific data points, statistics, dates, or key terms without reading surrounding text.
+   • Cornell Note-Taking System: 2.5-inch cue/keyword column on the left, 6-inch note-taking column on the right, and 2-inch summary section at the bottom.
+
+⚠️ COMMON GRAMMATICAL PITFALLS & EXAM TRAPS
+• Trap 1: "had better to go" -> WRONG! Had better takes the BARE infinitive: "had better go".
+• Trap 2: "You had not better go" -> WRONG! The negative is strictly "You had better not go".
+• Trap 3: "Since three years" -> WRONG! Duration uses 'for': "For three years".
+• Trap 4: Combining Present Perfect with definite past time: "The committee has approved the budget yesterday" -> WRONG! Must be "The committee approved the budget yesterday."
+• Trap 5: Stative verbs in continuous: "I am knowing the answer" -> WRONG! Must be "I know the answer."
         """.trimIndent(),
         colorHex = 0xFF059669,
-        initialLikes = 86
+        initialLikes = 94
     ),
     ShortNote(
         id = "eng-u2",
         subjectId = "c5",
         subject = "Communicative English",
         unit = "Unit 2",
-        title = "Health & Fitness: Athlete Biographies, Conditionals & Context Clues",
+        title = "Conditionals Masterclass: Types 0, I, II, III, Inversion & Alternative Connectors",
         summary = """
-📌 KEY CONCEPTS & OVERVIEW
-Unit 2 (FLEn 1011) focuses on the communicative theme of Health and Fitness. It develops listening competence through athlete biographical profiles, masters the syntax of Conditionals (Types I, II, III and alternative conjunctions), analyzes expository reading on team sports and classification of athletic disciplines, and applies contextual inferencing to deduce lexical meanings.
+📌 UNIT OVERVIEW & CURRICULAR CONTEXT
+Unit 2 (FLEn 1011) focuses on the complete grammatical system of Conditional Sentences. Conditionals form the backbone of scientific hypotheses, cause-and-effect reasoning, academic argumentation, and hypothetical speculation. This unit breaks down all four classical types, mixed conditionals, formal conditional inversion, and alternative conditional conjunctions.
 
-🔍 DETAILED BREAKDOWN
-1. Listening: Sports Stars & Professional Biographies:
-   • Profile Focus: Engaging with career narratives, achievements, and biographies of world-renowned athletes (e.g., Zinedine Zidane, Derartu Tulu).
-   • Four Key Dimensions for Describing Sports Figures:
-     1. Physical Characteristics: Observable physical traits (height, build, stamina, endurance).
-     2. Personal Attributes: Psychological and interpersonal qualities (discipline, sportsmanship, humility, sociability, mental grit).
-     3. Career Milestones: Playing positions, clubs/national teams represented, historic transfers, and major tournament appearances.
-     4. Achievements & Honors: Broken world records, Olympic gold medals, championship titles, and lifetime athletic honors.
-   • Note-Taking Application: Formulating and extracting specific factual data using targeted WH-questions (When, Where, What for, How long).
+🔍 EXTENSIVE GRAMMAR BREAKDOWN
 
-2. Grammar Focus: Conditionals (Types I, II, III & Alternatives):
-   • Sentence Architecture: Subordinate condition clause (if-clause) + Result clause (main clause).
-   • The Three Core Conditional Types:
-     1. Type I (Real / Likely Condition):
-        - Form: If + Simple Present, ... will / can / may + base verb.
-        - Meaning: Real, probable, and possible future situations.
-        - Example: "If I meet the coach tomorrow, I will ask for training advice."
-     2. Type II (Unreal / Hypothetical Condition):
-        - Form: If + Simple Past, ... would / could / might + base verb.
-        - Meaning: Unreal, imaginary, or contrary-to-fact present or future situations.
-        - Example: "If I had more leisure time, I would join the university football club."
-        - Formal Subjunctive "Were": Formal English employs "were" for all persons (including I/he/she/it):
-          * "If I were you, I would consult a physician before running a marathon."
-     3. Type III (Past Counterfactual / Impossible Condition):
-        - Form: If + Past Perfect (had + V3), ... would / could / might have + Past Participle (V3).
-        - Meaning: Past counterfactual conditions that did not happen; expressing regret, excuses, or alternative outcomes in retrospect.
-        - Example: "If Derartu had trained harder on hills, she would have won the race earlier."
-   • Alternative Conditional Conjunctions (Beyond "If"):
-     - Provided / Provided that: Sets an explicit prerequisite ("I could pass the fitness test provided that I maintain cardiovascular training").
-     - As long as: Emphasizes a continuous, unbroken condition ("Nobody suffers from obesity as long as they eat balanced diets and exercise regularly").
-     - On condition that: Formal legalistic stipulation of terms ("He joined the team on condition that he maintained a 3.0 GPA").
+1. THE COMPLETE CONDITIONAL TAXONOMY (TYPES 0, I, II, III):
+   • Zero Conditional (Universal Laws / Invariable Scientific Truths):
+     - Form: If / When + Simple Present, ... Simple Present.
+     - Function: Describes natural laws, scientific facts, and automatic general truths where the result is guaranteed whenever the condition occurs.
+     - Examples:
+       * "If you heat ice above 0°C, it melts."
+       * "When athletes exercise vigorously, their heart rate increases."
+     - Interchangeability: 'When' can replace 'if' without changing meaning.
 
-3. Reading: Health and Fitness (The Case for Team Sports):
-   • Core Psychological & Physical Benefits of Team Sports:
-     - Consistency & Accountability: Scheduled practices and league matches create social accountability that sustains regular exercise habits far better than solitary routines.
-     - Healthy Competition & Sportsmanship: Striving for victory while learning to accept defeat with emotional maturity, humility, and resilience.
-     - Social & Emotional Fulfillment: Cultivates camaraderie, mutual trust, effective communication, and lasting interpersonal bonds.
-   • Six-Category Classification of Sports Disciplines:
-     1. Action / Combat Sports: Football, rugby, karate, boxing, hockey, Taekwondo.
-     2. Ball & Hand-Eye Coordination Sports: Basketball, volleyball, tennis, baseball, cricket, lacrosse.
-     3. Precision & Target Sports: Archery, bowling, billiards/pool, target shooting, ping pong.
-     4. Balance & Rhythm Sports: Gymnastics, figure skating, competitive dancing, cheerleading.
-     5. Aquatic Sports: Swimming, water polo, synchronized diving.
-     6. Speed & Velocity Sports: Track sprints, distance running, alpine skiing, snowboarding, sailing, motor racing.
+   • Type I Conditional (Real / Probable / Predictive Condition):
+     - Form: If + Simple Present (V1/V-s), ... will / can / may / shall + Base Verb.
+     - Function: Real, possible future events with high probability of occurrence.
+     - Variations in Main Clause:
+       * Modal nuances: "If you train consistently, you can break the record" (ability); "... you may participate" (permission/possibility).
+       * Imperatives: "If your muscles ache, rest immediately." (Direct medical/coaching advice).
+     - Example: "If the national team wins on Sunday, they will qualify for the Africa Cup of Nations."
 
-4. Vocabulary: Guessing Meaning from Context:
-   • Contextual Inferencing: Using syntactic structures, neighboring modifier words, and thematic clues to deduce word definitions without reaching for a dictionary.
-   • Target Textual Deductions:
-     - "Regular" -> Scheduled, recurring at fixed, dependable intervals (e.g., regular physical drills).
-     - "Sportsmanship" -> Fair play, respect for opponents, and demonstrating grace in both victory and defeat.
-     - "A bunch of" -> An informal collection or diverse group of items/activities.
-   • Three Dimensions of Word Knowledge:
-     1. Orthography (accurate spelling).
-     2. Grammatical Inflections (e.g., jog -> jogged -> jogging).
-     3. Syntactic Usage (placing words in natural, grammatically sound sentence positions).
+   • Type II Conditional (Unreal / Hypothetical / Contrary-to-Fact Present):
+     - Form: If + Simple Past (V2), ... would / could / might + Base Verb.
+     - Function: Imaginary, hypothetical, or contrary-to-fact present or future situations. The condition is unlikely or impossible right now.
+     - Subjunctive 'Were' Rule (Crucial for University Exams):
+       * In formal written and standard academic English, 'were' is used for ALL persons (I, you, he, she, it, we, they) in the if-clause:
+         - "If I were the coach, I would change the defensive formation."
+         - "If he were taller, he could play center in basketball."
+       * Everyday colloquial English sometimes uses 'was', but academic exams strictly penalize 'was'!
+     - Modal nuances: 'would' (certain hypothetical result), 'could' (hypothetical ability), 'might' (hypothetical slight possibility).
 
-💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Subjunctive "Were" Rule: In Type II conditionals, always prefer "were" over "was" in standard exams ("If I were you...", NOT "If I was you...").
-• Type III Match: If the if-clause uses "had + V3", the main clause MUST use "would have + V3" (NEVER mix with Type II "would + base verb").
-• Alternative conjunctions ("provided that", "as long as", "on condition that") obey the EXACT same tense rules as standard "if" clauses!
+   • Type III Conditional (Past Counterfactual / Impossible Condition):
+     - Form: If + Past Perfect (had + V3), ... would have / could have / might have + Past Participle (V3).
+     - Function: Refers to an unfulfilled condition in the past; completely impossible to alter because time has already elapsed. Expresses retrospection, regret, criticism, or alternative history.
+     - Examples:
+       * "If Kenenisa Bekele had maintained his pace, he would have broken the world marathon record."
+       * "If the athlete had followed the physician's advice, she would not have aggravated her knee injury."
+     - Form Verification:
+       * If-clause: had + V3 (NEVER "would have").
+       * Main clause: would have + V3 (NEVER "had + V3").
+
+2. MIXED CONDITIONALS (CROSS-TEMPORAL REASONING):
+   • Type A: Past Action with Present Result (Most common mixed conditional):
+     - Form: If + Past Perfect (had + V3), ... would + Base Verb (Present).
+     - Meaning: A past condition that did or did not happen has a direct, observable consequence right now.
+     - Example: "If she had won the Olympic gold medal last year, she would be famous today."
+       (Fact: She did not win last year, so she is not famous today).
+   • Type B: Present Permanent State with Past Result:
+     - Form: If + Simple Past (V2), ... would have + Past Participle (V3).
+     - Meaning: A permanent trait or present state influenced an event that already took place in the past.
+     - Example: "If I spoke fluent French, I would have translated the sports manual yesterday."
+       (Fact: I do not speak French generally, so I was unable to translate yesterday).
+
+3. INVERSION IN CONDITIONALS (FORMAL ACADEMIC STYLING):
+   • In formal, sophisticated academic writing and examinations, the conjunction 'if' is omitted, and the auxiliary verb is inverted to the front of the clause!
+   • Inversion Formulas:
+     1. Type I Inversion (Should):
+        - Standard: "If you need medical attention, notify the referee."
+        - Inverted: "Should you need medical attention, notify the referee."
+        - Formula: Should + Subject + Base Verb...
+     2. Type II Inversion (Were):
+        - With 'to' + Base Verb: "If the committee decided to postpone the tournament..."
+          -> "Were the committee to decide to postpone the tournament..."
+        - With Adjective/Noun Complement: "If I were in your position..."
+          -> "Were I in your position, I would accept the scholarship."
+        - Formula: Were + Subject + (to + Base Verb / Complement)...
+     3. Type III Inversion (Had):
+        - Standard: "If they had arrived earlier, they would have caught the team bus."
+        - Inverted: "Had they arrived earlier, they would have caught the team bus."
+        - Formula: Had + Subject + Past Participle (V3)...
+     - Negative Inversion Rule:
+       * Negative 'not' NEVER contracts with the inverted auxiliary!
+       * Correct: "Had the athlete not trained daily, he would have failed."
+       * Incorrect: "Hadn't the athlete trained..."
+
+4. ALTERNATIVE CONDITIONAL CONJUNCTIONS:
+   • Unless (= If ... not):
+     - Inherent Negativity: 'Unless' contains a negative meaning. You must NEVER use a negative verb in an unless-clause!
+       * Incorrect: "Unless you do not exercise, you will gain weight."
+       * Correct: "Unless you exercise, you will gain weight." (= "If you do not exercise...")
+   • Provided that / Providing that (Conditional Stipulation):
+     - Meaning: "Only on the condition that..."
+     - Example: "You will pass the physical fitness test provided that you practice cardio regularly."
+   • As long as / So long as (Duration & Strict Condition):
+     - Example: "As long as you adhere to nutritional guidelines, your stamina will improve."
+   • In case vs. If (High-Yield Distinction):
+     - In case = Doing something in advance as a precaution before an event happens:
+       * "Take an umbrella in case it rains." (Take it now, whether it rains or not).
+     - If = Doing something only after/when the condition occurs:
+       * "Open your umbrella if it rains." (Do not open it until rain falls).
+   • Supposing / Suppose that (Hypothetical Speculation):
+     - Example: "Supposing you won the championship, what would you do first?"
+
+5. CONTEXTUAL VOCABULARY & INFERENCING:
+   • Deducing Lexical Meaning: Using syntactic markers, parallel phrasing, and root affixes to decode athletic profiles.
+   • Sports Lexicon: 'stamina' (enduring physical resilience), 'sportsmanship' (ethical conduct and dignity in play), 'adversary' (opponent in athletic competition).
+
+⚠️ COMMON GRAMMATICAL PITFALLS & EXAM TRAPS
+• Trap 1: "If I will go..." -> WRONG! Never use 'will' in the if-clause of Type I! Use Simple Present: "If I go...".
+• Trap 2: "If I was you..." -> Formal academic exams mark this WRONG! Always use subjunctive: "If I were you...".
+• Trap 3: "If had known..." -> WRONG! Always include the subject: "If I had known..." or inverted: "Had I known...".
+• Trap 4: "Unless you don't study..." -> Double negative error! Must be: "Unless you study...".
         """.trimIndent(),
         colorHex = 0xFF059669,
-        initialLikes = 89
+        initialLikes = 96
     ),
     ShortNote(
         id = "eng-u3",
         subjectId = "c5",
         subject = "Communicative English",
         unit = "Unit 3",
-        title = "Cultural Values: Cultural Tourism, Tense Contrasts & The Awramba Community",
+        title = "Tense System Masterclass & Subject-Verb Agreement: Narratives, Aspects & Agreement Rules",
         summary = """
-📌 KEY CONCEPTS & OVERVIEW
-Unit 3 (FLEn 1011) explores Cultural Values through the dual lenses of cultural tourism and the social experiment of the Awramba utopian community in Ethiopia. It integrates listening on cultural tourism economics and risks, systematic contrasts of four fundamental verb tenses (Present Simple, Past Simple, Present Perfect, Past Perfect), grammar acquisition strategies, and contextual academic vocabulary.
+📌 UNIT OVERVIEW & CURRICULAR CONTEXT
+Unit 3 (FLEn 1011) explores Cultural Values through the societal model of the Awramba community while systematically mastering the complete English Verb Tense Matrix and Subject-Verb Agreement. Tenses govern academic argumentation, chronological precision, and literary narration, while Subject-Verb Agreement is the most rigorously tested syntactic domain in freshman examinations.
 
-🔍 DETAILED BREAKDOWN
-1. Listening: Cultural Tourism & Conceptual Foundations:
-   • Culture & Cultural Values Defined:
-     - Culture: The shared beliefs, social customs, institutions, artifacts, and behavioral norms that define a community and shape how members interpret reality.
-     - Cultural Values: The fundamental ideals, ethical principles, and moral standards upon which a community exists and guides human conduct.
-   • Cultural Tourism:
-     - A major travel sector where domestic and international visitors travel to historic towns, heritage sites, religious monuments, and indigenous communities to experience unique living cultures.
-   • Dual Dimensions of Cultural Tourism:
-     - Economic & Social Benefits: Generates substantial revenue, creates local employment, promotes heritage conservation, encourages intercultural exchange, and enriches visitors' personal identity.
-     - Risks & Criticisms: Danger of commodifying or diluting sacred ancestral traditions for commercial display; cultural tourists function as "advance guards" for mass tourism that can disrupt and destabilize vulnerable local communities.
+🔍 EXTENSIVE GRAMMAR BREAKDOWN
 
-2. Grammar Focus: Verb Tenses in Contrast:
-   • Contrasting the Four Primary Narrative & Academic Tenses:
-     1. Present Simple (Base verb / -s / -es):
-        - Universal truths and scientific facts ("Water boils at 100°C").
-        - Habitual actions and recurring routines ("They weave textiles daily").
-        - Permanent or long-lasting situations ("The Awramba community lives in Fogera").
-     2. Past Simple (V2 / -ed or irregular):
-        - Actions completed at a definite, specific point in the past ("Zumra Nuru founded the community in 1980").
-        - Past historical events or completed historical states of affairs.
-     3. Present Perfect (have / has + V3):
-        - Past actions producing an observable, direct present result ("They have built modern weaving workshops").
-        - Cumulative life experiences at unspecified times ("Scholars have praised their gender equality").
-        - Actions starting in the past and continuing into the present moment ("They have lived in Fogera since 1980").
-     4. Past Perfect (had + V3):
-        - An action that occurred and was completed BEFORE another specified event in the past ("Earlier past").
-        - Chronological order marker: Essential for precise academic narration (e.g., "The villagers were skeptical because they had not witnessed gender parity before").
+1. THE COMPLETE VERB TENSE & ASPECT MATRIX:
+   • The Four Present Tenses:
+     1. Present Simple:
+        - Form: Base Verb (V1) or V-s/es for 3rd person singular (he/she/it).
+        - Functions: Universal laws ("Water freezes at 0°C"), habitual actions ("The Awramba elders meet weekly"), stative conditions ("Tradition binds society together"), and fixed institutional timetables ("The shuttle departs at 8:00 AM").
+     2. Present Continuous (am/is/are + V-ing):
+        - Functions: Actions in progress at the moment of speaking ("The sociologist is interviewing Zumra Nuru"), temporary present situations ("He is living in Fogera this semester"), and ongoing changing trends ("Cultural tourism is growing rapidly across Africa").
+     3. Present Perfect Simple (have/has + V3):
+        - Bridge between past and present: Emphasizes the completion of an event with ongoing relevance, indefinite past occurrences, or unbroken duration up to now.
+     4. Present Perfect Continuous (have/has been + V-ing):
+        - Form: Subject + have/has been + V-ing.
+        - Functions:
+          * Emphasizes the ongoing duration of an action started in the past and continuing into the present: "The villagers have been weaving textiles since dawn."
+          * Recent past activity with visible physical evidence: "Her hands are stained because she has been dyeing cotton threads."
+        - Contrast with Present Perfect Simple:
+          * Continuous emphasizes the activity/duration: "I have been reading the ethnography all morning."
+          * Simple emphasizes completion/quantity: "I have read fifty pages of the ethnography."
 
-3. Strategies for Enhancing English Grammar Mastery:
-   • Extensive Reading: Reading authentic English literature, academic articles, and quality journalism to internalize syntactic patterns naturally.
-   • Noticing in Context: Paying conscious attention to grammar choices while reading and listening.
-   • Personalized Rule Application: Writing original model sentences illustrating specific grammatical rules.
-   • Systematic Error Analysis: Diagnosing recurring grammatical mistakes through self-editing and paragraph revision.
-   • Targeted Practice: Utilizing grammar handbooks and completing focused drills on diagnosed weaknesses.
+   • The Four Past Tenses (Narrative Mechanics):
+     1. Past Simple (V2):
+        - Completed action at a definite point in the past: "Zumra Nuru established the community in 1980."
+     2. Past Continuous (was/were + V-ing):
+        - Action in progress at a specific past moment: "At 3:00 PM yesterday, the artisans were spinning wool."
+        - Interrupted Past Action: When an ongoing background action (Past Continuous) was interrupted by a brief event (Past Simple):
+          * "While the tourists were observing the workshop, the loom broke."
+          * Rule: 'While' / 'As' typically takes Past Continuous; 'When' typically introduces Past Simple.
+     3. Past Perfect Simple (had + V3) - The "Earlier Past":
+        - Core Function: Expresses an action completed BEFORE another past action, state, or chronological milestone.
+        - Time Markers and Structural Formula:
+          * By the time + Past Simple, ... Past Perfect:
+            "By the time the government delegation arrived, the community had completed the literacy hall."
+          * Before + Past Simple, ... Past Perfect:
+            "They had lived in extreme hardship before they established the cooperative."
+          * After + Past Perfect, ... Past Simple:
+            "After the community had introduced gender parity, productivity increased dramatically."
+     4. Past Perfect Continuous (had been + V-ing):
+        - Form: Subject + had been + V-ing.
+        - Function: Emphasizes an ongoing action that was in progress over a duration before a subsequent past event occurred.
+        - Example: "They had been working in the fields for six hours before the rain began."
 
-4. Reading: The Awramba Community and Its Quest for Utopia:
-   • Establishment & Location:
-     - Founded in 1980 by Zumra Nuru and 19 visionary followers in Fogera woreda, South Gondar Zone (Amhara Region), ~73 km east of Bahir Dar.
-     - Etymology: "Awramba" translates to "Top of the Hill" in Amharic.
-   • Core Philosophy: An intentional cooperative community committed to eliminating poverty, ignorance, and gender oppression through diligence, mutual solidarity, and strict egalitarianism.
-   • Five Distinctive Cultural & Institutional Practices:
-     1. Radical Gender Equality: Total equality between men and women; complete abolition of gender-based division of labor (men cook, wash, and care for children; women weave, farm, and lead).
-     2. Ethical Code (Absence of Institutional Religion): Members belong to no organized religion (neither Christian nor Islamic); their moral code is founded on hard work, mutual benevolence, absolute honesty, and treating theft as an intolerable vice.
-     3. Comprehensive Social Security: Democratic committees manage healthcare, elder support, patient care, early childhood nurseries, and adult literacy programs.
-     4. Marriage & Family Reform: Outlaws regional early child marriage; girls marry only at or above 18, and boys at or above 22.
-     5. Economic Resilience: Initially ostracized and denied fertile arable land by neighbors due to nonconformist ideology; settled on malaria-prone terrain and successfully diversified into modern textile weaving, spinning, and grain milling.
+2. ADVERBIAL INVERSIONS WITH PAST PERFECT (HIGH-YIELD EXAM FOCUS):
+   • In formal narrative registers, negative and restrictive adverbials trigger subject-auxiliary inversion:
+     1. No sooner ... than:
+        - Formula: No sooner + had + Subject + V3 ... than + Past Simple clause.
+        - Example: "No sooner had Zumra Nuru outlined the community charter than skeptical neighbors raised objections."
+     2. Hardly / Scarcely ... when:
+        - Formula: Hardly / Scarcely + had + Subject + V3 ... when + Past Simple clause.
+        - Example: "Hardly had the weaving mill opened when orders flooded in from nearby towns."
+     - Cardinal Error: 'No sooner' pairs with 'THAN' (never 'when'); 'Hardly' pairs with 'WHEN' (never 'than')!
 
-5. Contextual Academic Vocabulary:
-   • Norms: Accepted social rules, standards, and behavioral expectations within a group.
-   • Egalitarianism: The philosophical belief in the fundamental equality of all people in status, rights, and opportunities.
-   • Alleviate: To make pain, poverty, or suffering less severe or more bearable.
-   • Lauded: Highly praised, acclaimed, or publicly commended.
-   • Obscene: Repugnant, morally offensive, or deeply unacceptable.
-   • Diligent: Exhibiting persistent, attentive, and thorough effort in work.
-   • Ostracized: Excluded, banished, or cast out from social participation by a community.
-   • Initiative: An innovative strategy or plan devised to resolve a pressing social problem.
+3. EXHAUSTIVE SUBJECT-VERB AGREEMENT RULES:
+   • Fundamental Axiom: A singular subject requires a singular verb; a plural subject requires a plural verb.
+   • Rule 1: Intervening Prepositional Phrases & Modifiers:
+     - Prepositional phrases (of, with, in, on, at, for) between the subject and verb do NOT affect agreement:
+       * "The quality of these handmade textiles is (singular) exceptional." (Subject: quality, not textiles).
+       * "The leader, accompanied by his counselors, visits (singular) the nursery daily."
+     - Connectors that do NOT create compound subjects: as well as, along with, together with, in addition to, accompanied by, including:
+       * "Zumra, along with nineteen followers, was (singular) expelled from the fertile lowlands."
+   • Rule 2: Correlative Conjunctions & The Proximity Rule:
+     - With 'either ... or', 'neither ... nor', 'not only ... but also': The verb agrees with the CLOSER subject!
+       * "Neither the village elders nor the committee secretary knows the exact figure." (secretary is singular -> knows).
+       * "Neither the secretary nor the committee elders know the exact figure." (elders is plural -> know).
+       * "Either the instructor or the students have misplaced the attendance sheet."
+   • Rule 3: Indefinite Pronouns:
+     - Always Singular: everyone, everybody, everything, someone, somebody, something, anyone, anybody, anything, no one, nobody, nothing, each, either, neither, one:
+       * "Everyone in the cooperative contributes (singular) to the collective fund."
+       * "Each of the weaving machines requires (singular) routine maintenance."
+       * "Neither of the two solutions is (singular) viable."
+     - Always Plural: both, few, fewer, many, others, several:
+       * "Several of the visitors were impressed by the egalitarian division of labor."
+     - Variable (The SANAM Pronouns: Some, Any, None, All, Most):
+       * Agreement depends on the object of the preposition:
+         - Uncountable noun -> Singular verb: "Most of the cotton is imported." / "All of the information was accurate."
+         - Countable plural noun -> Plural verb: "Most of the artisans are women." / "None of the members have refused."
+   • Rule 4: Expressions of Quantity ('A number of' vs. 'The number of'):
+     - A number of (= many) + plural noun -> PLURAL verb!
+       * "A number of tourists visit Awramba annually."
+     - The number of (= specific count/statistic) + plural noun -> SINGULAR verb!
+       * "The number of visitors has increased significantly."
+   • Rule 5: Collective Nouns:
+     - Nouns like committee, family, team, government, jury, class:
+       * Treated as a single unified entity -> Singular verb: "The committee has announced its decision."
+       * Treated as individual members acting separately -> Plural verb: "The committee were divided in their opinions."
+   • Rule 6: Plural in Form, Singular in Meaning:
+     - Disciplines: Mathematics, Physics, Economics, Linguistics, Politics, Ethics -> Singular: "Economics is a vital social science."
+     - Diseases: Measles, Mumps, Rickets -> Singular: "Measles is preventable by vaccination."
+     - Single entities: News, Series, Species -> "The news was shocking."
+   • Rule 7: Units of Time, Money, Distance, and Measurement:
+     - Treated as single collective units -> Singular verb:
+       * "Five thousand birr is too expensive for that raw wool."
+       * "Ten kilometers is a long distance to walk."
+       * "Three years was required to construct the irrigation ditch."
 
-💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Past Perfect vs. Simple Past: Use Past Perfect (had + V3) for the EARLIER of two past actions, and Simple Past (V2) for the SUBSEQUENT past action.
-• Awramba Exam Points: Founded by Zumra Nuru in 1980 in Fogera; key features are absolute gender equality, no institutional religion, marriage reform (18 for females, 22 for males), and textile weaving.
-• Context Clues: Match vocabulary precisely (e.g., "lauded" = praised; "alleviate" = lessen/mitigate; "ostracized" = socially excluded).
+⚠️ COMMON GRAMMATICAL PITFALLS & EXAM TRAPS
+• Trap 1: "Neither of the boys are here" -> WRONG! In standard grammar, 'neither' is singular: "Neither of the boys is here."
+• Trap 2: "The number of students are rising" -> WRONG! 'The number' takes a singular verb: "The number of students is rising."
+• Trap 3: "No sooner had we arrived when..." -> WRONG! 'No sooner' strictly pairs with 'than': "No sooner had we arrived than...".
+• Trap 4: "The teacher as well as the students were late" -> WRONG! 'as well as' does not make the subject plural. The true subject is 'The teacher': "The teacher as well as the students was late."
         """.trimIndent(),
         colorHex = 0xFF059669,
-        initialLikes = 88
+        initialLikes = 98
     ),
     ShortNote(
         id = "eng-u4",
         subjectId = "c5",
         subject = "Communicative English",
         unit = "Unit 4",
-        title = "Wildlife: Human-Animal Coexistence, Denotation/Connotation & Parks",
+        title = "Relative Clauses, Complex Sentences & Hypotheticals: Defining vs. Non-Defining & Wish Grammar",
         summary = """
-📌 KEY CONCEPTS & OVERVIEW
-Unit 4 (FLEn 1011) explores Wildlife through human-wildlife interactions, African ecological biodiversity, lexical semantics (denotative vs. connotative meanings), and the application of conditional sentences (Types I, II, III) contextualized within Ethiopian national parks and endemic wildlife preservation.
+📌 UNIT OVERVIEW & CURRICULAR CONTEXT
+Unit 4 (FLEn 1011) examines Wildlife, biodiversity conservation, and Ethiopian national parks while establishing comprehensive grammatical mastery over Relative Clauses (Adjective Clauses), participial clause reduction, preposition placement, and the syntactic architecture of 'Wish' and 'If only' hypotheticals.
 
-🔍 DETAILED BREAKDOWN
-1. Listening: Human-Wildlife Interaction & Coexistence:
-   • Spectrum of Interaction: Ranges from positive ecological harmony (ecotourism, biodiversity maintenance) to acute Human-Wildlife Conflict (HWC).
-   • Drivers of Conflict: Rapid human population expansion causing direct competition with wild animals over shared resources (agricultural land, water, grazing territory, habitat space).
-   • Destructive Consequences: Severe crop destruction, livestock predation, habitat fragmentation, risks to human life, and retaliatory poaching or extinction of endangered species.
-   • Meaning of Coexistence:
-     - Etymology: The prefix "co-" denotes "together" or "jointly".
-     - Coexistence signifies living together in sustainable peace, mutual tolerance, and ecological balance without conflict.
+🔍 EXTENSIVE GRAMMAR BREAKDOWN
 
-2. Reading: Africa's Wild Animals & Ecosystems:
-   • Profile of Four Prominent African Wildlife Species:
-     1. Lemur:
-        - Habitat: Madagascar (strictly endemic; world's 4th largest island).
-        - Diet: Herbivorous/Vegetarian (wild figs, bananas, canopy fruits).
-        - Traits: Monkey-like, large nocturnal round eyes, pointed muzzle, long tail, woolly coat; spans from the indri (~95 cm) to tiny mouse lemur (~15 cm); all 25 species are currently endangered.
-     2. Mountain Gorilla:
-        - Habitat: Dense volcanic slopes of Rwanda, DR Congo, and Uganda.
-        - Diet: Herbivorous (forest fruits, foliage, berries).
-        - Traits: Largest of all great apes; organized in small troops led by a dominant silverback male; too heavy to climb trees; peaceful, gentle, highly intelligent, and social.
-     3. Forest Elephant:
-        - Habitat: Congo Basin tropical rainforests.
-        - Diet: Herbivorous forest vegetation.
-        - Traits: Distinct from the savanna/bush elephant; reaches up to 250 cm in shoulder height; tusks are visibly thinner, shorter, and yellowish.
-     4. Chimpanzees & Baboons:
-        - Habitat: Tropical rainforest canopy and woodlands.
-        - Diet: Omnivorous/Frugivorous (fruits, tender leaves, nuts, insects).
-        - Traits: Highly sophisticated tool users (twigs to extract termites, stone/branch anvils to crack hard nuts); travel in cohesive troops (~20 members); sleep in tree nests at night.
-   • Endemism Concept: An endemic species is an organism whose natural distribution is strictly confined to a specific geographic region and found nowhere else on Earth.
-   • Rainforest Geography: Over 80% of Africa's rainforests are located within the Congo Basin, spanning from the Atlantic west coast to the highlands of Kenya and Tanzania.
+1. RELATIVE PRONOUNS & ADVERBS (SELECTION MATRIX):
+   • Relative Pronouns:
+     - Who: Refers to persons as the subject of the relative clause:
+       * "The park ranger who patrols the Semien Mountains spotted a rare Walia ibex."
+     - Whom: Refers to persons as the object of the relative clause or after a preposition:
+       * "The researcher whom the university sponsored published an article on primate behavior."
+       * Formal prepositional use: "The zoologist to whom we spoke was highly knowledgeable."
+     - Whose: Demonstrates possession (used for people, animals, and occasionally institutions):
+       * "Tourists whose vehicles broke down were assisted by wildlife wardens."
+       * "The mountain gorilla, whose natural habitat is threatened, requires urgent protection."
+     - Which: Refers strictly to non-human entities (animals, objects, concepts, institutions):
+       * "The Bale Mountains National Park, which covers 2,150 km², harbors the Ethiopian wolf."
+     - That: Versatile pronoun referring to persons, animals, or things, but RESTRICTED ONLY to defining relative clauses:
+       * "The mammal that sleeps in canopy tree nests is the chimpanzee."
+   • Relative Adverbs (Replacing Preposition + Which):
+     - Where (= in/at which): Refers to places: "The valley where endemic nyala graze is protected."
+     - When (= on/in/at which): Refers to times: "The dry season is the period when game viewing is optimal."
+     - Why (= for which): Refers to reasons: "The reason why poaching declined is community-based scouts."
 
-3. Vocabulary: Denotative and Connotative Meanings:
-   • Denotative Meaning (Denotation):
-     - The literal, objective, dictionary definition of a word, devoid of emotional coloring or subjective bias.
-     - Example: "Monkey" denotes a specific primate mammal; "group", "club", and "clique" share the same literal denotation ("a gathering of more than one individual").
-   • Connotative Meaning (Connotation):
-     - The secondary emotional overtones, cultural associations, and social values evoked by a word.
-     - Categorization of Connotations:
-       * Positive Connotations: "Unique" (admired for distinctiveness), "economical" (prudent with resources), "mother" (nurturing care, warmth).
-       * Negative Connotations: "Childish" (immature), "skinny" (unhealthily thin), "clique" (exclusionary, snobbish social circle), "snake" (treacherous/deceitful person).
-       * Neutral Connotations: "Group" (general collection), "adolescent" (biological age phase).
-   • Communicative Importance: Choosing words based solely on denotation while ignoring negative connotations produces unintentional offense or semantic ambiguity in academic discourse.
+2. DEFINING VS. NON-DEFINING RELATIVE CLAUSES (EXAM BENCHMARK):
+   • Defining (Restrictive) Relative Clauses:
+     - Function: Supplies essential information necessary to identify the specific person or thing being talked about. Without it, the sentence is incomplete or ambiguous.
+     - Punctuation Rule: NEVER enclosed by commas!
+     - Pronoun Substitution: 'That' can freely replace 'who' or 'which':
+       * "The animals that / which are endemic to Ethiopia attract thousands of ecotourists."
+     - Pronoun Omission Rule (Contact Clause):
+       * When the relative pronoun functions as the OBJECT of the relative clause, it can be entirely omitted:
+         - Subject: "The ranger who guided us was friendly." ('who' cannot be omitted).
+         - Object: "The video [which/that] the ranger captured went viral." -> "The video the ranger captured went viral."
+   • Non-Defining (Non-Restrictive) Relative Clauses:
+     - Function: Supplies additional, non-essential, parenthetical information about an already identified noun. Removing the clause leaves the core sentence grammatically and semantically intact.
+     - Punctuation Rule: MUST be enclosed between commas (or a comma and a period)!
+     - Pronoun Restrictions (Crucial!):
+       * 'That' can NEVER be used in a non-defining clause! You must use 'who', 'whom', 'whose', or 'which'.
+       * Relative pronouns can NEVER be omitted from a non-defining clause, even when serving as objects!
+     - Examples:
+       * "Semien Mountains National Park, which was established in 1969, is a UNESCO World Heritage site."
+         (Non-defining: 'which' is mandatory; 'that' is strictly forbidden; commas are required).
+       * "Dr. Jane Goodall, who studied wild chimpanzees in Gombe, revolutionized primatology."
 
-4. Grammar Focus: Conditionals Applied to Ethiopian National Parks:
-   • Ethiopian National Parks & Associated Wildlife:
-     - Semien Mountains National Park: Walia ibex, Gelada baboon, Caracal.
-     - Bale Mountains National Park: Mountain Nyala, Ethiopian wolf, Spotted hyena.
-     - Kafta Sheraro National Park: African elephant, Ground squirrel, Crested porcupine.
-     - Nechisar National Park: Plains zebra, Greater kudu, Dik-dik.
-     - Yangudi Rassa National Park: Beisa oryx, Grevy's zebra, Abyssinian mohr.
-   • Conditional Sentence Constructions in Park Contexts:
-     - Type I (Real Future Possibility):
-       "If tourists visit the Semien Mountains, they will see the endemic Walia ibex."
-     - Type II (Unreal / Hypothetical Present):
-       "If I lived near the Bale Mountains, I would photograph the rare Ethiopian wolf."
-     - Type III (Counterfactual / Impossible Past):
-       "If park rangers had not protected the habitat, the endemic species would have disappeared."
+3. PREPOSITION PLACEMENT IN RELATIVE CLAUSES:
+   • Formal Register (Preposition Fronting / Pied-Piping):
+     - Preposition is placed directly BEFORE the relative pronoun:
+       * With persons: Preposition + whom: "The conservationist with whom I collaborated." (NEVER "with who" or "with that").
+       * With non-humans: Preposition + which: "The tropical rainforest in which lemurs thrive." (NEVER "in that").
+   • Informal Register (Preposition Stranding):
+     - Preposition is placed at the very end of the relative clause:
+       * "The conservationist [whom/that/who] I collaborated with."
+       * "The tropical rainforest [which/that] lemurs thrive in."
 
-💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Endemic Species Definition: Organisms naturally restricted to one specific geographical location (e.g., Walia ibex to Ethiopia; Lemurs to Madagascar).
-• Denotation vs. Connotation: Denotation is the dictionary definition; Connotation is the emotional/cultural aura (e.g., "economical" = positive; "stingy" = negative; both denote spending little money).
-• National Park Wildlife Matching: Walia ibex -> Semien Mountains; Mountain Nyala & Ethiopian wolf -> Bale Mountains; Elephants -> Kafta Sheraro.
+4. REDUCED RELATIVE CLAUSES (PARTICIPIAL PHRASES):
+   • Relative clauses can be condensed into concise participial phrases to achieve greater academic economy and sophistication:
+   • Active Voice Reduction -> Present Participle (V-ing):
+     - Full: "Students who conduct wildlife research in Kafta Sheraro must obtain permits."
+     - Reduced: "Students conducting wildlife research in Kafta Sheraro must obtain permits."
+     - Full: "Any vehicle that enters the sanctuary after sunset will be fined."
+     - Reduced: "Any vehicle entering the sanctuary after sunset will be fined."
+   • Passive Voice Reduction -> Past Participle (V3 / -ed):
+     - Full: "The Walia ibex, which was photographed by the tourist, stood on a precipice."
+     - Reduced: "The Walia ibex, photographed by the tourist, stood on a precipice."
+     - Full: "Specimens that were collected by the biologists were preserved in ethanol."
+     - Reduced: "Specimens collected by the biologists were preserved in ethanol."
+
+5. 'WISH' AND 'IF ONLY' HYPOTHETICAL STRUCTURES:
+   • 'Wish' and 'If only' express hypothetical desires contrary to reality. 'If only' is more emphatic than 'I wish'.
+   • Three Distinct Temporal Levels:
+     1. Wish about the Present (Unreal Present):
+        - Expresses dissatisfaction with a current reality.
+        - Form: Subject + wish + Simple Past (V2 / subjunctive 'were').
+        - Examples:
+          * "I wish I were in the Bale Mountains right now." (Reality: I am not there).
+          * "If only our university offered a dedicated degree in wildlife conservation." (Reality: It does not).
+     2. Wish about the Past (Counterfactual Regret):
+        - Expresses regret over an action that happened or failed to happen in the past.
+        - Form: Subject + wish + Past Perfect (had + V3).
+        - Examples:
+          * "The game warden wishes the park had hired more scouts last year." (Reality: They did not hire enough scouts).
+          * "If only poachers had not decimated the forest elephant population."
+     3. Wish for Future Change / Complaint about Behavior:
+        - Expresses irritation, complaint, or a desire for someone else to change annoying behavior.
+        - Form: Subject + wish + would + Base Verb.
+        - Examples:
+          * "I wish the tourists would stop littering inside the national park."
+          * "If only it would stop raining so we could begin the expedition."
+        - Note: You CANNOT use 'would' when the subject of 'wish' and the subject of the clause are identical (e.g., NOT "I wish I would pass", but "I wish I could pass").
+
+6. SEMANTIC DISTINCTION: DENOTATION VS. CONNOTATION:
+   • Denotation: The literal, objective, dictionary definition of a term.
+   • Connotation: The emotional, cultural, or social overtones and psychological aura of a word.
+     - Positive Connotation: thrifty, youthful, slender, curious, statesman.
+     - Negative Connotation: stingy, childish, skinny, nosy, politician.
+     - Neutral Denotation: economical, adolescent, thin, inquisitive, government official.
+
+⚠️ COMMON GRAMMATICAL PITFALLS & EXAM TRAPS
+• Trap 1: Using 'that' in non-defining clauses: "Lake Tana, that is Ethiopia's largest lake,..." -> WRONG! Must be: "Lake Tana, which is Ethiopia's largest lake,...".
+• Trap 2: Using 'who' after prepositions: "The elder to who I spoke" -> WRONG! After prepositions, you must use 'whom': "The elder to whom I spoke".
+• Trap 3: "I wish I was taller" -> In formal exams, use subjunctive: "I wish I were taller".
+• Trap 4: "I wish I had been there yesterday" uses Past Perfect (had + V3), NOT Simple Past, because it refers to the past!
         """.trimIndent(),
         colorHex = 0xFF059669,
-        initialLikes = 87
+        initialLikes = 97
     ),
     ShortNote(
         id = "eng-u5",
         subjectId = "c5",
         subject = "Communicative English",
         unit = "Unit 5",
-        title = "Population: Demographics, Pyramids, Collocations & Passive Voice",
+        title = "Voice Masterclass: Active vs. Passive Voice Across All Tenses, Impersonal Passives & Collocations",
         summary = """
-📌 KEY CONCEPTS & OVERVIEW
-Unit 5 (FLEn 1011) examines Population studies and demographics. It covers the geographic mechanics of population density, the interpretation of age-sex population pyramids across demographic transition stages, lexical collocations, and the syntactic mastery and academic utility of Active versus Passive voice constructions.
+📌 UNIT OVERVIEW & CURRICULAR CONTEXT
+Unit 5 (FLEn 1011) examines Population Dynamics, demographic transitions, and population pyramids while providing an exhaustive, masterclass-level training in the Passive Voice. In academic, scientific, and technical discourse, the Passive Voice is the standard syntactic mechanism for presenting objective data, empirical procedures, and research findings.
 
-🔍 DETAILED BREAKDOWN
-1. Listening: Population Density & Spatial Demographics:
-   • Core Demographic Definitions:
-     - Population: The total count of human individuals or inhabitants residing within a defined geographical territory or administrative boundary.
-     - Dense / Crowded: Characterized by people or structural objects packed closely together.
-     - Population Density: The fundamental geographic ratio calculated as:
-       Population Density = Total Population / Total Land Area (expressed as persons per km² or mile²).
-   • Multi-Level Spatial Scales: Density can be analyzed across a city, district, province/region, sovereign country, or the entire planet.
-   • Global Habitability: More than 50% of the Earth's continental landmass is classified as inhospitable (unfavorable or hostile to human permanent settlement due to hyper-arid deserts, rugged mountain ranges, sub-polar ice caps, or dense swamps).
+🔍 EXTENSIVE GRAMMAR BREAKDOWN
 
-2. Reading: Population Pyramids & Age-Sex Structure:
-   • Socio-Economic Significance of Age Structure:
-     - Determines the active labor force supply relative to dependent age groups.
-     - A disproportionate ratio of children (0–14) or elderly (65+) creates a high Dependency Ratio, causing labor shortages in agriculture and manufacturing, necessitating food imports, and increasing demands on public schools, teachers, and geriatric healthcare.
-   • Anatomy of a Population Pyramid (Age-Sex Graph):
-     - Specialized bilateral horizontal bar chart displaying demographic distribution.
-     - Vertical Y-Axis: Represents five-year age cohorts (e.g., 0–4 at the base, progressing upward to 80+ at the apex).
-     - Horizontal X-Axis / Central Divider: The center represents 0% or zero population.
-       * Males are plotted from the center outward to the LEFT.
-       * Females are plotted from the center outward to the RIGHT.
-     - Historical Origin: Termed a "pyramid" because in the 19th century, nearly all nations had expansive broad bases (high birth rates) tapering to narrow apexes (high death rates).
-   • Four Typologies of Population Pyramids across Demographic Transition:
-     1. Stage 1 (Expansive / Traditional):
-        - Shape: Wide base with steep, rapidly sloping triangular sides.
-        - Dynamics: High birth rates combined with high infant mortality and death rates.
-        - Context: Pre-industrial societies, historic populations, and fragile developing regions.
-     2. Stage 2 (Expansive / Rapid Growth):
-        - Shape: Very broad base, narrow apex, but with outward-curving sides.
-        - Dynamics: Persistently high birth rates with rapidly falling/declining death rates due to sanitation and basic healthcare.
-        - Context: Rapidly growing developing nations in sub-Saharan Africa.
-     3. Stage 3 (Stationary / Beehive Shape):
-        - Shape: Upright cylindrical or "beehive" shape with rounded apex.
-        - Dynamics: Low birth rates balanced with low death rates; high proportion of middle-aged and elderly individuals.
-        - Context: Developed nations (e.g., England, Wales, France).
-     4. Stage 4 (Constrictive / Inverted):
-        - Shape: Tapered, narrow base that is narrower than the middle and upper tiers.
-        - Dynamics: Rapidly falling birth rates below replacement level (sub-replacement fertility) and low mortality; shrinking workforce.
-        - Context: Highly aging, shrinking societies (e.g., Japan, Italy, Germany).
-
-3. Vocabulary: Collocations in Academic English:
-   • Definition: A conventional, fixed, or highly predictable pairing of two or more words that naturally co-occur through customary linguistic usage.
-   • Key Collocations with "Population":
-     - Population density, population pyramid, population growth, aging population, urban population, sparse population.
-   • High-Frequency Verb + Noun Collocations:
-     - Have: Have a bath, have a break, have an operation, have an impact.
-     - Do: Do business, do homework, do research, do an exercise, do a favor.
-     - Make: Make an effort, make a noise, make a decision, make a mistake, make a promise.
-     - Take: Take notes, take time, take a break, take a risk, take medicine.
-     - Break: Break a habit, break a record, break a promise, break the law.
-     - Catch: Catch a disease, catch a cold, catch a bus, catch sight of.
-     - Pay: Pay attention, pay a visit, pay a compliment, pay a fine.
-     - Keep: Keep a promise, keep calm, keep a routine, keep a secret.
-
-4. Grammar Focus: Active vs. Passive Voice:
+1. THE ARCHITECTURE OF THE PASSIVE VOICE:
    • Conceptual Mechanics:
-     - Active Voice: The grammatical subject (agent) actively performs the verb's action:
-       Subject (Agent) + Transitive Verb + Object (Patient).
-       * Example: "Demographers have developed a special bar graph."
-     - Passive Voice: The grammatical subject (patient) receives the action:
-       Subject (Patient) + Appropriate form of 'to be' + Past Participle (V3) + [by Agent].
-       * Example: "A special bar graph has been developed by demographers."
-   • Formation Across Core Tenses:
-     - Simple Present: am / is / are + V3 (e.g., "Census data is collected every decade").
-     - Simple Past: was / were + V3 (e.g., "The pyramid was drafted yesterday").
-     - Present Perfect: have / has been + V3 (e.g., "New population policies have been enacted").
-   • When to Use the Passive Voice in Academic Discourse:
-     1. When the agent is unknown, obvious, or irrelevant (e.g., "The survey was conducted across 500 households").
-     2. To maintain an objective, formal academic register that highlights findings, procedures, and empirical results rather than the personal identity of the researcher.
+     - Active Voice: Focuses on the AGENT (the doer of the action).
+       * Structure: Subject (Agent) + Transitive Verb + Object (Patient).
+       * Example: "Demographers conduct national census surveys every decade."
+     - Passive Voice: Focuses on the PATIENT (the receiver of the action, the result, or the object).
+       * Structure: Subject (Patient) + Appropriate Form of 'to be' + Past Participle (V3) + [by + Agent].
+       * Example: "National census surveys are conducted every decade (by demographers)."
+   • The Golden Rule of Passivization:
+     - The tense of the verb 'to be' in the passive sentence must match the tense of the active main verb!
+     - The lexical verb is ALWAYS converted to its Past Participle (V3) form.
 
-💡 EXAM TIPS & HIGH-YIELD FOCUS
-• Population Pyramid Rules: Males are ALWAYS plotted to the LEFT; Females to the RIGHT.
-• Four Pyramid Shapes: Wide triangle = Stage 1 (high birth/death); Inward curve = Stage 2 (high birth, falling death); Beehive = Stage 3 (low birth/death); Narrow base = Stage 4 (declining, aging).
-• Collocation Traps: We say "DO homework" and "DO business" (NEVER "make homework"); but "MAKE an effort" and "MAKE a decision" (NEVER "do an effort").
-• Passive Formula: Always requires a form of 'to be' + Past Participle (V3).
+2. EXHAUSTIVE TENSE TRANSFORMATION TABLE (ALL 9 TENSES & MODALS):
+   1. Simple Present:
+      - Active: "The statistics agency collects demographic data."
+      - Passive: "Demographic data is collected by the statistics agency."
+      - Formula: am / is / are + V3.
+   2. Present Continuous:
+      - Active: "Fieldworkers are distributing census questionnaires right now."
+      - Passive: "Census questionnaires are being distributed right now."
+      - Formula: am / is / are + being + V3.
+   3. Simple Past:
+      - Active: "The demographer published the population pyramid yesterday."
+      - Passive: "The population pyramid was published yesterday."
+      - Formula: was / were + V3.
+   4. Past Continuous:
+      - Active: "Analysts were compiling the mortality rates throughout the morning."
+      - Passive: "The mortality rates were being compiled throughout the morning."
+      - Formula: was / were + being + V3.
+   5. Present Perfect:
+      - Active: "The ministry has enacted new health policies."
+      - Passive: "New health policies have been enacted by the ministry."
+      - Formula: have / has + been + V3.
+   6. Past Perfect:
+      - Active: "Officials had verified the population counts before releasing the bulletin."
+      - Passive: "The population counts had been verified before the bulletin was released."
+      - Formula: had + been + V3.
+   7. Simple Future (will):
+      - Active: "The government will implement family planning initiatives."
+      - Passive: "Family planning initiatives will be implemented by the government."
+      - Formula: will + be + V3.
+   8. Future Perfect (will have):
+      - Active: "By 2030, demographers will have updated the regional growth projections."
+      - Passive: "By 2030, the regional growth projections will have been updated."
+      - Formula: will + have been + V3.
+   9. Modal Auxiliaries (can, could, must, should, may, might, ought to):
+      - Active: "We must analyze fertility trends carefully."
+      - Passive: "Fertility trends must be analyzed carefully."
+      - Formula: Modal + be + V3.
+   10. Perfect Modals (should have, could have, must have):
+       - Active: "The committee should have submitted the report on dependency ratios."
+       - Passive: "The report on dependency ratios should have been submitted."
+       - Formula: Modal + have been + V3.
+
+3. SPECIAL PASSIVE CONSTRUCTIONS:
+   • Verbs with Two Objects (Direct & Indirect Objects):
+     - Ditransitive verbs (give, send, offer, teach, award, lend, tell, pay) allow two passive forms:
+       * Active: "The university offered Dr. Martha a research grant."
+       * Form 1 (Indirect Object as Subject - Highly Preferred in Academic English):
+         "Dr. Martha was offered a research grant by the university."
+       * Form 2 (Direct Object as Subject - Requires Preposition 'to' or 'for'):
+         "A research grant was offered to Dr. Martha by the university."
+   • Impersonal & Reporting Passives (Academic Citation Grammar):
+     - Used with reporting verbs of cognition and statement: say, believe, report, think, claim, know, expect, consider, assume, estimate.
+     - Active: "Demographers believe that the urban population will double."
+     - Form A (Dummy Subject 'It'):
+       * Formula: It + is/was + V3 (reported) + that-clause.
+       * Example: "It is believed that the urban population will double."
+     - Form B (Personal / Subject-Raised Passive - Highly High-Yield in Exams!):
+       * Formula: Subject + is/was + V3 (reported) + to-Infinitive.
+       * Concurrent action: "The urban population is believed to double."
+       * Past action reported in the present (Perfect Infinitive: to have + V3):
+         - Active: "Historians report that ancient cities experienced rapid decline."
+         - Passive B: "Ancient cities are reported to have experienced rapid decline."
+
+4. CAUSATIVE VERBS (ACTIVE VS. PASSIVE CAUSATIVES):
+   • Causatives indicate that a person causes someone else to perform an action or arranges for something to be done:
+   • Passive Causative: Have / Get something done:
+     - Formula: Subject + have / get + Object (Thing) + Past Participle (V3).
+     - Meaning: Arranging for a specialist, technician, or third party to perform a service.
+     - Examples:
+       * "The ministry had the census data verified." (A professional agency verified it).
+       * "I must get my research paper proofread before final binding."
+   • Active Causatives:
+     - Have someone do something: Subject + have + Person + Base Verb (Bare Infinitive).
+       * Example: "The professor had the assistant tabulate the responses."
+     - Make someone do something: Subject + make + Person + Base Verb (Force / Compulsion).
+       * Example: "The warden made the trespasser leave the reserve."
+       * Passive of Make: Requires 'to'! "The trespasser was made to leave."
+     - Get someone to do something: Subject + get + Person + to-Infinitive (Persuasion).
+       * Example: "The coordinator got the students to participate in the seminar."
+
+5. VERBS THAT CAN NEVER BE PASSIVIZED (INTRANSITIVE VERBS):
+   • Fundamental Rule: Only TRANSITIVE verbs (verbs that take a direct object) can be transformed into the passive voice!
+   • Intransitive verbs do NOT take an object; therefore, they CANNOT be passivized:
+     - Common Intransitive Verbs in Exams: appear, disappear, arrive, happen, occur, die, exist, fall, belong, consist of, remain, collapse.
+     - Incorrect: "A severe drought was happened in 1984."
+     - Correct: "A severe drought happened in 1984."
+     - Incorrect: "The problem was disappeared."
+     - Correct: "The problem disappeared."
+
+6. ACADEMIC COLLOCATIONS & LEXICAL MASTERY:
+   • High-Yield Verb + Noun Collocations:
+     - DO: do research, do homework, do business, do a favor, do an experiment, do damage, do justice.
+     - MAKE: make an effort, make a decision, make a contribution, make a discovery, make a mistake, make progress, make an impression, make a difference.
+     - TAKE: take measures, take precautions, take notes, take for granted, take into consideration, take responsibility.
+     - PAY: pay attention, pay respect, pay a compliment, pay tribute.
+     - DRAW: draw a conclusion, draw comparisons, draw distinctions, draw attention.
+     - POSE: pose a threat, pose a risk, pose a challenge, pose a question.
+
+⚠️ COMMON GRAMMATICAL PITFALLS & EXAM TRAPS
+• Trap 1: Passivizing intransitive verbs: "The accident was occurred yesterday" -> WRONG! Must be: "The accident occurred yesterday."
+• Trap 2: Active causative 'make' vs. Passive 'be made': "He was made do the work" -> WRONG! Passive 'make' requires 'to': "He was made to do the work."
+• Trap 3: "Do a mistake" / "Make homework" -> WRONG! Remember: "Make a mistake" and "Do homework".
+• Trap 4: Passive Continuous omission: "The road is being repaired" -> Never drop 'being' in continuous passives (dropping it turns it into Simple Present: "is repaired").
+• Trap 5: Subject-raising with past actions: "He is believed to escape" -> If he escaped in the past, you must use the Perfect Infinitive: "He is believed to have escaped."
         """.trimIndent(),
         colorHex = 0xFF059669,
-        initialLikes = 90
+        initialLikes = 99
     ),
     ShortNote(
         id = "geo-u1",

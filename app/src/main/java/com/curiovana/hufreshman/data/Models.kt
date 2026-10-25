@@ -125,7 +125,8 @@ data class SubjectCategory(
     val description: String,
     val colorHex: Long,
     val imageUrl: String,
-    val totalQuestions: Int = 0
+    val totalQuestions: Int = 0,
+    val isSecondSemester: Boolean = false
 )
 
 enum class ExamPracticeMode {

@@ -86,7 +86,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             shortName = "Physics",
             description = "Mechanics, Vectors, Optics & Thermodynamics",
             colorHex = 0xFF0052FE,
-            imageUrl = "https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=800&auto=format&fit=crop&q=80"
+            imageUrl = "https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=800&auto=format&fit=crop&q=80",
+            isSecondSemester = false
         ),
         SubjectCategory(
             id = "c2",
@@ -94,7 +95,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             shortName = "Mathematics",
             description = "Limits, Differential & Integral Calculus",
             colorHex = 0xFF4F46E5,
-            imageUrl = "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&auto=format&fit=crop&q=80"
+            imageUrl = "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&auto=format&fit=crop&q=80",
+            isSecondSemester = false
         ),
         SubjectCategory(
             id = "c3",
@@ -102,7 +104,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             shortName = "General Psychology",
             description = "Cognitive psychology, Memory & Personality",
             colorHex = 0xFF0D9488,
-            imageUrl = "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=800&auto=format&fit=crop&q=80"
+            imageUrl = "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=800&auto=format&fit=crop&q=80",
+            isSecondSemester = false
         ),
         SubjectCategory(
             id = "c4",
@@ -110,7 +113,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             shortName = "Logic & CT",
             description = "Fallacies, Syllogisms & Reasoning",
             colorHex = 0xFFD97706,
-            imageUrl = "https://images.unsplash.com/photo-1529699211952-734e80c4d42b?w=800&auto=format&fit=crop&q=80"
+            imageUrl = "https://images.unsplash.com/photo-1529699211952-734e80c4d42b?w=800&auto=format&fit=crop&q=80",
+            isSecondSemester = false
         ),
         SubjectCategory(
             id = "c5",
@@ -118,7 +122,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             shortName = "Communicative English",
             description = "Grammar, Reading & Academic Writing",
             colorHex = 0xFF059669,
-            imageUrl = "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80"
+            imageUrl = "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80",
+            isSecondSemester = false
         ),
         SubjectCategory(
             id = "c6",
@@ -126,7 +131,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             shortName = "Geography of Ethiopia",
             description = "Topography, Climate & Demographics",
             colorHex = 0xFF2563EB,
-            imageUrl = "https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&auto=format&fit=crop&q=80"
+            imageUrl = "https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&auto=format&fit=crop&q=80",
+            isSecondSemester = false
         ),
         SubjectCategory(
             id = "c7",
@@ -134,31 +140,35 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             shortName = "Freshman COC",
             description = "Comprehensive Stream Certification Practice",
             colorHex = 0xFF7C3AED,
-            imageUrl = "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&auto=format&fit=crop&q=80"
+            imageUrl = "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&auto=format&fit=crop&q=80",
+            isSecondSemester = false
         ),
         SubjectCategory(
             id = "c8",
             name = "Emerging Technologies",
             shortName = "Emerging Tech",
-            description = "Coming in the Second Semester",
+            description = "AI, IoT, Cloud Computing, Cybersecurity & Big Data",
             colorHex = 0xFF6366F1,
-            imageUrl = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=80"
+            imageUrl = "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&auto=format&fit=crop&q=80",
+            isSecondSemester = true
         ),
         SubjectCategory(
             id = "c9",
             name = "Moral and Civics Education",
             shortName = "Civics & Ethics",
-            description = "Coming in the Second Semester",
+            description = "Applied Ethics, Constitution, Democracy & Human Rights",
             colorHex = 0xFFE11D48,
-            imageUrl = "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&auto=format&fit=crop&q=80"
+            imageUrl = "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&auto=format&fit=crop&q=80",
+            isSecondSemester = true
         ),
         SubjectCategory(
             id = "c10",
             name = "General Law",
             shortName = "General Law",
-            description = "Coming in the Second Semester",
+            description = "Legal Systems, Rule of Law & Ethiopian Legal Order",
             colorHex = 0xFF475569,
-            imageUrl = "https://images.unsplash.com/photo-1505664194779-8beaceb93744?w=800&auto=format&fit=crop&q=80"
+            imageUrl = "https://images.unsplash.com/photo-1505664194779-8beaceb93744?w=800&auto=format&fit=crop&q=80",
+            isSecondSemester = true
         ),
         SubjectCategory(
             id = "c11",
@@ -166,7 +176,71 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             shortName = "Economics",
             description = "Microeconomics, Macroeconomics & Ethiopian Economy",
             colorHex = 0xFF16A34A,
-            imageUrl = "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&auto=format&fit=crop&q=80"
+            imageUrl = "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&auto=format&fit=crop&q=80",
+            isSecondSemester = false
+        ),
+        SubjectCategory(
+            id = "c12",
+            name = "Social Anthropology",
+            shortName = "Anthropology",
+            description = "Human Diversity, Cultural Heritage & Ethiopian Society",
+            colorHex = 0xFF8B5CF6,
+            imageUrl = "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800&auto=format&fit=crop&q=80",
+            isSecondSemester = true
+        ),
+        SubjectCategory(
+            id = "c13",
+            name = "Global Trends",
+            shortName = "Global Trends",
+            description = "Geopolitics, International Relations & Global Governance",
+            colorHex = 0xFF0284C7,
+            imageUrl = "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&auto=format&fit=crop&q=80",
+            isSecondSemester = true
+        ),
+        SubjectCategory(
+            id = "c14",
+            name = "Inclusiveness",
+            shortName = "Inclusiveness",
+            description = "Special Needs, Diversity, Equity & Inclusive Education",
+            colorHex = 0xFFEC4899,
+            imageUrl = "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=800&auto=format&fit=crop&q=80",
+            isSecondSemester = true
+        ),
+        SubjectCategory(
+            id = "c15",
+            name = "Entrepreneurship",
+            shortName = "Entrepreneurship",
+            description = "Business Ideation, Innovation, Startups & Enterprise",
+            colorHex = 0xFFF59E0B,
+            imageUrl = "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&auto=format&fit=crop&q=80",
+            isSecondSemester = true
+        ),
+        SubjectCategory(
+            id = "c16",
+            name = "General Chemistry",
+            shortName = "Chemistry",
+            description = "Atomic Structure, Chemical Bonding, States & Reactions",
+            colorHex = 0xFF059669,
+            imageUrl = "https://images.unsplash.com/photo-1603126857599-f6e157fa2fe6?w=800&auto=format&fit=crop&q=80",
+            isSecondSemester = true
+        ),
+        SubjectCategory(
+            id = "c17",
+            name = "Communicative English II",
+            shortName = "English II",
+            description = "Academic Writing, Research Synthesis & Presentations",
+            colorHex = 0xFF3B82F6,
+            imageUrl = "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&auto=format&fit=crop&q=80",
+            isSecondSemester = true
+        ),
+        SubjectCategory(
+            id = "c18",
+            name = "General Biology",
+            shortName = "Biology",
+            description = "Cell Biology, Human Physiology, Genetics & Ecology",
+            colorHex = 0xFF10B981,
+            imageUrl = "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?w=800&auto=format&fit=crop&q=80",
+            isSecondSemester = true
         )
     )
 

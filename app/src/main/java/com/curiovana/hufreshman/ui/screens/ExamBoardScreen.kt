@@ -462,7 +462,8 @@ fun SubjectCard(
     isCompact: Boolean = false,
     onClick: () -> Unit
 ) {
-    val isSecondSemester = subject.id in listOf("c8", "c9", "c10") ||
+    val isSecondSemester = subject.isSecondSemester ||
+            subject.id in listOf("c8", "c9", "c10") ||
             subject.description.contains("Second Semester", ignoreCase = true)
 
     Card(
@@ -642,7 +643,8 @@ fun ExamTypeChoiceView(
         allQuestions.count { it.course.contains(subject.name, ignoreCase = true) && it.category.contains("Final", ignoreCase = true) }
     }
 
-    val isSecondSemester = subject.id in listOf("c8", "c9", "c10") ||
+    val isSecondSemester = subject.isSecondSemester ||
+            subject.id in listOf("c8", "c9", "c10") ||
             subject.description.contains("Second Semester", ignoreCase = true)
 
     Column(

@@ -311,15 +311,15 @@ fun AllUsersTab(
     var selectedFilter by remember { mutableStateOf("All") }
 
     val approved = registrations.filter { it.isApproved }
-    val withProof = registrations.filter { !it.isApproved && (it.screenshotUrl.isNotBlank() || it.transactionId.isNotBlank()) }
-    val noProof = registrations.filter { !it.isApproved && it.screenshotUrl.isBlank() && it.transactionId.isBlank() && it.rejectionReason == null }
+    val unapproved = registrations.filter { !it.isApproved && (it.screenshotUrl.isNotBlank() || it.transactionId.isNotBlank()) }
+    val accountCreated = registrations.filter { !it.isApproved && it.screenshotUrl.isBlank() && it.transactionId.isBlank() }
     val rejected = registrations.filter { !it.isApproved && it.rejectionReason != null }
 
     val filteredList = remember(registrations, selectedFilter, searchQuery) {
         val base = when (selectedFilter) {
             "Approved" -> approved
-            "Receipt Sent" -> withProof
-            "No Payment" -> noProof
+            "Unapproved" -> unapproved
+            "Account Created" -> accountCreated
             "Rejected" -> rejected
             else -> registrations
         }
@@ -345,7 +345,11 @@ fun AllUsersTab(
         ) {
             Column {
                 Text("User Accounts Directory", fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
-                Text("${registrations.size} registered students • ${approved.size} approved • ${withProof.size} receipts pending", fontSize = 11.sp, color = Slate700)
+                Text(
+                    text = "${registrations.size} total accounts • ${approved.size} approved • ${unapproved.size} unapproved • ${accountCreated.size} created only",
+                    fontSize = 11.sp,
+                    color = Slate700
+                )
             }
         }
 
@@ -354,13 +358,16 @@ fun AllUsersTab(
             modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            listOf(
+            val filterOptions = mutableListOf(
                 "All" to registrations.size,
                 "Approved" to approved.size,
-                "Receipt Sent" to withProof.size,
-                "No Payment" to noProof.size,
-                "Rejected" to rejected.size
-            ).forEach { (label, count) ->
+                "Unapproved" to unapproved.size,
+                "Account Created" to accountCreated.size
+            )
+            if (rejected.isNotEmpty()) {
+                filterOptions.add("Rejected" to rejected.size)
+            }
+            filterOptions.forEach { (label, count) ->
                 FilterChip(
                     selected = selectedFilter == label,
                     onClick = { selectedFilter = label },
@@ -368,8 +375,8 @@ fun AllUsersTab(
                     colors = FilterChipDefaults.filterChipColors(
                         selectedContainerColor = when (label) {
                             "Approved" -> EmeraldGreen
-                            "Receipt Sent" -> AmberWarning
-                            "No Payment" -> RoyalBlue
+                            "Unapproved" -> AmberWarning
+                            "Account Created" -> RoyalBlue
                             "Rejected" -> RoseRed
                             else -> Slate900
                         },
@@ -444,8 +451,8 @@ fun UserCard(
     val statusLabel = when {
         reg.isApproved -> "✓ APPROVED"
         reg.rejectionReason != null -> "✗ REJECTED"
-        hasProof -> "📸 RECEIPT SENT"
-        else -> "👤 ACCOUNT ONLY"
+        hasProof -> "⏳ UNAPPROVED"
+        else -> "👤 ACCOUNT CREATED"
     }
 
     Card(

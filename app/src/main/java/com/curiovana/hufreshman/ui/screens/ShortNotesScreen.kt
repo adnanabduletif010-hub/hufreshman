@@ -201,7 +201,8 @@ fun SubjectNoteCard(
 ) {
     val screen = rememberScreenDimensions()
     val imageHeight = if (screen.isCompactWidth) 130.dp else 115.dp
-    val isSecondSemester = subject.id in listOf("c8", "c9", "c10") ||
+    val isSecondSemester = subject.isSecondSemester ||
+            subject.id in listOf("c8", "c9", "c10") ||
             subject.description.contains("Second Semester", ignoreCase = true)
 
     Card(
